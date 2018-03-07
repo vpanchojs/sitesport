@@ -1,3 +1,29 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <!-- dimensiones del perfil -->
+    <dimen name="app_bar_height">160dp</dimen>
+
+    <!--<dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="header_view_start_margin_left">-10dp</dimen>
+    <dimen name="header_view_end_margin_left">82dp</dimen>
+    <dimen name="header_view_end_margin_left_post">80dp</dimen>
+    <dimen name="header_view_end_margin_right">0dp</dimen>
+    <dimen name="header_view_start_margin_bottom">14dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>-->
+
+    <dimen name="header_view_start_margin_left">16dp</dimen>
+    <dimen name="header_view_end_margin_left">50dp</dimen>
+    <dimen name="header_view_end_margin_right">14dp</dimen>
+    <dimen name="header_view_start_margin_bottom">14dp</dimen>
+    <dimen name="header_view_start_text_size">32sp</dimen>
+    <dimen name="header_view_end_text_size">18sp</dimen>
+
+    <!-- //dimensiones del perfil -->
+
+
 </resources>
