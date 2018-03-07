@@ -7,7 +7,7 @@
 
     <!-- Title -->
     <TextView
-        android:id="@+id/header_tv_nameview_title"
+        android:id="@+id/header_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <com.aitec.sitesport.profile.ui.RatingBarVectorFix
-            android:id="@+id/rtbProductRating"
+            android:id="@+id/rtbQualificationSite"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
@@ -32,7 +32,7 @@
 
     <!-- Subtitle -->
         <TextView
-            android:id="@+id/header_view_sub_title"
+            android:id="@+id/header_tv_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"

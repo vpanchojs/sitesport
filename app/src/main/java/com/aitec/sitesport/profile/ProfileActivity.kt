@@ -9,95 +9,80 @@ import android.view.View
 import android.widget.LinearLayout
 import android.support.v4.content.ContextCompat
 import android.view.WindowManager
-import android.os.Build
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.support.design.widget.CollapsingToolbarLayout
+import android.graphics.drawable.BitmapDrawable
 import android.support.v7.graphics.Palette
-import android.support.v7.widget.Toolbar
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import com.aitec.sitesport.profile.ui.HeaderView
+import android.util.DisplayMetrics
+import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.header_profile.*
 
 
 class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private var isHideToolbarView = false
-    private lateinit var toolbar : Toolbar
-    private lateinit var appBarLayout : AppBarLayout
-    private lateinit var coordinator : CoordinatorLayout
-    private lateinit var imageProfile : ImageView
-    private lateinit var collapsibleToolbar : CollapsingToolbarLayout
-    private lateinit var headerToolbar : HeaderView
-    private lateinit var floatHeaderToolbar : HeaderView
-    private lateinit var headerTitle : TextView
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         setupToolBar()
+        setupImageProfile()
+        setupAppBarSizeDynamic()
+        //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
+        setupHeader()
+        app_bar_layout_profile.addOnOffsetChangedListener(this)
+    }
 
-        appBarLayout = findViewById<View>(R.id.app_bar_layout_profile) as AppBarLayout
-        coordinator = findViewById<View>(R.id.cordinator_layout_profile) as CoordinatorLayout
-        imageProfile = findViewById<View>(R.id.toolbar_image_profile) as ImageView
-        collapsibleToolbar = findViewById<View>(R.id.collapse_toolbar_profile) as CollapsingToolbarLayout
-        headerToolbar = findViewById<View>(R.id.toolbar_header_profile) as HeaderView
-        floatHeaderToolbar = findViewById<View>(R.id.float_header_profile) as HeaderView
-        headerTitle = findViewById<View>(R.id.header_tv_nameview_title) as TextView
-
-
-
-        val dWidth = windowManager.defaultDisplay
-
-        appBarLayout.post(Runnable {
-            val heightPx = (imageProfile.getHeight() / 2.2).toInt()
+    private fun setupAppBarSizeDynamic(){
+        app_bar_layout_profile.post({
+            val heightPx = (img_image_profile.height / 2.2).toInt()
             setAppBarOffset(heightPx)
         })
+    }
 
-        imageProfile.getLayoutParams().height = dWidth.width
-        val bitmap = BitmapFactory.decodeResource(resources,
-                R.drawable.baloncesto)
-        Palette.from(bitmap).generate(object : Palette.PaletteAsyncListener {
-            override fun onGenerated(palette: Palette) {
+    private fun setupImageProfile(){
+        img_image_profile.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.piscina))
+        val displayMetrics = DisplayMetrics()
+        this.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        img_image_profile.layoutParams.height = displayMetrics.widthPixels
+    }
 
-                val mutedColor = palette.getMutedColor(resources.getColor(R.color.colorPrimary))
+    private fun setupBarsFromColorImageProfile(){
+        val bitmap = (img_image_profile.drawable as BitmapDrawable).bitmap
+        Palette.from(bitmap).generate { palette ->
+            val mutedColor = palette.getMutedColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            setupColorToolbar(mutedColor)
+            setupColorStatusBar(getDarkColor(mutedColor))
+        }
+    }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    private fun setupColorStatusBar(darkColor : Int){
+        val window = this@ProfileActivity.window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = darkColor //DarkColor
+    }
 
-                    val hsv = FloatArray(3)
-                    var color = mutedColor
-                    Color.colorToHSV(color, hsv)
-                    hsv[2] *= 0.8f // value component
-                    color = Color.HSVToColor(hsv)
+    private fun setupColorToolbar(lightColor : Int){
+        collapse_toolbar_profile.setContentScrimColor(lightColor) //LigtColor
+    }
 
+    private fun getDarkColor(color : Int): Int{
+        val hsv = FloatArray(3)
+        Color.colorToHSV(color, hsv)
+        hsv[2] *= 0.8f // value component
+        return Color.HSVToColor(hsv)
+    }
 
-                    collapsibleToolbar.setContentScrimColor(mutedColor) //LigtColor
-                    val window = this@ProfileActivity.getWindow()
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.setStatusBarColor(color) //DarkColor
-                } else {
-                    collapsibleToolbar.setContentScrimColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorPrimaryDark))
-                }
-
-            }
-        })
-
-
-        // TITTLE AND SUBTITTLE
-        collapsibleToolbar.title = " "
-        headerToolbar .bindTo("Centro XYZ", "24 visitas")
-        floatHeaderToolbar.bindTo("Centro XYZ", "24 visitas")
-        appBarLayout.addOnOffsetChangedListener(this)
+    private fun setupHeader(){
+        collapse_toolbar_profile.title = ""
+        (toolbar_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
+        (float_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
     }
 
     private fun setupToolBar(){
-        toolbar = findViewById<View>(R.id.toolbar_profile) as Toolbar
-
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar_profile)
         if (supportActionBar != null) {
             supportActionBar!!.title = ""
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -106,27 +91,23 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     private fun setAppBarOffset(offsetPx: Int) {
-        val params = appBarLayout.getLayoutParams() as CoordinatorLayout.LayoutParams
+        val params = app_bar_layout_profile.layoutParams as CoordinatorLayout.LayoutParams
         params.behavior = AppBarLayout.Behavior()
         val behavior = params.behavior as AppBarLayout.Behavior
-        behavior.onNestedPreScroll(coordinator, appBarLayout, collapsibleToolbar, 0, offsetPx, intArrayOf(0, 0), 0)
-
+        behavior.onNestedPreScroll(cordinator_layout_profile, app_bar_layout_profile, collapse_toolbar_profile, 0, offsetPx, intArrayOf(0, 0), 0)
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-
-        val maxScroll = appBarLayout.getTotalScrollRange()
+        val maxScroll = appBarLayout.totalScrollRange
         val percentage = Math.abs(verticalOffset).toFloat() / maxScroll.toFloat()
-
         if (percentage == 1f && isHideToolbarView) {
             val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             params.setMargins(0, 0, 0, 0)
-            headerTitle.setLayoutParams(params)
-            headerToolbar.setVisibility(View.VISIBLE)
+            header_tv_title.layoutParams = params
+            toolbar_header_profile.visibility = View.VISIBLE
             isHideToolbarView = !isHideToolbarView
-
         } else if (percentage < 1f && !isHideToolbarView) {
-            headerToolbar.setVisibility(View.GONE)
+            toolbar_header_profile.visibility = View.GONE
             isHideToolbarView = !isHideToolbarView
         }
     }
