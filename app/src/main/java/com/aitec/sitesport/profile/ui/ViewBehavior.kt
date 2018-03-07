@@ -44,8 +44,6 @@ import android.R.attr.dependency
         val maxScroll = (dependency as AppBarLayout).totalScrollRange
         val percentage = Math.abs(dependency.y) / maxScroll.toFloat()
 
-        Log.e("percentage", percentage.toString())
-
         // Set scale for the title
         var size = (1 - percentage) * MAX_SCALE + 1
         val size_aux = size
@@ -54,8 +52,6 @@ import android.R.attr.dependency
             size = 1.35f
         child!!.setScaleXTitle(size)
         child.setScaleYTitle(size)
-
-        //child.setMarginTitle(size)
 
         if (size > 1.15f)
             size = 1.15f
@@ -68,17 +64,9 @@ import android.R.attr.dependency
                 - (getToolbarHeight() - child.height) * percentage / 2)
 
         childPosition = childPosition - mStartMarginBottom * (1f - percentage)
-
         val lp = child.layoutParams as CoordinatorLayout.LayoutParams
 
         //1.2313597f
-       /* if (size_aux <= 1.325f) {
-            lp.leftMargin = (percentage * mEndMargintLeft).toInt() + mStartMarginLeft
-            lp.rightMargin = mMarginRight
-            child.layoutParams = lp
-        }
-
-        child.y = childPosition*/
 
         if (Math.abs(dependency.getY()) >= maxScroll / 2) {
             val layoutPercentage = (Math.abs(dependency.getY()) - maxScroll / 2) / Math.abs(maxScroll / 2)
@@ -106,18 +94,6 @@ import android.R.attr.dependency
     }
 
     private fun shouldInitProperties(child: HeaderView?, dependency: View?) {
-
-       /* if (mStartMarginLeft == 0)
-            mStartMarginLeft = context!!.getResources().getDimensionPixelOffset(R.dimen.header_view_start_margin_left)
-
-        if (mEndMargintLeft == 0)
-            mEndMargintLeft = context!!.getResources().getDimensionPixelOffset(R.dimen.header_view_end_margin_left)
-
-        if (mStartMarginBottom == 0)
-            mStartMarginBottom = context!!.getResources().getDimensionPixelOffset(R.dimen.header_view_start_margin_bottom)
-
-        if (mMarginRight == 0)
-            mMarginRight = context!!.getResources().getDimensionPixelOffset(R.dimen.header_view_end_margin_right)*/
 
         if (mStartMarginLeft == 0) {
             mStartMarginLeft = context!!.getResources().getDimensionPixelOffset(R.dimen.header_view_start_margin_left);
