@@ -65,4 +65,36 @@ class HeaderView : LinearLayout{
         rtbProductRating.setPivotY(30f)
     }
 
+
+    fun setMarginTitle(size: Float) {
+        var margin = 0f
+        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        if (size == 1.00f) {
+            margin = 0f
+        } else if (size < 1.05f) {
+            margin = 3f
+        } else if (size < 1.10f) {
+            margin = 6f
+        } else if (size < 1.15f) {
+            margin = 9f
+        } else if (size <= 1.20f) {
+            margin = 12f
+        } else if (size <= 1.25f) {
+            margin = 15f
+        } else if (size <= 1.30f) {
+            margin = 18f
+        } else if (size <= 1.35f) {
+            margin = 21f
+        } else if (size <= 1.40f) {
+            margin = 24f
+        } else if (size <= 1.45f) {
+            margin = 27f
+        } else if (size <= 1.50f) {
+            margin = 30f
+        }
+
+        params.setMargins(0, 0, 0, margin.toInt())
+        header_tv_nameview_title.setLayoutParams(params)
+    }
+
 }

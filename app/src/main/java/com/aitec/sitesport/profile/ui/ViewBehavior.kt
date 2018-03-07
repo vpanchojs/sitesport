@@ -6,25 +6,13 @@ import android.util.AttributeSet
 import android.support.design.widget.AppBarLayout
 import android.view.View
 import android.os.Build
-import android.icu.util.UniversalTimeScale.MAX_SCALE
-import com.aitec.sitesport.R.dimen.header_view_end_margin_right
-import com.aitec.sitesport.R.dimen.header_view_start_margin_bottom
-import com.aitec.sitesport.R.dimen.header_view_end_margin_left
-import com.aitec.sitesport.R.dimen.header_view_start_margin_left
-import android.R.attr.data
-import android.util.Log
 import android.util.TypedValue
 import com.aitec.sitesport.R
-import android.support.v4.view.ViewCompat.setY
-import android.R.attr.dependency
-
-
-
 
 /**
  * Created by Yavac on 5/3/2018.
  */
-    class ViewBehavior(var context: Context?, attrs: AttributeSet?) : CoordinatorLayout.Behavior<HeaderView>(context, attrs) {
+class ViewBehavior(var context: Context?, attrs: AttributeSet?) : CoordinatorLayout.Behavior<HeaderView>(context, attrs) {
 
     private val MAX_SCALE = 0.5f
 
@@ -57,6 +45,8 @@ import android.R.attr.dependency
             size = 1.15f
         child.setScaleXratingBar(size)
         child.setScaleYratingBar(size)
+
+        child.setMarginTitle(size_aux)
 
         // Set position for the header view
         var childPosition = (dependency.height + dependency.y
