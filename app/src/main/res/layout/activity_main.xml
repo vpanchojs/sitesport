@@ -12,22 +12,6 @@
         android:fitsSystemWindows="true"
         tools:context="com.aitec.sitesport.main.ui.MainActivity">
 
-
-        <Button
-            android:id="@+id/btn_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Perfil"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.mapbox.mapboxsdk.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="0dp"
@@ -93,6 +77,29 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_results_searchs"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/color_background"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <TextView
+            android:id="@+id/tv_message_search_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/none_results"
+            android:visibility="gone" />
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_chips"
             android:layout_width="0dp"
@@ -114,9 +121,9 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_buttom_blank"
                 android:elevation="1dp"
-                android:textSize="12sp"
-                android:text="4 km"
                 android:gravity="center"
+                android:text="4 km"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,11 +137,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:textSize="12sp"
-                android:gravity="center"
                 android:background="@drawable/bg_buttom_blank"
                 android:elevation="1dp"
+                android:gravity="center"
                 android:text="Todos"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline_2"
@@ -155,12 +162,12 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:textSize="12sp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_buttom_blank"
                 android:elevation="1dp"
+                android:gravity="center"
                 android:text="Futbol"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_2"
                 app:layout_constraintStart_toStartOf="@+id/guideline_1"

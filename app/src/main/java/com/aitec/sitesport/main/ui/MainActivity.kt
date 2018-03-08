@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         Mapbox.getInstance(this, "pk.eyJ1IjoidnBhbmNob2pzIiwiYSI6ImNqN2gzdXdrbzFkejEyeG82Z2IyaDcxazUifQ.LMqRVTqNyzGOtED90lMtZA");
         setContentView(R.layout.activity_main)
         setupBottomSheet()
-        btn_profile.setOnClickListener {
+        btn_sport.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 

@@ -8,5 +8,6 @@
     <color name="colorStarOff">#707070</color>
     <color name="colorBackgroundContents">#F7F7FA</color>
     <color name="colorDivider">#78849E</color>
+    <color name="color_background">#F7F7FA</color>
 
 </resources>
