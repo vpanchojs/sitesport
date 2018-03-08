@@ -1,4 +1,4 @@
-package com.aitec.sitesport.main
+package com.aitec.sitesport.main.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_results.*
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener {
+class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener {
     override fun navigatioProfile(idEntrepise: Any) {
 
     }
@@ -55,6 +55,11 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
             it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
             Log.e("HOLA", "mapa")
         })
+
+        btn_distance.setOnClickListener {
+            val selectDistanceFragment = SelectDistanceFragment.newInstance()
+            selectDistanceFragment.show(supportFragmentManager, "Recuperar Contrasena")
+        }
 
         data.add(Entrepise("Sitio Deportivo"))
         data.add(Entrepise("Centro De Deportes"))
@@ -124,5 +129,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         mapView.onSaveInstanceState(outState!!)
     }
 
+    override fun onRecoveryPassword(email: String) {
 
+    }
 }
