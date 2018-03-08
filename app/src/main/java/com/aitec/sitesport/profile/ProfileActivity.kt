@@ -15,7 +15,16 @@ import android.graphics.drawable.BitmapDrawable
 import android.support.v7.graphics.Palette
 import com.aitec.sitesport.profile.ui.HeaderView
 import android.util.DisplayMetrics
+import android.util.Log
+import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.annotations.IconFactory
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.content_profile.*
 import kotlinx.android.synthetic.main.header_profile.*
 
 
@@ -25,6 +34,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Mapbox.getInstance(this, "pk.eyJ1IjoidnBhbmNob2pzIiwiYSI6ImNqN2gzdXdrbzFkejEyeG82Z2IyaDcxazUifQ.LMqRVTqNyzGOtED90lMtZA");
         setContentView(R.layout.activity_profile)
         setupToolBar()
         setupImageProfile()
@@ -32,6 +42,25 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         setupHeader()
         app_bar_layout_profile.addOnOffsetChangedListener(this)
+        mvProfile.onCreate(savedInstanceState)
+        setupMapBox()
+    }
+
+    private fun setupMapBox(){
+        mvProfile.getMapAsync({
+            val iconFactory = IconFactory.getInstance(this)
+            val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
+            it.addMarker(MarkerOptions()
+                    .position(LatLng(-4.028872, -79.213712))
+                    .icon(icon))
+
+            val position = CameraPosition.Builder()
+                    .target(LatLng(-4.028872, -79.213712)) // Sets the new camera position
+                    .zoom(17.0) // Sets the zoom
+                    .build() // Creates a CameraPosition from the builder
+            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
+            Log.e("HOLA", "mapa")
+        })
     }
 
     private fun setupAppBarSizeDynamic(){
@@ -110,6 +139,41 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
             toolbar_header_profile.visibility = View.GONE
             isHideToolbarView = !isHideToolbarView
         }
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        mvProfile.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mvProfile.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mvProfile.onStop()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        mvProfile.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mvProfile.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mvProfile.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        mvProfile.onSaveInstanceState(outState!!)
     }
 
 }
