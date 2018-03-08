@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputEditText
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import com.aitec.sitesport.R
 import kotlinx.android.synthetic.main.fragmente_select_distance.view.*

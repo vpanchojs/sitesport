@@ -8,9 +8,10 @@
 
     <ImageButton
         android:id="@+id/ib_back"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:tint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,18 +21,18 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="Dialogo"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Seleccionar Distancia"
         android:textColor="#FFFFFF"
-        android:textSize="26sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/ib_back"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toEndOf="@+id/ib_back"
         app:layout_constraintTop_toTopOf="@+id/ib_back" />
 
 
@@ -40,12 +41,26 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ib_back" />
+
+    <TextView
+        android:id="@+id/tv_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="KM"
+        android:textColor="@color/white_suave"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/np"
+        app:layout_constraintStart_toEndOf="@+id/np"
+        app:layout_constraintTop_toTopOf="@+id/np" />
 
 
     <Button
@@ -56,8 +71,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/bg_buttom_dialog"
         android:text="Seleccionar"
+        android:textColor="@drawable/txt_color_dialog"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
