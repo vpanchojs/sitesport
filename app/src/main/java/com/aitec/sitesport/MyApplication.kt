@@ -5,16 +5,19 @@ import android.content.SharedPreferences
 import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.aitec.sitesport.domain.di.DomainModule
+import com.mapbox.mapboxsdk.Mapbox
 
 class MyApplication : MultiDexApplication() {
     val SHARED_PREFERENCES_NAME = "dsafio_preferences"
     var domainModule: DomainModule? = null
     var appModule: MyAplicationModule? = null
+    lateinit var mapbox: Mapbox
 
     override fun onCreate() {
         super.onCreate()
         Log.e("APLI", "on create")
         initModules();
+
 
     }
 
@@ -25,6 +28,7 @@ class MyApplication : MultiDexApplication() {
     fun initModules() {
         appModule = MyAplicationModule(this)
         domainModule = DomainModule(this)
+        mapbox = Mapbox.getInstance(this, getString(R.string.accessTokenMapBox))
     }
 
 
