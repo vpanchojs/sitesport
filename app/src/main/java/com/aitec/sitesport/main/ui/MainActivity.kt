@@ -6,6 +6,7 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
 import com.aitec.sitesport.R
@@ -22,7 +23,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_results.*
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener {
+class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener {
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        if (hasFocus) {
+            rv_results_searchs.visibility = View.VISIBLE
+
+            bottom_sheet.visibility = View.GONE
+            cl_chips.visibility = View.GONE
+            btn_my_location.visibility = View.GONE
+
+        } else {
+            rv_results_searchs.visibility = View.GONE
+
+            bottom_sheet.visibility = View.VISIBLE
+            cl_chips.visibility = View.VISIBLE
+            btn_my_location.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return true
+    }
+
     override fun navigatioProfile(idEntrepise: Any) {
 
     }
@@ -53,7 +79,6 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                     .zoom(17.0) // Sets the zoom
                     .build() // Creates a CameraPosition from the builder
             it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
-            Log.e("HOLA", "mapa")
         })
 
         btn_distance.setOnClickListener {
@@ -69,6 +94,9 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         rv_results.addItemDecoration(mDividerItemDecoration)
         rv_results.layoutManager = LinearLayoutManager(this)
         rv_results.adapter = entrepiseAdapter
+
+        sv_search.setOnQueryTextListener(this)
+        sv_search.setOnQueryTextFocusChangeListener(this)
 
     }
 
