@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 10000
+    private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
      * than this value.
@@ -105,6 +105,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 for (location in locationResult.locations) {
                     Log.e(TAG, "" + location.latitude)
                     mCurrentLocation = location
+                    animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
+                    stopLocationUpdates()
                 }
             }
         }
@@ -368,28 +370,39 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     override fun onMapReady(mapboxMaps: MapboxMap?) {
         this.mapboxMap = mapboxMaps!!
         iconFactory = IconFactory.getInstance(this)
-        addMarker()
         mapboxMap.addOnCameraIdleListener(this)
     }
 
     fun addMarker() {
         var icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
         mapboxMap!!.addMarker(MarkerOptions()
-                .position(LatLng(-4.028872, -79.213712))
+                .position(LatLng(-4.0083247, -79.2424268))
                 .icon(icon))
 
         val position = CameraPosition.Builder()
-                .target(LatLng(-4.028872, -79.213712)) // Sets the new camera position
-                .zoom(17.0) // Sets the zoom
+                .target(LatLng(-4.0083247, -79.2424268)) // Sets the new camera position
+                .zoom(10.0) // Sets the zoom
                 .build() // Creates a CameraPosition from the builder
         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
     }
 
+    fun animateCamera(latLng: LatLng, zoom: Double) {
+        val position = CameraPosition.Builder()
+                .target(latLng) // Sets the new camera position
+                .zoom(zoom) // Sets the zoom
+                .build() // Creates a CameraPosition from the builder
+       // mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
+    }
+
     override fun onCameraIdle() {
-        val cameraPosition = mapboxMap.cameraPosition
-        val lat = cameraPosition.target.latitude
-        val lng = cameraPosition.target.longitude
-        Log.e("coordenadas", "" + lat + " " + lng)
+        var bounds = mapboxMap.projection.visibleRegion.latLngBounds
+
+        Log.e("co", "latS" + bounds.latSouth)
+        Log.e("co", "latN" + bounds.latNorth)
+        Log.e("co", "lngO" + bounds.lonWest)
+        Log.e("co", "lngE" + bounds.lonEast)
+
+        Log.e("coordenadas", "lat" + bounds.center.latitude + "lng" + bounds.center.longitude)
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {

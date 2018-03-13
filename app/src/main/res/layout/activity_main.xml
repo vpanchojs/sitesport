@@ -20,10 +20,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:mapbox_cameraTargetLat="40.73581"
-            app:mapbox_cameraTargetLng="-73.99155"
-            app:mapbox_cameraZoom="11"
+            app:mapbox_cameraTargetLat="-4.008100"
+            app:mapbox_cameraTargetLng="-79.21083"
+            app:mapbox_cameraZoom="12"
             app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:elevation="2dp"
+            android:src="@drawable/ic_person_black_24dp"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="2dp"
+            app:civ_circle_background_color="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
