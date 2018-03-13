@@ -21,7 +21,7 @@ import android.widget.Toast
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Entrepise
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
-import com.aitec.sitesport.profile.ProfileActivity
+import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*

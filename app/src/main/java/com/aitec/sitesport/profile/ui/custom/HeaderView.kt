@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui
+package com.aitec.sitesport.profile.ui.custom
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi

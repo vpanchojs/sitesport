@@ -1,5 +1,8 @@
-package com.aitec.sitesport.profile
+package com.aitec.sitesport.profile.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
@@ -13,40 +16,113 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.graphics.Palette
-import com.aitec.sitesport.profile.ui.HeaderView
+import com.aitec.sitesport.profile.ui.custom.HeaderView
 import android.util.DisplayMetrics
-import android.util.Log
-import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.annotations.IconFactory
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.content_profile.*
 import kotlinx.android.synthetic.main.header_profile.*
+import android.widget.Toast
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.support.v4.app.ActivityCompat
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
+import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
+import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
 
 
 class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private var isHideToolbarView = false
+    private val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
+    private val TAG = "ProfileActivity"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mapbox.getInstance(this, "pk.eyJ1IjoidnBhbmNob2pzIiwiYSI6ImNqN2gzdXdrbzFkejEyeG82Z2IyaDcxazUifQ.LMqRVTqNyzGOtED90lMtZA");
         setContentView(R.layout.activity_profile)
         setupToolBar()
         setupImageProfile()
         setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         setupHeader()
-        app_bar_layout_profile.addOnOffsetChangedListener(this)
-        mvProfile.onCreate(savedInstanceState)
-        setupMapBox()
+        setupListenerScrollAppBarLayout()
+        setupMapBox(savedInstanceState)
+        setupBusinessHours()
     }
 
-    private fun setupMapBox(){
+    private fun setupListenerScrollAppBarLayout() {
+        app_bar_layout_profile.addOnOffsetChangedListener(this)
+    }
+
+    // setup GUI and Life cycle
+
+    private fun setupBusinessHours() {
+        btnShowBusinessHours.setOnClickListener {
+            val businessHoursFragment = BusinessHoursFragment.newInstance()
+            businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
+        }
+
+        btnShowRateDay.setOnClickListener {
+            val rateDayFragment = RateDayFragment.newInstance()
+            rateDayFragment.show(supportFragmentManager, "RateDayFragment")
+        }
+
+        btnShowRateNight.setOnClickListener {
+            val rateNightFragment = RateNightFragment.newInstance()
+            rateNightFragment.show(supportFragmentManager, "RateNightFragment")
+        }
+
+        ibtnWhatsapp.setOnClickListener {
+            openWhatsApp("991933291")
+        }
+
+        ibtnFacebook.setOnClickListener {
+            openFacebook("jose.aguilar3")
+        }
+
+        ibtnPhone.setOnClickListener {
+            //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    callPhone("0980858483")
+                    Log.e("permisos", "llamando")
+                }else{
+                    Log.e("permisos", "lanzando permisos")
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
+                    return@setOnClickListener
+                }
+            //}else{
+                // No se necesita requerir permiso OS menos a 6.0.
+            //}
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_CALL_PHONE_PERMISSIONS -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    callPhone("0980858483")
+                    Log.i(TAG, "Permission has been granted by user")
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun setupMapBox(savedInstanceState: Bundle?){
+        mvProfile.onCreate(savedInstanceState)
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
             val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
@@ -59,7 +135,6 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
                     .zoom(17.0) // Sets the zoom
                     .build() // Creates a CameraPosition from the builder
             it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
-            Log.e("HOLA", "mapa")
         })
     }
 
@@ -139,6 +214,78 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
             toolbar_header_profile.visibility = View.GONE
             isHideToolbarView = !isHideToolbarView
         }
+    }
+
+    private fun openWhatsApp(cellPhone : String) {
+        val ECU = "593"
+        val formattedNumber : String  = ECU + cellPhone
+        try{
+            val sendIntent : Intent
+            sendIntent = Intent("android.intent.action.MAIN")
+            sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
+            sendIntent.setAction(Intent.ACTION_SEND)
+            sendIntent.setType("text/plain")
+            sendIntent.putExtra(Intent.EXTRA_TEXT,"")
+            sendIntent.putExtra("jid", formattedNumber +"@s.whatsapp.net")
+            sendIntent.setPackage("com.whatsapp")
+            startActivity(sendIntent)
+        }
+        catch(e : Exception)
+        {
+            //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No tienes whatsapp instalado",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private fun openFacebook(user: String) {
+        /*
+        ¡También debería agregar intent.setPackage("com.facebook.katana");que hace que la actividad de Facebook se abra más rápido!
+         */
+        var intent : Intent?
+        try {
+            getPackageManager()
+                    .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
+            intent =  Intent(Intent.ACTION_VIEW,
+                    Uri.parse("fb://profile/100008411250163")) //Trys to make intent with FB's URI
+        } catch (e: Exception) {
+            intent =  Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.facebook.com/" + user)) //catches and opens a url to the desired page
+        }
+
+        if(intent != null) startActivity(intent)
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun callPhone(phone : String) {
+        startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_profile, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_share ->{
+                shareProfile()
+                return true
+            }
+            android.R.id.home ->{
+                onBackPressed()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun shareProfile(){
+        val sendIntent = Intent(android.content.Intent.ACTION_SEND)
+        sendIntent.type = "text/plain"
+        sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"share_option");
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, "¡Que mas ve!")
+        startActivity(Intent.createChooser(sendIntent,"Compartir a través de..."));
     }
 
     public override fun onResume() {

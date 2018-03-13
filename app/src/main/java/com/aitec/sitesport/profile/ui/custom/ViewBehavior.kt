@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui
+package com.aitec.sitesport.profile.ui.custom
 
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout

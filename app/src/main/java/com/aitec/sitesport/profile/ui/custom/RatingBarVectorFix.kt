@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui
+package com.aitec.sitesport.profile.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,15 +10,11 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.graphics.*
 import android.support.v7.graphics.drawable.DrawableWrapper
 import android.graphics.drawable.shapes.RoundRectShape
 import android.graphics.drawable.shapes.Shape
 import android.support.v4.view.ViewCompat
-import android.opengl.ETC1.getWidth
-import android.opengl.ETC1.getHeight
-import android.os.Build
 
 
 /**
