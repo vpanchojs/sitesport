@@ -4,7 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.support.multidex.MultiDexApplication
 import android.util.Log
+import com.aitec.sitesport.domain.di.DaggerMainComponent
 import com.aitec.sitesport.domain.di.DomainModule
+import com.aitec.sitesport.domain.di.MainComponent
+import com.aitec.sitesport.domain.di.MainModule
+import com.aitec.sitesport.lib.di.LibModule
+import com.aitec.sitesport.main.ui.MainView
 import com.mapbox.mapboxsdk.Mapbox
 
 class MyApplication : MultiDexApplication() {
@@ -66,7 +71,7 @@ class MyApplication : MultiDexApplication() {
                 .menusModule(MenusModule(menusView))
                 .build()
     }
-
+*/
     fun getMainComponent(view: MainView): MainComponent {
         return DaggerMainComponent
                 .builder()
@@ -75,7 +80,7 @@ class MyApplication : MultiDexApplication() {
                 .mainModule(MainModule(view))
                 .build()
     }
-    */
+
 
 
 }

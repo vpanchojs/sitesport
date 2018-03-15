@@ -18,8 +18,10 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Entrepise
+import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
 import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.google.android.gms.common.api.ApiException
@@ -34,9 +36,25 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_results.*
+import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener {
+class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView {
+    override fun showMessagge(message: Any) {
+
+    }
+
+    override fun setResultsSearchs(listUser: ArrayList<Entrepise>) {
+
+    }
+
+    override fun showProgresBar(show: Boolean) {
+
+    }
+
+    override fun clearSearchResults() {
+
+    }
 
     private val TAG = MainActivity::class.java.simpleName
     /**
@@ -76,11 +94,16 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     private lateinit var mCurrentLocation: Location
     private lateinit var mLocationSettingsRequest: LocationSettingsRequest
 
+    lateinit var application: MyApplication
+    @Inject
+    lateinit var presenter: MainPresenter
+
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupInjection()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mSettingsClient = LocationServices.getSettingsClient(this)
         createLocationCallback()
@@ -91,6 +114,12 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         setupReciclerView()
         setupEvents()
 
+    }
+
+
+    private fun setupInjection() {
+        application = getApplication() as MyApplication
+        application.getMainComponent(this).inject(this)
     }
 
     private fun buildLocationSettingsRequest() {
@@ -105,8 +134,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 for (location in locationResult.locations) {
                     Log.e(TAG, "" + location.latitude)
                     mCurrentLocation = location
-                    animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
-                    stopLocationUpdates()
+                    if (::mapboxMap.isInitialized) {
+                        animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
+                        stopLocationUpdates()
+                    }
                 }
             }
         }
@@ -200,6 +231,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     fun setupEvents() {
         btn_sport.setOnClickListener(this)
         btn_distance.setOnClickListener(this)
+        btn_my_location.setOnClickListener(this)
         sv_search.setOnQueryTextListener(this)
         sv_search.setOnQueryTextFocusChangeListener(this)
     }
@@ -234,7 +266,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     public override fun onResume() {
         super.onResume()
         mapView.onResume()
-        if (checkPermissions()) {
+        if (checkPermissions() && !::mCurrentLocation.isInitialized) {
             startLocationUpdates();
         } else if (!checkPermissions()) {
             requestPermissions();
@@ -361,8 +393,11 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 startActivity(Intent(this, ProfileActivity::class.java))
             }
             R.id.btn_distance -> {
-                val selectDistanceFragment = SelectDistanceFragment.newInstance()
-                selectDistanceFragment.show(supportFragmentManager, "SDistance")
+                //val selectDistanceFragment = SelectDistanceFragment.newInstance()
+                //selectDistanceFragment.show(supportFragmentManager, "SDistance")
+            }
+            R.id.btn_my_location -> {
+                startLocationUpdates()
             }
         }
     }
@@ -391,7 +426,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 .target(latLng) // Sets the new camera position
                 .zoom(zoom) // Sets the zoom
                 .build() // Creates a CameraPosition from the builder
-       // mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
+        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
     }
 
     override fun onCameraIdle() {
@@ -403,6 +438,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         Log.e("co", "lngE" + bounds.lonEast)
 
         Log.e("coordenadas", "lat" + bounds.center.latitude + "lng" + bounds.center.longitude)
+        presenter.onGetCenterSportVisible(bounds.latSouth, bounds.latNorth, bounds.lonWest, bounds.lonEast, bounds.center.latitude, bounds.center.longitude)
+
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {

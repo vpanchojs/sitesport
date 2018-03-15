@@ -16,6 +16,10 @@ class MainInteractorImp(var repository: MainRepository) : MainInteractor {
         }
     }
 
+    override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
+        repository.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
+    }
+
     override fun stopSearchUserEntrepise() {
         repository.stopSearchUserEntrepise()
     }

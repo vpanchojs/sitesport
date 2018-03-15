@@ -6,5 +6,6 @@ package com.aitec.sitesport.main
 interface MainInteractor {
     fun getSearchUserEntrepise(query: String): Boolean
     fun stopSearchUserEntrepise()
+    fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double)
 
 }
