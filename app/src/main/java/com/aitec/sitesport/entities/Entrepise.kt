@@ -4,6 +4,7 @@ class Entrepise {
     lateinit var name: String
     lateinit var phones: Array<String>
     lateinit var category: String
+    lateinit var address: Address
     //lateinit var horarios: HashMap<String, String>
     lateinit var visites: String
     lateinit var number_field: String
