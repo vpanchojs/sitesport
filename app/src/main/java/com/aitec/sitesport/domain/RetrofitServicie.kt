@@ -1,7 +1,7 @@
 package com.aitec.sitesport.domain
 
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_CENTER
-import com.google.gson.JsonArray
+import com.aitec.sitesport.entities.Entrepise
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -14,5 +14,5 @@ interface RetrofitServicie {
 
     @Headers("Content-Type: application/json")
     @POST(PATH_SEARCH_CENTER)
-    fun getCenterSportVisible(@Body params: HashMap<String, String>): Call<JsonArray>
+    fun getCenterSportVisible(@Body params: HashMap<String, String>): Call<List<Entrepise>>
 }

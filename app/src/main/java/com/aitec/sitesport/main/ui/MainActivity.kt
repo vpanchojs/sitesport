@@ -218,8 +218,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     fun setupReciclerView() {
-        data.add(Entrepise("Sitio Deportivo"))
-        data.add(Entrepise("Centro De Deportes"))
+        //data.add(Entrepise())
+        //data.add(Entrepise())
         entrepiseAdapter = EntrepiseAdapter(data, this)
         var mDividerItemDecoration = DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL)

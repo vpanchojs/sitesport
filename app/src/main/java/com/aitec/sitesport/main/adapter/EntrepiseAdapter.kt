@@ -24,7 +24,7 @@ class EntrepiseAdapter(var data: ArrayList<Entrepise>, var callback: onEntrepise
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         var entrepise = data.get(position)
-        holder!!.view.tv_name_entrepise.text = entrepise.name
+        holder!!.view.tv_name_entrepise.text = entrepise.centro_deportivo
         holder!!.view.tv_distance.text = "5 km"
 
     }

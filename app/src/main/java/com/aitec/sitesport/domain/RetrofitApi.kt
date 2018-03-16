@@ -2,7 +2,7 @@ package com.aitec.sitesport.domain
 
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
-import com.google.gson.JsonArray
+import com.aitec.sitesport.entities.Entrepise
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,13 +36,17 @@ class RetrofitApi {
         parametros.put("oeste_lon", lonWest.toString())
 
 
-        request.getCenterSportVisible(parametros).enqueue(object : Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                Log.e("correct", "yes" + response.body().toString())
+        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Entrepise>> {
+            override fun onResponse(call: Call<List<Entrepise>>, response: Response<List<Entrepise>>) {
+                Log.e("correct", "yes" + response.body())
+                if (response.body()!!.size > 0) {
+                    Log.e("correct", "yes" + response.body()!!.get(0).latitud)
+                    callback.onSucces(response)
+                }
 
             }
 
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+            override fun onFailure(call: Call<List<Entrepise>>, t: Throwable) {
                 Log.e("error", t.message.toString())
             }
         })
