@@ -9,9 +9,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * Created by victor on 14/3/18.
- */
+
 class RetrofitApi {
 
     companion object {
@@ -38,12 +36,7 @@ class RetrofitApi {
 
         request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Entreprise>> {
             override fun onResponse(call: Call<List<Entreprise>>, response: Response<List<Entreprise>>) {
-                Log.e("correct", "yes" + response.body())
-                if (response.body()!!.size > 0) {
-                    Log.e("correct", "yes" + response.body()!!.get(0).latitud)
-                    callback.onSucces(response)
-                }
-
+                callback.onSucces(response.body())
             }
 
             override fun onFailure(call: Call<List<Entreprise>>, t: Throwable) {

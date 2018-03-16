@@ -7,7 +7,7 @@ import com.aitec.sitesport.entities.Entreprise
  */
 interface MainView {
     fun showMessagge(message: Any)
-    fun setResultsSearchs(listUser: ArrayList<Entreprise>)
+    fun setResultsSearchs(entrepriseList: List<Entreprise>)
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
 }

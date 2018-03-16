@@ -17,6 +17,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
@@ -24,6 +26,7 @@ import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
 import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -40,16 +43,20 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView {
-    override fun showMessagge(message: Any) {
 
+    override fun showMessagge(message: Any) {
+        BaseActivitys.showToastMessage(this, message, Toast.LENGTH_SHORT)
     }
 
-    override fun setResultsSearchs(listUser: ArrayList<Entreprise>) {
-
+    override fun setResultsSearchs(entrepriseList: List<Entreprise>) {
+        data.clear();
+        data.addAll(entrepriseList)
+        tv_subtitle_bs.setText(entrepriseList.size.toString() + " encontrados")
+        entrepiseAdapter.notifyDataSetChanged()
     }
 
     override fun showProgresBar(show: Boolean) {
-
+        if (show) progressbar.visibility = VISIBLE else progressbar.visibility = GONE
     }
 
     override fun clearSearchResults() {
@@ -265,6 +272,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     public override fun onResume() {
         super.onResume()
+        presenter.onResume()
         mapView.onResume()
         if (checkPermissions() && !::mCurrentLocation.isInitialized) {
             startLocationUpdates();
@@ -308,6 +316,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     public override fun onPause() {
         super.onPause()
+        presenter.onPause()
         mapView.onPause()
         stopLocationUpdates()
     }
@@ -390,7 +399,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_sport -> {
-                startActivity(Intent(this, ProfileActivity::class.java))
+                startActivity(Intent(this, ProfileActivity::class.java).putExtra("pk", "33e6528d-f745-4241-9a6b-717838210f52"))
             }
             R.id.btn_distance -> {
                 //val selectDistanceFragment = SelectDistanceFragment.newInstance()

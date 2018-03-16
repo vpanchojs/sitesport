@@ -3,7 +3,7 @@ package com.aitec.sitesport.main.events
 /**
  * Created by victor on 27/1/18.
  */
-class MainEvents(var type: Int, var any: Any, var message: String) {
+class MainEvents(var type: Int, var any: Any) {
 
     companion object {
         val ON_RESULTS_SEARCHS_SUCCESS = 0

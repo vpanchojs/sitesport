@@ -3,15 +3,13 @@ package com.aitec.sitesport.main
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
-import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
-import java.util.*
 
 /**
  * Created by victor on 27/1/18.
  */
-class MainRepositoryImp(var eventBus: EventBusInterface, var volleyApi: RetrofitApi, var sharePreferencesApi: SharePreferencesApi) : MainRepository {
+class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: RetrofitApi, var sharePreferencesApi: SharePreferencesApi) : MainRepository {
 
     override fun getSearchUserEntrepise(query: String) {
 /*
@@ -31,11 +29,9 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var volleyApi: Retrofit
     }
 
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
-        volleyApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onVolleyApiActionListener {
+        retrofitApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onVolleyApiActionListener {
             override fun onSucces(response: Any?) {
-                var centerSport_list = ArrayList<Entreprise>()
-
-
+                postEvent(MainEvents.ON_RESULTS_SEARCHS_SUCCESS, response!!)
             }
 
             override fun onError(error: Any?) {
@@ -48,8 +44,8 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var volleyApi: Retrofit
         //   volleyApi.removeAllRequestSearchUserorEntrepise()
     }
 
-    private fun postEvent(type: Int, message: String, any: Any) {
-        var event = MainEvents(type, any, message)
+    private fun postEvent(type: Int, any: Any) {
+        var event = MainEvents(type, any)
         eventBus.post(event)
     }
 }

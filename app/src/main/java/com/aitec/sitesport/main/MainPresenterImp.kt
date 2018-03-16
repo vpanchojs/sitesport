@@ -1,5 +1,6 @@
 package com.aitec.sitesport.main
 
+import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 import com.aitec.sitesport.main.ui.MainView
@@ -17,6 +18,7 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
     }
 
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
+        view.showProgresBar(true)
         interactor.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
     }
 
@@ -40,11 +42,17 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         view.showProgresBar(false)
         when (event.type) {
             MainEvents.ON_RESULTS_SEARCHS_SUCCESS -> {
-                // var results = event.any as SearchUserOrEntreprise
+                view.showProgresBar(false)
+                var entrepriseList = event.any as List<Entreprise>
+                if (entrepriseList.size > 0) {
+                    view.setResultsSearchs(entrepriseList)
+                } else {
+                    view.showMessagge("No se encontro centros deportivos cercanos")
+                }
                 // view.setResultsSearchs(results.result)
             }
             MainEvents.ON_RESULTS_SEARCHS_ERROR -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any as String)
             }
 
         }
