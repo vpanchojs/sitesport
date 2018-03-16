@@ -2,7 +2,7 @@ package com.aitec.sitesport.domain
 
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
-import com.aitec.sitesport.entities.Entrepise
+import com.aitec.sitesport.entities.Entreprise
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,8 +36,8 @@ class RetrofitApi {
         parametros.put("oeste_lon", lonWest.toString())
 
 
-        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Entrepise>> {
-            override fun onResponse(call: Call<List<Entrepise>>, response: Response<List<Entrepise>>) {
+        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Entreprise>> {
+            override fun onResponse(call: Call<List<Entreprise>>, response: Response<List<Entreprise>>) {
                 Log.e("correct", "yes" + response.body())
                 if (response.body()!!.size > 0) {
                     Log.e("correct", "yes" + response.body()!!.get(0).latitud)
@@ -46,7 +46,7 @@ class RetrofitApi {
 
             }
 
-            override fun onFailure(call: Call<List<Entrepise>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Entreprise>>, t: Throwable) {
                 Log.e("error", t.message.toString())
             }
         })

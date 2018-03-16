@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Entrepise
+import com.aitec.sitesport.entities.Entreprise
 import kotlinx.android.synthetic.main.item_entrepise.view.*
 
 /**
  * Created by victor on 6/3/18.
  */
-class EntrepiseAdapter(var data: ArrayList<Entrepise>, var callback: onEntrepiseAdapterListener) : RecyclerView.Adapter<EntrepiseAdapter.ViewHolder>() {
+class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepiseAdapterListener) : RecyclerView.Adapter<EntrepiseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise, parent, false);

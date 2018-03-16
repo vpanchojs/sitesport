@@ -3,7 +3,7 @@ package com.aitec.sitesport.main
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
-import com.aitec.sitesport.entities.Entrepise
+import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 import java.util.*
@@ -33,7 +33,7 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var volleyApi: Retrofit
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
         volleyApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onVolleyApiActionListener {
             override fun onSucces(response: Any?) {
-                var centerSport_list = ArrayList<Entrepise>()
+                var centerSport_list = ArrayList<Entreprise>()
 
 
             }

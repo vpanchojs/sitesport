@@ -20,7 +20,7 @@ import android.view.View
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Entrepise
+import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
 import com.aitec.sitesport.profile.ui.ProfileActivity
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     }
 
-    override fun setResultsSearchs(listUser: ArrayList<Entrepise>) {
+    override fun setResultsSearchs(listUser: ArrayList<Entreprise>) {
 
     }
 
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     val REQUESTING_LOCATION_UPDATES_KEY = "location"
     var requestingLocationUpdates = false
     lateinit var entrepiseAdapter: EntrepiseAdapter
-    var data = ArrayList<Entrepise>()
+    var data = ArrayList<Entreprise>()
     lateinit var mapboxMap: MapboxMap
     lateinit var iconFactory: IconFactory
 
@@ -218,8 +218,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     fun setupReciclerView() {
-        //data.add(Entrepise())
-        //data.add(Entrepise())
+        //data.add(Entreprise())
+        //data.add(Entreprise())
         entrepiseAdapter = EntrepiseAdapter(data, this)
         var mDividerItemDecoration = DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL)
