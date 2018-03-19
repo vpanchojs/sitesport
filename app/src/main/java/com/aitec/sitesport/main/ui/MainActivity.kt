@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.mapbox.mapboxsdk.annotations.IconFactory
+import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -42,14 +43,28 @@ import kotlinx.android.synthetic.main.bottom_sheet_results.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView {
+class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView, MapboxMap.OnMarkerClickListener {
+
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        data.forEach {
+            if (it.idMarker == marker.id) {
+                tv_title_bs.setText(it.centro_deportivo)
+                tv_subtitle_bs.setText(it.distancia.toString() + " Km")
+            }
+        }
+
+        return true
+    }
 
     override fun showMessagge(message: Any) {
         BaseActivitys.showToastMessage(this, message, Toast.LENGTH_SHORT)
     }
 
     override fun setResultsSearchs(entrepriseList: List<Entreprise>) {
+        Log.e(TAG, "id" + entrepriseList.get(0).pk)
         data.clear();
+        mapboxMap.clear()
         data.addAll(entrepriseList)
         tv_subtitle_bs.setText(entrepriseList.size.toString() + " encontrados")
         entrepiseAdapter.notifyDataSetChanged()
@@ -91,6 +106,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     var requestingLocationUpdates = false
     lateinit var entrepiseAdapter: EntrepiseAdapter
     var data = ArrayList<Entreprise>()
+    var markers = HashMap<Long, Int>()
     lateinit var mapboxMap: MapboxMap
     lateinit var iconFactory: IconFactory
 
@@ -233,6 +249,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         rv_results.addItemDecoration(mDividerItemDecoration)
         rv_results.layoutManager = LinearLayoutManager(this)
         rv_results.adapter = entrepiseAdapter
+
+
     }
 
     fun setupEvents() {
@@ -250,8 +268,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     fun setupBottomSheet() {
         val bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
-
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.blocksInteractionBelow(cc, cl_header_bs)
         bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
@@ -260,6 +278,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                     }
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         iv_icon_open.rotation = 180F
+
                     }
                 }
             }
@@ -412,22 +431,21 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun onMapReady(mapboxMaps: MapboxMap?) {
-        this.mapboxMap = mapboxMaps!!
+        mapboxMap = mapboxMaps!!
+        mapboxMap.setOnMarkerClickListener(this)
         iconFactory = IconFactory.getInstance(this)
         mapboxMap.addOnCameraIdleListener(this)
+
     }
 
-    fun addMarker() {
+    override fun addMarker(entreprise: Entreprise) {
         var icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
-        mapboxMap!!.addMarker(MarkerOptions()
-                .position(LatLng(-4.0083247, -79.2424268))
+        var marker = mapboxMap!!.addMarker(MarkerOptions()
+                .position(LatLng(entreprise.latitud, entreprise.longitud))
                 .icon(icon))
 
-        val position = CameraPosition.Builder()
-                .target(LatLng(-4.0083247, -79.2424268)) // Sets the new camera position
-                .zoom(10.0) // Sets the zoom
-                .build() // Creates a CameraPosition from the builder
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
+        entreprise.idMarker = marker.id
+
     }
 
     fun animateCamera(latLng: LatLng, zoom: Double) {

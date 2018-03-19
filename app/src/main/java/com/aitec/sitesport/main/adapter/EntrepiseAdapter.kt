@@ -26,14 +26,18 @@ class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepis
         var entrepise = data.get(position)
         holder!!.view.tv_name_entrepise.text = entrepise.centro_deportivo
         holder!!.view.tv_distance.text = entrepise.distancia.toString()
+        holder!!.addMarker(entrepise, callback)
     }
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-
+        fun addMarker(entreprise: Entreprise, callback: onEntrepiseAdapterListener) {
+            callback.addMarker(entreprise)
+        }
     }
 
     interface onEntrepiseAdapterListener {
         fun navigatioProfile(idEntrepise: Any)
+        fun addMarker(entreprise: Entreprise)
     }
 }
