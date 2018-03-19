@@ -2,7 +2,7 @@ package com.aitec.sitesport.main
 
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
-import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 
@@ -12,8 +12,18 @@ import com.aitec.sitesport.main.events.MainEvents
 class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: RetrofitApi, var sharePreferencesApi: SharePreferencesApi) : MainRepository {
 
     override fun getSearchUserEntrepise(query: String) {
+        retrofitApi.onSearchNameCenterSport(query,object :onApiActionListener{
+            override fun onSucces(response: Any?) {
+
+            }
+
+            override fun onError(error: Any?) {
+
+            }
+        })
+
 /*
-        volleyApi.onSearchUserorEntrepise(query, sharePreferencesApi.getTokenAccess(), object : onVolleyApiActionListener {
+        volleyApi.onSearchUserorEntrepise(query, sharePreferencesApi.getTokenAccess(), object : onApiActionListener {
 
             override fun onSucces(response: Any?) {
                 val responseObject = response as JSONObject
@@ -29,7 +39,7 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retrof
     }
 
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
-        retrofitApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onVolleyApiActionListener {
+        retrofitApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 postEvent(MainEvents.ON_RESULTS_SEARCHS_SUCCESS, response!!)
             }

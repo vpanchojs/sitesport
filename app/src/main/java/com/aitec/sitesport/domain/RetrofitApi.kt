@@ -1,7 +1,7 @@
 package com.aitec.sitesport.domain
 
 import android.util.Log
-import com.aitec.sitesport.domain.listeners.onVolleyApiActionListener
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Entreprise
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +24,7 @@ class RetrofitApi {
 
     val request = retrofit.create(RetrofitServicie::class.java)
 
-    fun getCenterSport(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double, callback: onVolleyApiActionListener) {
+    fun getCenterSport(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double, callback: onApiActionListener) {
         var parametros = HashMap<String, String>()
         parametros.put("latitud", latMe.toString())
         parametros.put("longitud", lngMe.toString())
@@ -45,5 +45,9 @@ class RetrofitApi {
                 Log.e("error", t.message.toString())
             }
         })
+    }
+
+    fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
+
     }
 }

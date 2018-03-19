@@ -27,6 +27,7 @@ class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepis
         holder!!.view.tv_name_entrepise.text = entrepise.centro_deportivo
         holder!!.view.tv_distance.text = entrepise.distancia.toString()
         holder!!.addMarker(entrepise, callback)
+        holder!!.onNavigationProfile(entrepise, callback)
     }
 
 
@@ -34,10 +35,16 @@ class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepis
         fun addMarker(entreprise: Entreprise, callback: onEntrepiseAdapterListener) {
             callback.addMarker(entreprise)
         }
+
+        fun onNavigationProfile(entreprise: Entreprise, callback: onEntrepiseAdapterListener) {
+            view.setOnClickListener {
+                callback.navigatioProfile(entreprise)
+            }
+        }
     }
 
     interface onEntrepiseAdapterListener {
-        fun navigatioProfile(idEntrepise: Any)
+        fun navigatioProfile(entrepise: Entreprise)
         fun addMarker(entreprise: Entreprise)
     }
 }

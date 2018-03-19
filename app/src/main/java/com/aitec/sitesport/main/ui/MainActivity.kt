@@ -418,7 +418,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_sport -> {
-                startActivity(Intent(this, ProfileActivity::class.java).putExtra("pk", "33e6528d-f745-4241-9a6b-717838210f52"))
+                //startActivity(Intent(this, ProfileActivity::class.java).putExtra("pk", "33e6528d-f745-4241-9a6b-717838210f52"))
             }
             R.id.btn_distance -> {
                 //val selectDistanceFragment = SelectDistanceFragment.newInstance()
@@ -494,7 +494,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         return true
     }
 
-    override fun navigatioProfile(idEntrepise: Any) {
-
+    override fun navigatioProfile(entrepise: Entreprise) {
+        startActivity(Intent(this, ProfileActivity::class.java).putExtra("entrepise", entrepise))
     }
 }

@@ -6,7 +6,7 @@ import org.json.JSONObject
 /**
  * Created by victor on 15/1/18.
  */
-interface onVolleyApiActionListener {
+interface onApiActionListener {
     fun onSucces(response: Any?)
     fun onError(error: Any?)
 }
