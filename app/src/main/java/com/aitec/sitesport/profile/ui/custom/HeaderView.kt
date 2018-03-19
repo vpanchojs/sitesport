@@ -29,7 +29,15 @@ class HeaderView : LinearLayout{
             defStyleRes: Int)
             : super(context, attrs, defStyleAttr, defStyleRes)
 
-    fun bindTo(title: String, subTitle: String) {
+    fun setTitle(title : String){
+        header_tv_title.text = title
+    }
+
+    fun setSubTitle(subTitle : String){
+        //header_tv_sub_title.text = subTitle
+    }
+
+    /*fun bindTo(title: String, subTitle: String) {
         hideOrSetText(header_tv_title, title)
         hideOrSetText(header_tv_sub_title, subTitle)
     }
@@ -39,7 +47,7 @@ class HeaderView : LinearLayout{
             tv.visibility = View.GONE
         else
             tv.text = text
-    }
+    }*/
 
     fun setScaleXTitle(scaleXTitle: Float) {
         header_tv_title.scaleX = scaleXTitle
@@ -52,13 +60,13 @@ class HeaderView : LinearLayout{
     }
 
     fun setScaleXRatingBar(scaleXTitle: Float) {
-        rtbQualificationSite.scaleX = scaleXTitle
-        rtbQualificationSite.pivotX = 0f
+        //rtbQualificationSite.scaleX = scaleXTitle
+        //rtbQualificationSite.pivotX = 0f
     }
 
     fun setScaleYRatingBar(scaleYTitle: Float) {
-        rtbQualificationSite.scaleY = scaleYTitle
-        rtbQualificationSite.pivotY = 30f
+        //rtbQualificationSite.scaleY = scaleYTitle
+        //rtbQualificationSite.pivotY = 30f
     }
 
 

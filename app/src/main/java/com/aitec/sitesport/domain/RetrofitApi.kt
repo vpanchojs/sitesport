@@ -3,6 +3,7 @@ package com.aitec.sitesport.domain
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Entreprise
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,6 +16,8 @@ class RetrofitApi {
     companion object {
         val PATH_API = "http://54.200.239.140:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
+        const val PATH_PROFILE = "api/centros-deportivos/"
+
     }
 
     val retrofit = Retrofit.Builder()
@@ -49,5 +52,20 @@ class RetrofitApi {
 
     fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
 
+    }
+
+    fun getProfile(pk : String) {
+        var parametros = HashMap<String, String>()
+        parametros.put("pk", pk)
+
+        request.getProfile(pk).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                Log.e("getProfile:onResponse()", response.body().toString())
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Log.e("getProfile:onFailure()", t.message.toString())
+            }
+        })
     }
 }

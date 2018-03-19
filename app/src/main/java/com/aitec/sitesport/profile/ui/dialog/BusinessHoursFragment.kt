@@ -8,7 +8,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.TableTime
 import kotlinx.android.synthetic.main.fragment_business_hours.view.*
+import org.json.JSONObject
 
 class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
     private var tvLunesToViernes : TextView? = null
@@ -47,8 +49,11 @@ class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-        fun newInstance(): BusinessHoursFragment {
+        fun newInstance(tableTime : TableTime): BusinessHoursFragment {
+            val bundle = Bundle()
+            bundle.putParcelable("tableTime", tableTime)
             val fragment = BusinessHoursFragment()
+            fragment.arguments = bundle
             return fragment
         }
     }

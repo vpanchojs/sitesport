@@ -30,46 +30,137 @@ import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.entities.TableTime
+import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
 import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
 import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
+import org.json.JSONObject
+import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
+class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener, ProfileView {
 
     private var isHideToolbarView = false
     private val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
     private val TAG = "ProfileActivity"
+    private var tableTime : TableTime? = null
+    private var priceHourDay : JSONObject? = null
+    private var priceHourNight : JSONObject? = null
+    private var phoneNumber : String? = null
+    private var whatsAppNumber : String? = null
+    private var facebookUser : String? = null
+
+    @Inject
+    lateinit var profilePresenter: ProfilePresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+        setupInjection()
         setupToolBar()
-        setupImageProfile()
-        setupAppBarSizeDynamic()
+        //setupImageProfile()
+        //setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
-        setupHeader()
-        setupListenerScrollAppBarLayout()
+        //setupHeader()
+        //setupListenerScrollAppBarLayout()
         setupMapBox(savedInstanceState)
         setupBusinessHours()
     }
+
+    private fun setupInjection() {
+        val app : MyApplication = this.application as MyApplication
+        val profileComponent = app.getProfileComponent(this)
+        profileComponent.inject(this)
+    }
+
+    // ProfileView.kt implementation
+
+    override fun setImageProfile(image: Bitmap) {
+        setupImageProfile(image)
+    }
+
+    override fun setNameProfile(name: String) {
+        collapse_toolbar_profile.title = ""
+        (toolbar_header_profile as HeaderView).setTitle(name)
+        (float_header_profile as HeaderView).setTitle(name)
+    }
+
+    override fun setQualificationProfile(qualification: Float) {
+        //rtbQualificationSite.rating = qualification
+    }
+
+    override fun setVisits(visits: String) {
+        (toolbar_header_profile as HeaderView).setSubTitle(visits)
+        (float_header_profile as HeaderView).setSubTitle(visits)
+    }
+
+    override fun setupCollapsibleDynamic(){
+        setupAppBarSizeDynamic()
+        setupListenerScrollAppBarLayout()
+    }
+
+    override fun setTableTime(times: TableTime) {
+        tableTime = times
+    }
+
+    override fun setPriceHourDay(prices: JSONObject) {
+        priceHourDay = prices
+    }
+
+    override fun setPriceHourNight(prices: JSONObject) {
+        priceHourNight = prices
+    }
+
+    override fun setPhoneNumber(phoneNumber: String) {
+        this.phoneNumber = phoneNumber
+    }
+
+    override fun setWhatsAppNumber(whatAppNumber: String) {
+        this.whatsAppNumber = whatAppNumber
+    }
+
+    override fun setFacebookUser(facebookUser: String) {
+        this.facebookUser = facebookUser
+    }
+
+    override fun setLatLngLocationMap(locationLatLng: LatLng) {
+        mvProfile.getMapAsync({
+            val iconFactory = IconFactory.getInstance(this)
+            val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
+            it.addMarker(MarkerOptions()
+                    .position(LatLng(locationLatLng.latitude, locationLatLng.longitude))
+                    .icon(icon))
+
+            val position = CameraPosition.Builder()
+                    .target(LatLng(locationLatLng.latitude, locationLatLng.longitude)) // Sets the new camera position
+                    .zoom(15.0) // Sets the zoom
+                    .build() // Creates a CameraPosition from the builder
+            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 500)
+        })
+    }
+
+    override fun setMarkerLocationMap(marker: Bitmap) {}
+
+    // setup GUI and Life cycle
 
     private fun setupListenerScrollAppBarLayout() {
         app_bar_layout_profile.addOnOffsetChangedListener(this)
     }
 
-    // setup GUI and Life cycle
-
     private fun setupBusinessHours() {
+
         btnShowBusinessHours.setOnClickListener {
-            val businessHoursFragment = BusinessHoursFragment.newInstance()
+            val businessHoursFragment = BusinessHoursFragment.newInstance(tableTime!!)
             businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
         }
 
@@ -123,19 +214,6 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     private fun setupMapBox(savedInstanceState: Bundle?){
         mvProfile.onCreate(savedInstanceState)
-        mvProfile.getMapAsync({
-            val iconFactory = IconFactory.getInstance(this)
-            val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
-            it.addMarker(MarkerOptions()
-                    .position(LatLng(-4.028872, -79.213712))
-                    .icon(icon))
-
-            val position = CameraPosition.Builder()
-                    .target(LatLng(-4.028872, -79.213712)) // Sets the new camera position
-                    .zoom(17.0) // Sets the zoom
-                    .build() // Creates a CameraPosition from the builder
-            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
-        })
     }
 
     private fun setupAppBarSizeDynamic(){
@@ -145,8 +223,12 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         })
     }
 
-    private fun setupImageProfile(){
-        img_image_profile.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.piscina))
+    private fun setupImageProfile(image : Bitmap){
+        //img_image_profile.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.piscina))
+        //val displayMetrics = DisplayMetrics()
+        //this.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        //img_image_profile.layoutParams.height = displayMetrics.widthPixels
+        img_image_profile.setImageBitmap(image)
         val displayMetrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(displayMetrics)
         img_image_profile.layoutParams.height = displayMetrics.widthPixels
@@ -179,11 +261,11 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         return Color.HSVToColor(hsv)
     }
 
-    private fun setupHeader(){
+    /*private fun setupHeader(){
         collapse_toolbar_profile.title = ""
         (toolbar_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
         (float_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
-    }
+    }*/
 
     private fun setupToolBar(){
         setSupportActionBar(toolbar_profile)
@@ -290,6 +372,8 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     public override fun onResume() {
         super.onResume()
+        profilePresenter.onResume()
+        profilePresenter.getProfile("33e6528d-f745-4241-9a6b-717838210f52/")
         mvProfile.onResume()
     }
 
@@ -305,6 +389,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     public override fun onPause() {
         super.onPause()
+        profilePresenter.onPause()
         mvProfile.onPause()
     }
 
@@ -315,6 +400,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     override fun onDestroy() {
         super.onDestroy()
+        profilePresenter.onDestroy()
         mvProfile.onDestroy()
     }
 

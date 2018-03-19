@@ -10,6 +10,10 @@ import com.aitec.sitesport.domain.di.MainComponent
 import com.aitec.sitesport.domain.di.MainModule
 import com.aitec.sitesport.lib.di.LibModule
 import com.aitec.sitesport.main.ui.MainView
+import com.aitec.sitesport.profile.di.DaggerProfileComponent
+import com.aitec.sitesport.profile.di.ProfileComponent
+import com.aitec.sitesport.profile.di.ProfileModule
+import com.aitec.sitesport.profile.ui.ProfileView
 import com.mapbox.mapboxsdk.Mapbox
 
 class MyApplication : MultiDexApplication() {
@@ -78,6 +82,15 @@ class MyApplication : MultiDexApplication() {
                 .domainModule(domainModule)
                 .libModule(LibModule())
                 .mainModule(MainModule(view))
+                .build()
+    }
+
+    fun getProfileComponent(profileView : ProfileView) : ProfileComponent {
+        return DaggerProfileComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .profileModule(ProfileModule(profileView))
                 .build()
     }
 
