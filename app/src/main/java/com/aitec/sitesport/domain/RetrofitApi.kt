@@ -18,6 +18,7 @@ class RetrofitApi {
         val PATH_API = "http://54.200.239.140:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
+
         const val PATH_PROFILE = "api/centros-deportivos/"
 
     }

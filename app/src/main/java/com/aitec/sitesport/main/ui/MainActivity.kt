@@ -25,6 +25,7 @@ import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
+import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.common.api.ApiException
@@ -43,7 +44,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_results.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView, MapboxMap.OnMarkerClickListener {
+class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SelectDistanceFragment.OnSelectDistanceListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView, MapboxMap.OnMarkerClickListener, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener {
 
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -75,7 +76,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun clearSearchResults() {
-
+        entrepiseResultsSearchName.clear()
+        searchNamesEntrepiseAdapter.notifyDataSetChanged()
     }
 
     private val TAG = MainActivity::class.java.simpleName
@@ -105,7 +107,11 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     val REQUESTING_LOCATION_UPDATES_KEY = "location"
     var requestingLocationUpdates = false
     lateinit var entrepiseAdapter: EntrepiseAdapter
+    lateinit var searchNamesEntrepiseAdapter: SearchNamesEntrepiseAdapter
     var data = ArrayList<Entreprise>()
+
+    var entrepiseResultsSearchName = ArrayList<Entreprise>()
+
     var markers = HashMap<Long, Int>()
     lateinit var mapboxMap: MapboxMap
     lateinit var iconFactory: IconFactory
@@ -241,14 +247,18 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     fun setupReciclerView() {
-        //data.add(Entreprise())
-        //data.add(Entreprise())
         entrepiseAdapter = EntrepiseAdapter(data, this)
         var mDividerItemDecoration = DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL)
         rv_results.addItemDecoration(mDividerItemDecoration)
         rv_results.layoutManager = LinearLayoutManager(this)
         rv_results.adapter = entrepiseAdapter
+
+
+        searchNamesEntrepiseAdapter = SearchNamesEntrepiseAdapter(entrepiseResultsSearchName, this)
+        rv_results_searchs.addItemDecoration(mDividerItemDecoration)
+        rv_results_searchs.layoutManager = LinearLayoutManager(this)
+        rv_results_searchs.adapter = searchNamesEntrepiseAdapter
 
 
     }
@@ -500,6 +510,9 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun setResultSearchsName(results: List<Entreprise>) {
+        entrepiseResultsSearchName.clear()
+        entrepiseResultsSearchName.addAll(results)
+        searchNamesEntrepiseAdapter.notifyDataSetChanged()
         Log.e("a", results.get(0).pk)
     }
 }
