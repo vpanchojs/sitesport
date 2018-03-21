@@ -5,14 +5,10 @@ import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_CENTER
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_NAME_CENTER_SPORT
 import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.entities.SearchCentersName
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
 
-/**
- * Created by victor on 15/3/18.
- */
 interface RetrofitServicie {
 
     @Headers("Content-Type: application/json")

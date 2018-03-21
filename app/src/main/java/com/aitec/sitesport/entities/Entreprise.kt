@@ -6,7 +6,7 @@ import android.os.Parcelable
 class Entreprise() : Parcelable {
 
     lateinit var pk: String
-    lateinit var centro_deportivo: String
+    lateinit var nombres: String
     var latitud: Double = 0.0
     var longitud: Double = 0.0
     var distancia: Double = 0.0
@@ -14,7 +14,7 @@ class Entreprise() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
-        centro_deportivo = parcel.readString()
+        nombres = parcel.readString()
         latitud = parcel.readDouble()
         longitud = parcel.readDouble()
         distancia = parcel.readDouble()
@@ -23,7 +23,7 @@ class Entreprise() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
-        parcel.writeString(centro_deportivo)
+        parcel.writeString(nombres)
         parcel.writeDouble(latitud)
         parcel.writeDouble(longitud)
         parcel.writeDouble(distancia)

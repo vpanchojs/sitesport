@@ -24,7 +24,7 @@ class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepis
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         var entrepise = data.get(position)
-        holder!!.view.tv_name_entrepise.text = entrepise.centro_deportivo
+        holder!!.view.tv_name_entrepise.text = entrepise.nombres
         holder!!.view.tv_distance.text = entrepise.distancia.toString()
         holder!!.addMarker(entrepise, callback)
         holder!!.onNavigationProfile(entrepise, callback)

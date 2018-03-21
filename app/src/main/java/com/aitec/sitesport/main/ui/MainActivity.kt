@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     override fun onMarkerClick(marker: Marker): Boolean {
         data.forEach {
             if (it.idMarker == marker.id) {
-                tv_title_bs.setText(it.centro_deportivo)
+                tv_title_bs.setText(it.nombres)
                 tv_subtitle_bs.setText(it.distancia.toString() + " Km")
             }
         }
