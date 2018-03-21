@@ -3,6 +3,7 @@ package com.aitec.sitesport.domain
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.SearchCentersName
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +17,7 @@ class RetrofitApi {
     companion object {
         val PATH_API = "http://54.200.239.140:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
+        const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
         const val PATH_PROFILE = "api/centros-deportivos/"
 
     }
@@ -46,17 +48,28 @@ class RetrofitApi {
 
             override fun onFailure(call: Call<List<Entreprise>>, t: Throwable) {
                 Log.e("error", t.message.toString())
+                callback.onError(t!!.message)
             }
         })
     }
 
     fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
+        request.searchNameCenterSport(query, 1).enqueue(object : Callback<SearchCentersName> {
+            override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
+                Log.e("error", t!!.message.toString())
+                callback.onError(t!!.message)
+            }
 
+            override fun onResponse(call: Call<SearchCentersName>?, response: Response<SearchCentersName>?) {
+                callback.onSucces(response!!.body())
+            }
+        })
     }
 
-    fun getProfile(pk : String) {
+    fun getProfile(pk: String) {
         var parametros = HashMap<String, String>()
         parametros.put("pk", pk)
+
 
         request.getProfile(pk).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -67,5 +80,6 @@ class RetrofitApi {
                 Log.e("getProfile:onFailure()", t.message.toString())
             }
         })
+
     }
 }

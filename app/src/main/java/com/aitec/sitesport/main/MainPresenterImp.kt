@@ -1,6 +1,7 @@
 package com.aitec.sitesport.main
 
 import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 import com.aitec.sitesport.main.ui.MainView
@@ -53,6 +54,19 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
             }
             MainEvents.ON_RESULTS_SEARCHS_ERROR -> {
                 view.showMessagge(event.any as String)
+            }
+
+            MainEvents.ON_RESULTS_SEARCH_NAMES_SUCCESS -> {
+                var searchCentersName = event.any as SearchCentersName
+
+                if (searchCentersName.results.size > 0) {
+                    view.setResultSearchsName(searchCentersName.results)
+                } else {
+
+                }
+            }
+            MainEvents.ON_RESULTS_SEARCH_NAMES_ERROR -> {
+
             }
 
         }

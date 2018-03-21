@@ -10,4 +10,5 @@ interface MainView {
     fun setResultsSearchs(entrepriseList: List<Entreprise>)
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
+    fun setResultSearchsName(results: List<Entreprise>)
 }

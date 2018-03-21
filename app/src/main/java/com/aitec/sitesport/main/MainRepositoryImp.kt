@@ -12,13 +12,13 @@ import com.aitec.sitesport.main.events.MainEvents
 class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: RetrofitApi, var sharePreferencesApi: SharePreferencesApi) : MainRepository {
 
     override fun getSearchUserEntrepise(query: String) {
-        retrofitApi.onSearchNameCenterSport(query,object :onApiActionListener{
+        retrofitApi.onSearchNameCenterSport(query, object : onApiActionListener {
             override fun onSucces(response: Any?) {
-
+                postEvent(MainEvents.ON_RESULTS_SEARCH_NAMES_SUCCESS, response!!)
             }
 
             override fun onError(error: Any?) {
-
+                postEvent(MainEvents.ON_RESULTS_SEARCH_NAMES_ERROR, error!!)
             }
         })
 

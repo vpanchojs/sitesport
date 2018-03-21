@@ -491,10 +491,15 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        presenter.getSearchUserEntrepise(newText!!)
         return true
     }
 
     override fun navigatioProfile(entrepise: Entreprise) {
         startActivity(Intent(this, ProfileActivity::class.java).putExtra("entrepise", entrepise))
+    }
+
+    override fun setResultSearchsName(results: List<Entreprise>) {
+        Log.e("a", results.get(0).pk)
     }
 }
