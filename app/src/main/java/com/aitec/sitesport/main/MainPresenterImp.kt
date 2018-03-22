@@ -19,17 +19,19 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
     }
 
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
-        view.showProgresBar(true)
+        view.showProgresBarResultsMapVisible(true)
+        view.hideButtonProfileEntrepise()
+        view.setInfoHeaderBottomSheet("Centro Deportivos", "Buscando centros deportivos")
         interactor.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
     }
 
     override fun getSearchUserEntrepise(query: String) {
         if (interactor.getSearchUserEntrepise(query)) {
             view.showProgresBar(true)
-            view.clearSearchResults()
+            view.clearSearchResultsName()
         } else {
             view.showProgresBar(false)
-            view.clearSearchResults()
+            view.clearSearchResultsName()
             view.showMessagge("query invalido")
         }
     }
@@ -41,16 +43,19 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
     @Subscribe
     override fun onEventMainThread(event: MainEvents) {
         view.showProgresBar(false)
+        view.showProgresBarResultsMapVisible(false)
         when (event.type) {
             MainEvents.ON_RESULTS_SEARCHS_SUCCESS -> {
-                view.showProgresBar(false)
                 var entrepriseList = event.any as List<Entreprise>
                 if (entrepriseList.size > 0) {
+                    view.clearSearchResultsVisible()
                     view.setResultsSearchs(entrepriseList)
+                    view.showNoneResulstEntrepiseVisible(false)
                 } else {
-                    view.showMessagge("No se encontro centros deportivos cercanos")
+                    view.setInfoHeaderBottomSheet("Centro Deportivos", "Sin Resultados")
+                    view.clearSearchResultsVisible()
+                    view.showNoneResulstEntrepiseVisible(true)
                 }
-                // view.setResultsSearchs(results.result)
             }
             MainEvents.ON_RESULTS_SEARCHS_ERROR -> {
                 view.showMessagge(event.any as String)
@@ -60,9 +65,10 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
                 var searchCentersName = event.any as SearchCentersName
 
                 if (searchCentersName.results.size > 0) {
+                    view.noneResultSearchsName(Any(), false)
                     view.setResultSearchsName(searchCentersName.results)
                 } else {
-
+                    view.noneResultSearchsName(Any(), true)
                 }
             }
             MainEvents.ON_RESULTS_SEARCH_NAMES_ERROR -> {

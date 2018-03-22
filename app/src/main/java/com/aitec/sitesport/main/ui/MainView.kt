@@ -9,6 +9,14 @@ interface MainView {
     fun showMessagge(message: Any)
     fun setResultsSearchs(entrepriseList: List<Entreprise>)
     fun showProgresBar(show: Boolean)
-    fun clearSearchResults()
+    fun showProgresBarResultsMapVisible(show: Boolean)
+    fun clearSearchResultsName()
+    fun clearSearchResultsVisible()
     fun setResultSearchsName(results: List<Entreprise>)
+    fun noneResultSearchsName(message: Any, show: Boolean)
+    fun noneResultCenterVisible(s: Any)
+    fun setInfoHeaderBottomSheet(title: Any, subtitle: Any)
+    fun showNoneResulstEntrepiseVisible(show: Boolean)
+    fun hideButtonProfileEntrepise()
+
 }

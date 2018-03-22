@@ -9,7 +9,7 @@
     android:elevation="4dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="70dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+    app:layout_behavior="com.aitec.sitesport.main.ui.BottomSheetCustom">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_header_bs"
@@ -24,7 +24,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Centros Deportivos"
+            android:text="Bienvenido"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/progressbar"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="3dp"
-            android:text="6 encontrados"
+            android:text="Obteniendo información"
             android:textColor="@color/white_suave"
             app:layout_constraintEnd_toEndOf="@+id/tv_title_bs"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
@@ -59,10 +59,25 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title_bs" />
+
+        <Button
+            android:id="@+id/btn_profile_entrepise"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_buttom_buttom_sheet"
+            android:text="Perfil"
+            android:textColor="@drawable/txt_color_dialog"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
@@ -79,6 +94,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_header_bs" />
+
+
+    <TextView
+        android:id="@+id/tv_none_results_entrepise_visibles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:text="Sin Resultados"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_results" />
 
 
 </android.support.constraint.ConstraintLayout>
