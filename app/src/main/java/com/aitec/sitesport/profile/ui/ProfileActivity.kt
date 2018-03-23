@@ -30,6 +30,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.Menu
@@ -39,6 +41,7 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.enterprise.Fotos
 import com.aitec.sitesport.entities.enterprise.Precio
 import com.aitec.sitesport.entities.TableTime
+import com.aitec.sitesport.entities.enterprise.Hora
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
 import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
@@ -183,8 +186,11 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     private fun setupBusinessHours() {
 
         btnShowBusinessHours.setOnClickListener {
-            //val businessHoursFragment = BusinessHoursFragment.newInstance(tableTime!!)
-            //businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
+            //tvDayTitle
+            //tvHourStartEnd
+            val businessHoursFragment = BusinessHoursFragment
+                    .newInstance(enterprise!!.hora!!, enterprise!!.horario!!)
+            businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
         }
 
         btnShowRateDay.setOnClickListener {
@@ -258,6 +264,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         img_image_profile.layoutParams.height = displayMetrics.widthPixels
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setupBarsFromColorImageProfile(){
         val bitmap = (img_image_profile.drawable as BitmapDrawable).bitmap
         Palette.from(bitmap).generate { palette ->
@@ -267,6 +274,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setupColorStatusBar(darkColor : Int){
         val window = this@ProfileActivity.window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

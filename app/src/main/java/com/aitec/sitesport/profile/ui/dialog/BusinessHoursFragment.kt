@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.TableTime
+import com.aitec.sitesport.entities.enterprise.Hora
+import com.aitec.sitesport.entities.enterprise.Horario
 import kotlinx.android.synthetic.main.fragment_business_hours.view.*
 import org.json.JSONObject
 
@@ -49,9 +51,10 @@ class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-        fun newInstance(tableTime : TableTime): BusinessHoursFragment {
+        fun newInstance(hora: List<Hora>, horario: List<Horario>): BusinessHoursFragment {
             val bundle = Bundle()
-            bundle.putParcelable("tableTime", tableTime)
+            bundle.putParcelableArrayList("hora", ArrayList(hora))
+            bundle.putParcelableArrayList("horario", ArrayList(horario))
             val fragment = BusinessHoursFragment()
             fragment.arguments = bundle
             return fragment
