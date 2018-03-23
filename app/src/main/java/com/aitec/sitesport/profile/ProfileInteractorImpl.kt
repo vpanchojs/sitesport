@@ -5,7 +5,7 @@ package com.aitec.sitesport.profile
  */
 class ProfileInteractorImpl(val profileRepository : ProfileRepository) : ProfileInteractor {
 
-    override fun getProfile(pk: String) {
+    override fun getProfile(pk: String?) {
         profileRepository.getProfile(pk)
     }
 

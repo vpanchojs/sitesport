@@ -1,11 +1,11 @@
 package com.aitec.sitesport.profile.event
 
-import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.enterprise.Enterprise
 
 /**
  * Created by Yavac on 16/3/2018.
  */
-class ProfileEvent(var eventType: Int, var eventMsg: String, var eventEnterprise : Entreprise) {
+class ProfileEvent(var eventType: Int, var eventMsg: String, var eventEnterprise : Enterprise?) {
 
     companion object {
         const val SUCCESS_PROFILE = 1

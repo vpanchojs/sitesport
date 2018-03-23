@@ -1,5 +1,6 @@
 package com.aitec.sitesport.profile
 
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.profile.event.ProfileEvent
 
 /**
@@ -9,7 +10,7 @@ interface ProfilePresenter {
     fun onResume()
     fun onPause()
     fun onDestroy()
-    fun getProfile(pk : String)
+    fun getProfile(enterprise : Enterprise?)
     fun onEventProfileThread(profileEvent: ProfileEvent)
 
 }

@@ -9,6 +9,7 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
     val KEY_TOKEN_ACCESS = "97e64d26-3b04-417a-8ee2-e761c04b855b"
     val KEY_TOKEN_NOTIFICATION = "74864c0b-076a-4044-85b8-af834f1b53f7"
     val KEY_IN_SESESION = "12be06b6-e0e6-45af-a800-82e4273736df"
+    val PK_ENTERPRISE = "pk_enterprise"
 
 
     fun saveTokenAndSession(tokenAccess: String) {
@@ -23,5 +24,12 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
         return sharedPreferences.getBoolean(KEY_IN_SESESION, false)
     }
 
+    fun savePkEnterprise(pk: String) {
+        sharedPreferences.edit().putString(PK_ENTERPRISE, pk).commit()
+    }
+
+    fun getPkEnterprise(): String {
+        return sharedPreferences.getString(PK_ENTERPRISE, "")
+    }
 
 }

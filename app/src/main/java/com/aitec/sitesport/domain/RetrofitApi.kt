@@ -2,7 +2,7 @@ package com.aitec.sitesport.domain
 
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.SearchCentersName
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -18,7 +18,6 @@ class RetrofitApi {
         val PATH_API = "http://54.200.239.140:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
-
         const val PATH_PROFILE = "api/centros-deportivos/"
 
     }
@@ -40,14 +39,14 @@ class RetrofitApi {
         parametros.put("oeste_lon", lonWest.toString())
 
 
-        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Entreprise>> {
-            override fun onResponse(call: Call<List<Entreprise>>, response: Response<List<Entreprise>>) {
+        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Enterprise>> {
+            override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
 
                 callback.onSucces(response.body())
 
             }
 
-            override fun onFailure(call: Call<List<Entreprise>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
                 Log.e("error", t.message.toString())
                 callback.onError(t!!.message)
             }
@@ -67,18 +66,18 @@ class RetrofitApi {
         })
     }
 
-    fun getProfile(pk: String) {
-        var parametros = HashMap<String, String>()
+    fun getProfile(pk: String, callback: onApiActionListener) {
+        val parametros = HashMap<String, String>()
         parametros.put("pk", pk)
 
 
         request.getProfile(pk).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                Log.e("getProfile:onResponse()", response.body().toString())
+                callback.onSucces(response.body())
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.e("getProfile:onFailure()", t.message.toString())
+                callback.onError(t.message.toString())
             }
         })
 

@@ -23,7 +23,7 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.EntrepiseAdapter
 import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
@@ -59,11 +59,11 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     var requestingLocationUpdates = false
     lateinit var entrepiseAdapter: EntrepiseAdapter
     lateinit var searchNamesEntrepiseAdapter: SearchNamesEntrepiseAdapter
-    var entrepiseResultsSearchVisible = ArrayList<Entreprise>()
+    var entrepiseResultsSearchVisible = ArrayList<Enterprise>()
 
-    var entrepiseResultsSearchName = ArrayList<Entreprise>()
+    var entrepiseResultsSearchName = ArrayList<Enterprise>()
 
-    lateinit var entrepiseSelect: Entreprise
+    lateinit var entrepiseSelect: Enterprise
 
     lateinit var mapboxMap: MapboxMap
     lateinit var iconFactory: IconFactory
@@ -438,7 +438,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         return true
     }
 
-    override fun navigatioProfile(entrepise: Entreprise) {
+    override fun navigatioProfile(entrepise: Enterprise) {
         startActivity(Intent(this, ProfileActivity::class.java).putExtra("entrepise", entrepise))
     }
 
@@ -452,7 +452,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     }
 
-    override fun addMarker(entreprise: Entreprise) {
+    override fun addMarker(entreprise: Enterprise) {
         var icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
         var marker = mapboxMap!!.addMarker(MarkerOptions()
                 .position(LatLng(entreprise.latitud, entreprise.longitud))
@@ -495,7 +495,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
 
     /*MainView*/
-    override fun setResultSearchsName(results: List<Entreprise>) {
+    override fun setResultSearchsName(results: List<Enterprise>) {
         entrepiseResultsSearchName.clear()
         entrepiseResultsSearchName.addAll(results)
         searchNamesEntrepiseAdapter.notifyDataSetChanged()
@@ -526,7 +526,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         BaseActivitys.showToastMessage(this, message, Toast.LENGTH_SHORT)
     }
 
-    override fun setResultsSearchs(entrepriseList: List<Entreprise>) {
+    override fun setResultsSearchs(entrepriseList: List<Enterprise>) {
         Log.e(TAG, "id" + entrepriseList.get(0).pk)
         entrepiseResultsSearchVisible.clear()
         mapboxMap.clear()

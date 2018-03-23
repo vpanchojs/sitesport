@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import kotlinx.android.synthetic.main.item_entrepise.view.*
 
 /**
  * Created by victor on 6/3/18.
  */
-class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepiseAdapterListener) : RecyclerView.Adapter<EntrepiseAdapter.ViewHolder>() {
+class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepiseAdapterListener) : RecyclerView.Adapter<EntrepiseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise, parent, false);
@@ -32,19 +32,19 @@ class EntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepis
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        fun addMarker(entreprise: Entreprise, callback: onEntrepiseAdapterListener) {
-            callback.addMarker(entreprise)
+        fun addMarker(enterprise: Enterprise, callback: onEntrepiseAdapterListener) {
+            callback.addMarker(enterprise)
         }
 
-        fun onNavigationProfile(entreprise: Entreprise, callback: onEntrepiseAdapterListener) {
+        fun onNavigationProfile(enterprise: Enterprise, callback: onEntrepiseAdapterListener) {
             view.setOnClickListener {
-                callback.navigatioProfile(entreprise)
+                callback.navigatioProfile(enterprise)
             }
         }
     }
 
     interface onEntrepiseAdapterListener {
-        fun navigatioProfile(entrepise: Entreprise)
-        fun addMarker(entreprise: Entreprise)
+        fun navigatioProfile(entrepise: Enterprise)
+        fun addMarker(enterprise: Enterprise)
     }
 }

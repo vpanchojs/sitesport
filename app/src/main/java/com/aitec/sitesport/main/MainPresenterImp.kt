@@ -1,7 +1,7 @@
 package com.aitec.sitesport.main
 
-import com.aitec.sitesport.entities.Entreprise
 import com.aitec.sitesport.entities.SearchCentersName
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 import com.aitec.sitesport.main.ui.MainView
@@ -46,7 +46,7 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         view.showProgresBarResultsMapVisible(false)
         when (event.type) {
             MainEvents.ON_RESULTS_SEARCHS_SUCCESS -> {
-                var entrepriseList = event.any as List<Entreprise>
+                var entrepriseList = event.any as List<Enterprise>
                 if (entrepriseList.size > 0) {
                     view.clearSearchResultsVisible()
                     view.setResultsSearchs(entrepriseList)

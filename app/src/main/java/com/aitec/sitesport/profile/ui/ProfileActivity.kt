@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.LinearLayout
 import android.support.v4.content.ContextCompat
 import android.view.WindowManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.graphics.Palette
@@ -28,51 +27,59 @@ import kotlinx.android.synthetic.main.content_profile.*
 import kotlinx.android.synthetic.main.header_profile.*
 import android.widget.Toast
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.entities.enterprise.Fotos
+import com.aitec.sitesport.entities.enterprise.Precio
 import com.aitec.sitesport.entities.TableTime
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
 import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
 import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
-import org.json.JSONObject
+import com.aitec.sitesport.util.GlideApp
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.android.synthetic.main.item_entrepise.*
 import javax.inject.Inject
 
 
 class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener, ProfileView {
 
+    companion object {
+        var tag_enterprise = "entrepise"
+    }
+
     private var isHideToolbarView = false
     private val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
     private val TAG = "ProfileActivity"
-    private var tableTime : TableTime? = null
-    private var priceHourDay : JSONObject? = null
-    private var priceHourNight : JSONObject? = null
-    private var phoneNumber : String? = null
-    private var whatsAppNumber : String? = null
-    private var facebookUser : String? = null
+    private var enterprise : Enterprise? = null
+
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         setupInjection()
+
+        this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
+        collapse_toolbar_profile.title = ""
+        header_tv_title.text = enterprise!!.nombres
+
+        Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
-        //setupImageProfile()
-        //setupAppBarSizeDynamic()
+        setupImageProfile()
+        setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         //setupHeader()
-        //setupListenerScrollAppBarLayout()
+        setupListenerScrollAppBarLayout()
         setupMapBox(savedInstanceState)
         setupBusinessHours()
     }
@@ -85,8 +92,24 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     // ProfileView.kt implementation
 
-    override fun setImageProfile(image: Bitmap) {
-        setupImageProfile(image)
+    override fun setEnterprise(enterprise: Enterprise) {
+        this.enterprise = enterprise
+    }
+
+    override fun setImageProfile(urls: List<Fotos>) {
+        //setupImageProfile(image)
+        //fotos!![0]
+        enterprise!!.fotos
+        GlideApp.with(this)
+                .load("https://firebasestorage.googleapis.com/v0/b/blockstudy-97c0c.appspot.com/o/user-photos%2FvcOcLK7V6Md4kco3TfR9DRfkhZh2?alt=media&token=dc38586b-9dd6-41e8-9720-f1630b07bddf")
+                .placeholder(img_image_profile.drawable)
+                .fitCenter()
+                .centerCrop()
+                .error(img_image_profile.drawable)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(img_image_profile)
+        //setupImageProfile(BitmapFactory.decodeResource(resources, R.drawable.piscina))
+        setupImageProfile()
     }
 
     override fun setNameProfile(name: String) {
@@ -110,27 +133,27 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun setTableTime(times: TableTime) {
-        tableTime = times
+        enterprise
     }
 
-    override fun setPriceHourDay(prices: JSONObject) {
-        priceHourDay = prices
+    override fun setPriceHourDay(prices: List<Precio>) {
+        enterprise
     }
 
-    override fun setPriceHourNight(prices: JSONObject) {
-        priceHourNight = prices
+    override fun setPriceHourNight(prices: List<Precio>) {
+        enterprise
     }
 
-    override fun setPhoneNumber(phoneNumber: String) {
-        this.phoneNumber = phoneNumber
+    override fun setPhoneNumber(phonesNumber: ArrayList<String>) {
+        enterprise
     }
 
     override fun setWhatsAppNumber(whatAppNumber: String) {
-        this.whatsAppNumber = whatAppNumber
+        enterprise
     }
 
     override fun setFacebookUser(facebookUser: String) {
-        this.facebookUser = facebookUser
+        enterprise
     }
 
     override fun setLatLngLocationMap(locationLatLng: LatLng) {
@@ -160,8 +183,8 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     private fun setupBusinessHours() {
 
         btnShowBusinessHours.setOnClickListener {
-            val businessHoursFragment = BusinessHoursFragment.newInstance(tableTime!!)
-            businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
+            //val businessHoursFragment = BusinessHoursFragment.newInstance(tableTime!!)
+            //businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
         }
 
         btnShowRateDay.setOnClickListener {
@@ -223,12 +246,13 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         })
     }
 
-    private fun setupImageProfile(image : Bitmap){
+    private fun setupImageProfile(){
         //img_image_profile.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.piscina))
         //val displayMetrics = DisplayMetrics()
         //this.windowManager.defaultDisplay.getMetrics(displayMetrics)
         //img_image_profile.layoutParams.height = displayMetrics.widthPixels
-        img_image_profile.setImageBitmap(image)
+
+        img_image_profile.setImageDrawable(resources.getDrawable(R.drawable.bg_image_progile))
         val displayMetrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(displayMetrics)
         img_image_profile.layoutParams.height = displayMetrics.widthPixels
@@ -373,7 +397,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     public override fun onResume() {
         super.onResume()
         profilePresenter.onResume()
-        profilePresenter.getProfile("33e6528d-f745-4241-9a6b-717838210f52/")
+        profilePresenter.getProfile(enterprise)
         mvProfile.onResume()
     }
 
@@ -407,6 +431,14 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         mvProfile.onSaveInstanceState(outState!!)
+        outState.putParcelable("enterprise", enterprise)
+        outState.putBoolean("isHideToolbarView", isHideToolbarView)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.i(TAG, "onRestoreInstanceState")
+        this.enterprise = savedInstanceState?.getParcelable("enterprise")
+        this.isHideToolbarView = savedInstanceState!!.getBoolean("isHideToolbarView")
+    }
 }

@@ -72,17 +72,19 @@
         android:id="@+id/tvTimeLunesToViernes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:textColor="#fff"
         android:text="8:00 am a 14:00 pm y 8:00 am a 14:00 pm"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewDivider" />
 
 
-    <TextView
+    <!--<TextView
         android:id="@+id/tvDayTitle2"
         android:layout_width="0dp"
         android:layout_height="19dp"
@@ -121,7 +123,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewDivider2" />
+        app:layout_constraintTop_toBottomOf="@+id/viewDivider2" />-->
 
     <ImageView
         android:id="@+id/imgBackground"

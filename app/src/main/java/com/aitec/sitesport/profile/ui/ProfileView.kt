@@ -1,9 +1,11 @@
 package com.aitec.sitesport.profile.ui
 
 import android.graphics.Bitmap
+import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.entities.enterprise.Fotos
+import com.aitec.sitesport.entities.enterprise.Precio
 import com.aitec.sitesport.entities.TableTime
 import com.mapbox.mapboxsdk.geometry.LatLng
-import org.json.JSONObject
 
 /**
  * Created by Yavac on 12/3/2018.
@@ -11,7 +13,7 @@ import org.json.JSONObject
 interface ProfileView {
 
     // Header
-    fun setImageProfile(image : Bitmap)
+    fun setImageProfile(urls : List<Fotos>)
     fun setNameProfile(name : String)
     fun setQualificationProfile(qualification : Float)
     fun setVisits(visits : String)
@@ -19,12 +21,15 @@ interface ProfileView {
 
     // content
     fun setTableTime(times : TableTime)
-    fun setPriceHourDay(prices : JSONObject)
-    fun setPriceHourNight(prices : JSONObject)
-    fun setPhoneNumber(phoneNumber: String)
+    fun setPriceHourDay(prices : List<Precio>)
+    fun setPriceHourNight(prices : List<Precio>)
+    fun setPhoneNumber(phonesNumber: ArrayList<String>)
     fun setWhatsAppNumber(whatAppNumber : String)
     fun setFacebookUser(facebookUser : String)
     fun setLatLngLocationMap(locationLatLng : LatLng)
     fun setMarkerLocationMap(marker : Bitmap)
+
+    //model
+    fun setEnterprise(enterprise : Enterprise)
 
 }

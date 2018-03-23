@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Entreprise
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import kotlinx.android.synthetic.main.item_entrepise_search_name.view.*
 
 /**
  * Created by victor on 21/3/18.
  */
-class SearchNamesEntrepiseAdapter(var data: ArrayList<Entreprise>, var callback: onEntrepiseSearchNameListener) : RecyclerView.Adapter<SearchNamesEntrepiseAdapter.ViewHolder>() {
+class SearchNamesEntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepiseSearchNameListener) : RecyclerView.Adapter<SearchNamesEntrepiseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchNamesEntrepiseAdapter.ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise_search_name, parent, false);
@@ -31,15 +31,15 @@ class SearchNamesEntrepiseAdapter(var data: ArrayList<Entreprise>, var callback:
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
-        fun onNavigationProfile(entreprise: Entreprise, callback: onEntrepiseSearchNameListener) {
+        fun onNavigationProfile(enterprise: Enterprise, callback: onEntrepiseSearchNameListener) {
             view.setOnClickListener {
-                callback.navigatioProfile(entreprise)
+                callback.navigatioProfile(enterprise)
             }
         }
     }
 
     interface onEntrepiseSearchNameListener {
-        fun navigatioProfile(entrepise: Entreprise)
+        fun navigatioProfile(entrepise: Enterprise)
     }
 
 }

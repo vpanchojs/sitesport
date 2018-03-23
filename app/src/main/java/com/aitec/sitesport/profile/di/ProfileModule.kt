@@ -1,6 +1,7 @@
 package com.aitec.sitesport.profile.di
 
 import com.aitec.sitesport.domain.RetrofitApi
+import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profile.*
 import com.aitec.sitesport.profile.ui.ProfileView
@@ -31,7 +32,7 @@ class ProfileModule(private val profileView : ProfileView){
 
     @Provides
     @Singleton
-    fun providesProfileRepository(retrofitApi: RetrofitApi, eventBusInterface : EventBusInterface)
-            : ProfileRepository = ProfileRepositoryImpl(retrofitApi, eventBusInterface)
+    fun providesProfileRepository(retrofitApi: RetrofitApi, eventBusInterface : EventBusInterface, sharePreferencesApi: SharePreferencesApi)
+            : ProfileRepository = ProfileRepositoryImpl(retrofitApi, eventBusInterface, sharePreferencesApi)
 
 }
