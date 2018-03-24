@@ -25,8 +25,8 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         interactor.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
     }
 
-    override fun getSearchUserEntrepise(query: String) {
-        if (interactor.getSearchUserEntrepise(query)) {
+    override fun getSearchName(query: String) {
+        if (interactor.getSearchName(query)) {
             view.showProgresBar(true)
             view.clearSearchResultsName()
         } else {
@@ -36,8 +36,12 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         }
     }
 
-    override fun stopSearchUserEntrepise() {
-        interactor.stopSearchUserEntrepise()
+    override fun stopSearchName() {
+        interactor.stopSearchName()
+    }
+
+    override fun stopSearchVisibility() {
+        interactor.stopSearchVisibility()
     }
 
     @Subscribe

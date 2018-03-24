@@ -6,9 +6,9 @@ import android.util.Log
  * Created by victor on 27/1/18.
  */
 class MainInteractorImp(var repository: MainRepository) : MainInteractor {
-    override fun getSearchUserEntrepise(query: String): Boolean {
+    override fun getSearchName(query: String): Boolean {
         if (query.length > 0) {
-            repository.getSearchUserEntrepise(query)
+            repository.getSearchName(query)
             return true
         } else {
             Log.e("mainI", "query muy pequeño")
@@ -20,7 +20,11 @@ class MainInteractorImp(var repository: MainRepository) : MainInteractor {
         repository.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
     }
 
-    override fun stopSearchUserEntrepise() {
-        repository.stopSearchUserEntrepise()
+    override fun stopSearchName() {
+        repository.stopSearchName()
+    }
+
+    override fun stopSearchVisibility() {
+        repository.stopSearchVisibility()
     }
 }

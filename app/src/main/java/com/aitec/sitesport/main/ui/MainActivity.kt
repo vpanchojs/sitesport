@@ -32,6 +32,7 @@ import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.mapbox.mapboxsdk.annotations.Icon
 import com.mapbox.mapboxsdk.annotations.IconFactory
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
@@ -104,11 +105,18 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     override fun onStart() {
         super.onStart()
         mapView.onStart()
+        Log.e("resume", "en resumen")
+        if (checkPermissions()) {
+            startLocationUpdates();
+        } else if (!checkPermissions()) {
+            requestPermissions();
+        }
     }
 
     override fun onStop() {
         super.onStop()
         mapView.onStop()
+        Log.e("stop", "stop")
     }
 
     public override fun onPause() {
@@ -116,6 +124,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         presenter.onPause()
         mapView.onPause()
         stopLocationUpdates()
+        Log.e("pause", "en pause")
     }
 
     override fun onLowMemory() {
@@ -132,11 +141,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         super.onResume()
         presenter.onResume()
         mapView.onResume()
-        if (checkPermissions() && !::mCurrentLocation.isInitialized) {
-            startLocationUpdates();
-        } else if (!checkPermissions()) {
-            requestPermissions();
-        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -280,7 +285,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                                 // result in onActivityResult().
                                 val rae = e as ResolvableApiException
                                 rae.startResolutionForResult(this@MainActivity, REQUEST_CHECK_SETTINGS)
-                            } catch (sie: IntentSender.SendIntentException) {
+                            } catch (se: IntentSender.SendIntentException) {
                                 //   Log.i(FragmentActivity.TAG, "PendingIntent unable to execute request.")
                             }
 
@@ -303,6 +308,9 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     /*Permisos*/
     private fun requestPermissions() {
+
+        Log.e("permisos", "pidiendo permiso")
+
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -331,10 +339,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.size <= 0) {
 
-                Log.i(TAG, "User interaction was cancelled.");
+                Log.e(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // if (requestingLocationUpdates) {
-                Log.i(TAG, "Permission granted, updates requested, starting location updates");
+                Log.e(TAG, "Permission granted, updates requested, starting location updates");
                 startLocationUpdates();
                 //}
             } else {
@@ -394,7 +402,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 navigatioProfile(entrepiseSelect)
             }
             R.id.btn_my_location -> {
-                startLocationUpdates()
+                requestPermissions()
+                //startLocationUpdates()
             }
             R.id.cl_header_bs -> {
                 when (bottomSheetBehavior.state) {
@@ -434,7 +443,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        presenter.getSearchUserEntrepise(newText!!)
+        presenter.stopSearchName()
+        presenter.getSearchName(newText!!)
         return true
     }
 
@@ -452,11 +462,19 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     }
 
+
     override fun addMarker(entreprise: Enterprise) {
-        var icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
+        var icono: Icon
+
+        if (entreprise.abierto) {
+            icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
+        } else {
+            icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
+        }
+
         var marker = mapboxMap!!.addMarker(MarkerOptions()
                 .position(LatLng(entreprise.latitud, entreprise.longitud))
-                .icon(icon))
+                .icon(icono))
 
         entreprise.idMarker = marker.id
 
@@ -471,8 +489,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun onCameraIdle() {
+        presenter.stopSearchVisibility()
         var bounds = mapboxMap.projection.visibleRegion.latLngBounds
-
         Log.e("coordenadas", "lat" + bounds.center.latitude + "lng" + bounds.center.longitude)
         presenter.onGetCenterSportVisible(bounds.latSouth, bounds.latNorth, bounds.lonWest, bounds.lonEast, bounds.center.latitude, bounds.center.longitude)
 

@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import kotlinx.android.synthetic.main.item_entrepise.view.*
+import java.text.DecimalFormat
 
 /**
  * Created by victor on 6/3/18.
  */
 class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepiseAdapterListener) : RecyclerView.Adapter<EntrepiseAdapter.ViewHolder>() {
+
+    val df = DecimalFormat("0.00")
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise, parent, false);
@@ -25,7 +28,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         var entrepise = data.get(position)
         holder!!.view.tv_name_entrepise.text = entrepise.nombres
-        holder!!.view.tv_distance.text = entrepise.distancia.toString()
+        holder!!.view.tv_distance.text = df.format(entrepise.distancia) + " Km"
         holder!!.addMarker(entrepise, callback)
         holder!!.onNavigationProfile(entrepise, callback)
     }

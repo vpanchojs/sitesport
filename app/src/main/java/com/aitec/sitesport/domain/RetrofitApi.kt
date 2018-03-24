@@ -1,9 +1,10 @@
 package com.aitec.sitesport.domain
 
+import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.SearchCentersName
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +14,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class RetrofitApi {
+
+    private val LAG = 1000
+    private var handlerSearchName: Handler? = null
+    private var runnableSearchName: Runnable? = null
+
+    private var handlerSearchVisibility: Handler? = null
+    private var runnableSearchVisibility: Runnable? = null
+
+    lateinit var requestSearchVisibility: Call<List<Enterprise>>
+
+    lateinit var requestSearchName: Call<List<Enterprise>>
+
 
     companion object {
         val PATH_API = "http://54.200.239.140:8050/"
@@ -29,6 +42,7 @@ class RetrofitApi {
 
     val request = retrofit.create(RetrofitServicie::class.java)
 
+
     fun getCenterSport(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double, callback: onApiActionListener) {
         var parametros = HashMap<String, String>()
         parametros.put("latitud", latMe.toString())
@@ -38,32 +52,51 @@ class RetrofitApi {
         parametros.put("este_lon", lonEast.toString())
         parametros.put("oeste_lon", lonWest.toString())
 
+        requestSearchVisibility = request.getCenterSportVisible(parametros)
 
-        request.getCenterSportVisible(parametros).enqueue(object : Callback<List<Enterprise>> {
-            override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
+        handlerSearchVisibility = Handler()
+        runnableSearchVisibility = Runnable {
 
-                callback.onSucces(response.body())
+            requestSearchVisibility.clone().enqueue(object : Callback<List<Enterprise>> {
+                override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
+                    callback.onSucces(response.body())
 
-            }
+                }
 
-            override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
-                Log.e("error", t.message.toString())
-                callback.onError(t!!.message)
-            }
-        })
+                override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
+                    Log.e("error", t.message.toString())
+                    callback.onError(t!!.message)
+                }
+            })
+        }
+
+        handlerSearchVisibility!!.postDelayed(runnableSearchVisibility, LAG.toLong())
+    }
+
+    fun deleteRequestGetCenterSport() {
+        if (::requestSearchVisibility.isInitialized) {
+            Log.e("delte", "eliminar peticion visibility")
+            requestSearchVisibility.cancel()
+        }
     }
 
     fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
-        request.searchNameCenterSport(query, 1).enqueue(object : Callback<SearchCentersName> {
-            override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
-                Log.e("error", t!!.message.toString())
-                callback.onError(t!!.message)
-            }
+        var requestSearchName = request.searchNameCenterSport(query, 1)
 
-            override fun onResponse(call: Call<SearchCentersName>?, response: Response<SearchCentersName>?) {
-                callback.onSucces(response!!.body())
-            }
-        })
+        handlerSearchName = Handler()
+        runnableSearchName = Runnable {
+            requestSearchName.clone().enqueue(object : Callback<SearchCentersName> {
+                override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
+                    Log.e("error", t!!.message.toString())
+                    callback.onError(t!!.message)
+                }
+
+                override fun onResponse(call: Call<SearchCentersName>?, response: Response<SearchCentersName>?) {
+                    callback.onSucces(response!!.body())
+                }
+            })
+        }
+        handlerSearchName!!.postDelayed(runnableSearchName, LAG.toLong())
     }
 
     fun getProfile(pk: String, callback: onApiActionListener) {
@@ -81,5 +114,12 @@ class RetrofitApi {
             }
         })
 
+    }
+
+    fun deleteRequestSearchName() {
+        if (::requestSearchName.isInitialized) {
+            requestSearchName.cancel()
+            Log.e("delte", "eliminar peticion name")
+        }
     }
 }

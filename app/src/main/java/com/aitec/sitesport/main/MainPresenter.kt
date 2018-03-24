@@ -13,9 +13,11 @@ interface MainPresenter {
 
     fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double)
 
-    fun getSearchUserEntrepise(query: String)
+    fun getSearchName(query: String)
 
-    fun stopSearchUserEntrepise()
+    fun stopSearchName()
+
+    fun stopSearchVisibility()
 
     fun onEventMainThread(event: MainEvents)
 

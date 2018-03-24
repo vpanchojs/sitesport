@@ -13,7 +13,7 @@ import com.aitec.sitesport.main.events.MainEvents
  */
 class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: RetrofitApi, var sharePreferencesApi: SharePreferencesApi) : MainRepository {
 
-    override fun getSearchUserEntrepise(query: String) {
+    override fun getSearchName(query: String) {
         retrofitApi.onSearchNameCenterSport(query, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 postEvent(MainEvents.ON_RESULTS_SEARCH_NAMES_SUCCESS, response!!)
@@ -24,20 +24,6 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retrof
             }
         })
 
-/*
-        volleyApi.onSearchUserorEntrepise(query, sharePreferencesApi.getTokenAccess(), object : onApiActionListener {
-
-            override fun onSucces(response: Any?) {
-                val responseObject = response as JSONObject
-                Log.e("MainR", responseObject.toString())
-                // postEvent(MainEvents.ON_RESULTS_SEARCHS_SUCCESS, "", MapperResponse.getResultSearch(responseObject))
-            }
-
-            override fun onError(error: Any?) {
-                postEvent(MainEvents.ON_RESULTS_SEARCHS_ERROR, MapperError.getErrorResponse(error!!), Any())
-            }
-        })
-        */
     }
 
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
@@ -55,9 +41,14 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retrof
         })
     }
 
-    override fun stopSearchUserEntrepise() {
-        //   volleyApi.removeAllRequestSearchUserorEntrepise()
+    override fun stopSearchName() {
+        retrofitApi.deleteRequestSearchName()
     }
+
+    override fun stopSearchVisibility() {
+        retrofitApi.deleteRequestGetCenterSport()
+    }
+
 
     private fun postEvent(type: Int, any: Any) {
         var event = MainEvents(type, any)
