@@ -13,21 +13,24 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 interface ProfileView {
 
     // Header
-    fun setImageProfile(urls : List<Fotos>)
-    fun setNameProfile(name : String)
-    fun setQualificationProfile(qualification : Float)
-    fun setVisits(visits : String)
+    fun setImageProfile(urls : List<Fotos>?)
+    fun setNameProfile(name : String?)
+    fun setQualificationProfile(qualification : Float?)
+    fun setVisits(visits : String?)
     fun setupCollapsibleDynamic()
 
     // content
-    fun setTableTime(times : TableTime)
+    /*fun setTableTime(times : TableTime)
     fun setPriceHourDay(prices : List<Precio>)
     fun setPriceHourNight(prices : List<Precio>)
     fun setPhoneNumber(phonesNumber: ArrayList<String>)
     fun setWhatsAppNumber(whatAppNumber : String)
-    fun setFacebookUser(facebookUser : String)
-    fun setLatLngLocationMap(locationLatLng : LatLng)
-    fun setMarkerLocationMap(marker : Bitmap)
+    fun setFacebookUser(facebookUser : String)*/
+    fun setLatLngLocationMap(locationLatLng : LatLng?)
+    fun setMarkerLocationMap(marker : Bitmap?)
+    fun setStateEnterprise(state : String?)
+    fun setPriceDayStandar(priceDay : String?)
+    fun setPriceNightStandar(priceNight : String?)
 
     //model
     fun setEnterprise(enterprise : Enterprise)

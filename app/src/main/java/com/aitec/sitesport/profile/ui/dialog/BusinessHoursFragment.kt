@@ -35,6 +35,10 @@ class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        view.tvDayTitle.text = (arguments!!.getParcelableArrayList<Horario>("horario"))[0].nombre
+        view.tvHourStartEnd.text = ((arguments!!.getParcelableArrayList<Hora>("hora"))[0].hora_ini
+                + " - "  + (arguments!!.getParcelableArrayList<Hora>("hora"))[0].hora_fin)
+
         return dialog
     }
 

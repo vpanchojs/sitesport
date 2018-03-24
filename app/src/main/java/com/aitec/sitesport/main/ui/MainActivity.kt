@@ -467,9 +467,9 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         var icono: Icon
 
         if (entreprise.abierto) {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
+            icono = iconFactory.fromResource(R.drawable.ic_ball_futbol)
         } else {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
+            icono = iconFactory.fromResource(R.drawable.ic_ball_futbol)
         }
 
         var marker = mapboxMap!!.addMarker(MarkerOptions()

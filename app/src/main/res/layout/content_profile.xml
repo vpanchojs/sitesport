@@ -57,7 +57,7 @@
             android:tint="@color/white"/>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tvStateEnterprise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -113,7 +113,7 @@
             app:srcCompat="@drawable/ic_sun" />
 
         <TextView
-            android:id="@+id/textView58"
+            android:id="@+id/tvPriceDayStandar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -132,13 +132,13 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_ibtn_profile"
-            app:layout_constraintStart_toEndOf="@+id/textView58"
+            app:layout_constraintStart_toEndOf="@+id/tvPriceDayStandar"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             app:srcCompat="@drawable/ic_moon" />
 
 
         <TextView
-            android:id="@+id/tvDayTitle2"
+            android:id="@+id/tvPriceNightStandar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

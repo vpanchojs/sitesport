@@ -7,8 +7,9 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.aitec.sitesport.R
-import kotlinx.android.synthetic.main.fragment_business_hours.view.*
+import com.aitec.sitesport.entities.enterprise.Precio
 import kotlinx.android.synthetic.main.fragment_rate_night.*
+import kotlinx.android.synthetic.main.fragment_rate_night.view.*
 
 /**
  * Created by Yavac on 9/3/2018.
@@ -37,6 +38,7 @@ class RateNightFragment: DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        view.tvPriceForHour.text = (arguments!!.getParcelableArrayList<Precio>("precio"))[1].valor
 
         return dialog
     }
@@ -58,8 +60,11 @@ class RateNightFragment: DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-        fun newInstance(): RateNightFragment {
+        fun newInstance(precio: List<Precio>): RateNightFragment {
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("precio", ArrayList(precio))
             val fragment = RateNightFragment()
+            fragment.arguments = bundle
             return fragment
         }
     }

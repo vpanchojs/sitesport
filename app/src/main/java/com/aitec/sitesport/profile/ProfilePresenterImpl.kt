@@ -35,20 +35,11 @@ class ProfilePresenterImpl(var profileView : ProfileView,
         when (profileEvent.eventType) {
             ProfileEvent.SUCCESS_PROFILE ->{
 
-                //{"nombres":"Calva y Calva","
-                // descripcion":"Calva y Calva",
-                // "fotos":[{"imagen":"http://localhost:8050/media/imagenes/acaf0348-593b-4374-9f08-9144f446aece/numpy.jpg "}],
-                // "telefonos":[],
-                // "categoria":[{"descripcion":"asda","nombre":"FUTBOOL"}]
-                // ,"red_social":[],
-                // "precio":[],
-                // "horario":[{"nombre":"Nocturno"}],"hora":[]}
-
-                Log.e("onEventProfileThread", "SUCCESS_PROFILE")
                 profileView.setNameProfile((profileEvent.eventEnterprise as Enterprise).nombres)
-                profileView.setImageProfile((profileEvent.eventEnterprise as Enterprise).fotos!!)
-                profileView.setPriceHourDay((profileEvent.eventEnterprise as Enterprise).precio!!)
-                profileView.setPriceHourNight((profileEvent.eventEnterprise as Enterprise).precio!!)
+                profileView.setImageProfile((profileEvent.eventEnterprise as Enterprise).fotos)
+                profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "abierto" else "cerrado")
+                profileView.setPriceDayStandar((profileEvent.eventEnterprise as Enterprise).precio!![0].valor)
+                profileView.setPriceNightStandar((profileEvent.eventEnterprise as Enterprise).precio!![1].valor)
                 profileView.setEnterprise(profileEvent.eventEnterprise!!)
             }
 
@@ -59,8 +50,6 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 Log.e("ProfileEvent", "new constant undefine")
             }
         }
-
-        //"categoria":[{"nombre":"FUTBOOL","descripcion":"asda"}],"red_social":[],"horario":[{"nombre":"Nocturno"}],"hora":[]}
 
     }
 

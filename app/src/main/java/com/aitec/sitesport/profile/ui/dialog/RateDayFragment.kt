@@ -7,6 +7,9 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.enterprise.Hora
+import com.aitec.sitesport.entities.enterprise.Horario
+import com.aitec.sitesport.entities.enterprise.Precio
 import kotlinx.android.synthetic.main.fragment_rate_day.*
 import kotlinx.android.synthetic.main.fragment_rate_day.view.*
 
@@ -37,6 +40,7 @@ class RateDayFragment : DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        view.tvPriceForHour.text = (arguments!!.getParcelableArrayList<Precio>("precio"))[0].valor
 
         return dialog
     }
@@ -58,8 +62,11 @@ class RateDayFragment : DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-        fun newInstance(): RateDayFragment {
+        fun newInstance(precio: List<Precio>): RateDayFragment {
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("precio", ArrayList(precio))
             val fragment = RateDayFragment()
+            fragment.arguments = bundle
             return fragment
         }
     }

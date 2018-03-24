@@ -46,9 +46,11 @@ import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
 import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
 import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
+import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.item_entrepise.*
+import java.net.URL
 import javax.inject.Inject
 
 
@@ -63,7 +65,6 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     private val TAG = "ProfileActivity"
     private var enterprise : Enterprise? = null
 
-
     @Inject
     lateinit var profilePresenter: ProfilePresenter
 
@@ -73,6 +74,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         setupInjection()
 
         this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
+        setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
         collapse_toolbar_profile.title = ""
         header_tv_title.text = enterprise!!.nombres
 
@@ -95,38 +97,57 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     // ProfileView.kt implementation
 
-    override fun setEnterprise(enterprise: Enterprise) {
-        this.enterprise = enterprise
+    override fun setStateEnterprise(state: String?) {
+        tvStateEnterprise.text = state
     }
 
-    override fun setImageProfile(urls: List<Fotos>) {
-        //setupImageProfile(image)
-        //fotos!![0]
-        enterprise!!.fotos
-        GlideApp.with(this)
-                .load("https://firebasestorage.googleapis.com/v0/b/blockstudy-97c0c.appspot.com/o/user-photos%2FvcOcLK7V6Md4kco3TfR9DRfkhZh2?alt=media&token=dc38586b-9dd6-41e8-9720-f1630b07bddf")
+    override fun setPriceDayStandar(priceDay: String?) {
+        tvPriceDayStandar.text = priceDay
+    }
+
+    override fun setPriceNightStandar(priceNight: String?) {
+        tvPriceNightStandar.text = priceNight
+    }
+
+    override fun setEnterprise(enterprise: Enterprise) {
+        this.enterprise!!.descripcion = enterprise.descripcion
+        this.enterprise!!.abierto = enterprise.abierto
+        this.enterprise!!.fotos = enterprise.fotos
+        this.enterprise!!.telefonos = enterprise.telefonos
+        this.enterprise!!.red_social = enterprise.red_social
+        this.enterprise!!.categoria = enterprise.categoria
+        this.enterprise!!.precio = enterprise.precio
+        this.enterprise!!.horario = enterprise.horario
+        this.enterprise!!.hora = enterprise.hora
+    }
+
+    override fun setImageProfile(urls: List<Fotos>?) {
+        if(!(urls!![0].imagen.isEmpty())){
+            GlideApp.with(this)
+                .load("http://54.200.239.140:8050/media/imagenes/369889b4-61fe-4538-abeb-4fca65f35943/pampita.jpg")
                 .placeholder(img_image_profile.drawable)
-                .fitCenter()
+                //.fitCenter()
                 .centerCrop()
                 .error(img_image_profile.drawable)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(img_image_profile)
         //setupImageProfile(BitmapFactory.decodeResource(resources, R.drawable.piscina))
-        setupImageProfile()
+            //setupImageProfile()
+        }
     }
 
-    override fun setNameProfile(name: String) {
+    override fun setNameProfile(name: String?) {
         collapse_toolbar_profile.title = ""
-        (toolbar_header_profile as HeaderView).setTitle(name)
+        (toolbar_header_profile as HeaderView).setTitle(name!!)
         (float_header_profile as HeaderView).setTitle(name)
     }
 
-    override fun setQualificationProfile(qualification: Float) {
+    override fun setQualificationProfile(qualification: Float?) {
         //rtbQualificationSite.rating = qualification
     }
 
-    override fun setVisits(visits: String) {
-        (toolbar_header_profile as HeaderView).setSubTitle(visits)
+    override fun setVisits(visits: String?) {
+        (toolbar_header_profile as HeaderView).setSubTitle(visits!!)
         (float_header_profile as HeaderView).setSubTitle(visits)
     }
 
@@ -135,36 +156,12 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         setupListenerScrollAppBarLayout()
     }
 
-    override fun setTableTime(times: TableTime) {
-        enterprise
-    }
-
-    override fun setPriceHourDay(prices: List<Precio>) {
-        enterprise
-    }
-
-    override fun setPriceHourNight(prices: List<Precio>) {
-        enterprise
-    }
-
-    override fun setPhoneNumber(phonesNumber: ArrayList<String>) {
-        enterprise
-    }
-
-    override fun setWhatsAppNumber(whatAppNumber: String) {
-        enterprise
-    }
-
-    override fun setFacebookUser(facebookUser: String) {
-        enterprise
-    }
-
-    override fun setLatLngLocationMap(locationLatLng: LatLng) {
+    override fun setLatLngLocationMap(locationLatLng: LatLng?) {
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
             val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
             it.addMarker(MarkerOptions()
-                    .position(LatLng(locationLatLng.latitude, locationLatLng.longitude))
+                    .position(LatLng(locationLatLng!!.latitude, locationLatLng.longitude))
                     .icon(icon))
 
             val position = CameraPosition.Builder()
@@ -175,7 +172,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         })
     }
 
-    override fun setMarkerLocationMap(marker: Bitmap) {}
+    override fun setMarkerLocationMap(marker: Bitmap?) {}
 
     // setup GUI and Life cycle
 
@@ -188,19 +185,32 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         btnShowBusinessHours.setOnClickListener {
             //tvDayTitle
             //tvHourStartEnd
-            val businessHoursFragment = BusinessHoursFragment
-                    .newInstance(enterprise!!.hora!!, enterprise!!.horario!!)
-            businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
+            if(enterprise != null && enterprise!!.hora != null && enterprise!!.hora != null) {
+                val businessHoursFragment = BusinessHoursFragment
+                        .newInstance(enterprise!!.hora!!, enterprise!!.horario!!)
+                businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
+            }else{
+                BaseActivitys.showToastMessage(this,"Horarios no disponibles", Toast.LENGTH_SHORT)
+            }
         }
 
         btnShowRateDay.setOnClickListener {
-            val rateDayFragment = RateDayFragment.newInstance()
-            rateDayFragment.show(supportFragmentManager, "RateDayFragment")
+            if(enterprise != null && enterprise!!.precio != null) {
+                val rateDayFragment = RateDayFragment.newInstance(enterprise!!.precio!!)
+                rateDayFragment.show(supportFragmentManager, "RateDayFragment")
+            }else{
+                BaseActivitys.showToastMessage(this,"Precios no disponibles", Toast.LENGTH_SHORT)
+            }
         }
 
         btnShowRateNight.setOnClickListener {
-            val rateNightFragment = RateNightFragment.newInstance()
-            rateNightFragment.show(supportFragmentManager, "RateNightFragment")
+            if(enterprise != null && enterprise!!.precio != null) {
+
+                val rateNightFragment = RateNightFragment.newInstance(enterprise!!.precio!!)
+                rateNightFragment.show(supportFragmentManager, "RateNightFragment")
+            }else{
+                BaseActivitys.showToastMessage(this,"Precios no disponibles", Toast.LENGTH_SHORT)
+            }
         }
 
         ibtnWhatsapp.setOnClickListener {
@@ -360,7 +370,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
             getPackageManager()
                     .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
             intent =  Intent(Intent.ACTION_VIEW,
-                    Uri.parse("fb://profile/100008411250163")) //Trys to make intent with FB's URI
+                    Uri.parse("fb://profile/jose.aguilar3")) //Trys to make intent with FB's URI
         } catch (e: Exception) {
             intent =  Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://www.facebook.com/" + user)) //catches and opens a url to the desired page
