@@ -32,7 +32,6 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         } else {
             view.showProgresBar(false)
             view.clearSearchResultsName()
-            view.showMessagge("query invalido")
         }
     }
 
@@ -76,7 +75,7 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
                 }
             }
             MainEvents.ON_RESULTS_SEARCH_NAMES_ERROR -> {
-
+                view.showMessagge(event.any as String)
             }
 
         }

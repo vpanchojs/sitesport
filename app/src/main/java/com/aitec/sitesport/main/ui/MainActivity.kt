@@ -106,11 +106,6 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         super.onStart()
         mapView.onStart()
         Log.e("resume", "en resumen")
-        if (checkPermissions()) {
-            startLocationUpdates();
-        } else if (!checkPermissions()) {
-            requestPermissions();
-        }
     }
 
     override fun onStop() {
@@ -305,25 +300,34 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
+    private fun permission() {
+        if (checkPermissions()) {
+            startLocationUpdates();
+        } else if (!checkPermissions()) {
+            requestPermissions();
+        }
+    }
 
     /*Permisos*/
     private fun requestPermissions() {
 
-        Log.e("permisos", "pidiendo permiso")
-
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
+        Log.e("permisos", "pidiendo permiso" + shouldProvideRationale)
         if (shouldProvideRationale) {
-
+            Log.e("permisos", "true")
             ActivityCompat.requestPermissions(this@MainActivity,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     REQUEST_PERMISSIONS_REQUEST_CODE)
         } else {
 
-            ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSIONS_REQUEST_CODE)
+            Log.e("permisos", "false")
+
+            /* ActivityCompat.requestPermissions(this@MainActivity,
+                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                     REQUEST_PERMISSIONS_REQUEST_CODE)
+                     */
         }
     }
 
@@ -402,8 +406,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 navigatioProfile(entrepiseSelect)
             }
             R.id.btn_my_location -> {
-                requestPermissions()
-                //startLocationUpdates()
+                permission()
             }
             R.id.cl_header_bs -> {
                 when (bottomSheetBehavior.state) {

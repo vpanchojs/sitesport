@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="3dp"
-            android:text="Obteniendo información"
+            android:text="Dezlize el mapa para buscar"
             android:textColor="@color/white_suave"
             app:layout_constraintEnd_toEndOf="@+id/tv_title_bs"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
