@@ -13,13 +13,13 @@ class Enterprise() : Parcelable {
     var idMarker: Long = 0L
     var descripcion : String = ""
     var abierto: Boolean = false
-    var fotos: List<Fotos>? = null
-    var telefonos: List<Telefonos>? = null
-    var red_social: List<RedSocial>? = null
-    var categoria: List<Categoria>? = null
-    var precio: List<Precio>? = null
-    var horario: List<Horario>? = null
-    var hora: List<Hora>? = null
+    var fotos: List<Fotos>? = arrayListOf()
+    var telefonos: List<Telefonos>? = arrayListOf()
+    var red_social: List<RedSocial>? = arrayListOf()
+    var categoria: List<Categoria>? = arrayListOf()
+    var precio: List<Precio>? = arrayListOf()
+    var horario: List<Horario>? = arrayListOf()
+    var hora: List<Hora>? = arrayListOf()
 
 constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
@@ -62,6 +62,9 @@ constructor(parcel: Parcel) : this() {
     }
 
     companion object CREATOR : Parcelable.Creator<Enterprise> {
+
+        //val DEFAULT = Enterprise("James", 40)
+
         override fun createFromParcel(parcel: Parcel): Enterprise {
             return Enterprise(parcel)
         }

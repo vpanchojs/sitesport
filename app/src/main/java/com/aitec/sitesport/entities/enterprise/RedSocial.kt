@@ -8,17 +8,20 @@ import android.os.Parcelable
  */
 class RedSocial() : Parcelable{
 
-    var nombre: String = ""
-    var url: String = ""
+    var facebook: String = ""
+    var whatsapp: String = ""
+    var instagram: String = ""
 
     constructor(parcel: Parcel) : this() {
-        nombre = parcel.readString()
-        url = parcel.readString()
+        facebook = parcel.readString()
+        whatsapp = parcel.readString()
+        instagram = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(nombre)
-        parcel.writeString(url)
+        parcel.writeString(facebook)
+        parcel.writeString(whatsapp)
+        parcel.writeString(instagram)
     }
 
     override fun describeContents(): Int {

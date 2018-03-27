@@ -34,13 +34,12 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
         when (profileEvent.eventType) {
             ProfileEvent.SUCCESS_PROFILE ->{
-
+                profileView.setEnterprise(profileEvent.eventEnterprise!!)
                 profileView.setNameProfile((profileEvent.eventEnterprise as Enterprise).nombres)
                 profileView.setImageProfile((profileEvent.eventEnterprise as Enterprise).fotos)
                 profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "abierto" else "cerrado")
                 profileView.setPriceDayStandar((profileEvent.eventEnterprise as Enterprise).precio!![0].valor)
                 profileView.setPriceNightStandar((profileEvent.eventEnterprise as Enterprise).precio!![1].valor)
-                profileView.setEnterprise(profileEvent.eventEnterprise!!)
             }
 
             ProfileEvent.ERROR_PROFILE -> {

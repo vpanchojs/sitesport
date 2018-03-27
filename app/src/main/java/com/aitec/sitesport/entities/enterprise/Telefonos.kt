@@ -8,17 +8,17 @@ import android.os.Parcelable
  */
 class Telefonos() : Parcelable{
 
-    var numero: String = ""
-    var tipo: String = ""
+    var celular : String = ""
+    var convencional : String = ""
 
     constructor(parcel: Parcel) : this() {
-        numero = parcel.readString()
-        tipo = parcel.readString()
+        celular = parcel.readString()
+        convencional = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(numero)
-        parcel.writeString(tipo)
+        parcel.writeString(celular)
+        parcel.writeString(convencional)
     }
 
     override fun describeContents(): Int {

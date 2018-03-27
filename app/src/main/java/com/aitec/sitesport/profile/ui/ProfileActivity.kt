@@ -73,7 +73,11 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         setContentView(R.layout.activity_profile)
         setupInjection()
 
-        this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
+        if(intent != null){
+            this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
+        }
+
+        setupMapBox()
         setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
         collapse_toolbar_profile.title = ""
         header_tv_title.text = enterprise!!.nombres
@@ -122,16 +126,15 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun setImageProfile(urls: List<Fotos>?) {
-        if(!(urls!![0].imagen.isEmpty())){
+        if(urls != null && urls.isNotEmpty() && !(urls[0].imagen.isEmpty())){
             GlideApp.with(this)
-                .load("http://54.200.239.140:8050/media/imagenes/369889b4-61fe-4538-abeb-4fca65f35943/pampita.jpg")
+                .load(URL(urls[0].imagen).toString())
                 .placeholder(img_image_profile.drawable)
                 //.fitCenter()
                 .centerCrop()
                 .error(img_image_profile.drawable)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(img_image_profile)
-        //setupImageProfile(BitmapFactory.decodeResource(resources, R.drawable.piscina))
             //setupImageProfile()
         }
     }
@@ -154,6 +157,10 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun setupCollapsibleDynamic(){
         setupAppBarSizeDynamic()
         setupListenerScrollAppBarLayout()
+    }
+
+    private fun setupMapBox(){
+        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true })
     }
 
     override fun setLatLngLocationMap(locationLatLng: LatLng?) {
@@ -214,17 +221,17 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         }
 
         ibtnWhatsapp.setOnClickListener {
-            openWhatsApp("991933291")
+            openWhatsApp()
         }
 
         ibtnFacebook.setOnClickListener {
-            openFacebook("jose.aguilar3")
+            openFacebook()
         }
 
         ibtnPhone.setOnClickListener {
             //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    callPhone("0980858483")
+                    callPhone()
                     Log.e("permisos", "llamando")
                 }else{
                     Log.e("permisos", "lanzando permisos")
@@ -243,7 +250,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.i(TAG, "Permission has been denied by user")
                 } else {
-                    callPhone("0980858483")
+                    callPhone()
                     Log.i(TAG, "Permission has been granted by user")
                 }
             }
@@ -340,49 +347,59 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         }
     }
 
-    private fun openWhatsApp(cellPhone : String) {
-        val ECU = "593"
-        val formattedNumber : String  = ECU + cellPhone
-        try{
-            val sendIntent : Intent
-            sendIntent = Intent("android.intent.action.MAIN")
-            sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
-            sendIntent.setAction(Intent.ACTION_SEND)
-            sendIntent.setType("text/plain")
-            sendIntent.putExtra(Intent.EXTRA_TEXT,"")
-            sendIntent.putExtra("jid", formattedNumber +"@s.whatsapp.net")
-            sendIntent.setPackage("com.whatsapp")
-            startActivity(sendIntent)
-        }
-        catch(e : Exception)
-        {
-            //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,"No tienes whatsapp instalado",Toast.LENGTH_SHORT).show();
+    private fun openWhatsApp() {
+
+        if(enterprise != null && enterprise!!.telefonos!![0].celular.isNotBlank()) {
+            val ECU = "593"
+            val formattedNumber: String = ECU + enterprise!!.telefonos!![0].celular
+            try {
+                val sendIntent: Intent
+                sendIntent = Intent("android.intent.action.MAIN")
+                sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
+                sendIntent.setAction(Intent.ACTION_SEND)
+                sendIntent.setType("text/plain")
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "")
+                sendIntent.putExtra("jid", formattedNumber + "@s.whatsapp.net")
+                sendIntent.setPackage("com.whatsapp")
+                startActivity(sendIntent)
+            } catch (e: Exception) {
+                //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No tienes whatsapp instalado", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
         }
     }
 
-    private fun openFacebook(user: String) {
-        /*
-        ¡También debería agregar intent.setPackage("com.facebook.katana");que hace que la actividad de Facebook se abra más rápido!
-         */
-        var intent : Intent?
-        try {
-            getPackageManager()
-                    .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
-            intent =  Intent(Intent.ACTION_VIEW,
-                    Uri.parse("fb://profile/jose.aguilar3")) //Trys to make intent with FB's URI
-        } catch (e: Exception) {
-            intent =  Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.facebook.com/" + user)) //catches and opens a url to the desired page
-        }
+    private fun openFacebook() {
 
-        if(intent != null) startActivity(intent)
+        if(enterprise != null && enterprise!!.red_social!![0].facebook.isNotBlank()) {
+
+            var intent: Intent?
+            try {
+                getPackageManager()
+                        .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
+                intent = Intent(Intent.ACTION_VIEW,
+                        Uri.parse("fb://profile/jose.aguilar3")) //Trys to make intent with FB's URI
+            } catch (e: Exception) {
+                intent = Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://www.facebook.com/" + enterprise!!.red_social!![0].facebook)) //catches and opens a url to the desired page
+            }
+
+            if (intent != null) startActivity(intent)
+        }else {
+            BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
+        }
 
     }
 
     @SuppressLint("MissingPermission")
-    private fun callPhone(phone : String) {
-        startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)))
+    private fun callPhone() {
+        if(enterprise != null && enterprise!!.telefonos!![0].convencional.isNotBlank()) {
+            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise!!.telefonos!![0].convencional)))
+        }else{
+            BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
