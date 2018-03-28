@@ -1,5 +1,6 @@
 package com.aitec.sitesport.domain
 
+import RetrofitStatus
 import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitApi {
 
-    private val LAG = 1000
+    private val LAG = 500
     private var handlerSearchName: Handler? = null
     private var runnableSearchName: Runnable? = null
 
@@ -24,7 +25,7 @@ class RetrofitApi {
 
     lateinit var requestSearchVisibility: Call<List<Enterprise>>
 
-    lateinit var requestSearchName: Call<List<Enterprise>>
+    lateinit var requestSearchName: Call<SearchCentersName>
 
 
     companion object {
@@ -57,15 +58,52 @@ class RetrofitApi {
         handlerSearchVisibility = Handler()
         runnableSearchVisibility = Runnable {
 
-            requestSearchVisibility.clone().enqueue(object : Callback<List<Enterprise>> {
+            requestSearchVisibility.enqueue(object : Callback<List<Enterprise>> {
                 override fun onResponse(call: Call<List<Enterprise>>, response: Response<List<Enterprise>>) {
-                    callback.onSucces(response.body())
+                    RetrofitStatus.Response(response, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
+                        override fun success(response: Response<List<Enterprise>>) {
+                            //Respuesta correcta
+                            callback.onSucces(response.body())
+                        }
 
+                        override fun unauthenticated(response: Response<*>) {
+                            Log.e("unaA", response.message())
+                            callback.onError(response.message())
+                        }
+
+                        override fun clientError(response: Response<*>) {
+                            Log.e("ce", response.message())
+                            callback.onError(response.message())
+                        }
+
+                        override fun serverError(response: Response<*>) {
+                            Log.e("se", response.message())
+                            callback.onError(response.message())
+                        }
+
+
+                        override fun unexpectedError(t: Throwable) {
+                            Log.e("unaE", response.message())
+                            callback.onError(response.message())
+                        }
+                    })
                 }
 
+
                 override fun onFailure(call: Call<List<Enterprise>>, t: Throwable) {
-                    Log.e("error", t.message.toString())
-                    callback.onError(t!!.message)
+                    RetrofitStatus.Failure(t, object : RetrofitStatus.MyCallbackFailure<List<Enterprise>> {
+                        override fun networkError(error: String) {
+                            callback.onError(error)
+                        }
+
+                        override fun unexpectedError(t: Throwable) {
+                            Log.e("unE", t!!.toString())
+                            callback.onError(t!!.toString())
+                        }
+                    }
+                    )
+
+
                 }
             })
         }
@@ -74,6 +112,11 @@ class RetrofitApi {
     }
 
     fun deleteRequestGetCenterSport() {
+        if (handlerSearchVisibility != null) {
+            handlerSearchVisibility?.removeCallbacks(runnableSearchVisibility)
+            handlerSearchVisibility = null
+        }
+
         if (::requestSearchVisibility.isInitialized) {
             Log.e("delte", "eliminar peticion visibility")
             requestSearchVisibility.cancel()
@@ -81,18 +124,56 @@ class RetrofitApi {
     }
 
     fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
-        var requestSearchName = request.searchNameCenterSport(query, 1)
+        requestSearchName = request.searchNameCenterSport(query, 1)
 
         handlerSearchName = Handler()
         runnableSearchName = Runnable {
-            requestSearchName.clone().enqueue(object : Callback<SearchCentersName> {
-                override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
-                    Log.e("error", t!!.message.toString())
-                    callback.onError(t!!.message)
-                }
+            requestSearchName.enqueue(object : Callback<SearchCentersName> {
 
                 override fun onResponse(call: Call<SearchCentersName>?, response: Response<SearchCentersName>?) {
-                    callback.onSucces(response!!.body())
+                    RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<SearchCentersName> {
+
+                        override fun success(response: Response<SearchCentersName>) {
+                            callback.onSucces(response.body())
+                        }
+
+                        override fun unauthenticated(response: Response<*>) {
+                            Log.e("unaA", response.message())
+                            callback.onError(response.message())
+                        }
+
+                        override fun clientError(response: Response<*>) {
+                            Log.e("ce", response.message())
+                            callback.onError(response.message())
+                        }
+
+                        override fun serverError(response: Response<*>) {
+                            Log.e("se", response.message())
+                            callback.onError(response.message())
+                        }
+
+
+                        override fun unexpectedError(t: Throwable) {
+                            Log.e("unaE", response.message())
+                            callback.onError(response.message())
+                        }
+                    })
+
+                }
+
+                override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
+
+                    RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
+                        override fun networkError(e: String) {
+                            callback.onError(e)
+                        }
+
+                        override fun unexpectedError(t: Throwable) {
+                            Log.e("unE", t!!.toString())
+                            callback.onError(t!!.toString())
+                        }
+                    })
+
                 }
             })
         }
@@ -117,6 +198,11 @@ class RetrofitApi {
     }
 
     fun deleteRequestSearchName() {
+        if (handlerSearchName != null) {
+            handlerSearchName?.removeCallbacks(runnableSearchName)
+            handlerSearchName = null
+        }
+        Log.e("e", "eliminando peticion" + ::requestSearchName.isInitialized)
         if (::requestSearchName.isInitialized) {
             requestSearchName.cancel()
             Log.e("delte", "eliminar peticion name")

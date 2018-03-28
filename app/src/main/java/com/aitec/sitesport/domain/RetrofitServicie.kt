@@ -3,8 +3,8 @@ package com.aitec.sitesport.domain
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_PROFILE
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_CENTER
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_NAME_CENTER_SPORT
-import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.SearchCentersName
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -21,5 +21,5 @@ interface RetrofitServicie {
 
     @Headers("Content-Type: application/json")
     @GET(PATH_PROFILE + "{pk}")
-    fun getProfile(@Path("pk") pk : String): Call<JsonObject>
+    fun getProfile(@Path("pk") pk: String): Call<JsonObject>
 }

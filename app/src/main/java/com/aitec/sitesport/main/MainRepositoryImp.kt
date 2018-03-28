@@ -1,10 +1,8 @@
 package com.aitec.sitesport.main
 
-import android.util.Log
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.events.MainEvents
 
@@ -30,13 +28,10 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retrof
         retrofitApi.getCenterSport(latSouth, latNorth, lonWest, lonEast, latMe, lngMe, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 postEvent(MainEvents.ON_RESULTS_SEARCHS_SUCCESS, response!!)
-                response as List<Enterprise>
-                if (response.size > 0)
-                    Log.e("Repo:", response.get(0).pk)
             }
 
             override fun onError(error: Any?) {
-
+                postEvent(MainEvents.ON_RESULTS_SEARCHS_ERROR, error!!)
             }
         })
     }
