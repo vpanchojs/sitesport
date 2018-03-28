@@ -36,7 +36,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#642a2e43"/>
+                android:background="#192a2e43"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_profile"
@@ -75,6 +75,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="6dp"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary">
 
