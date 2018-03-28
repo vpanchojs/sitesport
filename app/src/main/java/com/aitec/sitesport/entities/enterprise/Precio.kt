@@ -7,17 +7,17 @@ import android.os.Parcelable
  * Created by Yavac on 22/3/2018.
  */
 class Precio() : Parcelable{
-    var valor: String = ""
-    var nombre: String = ""
+    var noche: String = ""
+    var dia: String = ""
 
     constructor(parcel: Parcel) : this() {
-        valor = parcel.readString()
-        nombre = parcel.readString()
+        noche = parcel.readString()
+        dia = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(valor)
-        parcel.writeString(nombre)
+        parcel.writeString(noche)
+        parcel.writeString(dia)
     }
 
     override fun describeContents(): Int {
@@ -33,5 +33,6 @@ class Precio() : Parcelable{
             return arrayOfNulls(size)
         }
     }
+
 
 }

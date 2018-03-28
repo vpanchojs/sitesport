@@ -196,7 +196,7 @@ class RetrofitApi {
                     override fun networkError(e: String) {
                         callback.onError(e)
                     }
-                    
+
                     override fun unexpectedError(t: Throwable) {
                         callback.onError(t!!.toString())
                     }

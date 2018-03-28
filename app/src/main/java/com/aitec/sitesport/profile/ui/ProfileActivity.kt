@@ -172,6 +172,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun setLatLngLocationMap(locationLatLng: LatLng?) {
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
+            Log.e("ESTADO", enterprise!!.abierto.toString())
             val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
             it.addMarker(MarkerOptions()
                     .position(LatLng(locationLatLng!!.latitude, locationLatLng.longitude))

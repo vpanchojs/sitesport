@@ -8,23 +8,22 @@ import android.os.Parcelable
  */
 class Hora() : Parcelable{
 
-    var hora_ini: String = ""
-    var hora_fin: String = ""
+    var inicio: String = ""
+    var fin: String = ""
 
     constructor(parcel: Parcel) : this() {
-        hora_ini = parcel.readString()
-        hora_fin = parcel.readString()
+        inicio = parcel.readString()
+        fin = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(hora_ini)
-        parcel.writeString(hora_fin)
+        parcel.writeString(inicio)
+        parcel.writeString(fin)
     }
 
     override fun describeContents(): Int {
         return 0
     }
-
 
     companion object CREATOR : Parcelable.Creator<Hora> {
         override fun createFromParcel(parcel: Parcel): Hora {
@@ -35,5 +34,6 @@ class Hora() : Parcelable{
             return arrayOfNulls(size)
         }
     }
+
 
 }
