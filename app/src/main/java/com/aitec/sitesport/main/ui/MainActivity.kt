@@ -1,6 +1,8 @@
 package com.aitec.sitesport.main.ui
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.TypeEvaluator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -54,6 +56,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     private val REQUEST_CHECK_SETTINGS = 0x1
     private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
     private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
+
+    private var markerSelect: Marker? = null
 
 
     val REQUESTING_LOCATION_UPDATES_KEY = "location"
@@ -480,6 +484,8 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 .icon(icono))
 
         entreprise.idMarker = marker.id
+        // marker.title = "Que mas v"
+        // marker.showInfoWindow(mapboxMap, mapView)
 
     }
 
@@ -491,6 +497,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
     }
 
+
     override fun onCameraIdle() {
         presenter.stopSearchVisibility()
         var bounds = mapboxMap.projection.visibleRegion.latLngBounds
@@ -500,12 +507,28 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
+        if (markerSelect != null) {
+            if (entrepiseSelect.abierto) {
+                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open)
+            } else {
+                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close)
+            }
+        }
+
         val df = DecimalFormat("0.00")
         btn_profile_entrepise.visibility = VISIBLE
+        //animateMarker(marker, mapboxMap.cameraPosition.target)
 
         entrepiseResultsSearchVisible.forEach {
             if (it.idMarker == marker.id) {
                 entrepiseSelect = it
+                markerSelect = marker
+
+                if (it.abierto) {
+                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open_select)
+                } else {
+                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
+                }
                 tv_title_bs.setText(it.nombres)
                 tv_subtitle_bs.setText(df.format(it.distancia).toString() + " Km")
             }
@@ -583,5 +606,25 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     override fun hideButtonProfileEntrepise() {
         btn_profile_entrepise.visibility = GONE
+    }
+
+
+    class LatLngEvaluator : TypeEvaluator<LatLng> {
+        private val latLng = LatLng()
+
+        override fun evaluate(fraction: Float, startValue: LatLng?, endValue: LatLng?): LatLng {
+            latLng.setLatitude(startValue!!.getLatitude()
+                    + ((endValue!!.getLatitude() - startValue.getLatitude()) * fraction));
+            latLng.setLongitude(startValue.getLongitude()
+                    + ((endValue!!.getLongitude() - startValue.getLongitude()) * fraction));
+            return latLng;
+        }
+    }
+
+    fun animateMarker(marker: Marker, point: LatLng) {
+        var markerAnimator = ObjectAnimator.ofObject(marker, "position",
+                LatLngEvaluator(), marker.getPosition(), point);
+        markerAnimator.setDuration(2000);
+        markerAnimator.start();
     }
 }
