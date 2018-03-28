@@ -60,10 +60,14 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         var tag_enterprise = "entrepise"
     }
 
+    private val EMOTICON_HAPPY = 0x1F60A
+
     private var isHideToolbarView = false
     private val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
     private val TAG = "ProfileActivity"
     private var enterprise : Enterprise? = null
+    private var share = ""
+
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
@@ -76,6 +80,8 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         if(intent != null){
             this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
         }
+
+        share = "Te invito a jugar en " + enterprise!!.nombres + ". Descarga canchis para poder saber todo sobre los sitios deportivos " + String(Character.toChars(EMOTICON_HAPPY))
 
         setupMapBox()
         setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
@@ -166,7 +172,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun setLatLngLocationMap(locationLatLng: LatLng?) {
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
-            val icon = iconFactory.fromResource(R.drawable.ic_ball_futbol)
+            val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
             it.addMarker(MarkerOptions()
                     .position(LatLng(locationLatLng!!.latitude, locationLatLng.longitude))
                     .icon(icon))
@@ -425,7 +431,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         val sendIntent = Intent(android.content.Intent.ACTION_SEND)
         sendIntent.type = "text/plain"
         sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"share_option");
-        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, "¡Que mas ve!")
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, share)
         startActivity(Intent.createChooser(sendIntent,"Compartir a través de..."));
     }
 
