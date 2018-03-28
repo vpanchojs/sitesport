@@ -191,7 +191,16 @@ class RetrofitApi {
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                callback.onError(t.message.toString())
+                //callback.onError(t.message.toString())
+                RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
+                    override fun networkError(e: String) {
+                        callback.onError(e)
+                    }
+                    
+                    override fun unexpectedError(t: Throwable) {
+                        callback.onError(t!!.toString())
+                    }
+                })
             }
         })
 
