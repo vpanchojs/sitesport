@@ -120,10 +120,12 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun showContentLoading() {
+        app_bar_layout_profile.setExpanded(false)
         contentLoading.visibility = View.VISIBLE
     }
 
     override fun hideContentLoading() {
+        app_bar_layout_profile.setExpanded(true)
         contentLoading.visibility = View.GONE
     }
 
