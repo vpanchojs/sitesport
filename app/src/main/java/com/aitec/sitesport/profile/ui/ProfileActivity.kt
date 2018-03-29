@@ -91,7 +91,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
         setupImageProfile()
-        setupAppBarSizeDynamic()
+        //setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         //setupHeader()
         setupListenerScrollAppBarLayout()
