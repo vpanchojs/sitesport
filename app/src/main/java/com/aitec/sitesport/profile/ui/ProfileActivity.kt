@@ -85,8 +85,8 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
         setupMapBox()
         setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
-        collapse_toolbar_profile.title = enterprise!!.nombres
-        //header_tv_title.text = enterprise!!.nombres
+        collapse_toolbar_profile.title = ""
+        header_tv_title.text = enterprise!!.nombres
 
         Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
@@ -120,15 +120,19 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun showContentLoading() {
-        collapse_toolbar_profile.title = ""
-        header_tv_title.text = enterprise!!.nombres
+        val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
+        params.scrollFlags = 0  // clear all scroll flags
+
+        toolbar_profile.title = enterprise!!.nombres
         app_bar_layout_profile.setExpanded(false)
         contentLoading.visibility = View.VISIBLE
     }
 
     override fun hideContentLoading() {
-        collapse_toolbar_profile.title = enterprise!!.nombres
-        header_tv_title.text = ""
+        val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
+        params.scrollFlags = 1  // clear all scroll flags
+
+        toolbar_profile.title = ""
         app_bar_layout_profile.setExpanded(true)
         contentLoading.visibility = View.GONE
     }
