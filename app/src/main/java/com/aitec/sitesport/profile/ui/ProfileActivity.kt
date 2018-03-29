@@ -85,8 +85,8 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
         setupMapBox()
         setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
-        collapse_toolbar_profile.title = ""
-        header_tv_title.text = enterprise!!.nombres
+        collapse_toolbar_profile.title = enterprise!!.nombres
+        //header_tv_title.text = enterprise!!.nombres
 
         Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
@@ -94,7 +94,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         //setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         //setupHeader()
-        setupListenerScrollAppBarLayout()
+        //setupListenerScrollAppBarLayout()
         setupMapBox(savedInstanceState)
         setupBusinessHours()
 
@@ -120,11 +120,15 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun showContentLoading() {
+        collapse_toolbar_profile.title = ""
+        header_tv_title.text = enterprise!!.nombres
         app_bar_layout_profile.setExpanded(false)
         contentLoading.visibility = View.VISIBLE
     }
 
     override fun hideContentLoading() {
+        collapse_toolbar_profile.title = enterprise!!.nombres
+        header_tv_title.text = ""
         app_bar_layout_profile.setExpanded(true)
         contentLoading.visibility = View.GONE
     }
