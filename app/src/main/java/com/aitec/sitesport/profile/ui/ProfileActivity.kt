@@ -91,7 +91,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
         setupImageProfile()
-        //setupAppBarSizeDynamic()
+        setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         //setupHeader()
         //setupListenerScrollAppBarLayout()
@@ -131,7 +131,6 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun hideContentLoading() {
         //val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
         //params.scrollFlags = 1  // clear all scroll flags
-        setupAppBarSizeDynamic()
         toolbar_profile.title = ""
         nsvProfile.setNestedScrollingEnabled(true)
         collapse_toolbar_profile.title = ""
