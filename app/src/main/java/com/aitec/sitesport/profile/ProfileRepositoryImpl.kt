@@ -41,7 +41,7 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
     }
 
     private fun postEvent(type: Int, any: Any, enterprise : Enterprise?) {
-        val event = ProfileEvent(type, "", enterprise)
+        val event = ProfileEvent(type, any.toString(), enterprise)
         eventBusInterface.post(event)
     }
 

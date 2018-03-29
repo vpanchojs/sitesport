@@ -53,6 +53,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 profileView.setTextInfoLoading(profileEvent.eventMsg)
                 profileView.showTextInfoLoading()
             }
+
             else -> {
                 Log.e("ProfileEvent", "new constant undefine")
             }
