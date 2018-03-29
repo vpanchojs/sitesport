@@ -37,9 +37,9 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 profileView.setEnterprise(profileEvent.eventEnterprise!!)
                 profileView.setNameProfile((profileEvent.eventEnterprise as Enterprise).nombres)
                 profileView.setImageProfile((profileEvent.eventEnterprise as Enterprise).fotos)
-                profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "abierto" else "cerrado")
-                profileView.setPriceDayStandar((profileEvent.eventEnterprise as Enterprise).precio!![0].dia)
-                profileView.setPriceNightStandar((profileEvent.eventEnterprise as Enterprise).precio!![1].noche)
+                profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "Abierto" else "Cerrado")
+                profileView.setPriceDayStandar("$" + (profileEvent.eventEnterprise as Enterprise).precio!![0].dia)
+                profileView.setPriceNightStandar("$" + (profileEvent.eventEnterprise as Enterprise).precio!![0].noche)
             }
 
             ProfileEvent.ERROR_PROFILE -> {

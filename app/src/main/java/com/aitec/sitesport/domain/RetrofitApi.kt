@@ -29,7 +29,7 @@ class RetrofitApi {
 
 
     companion object {
-        val PATH_API = "http://54.200.239.140:8050/"
+        val PATH_API = "http://18.219.31.241:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
         const val PATH_PROFILE = "api/centros-deportivos/"
