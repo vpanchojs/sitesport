@@ -26,7 +26,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
     override fun onDestroy() {}
 
     override fun getProfile(enterprise : Enterprise?){
-        profileView.showProgressContent()
+        profileView.showProgressBar()
         profileView.showContentLoading()
         profileInteractor.getProfile(enterprise)
     }
@@ -42,13 +42,14 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "Abierto" else "Cerrado")
                 profileView.setPriceDayStandar("$ " + (profileEvent.eventEnterprise as Enterprise).precio!![0].dia)
                 profileView.setPriceNightStandar("$ " + (profileEvent.eventEnterprise as Enterprise).precio!![0].noche)
-                profileView.hideProgressContent()
+                profileView.hideProgressBar()
                 profileView.hideContentLoading()
 
             }
 
             ProfileEvent.ERROR_PROFILE -> {
-                profileView.hideProgressContent()
+                Log.e("ERROR_PROFILE", profileEvent.eventMsg)
+                profileView.hideProgressBar()
                 profileView.setTextInfoLoading(profileEvent.eventMsg)
                 profileView.showTextInfoLoading()
             }

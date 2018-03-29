@@ -107,11 +107,11 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     // ProfileView.kt implementation
 
-    override fun showProgressContent() {
+    override fun showProgressBar() {
         pbLoadEnterprise.visibility = View.VISIBLE
     }
 
-    override fun hideProgressContent() {
+    override fun hideProgressBar() {
         pbLoadEnterprise.visibility = View.GONE
     }
 
