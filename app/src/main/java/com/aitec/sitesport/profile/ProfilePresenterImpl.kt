@@ -26,6 +26,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
     override fun onDestroy() {}
 
     override fun getProfile(enterprise : Enterprise?){
+        profileView.hideTextInfoLoading()
         profileView.showProgressBar()
         profileView.showContentLoading()
         profileInteractor.getProfile(enterprise)
