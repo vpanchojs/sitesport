@@ -120,22 +120,10 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun showContentLoading() {
-        //val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
-        //params.scrollFlags = 0  // clear all scroll flags
-        nsvProfile.setNestedScrollingEnabled(false)
-        toolbar_profile.title = enterprise!!.nombres
-        //app_bar_layout_profile.setExpanded(false)
         contentLoading.visibility = View.VISIBLE
     }
 
     override fun hideContentLoading() {
-        //val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
-        //params.scrollFlags = 1  // clear all scroll flags
-        toolbar_profile.title = ""
-        nsvProfile.setNestedScrollingEnabled(true)
-        collapse_toolbar_profile.title = ""
-        header_tv_title.text = enterprise!!.nombres
-        //app_bar_layout_profile.setExpanded(true)
         contentLoading.visibility = View.GONE
     }
 
