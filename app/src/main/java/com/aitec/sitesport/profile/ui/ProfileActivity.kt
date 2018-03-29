@@ -131,6 +131,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun hideContentLoading() {
         //val params = toolbar_profile.getLayoutParams() as AppBarLayout.LayoutParams
         //params.scrollFlags = 1  // clear all scroll flags
+        setupAppBarSizeDynamic()
         toolbar_profile.title = ""
         nsvProfile.setNestedScrollingEnabled(true)
         collapse_toolbar_profile.title = ""
