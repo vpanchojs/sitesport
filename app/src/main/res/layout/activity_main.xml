@@ -26,6 +26,15 @@
             app:mapbox_cameraZoom="12"
             app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_futbol_close" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_user"
             android:layout_width="30dp"
@@ -34,15 +43,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:elevation="1dp"
-            app:srcCompat="@drawable/ic_person_black_24dp"
-            app:civ_border_color="#ffffff"
+            app:civ_border_color="#000000"
             app:civ_border_width="2dp"
             app:civ_circle_background_color="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_person_black_24dp" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -258,4 +266,6 @@
         app:srcCompat="@drawable/ic_my_location" />
 
     <include layout="@layout/bottom_sheet_results" />
+
+
 </android.support.design.widget.CoordinatorLayout>
