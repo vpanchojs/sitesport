@@ -22,7 +22,7 @@ class RetrofitStatus {
         fun <T> Failure(t: Throwable, callback: MyCallbackFailure<T>) {
             if (t is IOException) {
                 Log.e("network", t.toString())
-                callback.networkError("Verifique su conexion e intentlo de nuevo")
+                callback.networkError("Verifique su conexion e inténtelo de nuevo")
             } else {
                 callback.unexpectedError(t)
             }

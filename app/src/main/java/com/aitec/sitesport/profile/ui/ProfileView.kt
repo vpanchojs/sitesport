@@ -31,6 +31,13 @@ interface ProfileView {
     fun setStateEnterprise(state : String?)
     fun setPriceDayStandar(priceDay : String?)
     fun setPriceNightStandar(priceNight : String?)
+    fun showProgressContent()
+    fun hideProgressContent()
+    fun showContentLoading()
+    fun hideContentLoading()
+    fun showTextInfoLoading()
+    fun hideTextInfoLoading()
+    fun setTextInfoLoading(msg : String)
 
     //model
     fun setEnterprise(enterprise : Enterprise)

@@ -107,6 +107,34 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     // ProfileView.kt implementation
 
+    override fun showProgressContent() {
+        pbLoadEnterprise.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressContent() {
+        pbLoadEnterprise.visibility = View.GONE
+    }
+
+    override fun showContentLoading() {
+        contentLoading.visibility = View.VISIBLE
+    }
+
+    override fun hideContentLoading() {
+        contentLoading.visibility = View.GONE
+    }
+
+    override fun showTextInfoLoading(){
+        tvMsg.visibility = View.VISIBLE
+    }
+
+    override fun hideTextInfoLoading(){
+        tvMsg.visibility = View.GONE
+    }
+
+    override fun setTextInfoLoading(msg : String) {
+        tvMsg.text = msg
+    }
+
     override fun setStateEnterprise(state: String?) {
         tvStateEnterprise.text = state
     }
@@ -387,7 +415,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
                 getPackageManager()
                         .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
                 intent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse("fb://profile/jose.aguilar3")) //Trys to make intent with FB's URI
+                        Uri.parse("fb://profile/" + enterprise!!.red_social!![0].facebook)) //Trys to make intent with FB's URI
             } catch (e: Exception) {
                 intent = Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://www.facebook.com/" + enterprise!!.red_social!![0].facebook)) //catches and opens a url to the desired page
