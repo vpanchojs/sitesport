@@ -124,7 +124,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         //params.scrollFlags = 0  // clear all scroll flags
         nsvProfile.setNestedScrollingEnabled(false)
         toolbar_profile.title = enterprise!!.nombres
-        app_bar_layout_profile.setExpanded(false)
+        //app_bar_layout_profile.setExpanded(false)
         contentLoading.visibility = View.VISIBLE
     }
 
@@ -135,7 +135,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         nsvProfile.setNestedScrollingEnabled(true)
         collapse_toolbar_profile.title = ""
         header_tv_title.text = enterprise!!.nombres
-        app_bar_layout_profile.setExpanded(true)
+        //app_bar_layout_profile.setExpanded(true)
         contentLoading.visibility = View.GONE
     }
 
