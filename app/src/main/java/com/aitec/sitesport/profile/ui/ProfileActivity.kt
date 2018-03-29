@@ -97,6 +97,10 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         setupListenerScrollAppBarLayout()
         setupMapBox(savedInstanceState)
         setupBusinessHours()
+
+        btnReloadEnterprise.setOnClickListener{
+            profilePresenter.getProfile(enterprise)
+        }
     }
 
     private fun setupInjection() {
@@ -125,10 +129,12 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
     override fun showTextInfoLoading(){
         tvMsg.visibility = View.VISIBLE
+        btnReloadEnterprise.visibility = View.VISIBLE
     }
 
     override fun hideTextInfoLoading(){
         tvMsg.visibility = View.GONE
+        btnReloadEnterprise.visibility = View.GONE
     }
 
     override fun setTextInfoLoading(msg : String) {
