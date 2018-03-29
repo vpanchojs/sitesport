@@ -40,7 +40,7 @@ class RateDayFragment : DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
-        view.tvPriceForHour.text = (arguments!!.getParcelableArrayList<Precio>("precio"))[0].valor
+        view.tvPriceForHour.text = (arguments!!.getParcelableArrayList<Precio>("precio"))[0].dia
 
         return dialog
     }
