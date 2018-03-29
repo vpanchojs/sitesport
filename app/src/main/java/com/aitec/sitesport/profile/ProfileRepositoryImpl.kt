@@ -30,7 +30,7 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
             }
 
             override fun onError(error: Any?) {
-                postEvent(ProfileEvent.SUCCESS_PROFILE, error.toString(), null)
+                postEvent(ProfileEvent.ERROR_PROFILE, error.toString(), null)
                 Log.e("getProfile:onError()", error.toString())
             }
         })
