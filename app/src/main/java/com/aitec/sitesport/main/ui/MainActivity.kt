@@ -143,6 +143,15 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
     }
 
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        } else {
+            super.onBackPressed()
+        }
+
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, requestingLocationUpdates)
         super.onSaveInstanceState(outState)
@@ -614,10 +623,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
         override fun evaluate(fraction: Float, startValue: LatLng?, endValue: LatLng?): LatLng {
             latLng.setLatitude(startValue!!.getLatitude()
-                    + ((endValue!!.getLatitude() - startValue.getLatitude()) * fraction));
+                    + ((endValue!!.getLatitude() - startValue.getLatitude()) * fraction))
             latLng.setLongitude(startValue.getLongitude()
-                    + ((endValue!!.getLongitude() - startValue.getLongitude()) * fraction));
-            return latLng;
+                    + ((endValue!!.getLongitude() - startValue.getLongitude()) * fraction))
+            return latLng
         }
     }
 
