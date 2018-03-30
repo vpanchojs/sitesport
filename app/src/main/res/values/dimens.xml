@@ -24,6 +24,7 @@
     <dimen name="header_view_end_text_size">18sp</dimen>
 
     <dimen name="size_btn_profile">46dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
 
     <!-- //dimensiones del perfil -->
 

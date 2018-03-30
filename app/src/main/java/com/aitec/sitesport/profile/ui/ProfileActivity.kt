@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
 import com.aitec.sitesport.R
-import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.CollapsingToolbarLayout.LayoutParams
 import android.view.View
 import android.widget.LinearLayout
 import android.support.v4.content.ContextCompat
@@ -31,8 +31,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.support.annotation.NonNull
 import android.support.annotation.RequiresApi
+import android.support.design.widget.CollapsingToolbarLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityCompat
+import android.support.v4.view.ViewCompat
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -85,8 +90,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
 
         setupMapBox()
         setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
-        collapse_toolbar_profile.title = ""
-        header_tv_title.text = enterprise!!.nombres
+        setNameProfile(enterprise!!.nombres)
 
         Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
@@ -94,7 +98,7 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         setupAppBarSizeDynamic()
         //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
         //setupHeader()
-        //setupListenerScrollAppBarLayout()
+        setupListenerScrollAppBarLayout()
         setupMapBox(savedInstanceState)
         setupBusinessHours()
 
@@ -120,11 +124,56 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     override fun showContentLoading() {
+        //lockAppBarClosed()
+        isScrollAppBar(false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            contentReservar.elevation = 0f
+        }
+        contentInfo.visibility = View.GONE
+        btnReservacion.visibility = View.INVISIBLE
+        contentReservar.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         contentLoading.visibility = View.VISIBLE
     }
 
+    private fun lockAppBarClosed() {
+        app_bar_layout_profile.setExpanded(false, false);
+        app_bar_layout_profile.setActivated(false);
+        //val lp : CoordinatorLayout.LayoutParams  = app_bar_layout_profile.getLayoutParams() as CoordinatorLayout.LayoutParams
+        //lp.height = resources.getDimension(R.dimen.app_bar_height).toInt()
+    }
+
+    private fun unlockAppBarOpen() {
+        app_bar_layout_profile.setExpanded(true, false);
+        app_bar_layout_profile.setActivated(true);
+        //val lp : CoordinatorLayout.LayoutParams  = app_bar_layout_profile.getLayoutParams() as CoordinatorLayout.LayoutParams
+        //lp.height = resources.getDimension(R.dimen.app_bar_height).toInt()
+    }
+
     override fun hideContentLoading() {
+        //unlockAppBarOpen()
+        isScrollAppBar(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            contentReservar.elevation = 12f
+        }
+        contentInfo.visibility = View.VISIBLE
         contentLoading.visibility = View.GONE
+        btnReservacion.visibility = View.VISIBLE
+        contentReservar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+    }
+
+
+
+    private fun isScrollAppBar(boolean: Boolean){
+        ViewCompat.setNestedScrollingEnabled (nsvEnterprise, boolean)
+        /*val params = app_bar_layout_profile.layoutParams as CoordinatorLayout.LayoutParams
+        if (params.behavior == null)
+            params.behavior = AppBarLayout.Behavior()
+        val behaviour = params.behavior as AppBarLayout.Behavior
+        behaviour.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                return boolean
+            }
+        })*/
     }
 
     override fun showTextInfoLoading(){
@@ -507,14 +556,14 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         mvProfile.onSaveInstanceState(outState!!)
-        outState.putParcelable("enterprise", enterprise)
+        //outState.putParcelable("enterprise", enterprise)
         outState.putBoolean("isHideToolbarView", isHideToolbarView)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         Log.i(TAG, "onRestoreInstanceState")
-        this.enterprise = savedInstanceState?.getParcelable("enterprise")
+        //this.enterprise = savedInstanceState?.getParcelable("enterprise")
         this.isHideToolbarView = savedInstanceState!!.getBoolean("isHideToolbarView")
     }
 }

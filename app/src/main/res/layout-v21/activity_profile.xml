@@ -77,6 +77,7 @@
         android:id="@+id/contentReservar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="12dp"
         android:layout_gravity="bottom"
         android:background="@color/white">
 
