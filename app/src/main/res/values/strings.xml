@@ -4,4 +4,9 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="none_results">Sin resultados</string>
     <string name="accessTokenMapBox">pk.eyJ1IjoidnBhbmNob2pzIiwiYSI6ImNqN2gzdXdrbzFkejEyeG82Z2IyaDcxazUifQ.LMqRVTqNyzGOtED90lMtZA</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
