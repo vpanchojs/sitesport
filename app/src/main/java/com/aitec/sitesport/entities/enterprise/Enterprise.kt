@@ -2,16 +2,21 @@ package com.aitec.sitesport.entities.enterprise
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.aitec.sitesport.entities.Address
 
 class Enterprise() : Parcelable {
 
     lateinit var pk: String
     lateinit var nombres: String
-    var latitud: Double = 0.0
-    var longitud: Double = 0.0
+    lateinit var address: Address
+    lateinit var urldetalle: String
+    lateinit var foto_perfil: String
+
+
     var distancia: Double = 0.0
+
     var idMarker: Long = 0L
-    var descripcion : String = ""
+    var descripcion: String = ""
     var abierto: Boolean = false
     var fotos: List<Fotos>? = arrayListOf()
     var telefonos: List<Telefonos>? = arrayListOf()
@@ -21,11 +26,9 @@ class Enterprise() : Parcelable {
     var horario: List<Horario>? = arrayListOf()
     var hora: List<Hora>? = arrayListOf()
 
-constructor(parcel: Parcel) : this() {
+    constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         nombres = parcel.readString()
-        latitud = parcel.readDouble()
-        longitud = parcel.readDouble()
         distancia = parcel.readDouble()
         idMarker = parcel.readLong()
         descripcion = parcel.readString()
@@ -42,8 +45,6 @@ constructor(parcel: Parcel) : this() {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
         parcel.writeString(nombres)
-        parcel.writeDouble(latitud)
-        parcel.writeDouble(longitud)
         parcel.writeDouble(distancia)
         parcel.writeLong(idMarker)
         parcel.writeString(descripcion)
