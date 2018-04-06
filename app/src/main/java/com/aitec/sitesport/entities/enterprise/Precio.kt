@@ -9,15 +9,18 @@ import android.os.Parcelable
 class Precio() : Parcelable{
     var noche: String = ""
     var dia: String = ""
+    var nombre : String = ""
 
     constructor(parcel: Parcel) : this() {
         noche = parcel.readString()
         dia = parcel.readString()
+        nombre = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(noche)
         parcel.writeString(dia)
+        parcel.writeString(nombre)
     }
 
     override fun describeContents(): Int {

@@ -23,7 +23,7 @@ class Enterprise() : Parcelable {
     //var categoria: List<Categoria>? = arrayListOf()
     var precio: List<Precio>? = arrayListOf()
     //var horario: List<Horario>? = arrayListOf()
-    var hora: List<Horario>? = arrayListOf()
+    var hora: List<Hora>? = arrayListOf()
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
@@ -41,7 +41,7 @@ class Enterprise() : Parcelable {
         //parcel.readList(categoria, Categoria::class.java.classLoader)
         parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
-        parcel.readList(hora, Horario::class.java.classLoader)
+        parcel.readList(hora, Hora::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
