@@ -13,48 +13,53 @@ class Enterprise() : Parcelable {
     lateinit var foto_perfil: String
 
 
-    var distancia: Double = 0.0
-
-    var idMarker: Long = 0L
     var descripcion: String = ""
     var abierto: Boolean = false
+    var numero_canchas: String = "0"
+    var likes: Int = 0
     var fotos: List<Fotos>? = arrayListOf()
     var telefonos: List<Telefonos>? = arrayListOf()
     var red_social: List<RedSocial>? = arrayListOf()
-    var categoria: List<Categoria>? = arrayListOf()
+    //var categoria: List<Categoria>? = arrayListOf()
     var precio: List<Precio>? = arrayListOf()
-    var horario: List<Horario>? = arrayListOf()
-    var hora: List<Hora>? = arrayListOf()
+    //var horario: List<Horario>? = arrayListOf()
+    var hora: List<Horario>? = arrayListOf()
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         nombres = parcel.readString()
-        distancia = parcel.readDouble()
-        idMarker = parcel.readLong()
+        address = parcel.readParcelable(Address::class.java.classLoader)
+        urldetalle = parcel.readString()
+        foto_perfil = parcel.readString()
         descripcion = parcel.readString()
-        abierto = if (parcel.readInt() == 0) false else true;
+        abierto = if (parcel.readInt() == 0) false else true
+        numero_canchas = parcel.readString()
+        likes = parcel.readInt()
         parcel.readList(fotos, Fotos::class.java.classLoader)
         parcel.readList(telefonos, Telefonos::class.java.classLoader)
         parcel.readList(red_social, RedSocial::class.java.classLoader)
-        parcel.readList(categoria, Categoria::class.java.classLoader)
+        //parcel.readList(categoria, Categoria::class.java.classLoader)
         parcel.readList(precio, Precio::class.java.classLoader)
-        parcel.readList(horario, Horario::class.java.classLoader)
-        parcel.readList(hora, Hora::class.java.classLoader)
+        //parcel.readList(horario, Horario::class.java.classLoader)
+        parcel.readList(hora, Horario::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
         parcel.writeString(nombres)
-        parcel.writeDouble(distancia)
-        parcel.writeLong(idMarker)
+        parcel.writeParcelable(address, flags)
+        parcel.writeString(urldetalle)
+        parcel.writeString(foto_perfil)
         parcel.writeString(descripcion)
         parcel.writeValue(abierto)
+        parcel.writeString(numero_canchas)
+        parcel.writeInt(likes)
         parcel.writeList(fotos)
         parcel.writeList(telefonos)
         parcel.writeList(red_social)
-        parcel.writeList(categoria)
+        //parcel.writeList(categoria)
         parcel.writeList(precio)
-        parcel.writeList(horario)
+        //parcel.writeList(horario)
         parcel.writeList(hora)
     }
 
