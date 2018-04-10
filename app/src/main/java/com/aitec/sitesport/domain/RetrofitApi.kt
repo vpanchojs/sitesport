@@ -29,10 +29,11 @@ class RetrofitApi {
 
 
     companion object {
-        val PATH_API = "http://18.219.31.241:8050/"
+        const val PATH_API = "http://18.219.31.241:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
         const val PATH_PROFILE = "api/centros-deportivos/"
+        const val PATH_CENTER_SPORT = "api/centros-deportivos/"
 
     }
 
@@ -216,5 +217,46 @@ class RetrofitApi {
             requestSearchName.cancel()
             Log.e("delte", "eliminar peticion name")
         }
+    }
+
+    fun getAllSites(callback: onApiActionListener) {
+        request.getSites().enqueue(object : Callback<List<Enterprise>> {
+            override fun onFailure(call: Call<List<Enterprise>>?, t: Throwable?) {
+                RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<List<Enterprise>> {
+                    override fun networkError(e: String) {
+                        callback.onError(e)
+                    }
+
+                    override fun unexpectedError(t: Throwable) {
+                        callback.onError(t.toString())
+                    }
+                })
+
+            }
+
+            override fun onResponse(call: Call<List<Enterprise>>?, response: Response<List<Enterprise>>?) {
+                RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
+                    override fun success(response: Response<List<Enterprise>>) {
+                        callback.onSucces(response.body())
+                    }
+
+                    override fun unauthenticated(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun clientError(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun serverError(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun unexpectedError(t: Throwable) {
+                        callback.onError(t.toString())
+                    }
+                })
+            }
+        })
     }
 }

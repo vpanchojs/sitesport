@@ -1,4 +1,4 @@
-package com.aitec.sitesport.main.ui
+package com.aitec.sitesport.mapSites.ui
 
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior

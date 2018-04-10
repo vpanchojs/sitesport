@@ -1,77 +1,50 @@
 package com.aitec.sitesport.main.ui
 
 import android.Manifest
-import android.animation.ObjectAnimator
-import android.animation.TypeEvaluator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.support.constraint.ConstraintLayout
-import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.AppBarLayout
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.main.MainPresenter
-import com.aitec.sitesport.main.adapter.EntrepiseAdapter
 import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
-import com.aitec.sitesport.profile.ui.ProfileActivity
-import com.aitec.sitesport.util.BaseActivitys
+import com.aitec.sitesport.mapSites.ui.MapSitesActivity
+import com.aitec.sitesport.menu.ui.MenuFragment
+import com.aitec.sitesport.sites.ui.SitesFragment
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.mapbox.mapboxsdk.annotations.Icon
-import com.mapbox.mapboxsdk.annotations.IconFactory
-import com.mapbox.mapboxsdk.annotations.Marker
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.bottom_sheet_results.*
-import java.text.DecimalFormat
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MainView, MapboxMap.OnMarkerClickListener, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener {
-
-    private val TAG = MainActivity::class.java.simpleName
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
-    private val REQUEST_CHECK_SETTINGS = 0x1
-    private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
-    private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
-
-    private var markerSelect: Marker? = null
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, MainView, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener {
 
 
-    val REQUESTING_LOCATION_UPDATES_KEY = "location"
-    var requestingLocationUpdates = false
-    lateinit var entrepiseAdapter: EntrepiseAdapter
-    lateinit var searchNamesEntrepiseAdapter: SearchNamesEntrepiseAdapter
-    var entrepiseResultsSearchVisible = ArrayList<Enterprise>()
+    override fun navigatioProfile(entrepise: Enterprise) {
+        //startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.tag_enterprise, entrepise))
+    }
 
-    var entrepiseResultsSearchName = ArrayList<Enterprise>()
-
-    lateinit var entrepiseSelect: Enterprise
-
-    lateinit var mapboxMap: MapboxMap
-    lateinit var iconFactory: IconFactory
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -80,142 +53,178 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
     private lateinit var mCurrentLocation: Location
     private lateinit var mLocationSettingsRequest: LocationSettingsRequest
 
+    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+    private val REQUEST_CHECK_SETTINGS = 0x1
+    private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
+    private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
+
+
+    val TAG = "MainActivity"
     lateinit var application: MyApplication
     @Inject
     lateinit var presenter: MainPresenter
+    lateinit var fragment: Fragment
+    var params: AppBarLayout.LayoutParams? = null
+    var searchrResultList = ArrayList<Enterprise>()
 
+    var searchResultsAdapter: SearchNamesEntrepiseAdapter? = null
 
-    lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_site -> {
+                fragment = SitesFragment.newInstance()
+            }
+            R.id.navigation_my_reserve -> {
+                return@OnNavigationItemSelectedListener true
+            }
 
+            R.id.navigation_menu -> {
+                fragment = MenuFragment.newInstance()
+            }
+        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fl_container, fragment).commitAllowingStateLoss()
+        true
+    }
 
-    /*Ciclo de Vida*/
-    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupToolBar()
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupInjection()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mSettingsClient = LocationServices.getSettingsClient(this)
         createLocationCallback()
         createLocationRequest()
         buildLocationSettingsRequest()
-        setupMap(savedInstanceState)
-        setupBottomSheet()
-        setupReciclerView()
-        setupEvents()
 
+        searchResultsAdapter = SearchNamesEntrepiseAdapter(searchrResultList, this)
+        rv_results_searchs.layoutManager = LinearLayoutManager(this)
+        rv_results_searchs.adapter = searchResultsAdapter
+        navigation.selectedItemId = R.id.navigation_site
+        btn_map.setOnClickListener {
+            //permission()
+            startActivity(Intent(this, MapSitesActivity::class.java))
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-        Log.e("resume", "en resumen")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
-        Log.e("stop", "stop")
-    }
-
-    public override fun onPause() {
-        super.onPause()
-        presenter.onPause()
-        mapView.onPause()
-        stopLocationUpdates()
-        Log.e("pause", "en pause")
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
-    }
-
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
         presenter.onResume()
-        mapView.onResume()
-
     }
 
-    override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        } else {
-            super.onBackPressed()
-        }
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, requestingLocationUpdates)
-        super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState!!)
-    }
-
-    /*Setup*/
-    fun setupReciclerView() {
-        entrepiseAdapter = EntrepiseAdapter(entrepiseResultsSearchVisible, this)
-        var mDividerItemDecoration = DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL)
-        rv_results.addItemDecoration(mDividerItemDecoration)
-        rv_results.layoutManager = LinearLayoutManager(this)
-        rv_results.adapter = entrepiseAdapter
-
-
-        searchNamesEntrepiseAdapter = SearchNamesEntrepiseAdapter(entrepiseResultsSearchName, this)
-        rv_results_searchs.layoutManager = LinearLayoutManager(this)
-        rv_results_searchs.adapter = searchNamesEntrepiseAdapter
-
-
-    }
-
-    fun setupEvents() {
-        btn_sport.setOnClickListener(this)
-        btn_distance.setOnClickListener(this)
-        btn_my_location.setOnClickListener(this)
-        sv_search.setOnQueryTextListener(this)
-        sv_search.setOnQueryTextFocusChangeListener(this)
-        cl_header_bs.setOnClickListener(this)
-        btn_profile_entrepise.setOnClickListener(this)
-    }
-
-    fun setupMap(savedInstanceState: Bundle?) {
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
-    }
-
-    fun setupBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        iv_icon_open.rotation = 0F
-                    }
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        iv_icon_open.rotation = 180F
-
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-        })
+    override fun onPause() {
+        super.onPause()
+        presenter.onPause()
     }
 
     private fun setupInjection() {
         application = getApplication() as MyApplication
         application.getMainComponent(this).inject(this)
     }
+
+
+    private fun setupToolBar() {
+        params = toolbar.layoutParams as AppBarLayout.LayoutParams
+        settoolbarScroll(true)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.app_name)
+    }
+
+    private fun settoolbarScroll(active: Boolean) {
+        if (active)
+            params!!.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+        else
+            params!!.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val menuItem = menu!!.findItem(R.id.action_search)
+        menuItem.setOnActionExpandListener(this)
+        val searchView = menuItem.actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setQueryHint("Buscar sitios deportivos")
+        searchView.setOnQueryTextListener(this)
+        return super.onCreateOptionsMenu(menu)
+
+    }
+
+    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+        Log.e("*******", "onMenuItemActionExpand")
+        settoolbarScroll(false)
+        navigation.visibility = View.GONE
+        nsv_container.visibility = View.GONE
+        rv_results_searchs.visibility = View.VISIBLE
+        return true
+    }
+
+    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+        Log.e("*******", "onMenuItemActionCollapse")
+        settoolbarScroll(true)
+        rv_results_searchs.visibility = View.GONE
+        nsv_container.visibility = View.VISIBLE
+        navigation.visibility = View.VISIBLE
+        return true
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+
+        return true
+    }
+
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        presenter.stopSearchName()
+        presenter.getSearchName(newText!!)
+        return true
+    }
+
+    override fun showMessagge(message: Any) {
+        if (message is Int) {
+            Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    override fun setResultsSearchs(listUser: ArrayList<Enterprise>) {
+        if (listUser.size <= 0) {
+            Log.e(TAG, "lista vacia")
+            tv_message_search_results.visibility = View.VISIBLE
+            searchResultsAdapter!!.data.clear()
+            searchResultsAdapter!!.notifyDataSetChanged()
+
+        } else {
+            tv_message_search_results.visibility = View.GONE
+            searchResultsAdapter!!.data.clear()
+            for (user in listUser) {
+                searchrResultList.add(user)
+            }
+            searchResultsAdapter!!.notifyDataSetChanged()
+
+        }
+    }
+
+
+    override fun showProgresBar(show: Boolean) {
+        if (show) pb_search.visibility = View.VISIBLE else pb_search.visibility = View.GONE
+    }
+
+
+    override fun clearSearchResults() {
+        tv_message_search_results.visibility = View.GONE
+        searchrResultList.clear()
+        searchResultsAdapter!!.notifyDataSetChanged()
+    }
+
+
+    /*Codigo ubicacion*/
 
     private fun buildLocationSettingsRequest() {
         mLocationSettingsRequest = LocationSettingsRequest.Builder()
@@ -229,11 +238,7 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 for (location in locationResult.locations) {
                     Log.e(TAG, "" + location.latitude)
                     mCurrentLocation = location
-                    if (::mapboxMap.isInitialized) {
-                        animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
-                        showProgresBarResultsMapVisible(false)
-                        stopLocationUpdates()
-                    }
+                    stopLocationUpdates()
                 }
             }
         }
@@ -246,36 +251,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-/*
-        val client: SettingsClient = LocationServices.getSettingsClient(this)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-        task.addOnSuccessListener { locationSettingsResponse ->
-            Log.e("aa", locationSettingsResponse.toString())
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-
-                    exception.startResolutionForResult(this@MainActivity,
-                            REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
-        */
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        showProgresBarResultsMapVisible(true)
-        setInfoHeaderBottomSheet("Centros Deportivos", "Obteniendo su Ubicación")
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
                 .addOnSuccessListener(this) {
                     Log.e(TAG, "All location settings are satisfied.")
@@ -335,12 +314,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                     REQUEST_PERMISSIONS_REQUEST_CODE)
         } else {
 
-            Log.e("permisos", "false")
+            ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_PERMISSIONS_REQUEST_CODE)
 
-            /* ActivityCompat.requestPermissions(this@MainActivity,
-                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                     REQUEST_PERMISSIONS_REQUEST_CODE)
-                     */
         }
     }
 
@@ -358,28 +335,10 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
 
                 Log.e(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // if (requestingLocationUpdates) {
-                Log.e(TAG, "Permission granted, updates requested, starting location updates");
                 startLocationUpdates();
-                //}
+
             } else {
-                /*
-                showSnackbar(R.string.permission_denied_explanation,
-                        R.string.settings, new View . OnClickListener () {
-                    @Override
-                    public void onClick(View view) {
-                        // Build intent that displays the App settings screen.
-                        Intent intent = new Intent();
-                        intent.setAction(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri . fromParts ("package",
-                        BuildConfig.APPLICATION_ID, null);
-                        intent.setEntrepiseResultsSearchVisible(uri);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                })
-                */
+
             }
         }
     }
@@ -404,236 +363,5 @@ class MainActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterLis
                 }
             }
         }
-    }
-
-    /*Eventos Click*/
-    override fun onClick(p0: View?) {
-        when (p0!!.id) {
-            R.id.btn_sport -> {
-
-            }
-            R.id.btn_distance -> {
-
-            }
-            R.id.btn_profile_entrepise -> {
-                navigatioProfile(entrepiseSelect)
-            }
-            R.id.btn_my_location -> {
-                permission()
-            }
-            R.id.cl_header_bs -> {
-                when (bottomSheetBehavior.state) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                }
-            }
-
-        }
-    }
-
-
-    /*Busqueda SearchView*/
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (hasFocus) {
-            rv_results_searchs.visibility = View.VISIBLE
-            bottom_sheet.visibility = View.GONE
-            //cl_chips.visibility = View.GONE
-            btn_my_location.visibility = View.GONE
-
-        } else {
-            rv_results_searchs.visibility = View.GONE
-            sv_search.setQuery("", false)
-            noneResultSearchsName("", false)
-            bottom_sheet.visibility = View.VISIBLE
-            //cl_chips.visibility = View.VISIBLE
-            btn_my_location.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        presenter.stopSearchName()
-        presenter.getSearchName(newText!!)
-        return true
-    }
-
-    override fun navigatioProfile(entrepise: Enterprise) {
-        startActivity(Intent(this, ProfileActivity::class.java).putExtra("entrepise", entrepise))
-    }
-
-
-    /*Mapa*/
-    override fun onMapReady(mapboxMaps: MapboxMap?) {
-        mapboxMap = mapboxMaps!!
-        mapboxMap.setOnMarkerClickListener(this)
-        iconFactory = IconFactory.getInstance(this)
-        mapboxMap.addOnCameraIdleListener(this)
-
-    }
-
-
-    override fun addMarker(entreprise: Enterprise) {
-        var icono: Icon
-
-        if (entreprise.abierto) {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
-        } else {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
-        }
-
-        var marker = mapboxMap!!.addMarker(MarkerOptions()
-                .position(LatLng(entreprise.latitud, entreprise.longitud))
-                .icon(icono))
-
-        entreprise.idMarker = marker.id
-        // marker.title = "Que mas v"
-        // marker.showInfoWindow(mapboxMap, mapView)
-
-    }
-
-    fun animateCamera(latLng: LatLng, zoom: Double) {
-        val position = CameraPosition.Builder()
-                .target(latLng) // Sets the new camera position
-                .zoom(zoom) // Sets the zoom
-                .build() // Creates a CameraPosition from the builder
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
-    }
-
-
-    override fun onCameraIdle() {
-        presenter.stopSearchVisibility()
-        var bounds = mapboxMap.projection.visibleRegion.latLngBounds
-        Log.e("coordenadas", "lat" + bounds.center.latitude + "lng" + bounds.center.longitude)
-        presenter.onGetCenterSportVisible(bounds.latSouth, bounds.latNorth, bounds.lonWest, bounds.lonEast, bounds.center.latitude, bounds.center.longitude)
-
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        if (markerSelect != null) {
-            if (entrepiseSelect.abierto) {
-                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open)
-            } else {
-                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close)
-            }
-        }
-
-        val df = DecimalFormat("0.00")
-        btn_profile_entrepise.visibility = VISIBLE
-        //animateMarker(marker, mapboxMap.cameraPosition.target)
-
-        entrepiseResultsSearchVisible.forEach {
-            if (it.idMarker == marker.id) {
-                entrepiseSelect = it
-                markerSelect = marker
-
-                if (it.abierto) {
-                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open_select)
-                } else {
-                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
-                }
-                tv_title_bs.setText(it.nombres)
-                tv_subtitle_bs.setText(df.format(it.distancia).toString() + " Km")
-            }
-        }
-
-        return true
-    }
-
-
-    /*MainView*/
-    override fun setResultSearchsName(results: List<Enterprise>) {
-        entrepiseResultsSearchName.clear()
-        entrepiseResultsSearchName.addAll(results)
-        searchNamesEntrepiseAdapter.notifyDataSetChanged()
-        Log.e("a", results.get(0).pk)
-    }
-
-    override fun setInfoHeaderBottomSheet(title: Any, subtitle: Any) {
-        tv_title_bs.setText(title.toString())
-        tv_subtitle_bs.setText(subtitle.toString())
-    }
-
-    override fun noneResultCenterVisible(s: Any) {
-        tv_subtitle_bs.setText(s.toString())
-    }
-
-    override fun noneResultSearchsName(message: Any, show: Boolean) {
-        if (show) {
-            tv_none_results.visibility = VISIBLE
-        } else {
-            tv_none_results.visibility = GONE
-
-        }
-
-
-    }
-
-    override fun showMessagge(message: Any) {
-        BaseActivitys.showToastMessage(this, message, Toast.LENGTH_SHORT)
-    }
-
-    override fun setResultsSearchs(entrepriseList: List<Enterprise>) {
-        Log.e(TAG, "id" + entrepriseList.get(0).pk)
-        entrepiseResultsSearchVisible.clear()
-        mapboxMap.clear()
-        entrepiseResultsSearchVisible.addAll(entrepriseList)
-        tv_subtitle_bs.setText(entrepriseList.size.toString() + " encontrados")
-        entrepiseAdapter.notifyDataSetChanged()
-    }
-
-    override fun showProgresBar(show: Boolean) {
-        if (show) pg_searchName.visibility = VISIBLE else pg_searchName.visibility = GONE
-
-    }
-
-    override fun showProgresBarResultsMapVisible(show: Boolean) {
-        if (show) progressbar.visibility = VISIBLE else progressbar.visibility = GONE
-    }
-
-    override fun clearSearchResultsName() {
-        noneResultSearchsName("", false)
-        entrepiseResultsSearchName.clear()
-        searchNamesEntrepiseAdapter.notifyDataSetChanged()
-    }
-
-    override fun clearSearchResultsVisible() {
-        entrepiseResultsSearchVisible.clear()
-        entrepiseAdapter.notifyDataSetChanged()
-
-    }
-
-    override fun showNoneResulstEntrepiseVisible(show: Boolean) {
-        if (show) tv_none_results_entrepise_visibles.visibility = VISIBLE else tv_none_results_entrepise_visibles.visibility = GONE
-    }
-
-    override fun hideButtonProfileEntrepise() {
-        btn_profile_entrepise.visibility = GONE
-    }
-
-
-    class LatLngEvaluator : TypeEvaluator<LatLng> {
-        private val latLng = LatLng()
-
-        override fun evaluate(fraction: Float, startValue: LatLng?, endValue: LatLng?): LatLng {
-            latLng.setLatitude(startValue!!.getLatitude()
-                    + ((endValue!!.getLatitude() - startValue.getLatitude()) * fraction))
-            latLng.setLongitude(startValue.getLongitude()
-                    + ((endValue!!.getLongitude() - startValue.getLongitude()) * fraction))
-            return latLng
-        }
-    }
-
-    fun animateMarker(marker: Marker, point: LatLng) {
-        var markerAnimator = ObjectAnimator.ofObject(marker, "position",
-                LatLngEvaluator(), marker.getPosition(), point);
-        markerAnimator.setDuration(2000);
-        markerAnimator.start();
     }
 }

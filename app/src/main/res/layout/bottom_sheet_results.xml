@@ -9,7 +9,7 @@
     android:elevation="4dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="70dp"
-    app:layout_behavior="com.aitec.sitesport.main.ui.BottomSheetCustom">
+    app:layout_behavior="com.aitec.sitesport.mapSites.ui.BottomSheetCustom">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_header_bs"

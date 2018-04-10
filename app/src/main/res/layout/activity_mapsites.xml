@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="com.aitec.sitesport.main.ui.MainActivity">
+        tools:context="com.aitec.sitesport.mapsSites.ui.MainActivity">
 
         <com.mapbox.mapboxsdk.maps.MapView
             android:id="@+id/mapView"

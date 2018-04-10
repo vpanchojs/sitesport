@@ -8,12 +8,20 @@ import com.aitec.sitesport.domain.di.DaggerMainComponent
 import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.domain.di.MainComponent
 import com.aitec.sitesport.domain.di.MainModule
+import com.aitec.sitesport.domapSites.di.MapSitesModule
 import com.aitec.sitesport.lib.di.LibModule
 import com.aitec.sitesport.main.ui.MainView
-import com.aitec.sitesport.profile.di.DaggerProfileComponent
-import com.aitec.sitesport.profile.di.ProfileComponent
-import com.aitec.sitesport.profile.di.ProfileModule
-import com.aitec.sitesport.profile.ui.ProfileView
+import com.aitec.sitesport.mapSites.di.DaggerMapSitesComponent
+import com.aitec.sitesport.mapSites.di.MapSitesComponent
+import com.aitec.sitesport.mapSites.ui.MapSitesView
+import com.aitec.sitesport.menu.di.DaggerMenusComponent
+import com.aitec.sitesport.menu.di.MenusComponent
+import com.aitec.sitesport.menu.di.MenusModule
+import com.aitec.sitesport.menu.ui.MenusView
+import com.aitec.sitesport.sites.domain.di.DaggerSitesComponent
+import com.aitec.sitesport.sites.domain.di.SitesComponent
+import com.aitec.sitesport.sites.domain.di.SitesModule
+import com.aitec.sitesport.sites.ui.SitesView
 import com.mapbox.mapboxsdk.Mapbox
 
 class MyApplication : MultiDexApplication() {
@@ -66,6 +74,15 @@ class MyApplication : MultiDexApplication() {
                 .signupAcctInfoModule(SignupAcctInfoModule(signupAcctInfoView))
                 .build()
     }
+*/
+    fun getSitesComponent(sitesView: SitesView): SitesComponent {
+        return DaggerSitesComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .sitesModule(SitesModule(sitesView))
+                .build()
+    }
 
     fun getMenusComponent(menusView: MenusView): MenusComponent {
         return DaggerMenusComponent
@@ -75,7 +92,7 @@ class MyApplication : MultiDexApplication() {
                 .menusModule(MenusModule(menusView))
                 .build()
     }
-*/
+
     fun getMainComponent(view: MainView): MainComponent {
         return DaggerMainComponent
                 .builder()
@@ -85,7 +102,19 @@ class MyApplication : MultiDexApplication() {
                 .build()
     }
 
-    fun getProfileComponent(profileView : ProfileView) : ProfileComponent {
+    fun getMapSitesComponent(view: MapSitesView): MapSitesComponent {
+        return DaggerMapSitesComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .mapSitesModule(MapSitesModule(view))
+                .build()
+    }
+
+
+
+    /*
+    fun getProfileComponent(profileView: ProfileView): ProfileComponent {
         return DaggerProfileComponent
                 .builder()
                 .domainModule(domainModule)
@@ -93,7 +122,6 @@ class MyApplication : MultiDexApplication() {
                 .profileModule(ProfileModule(profileView))
                 .build()
     }
-
-
+*/
 
 }

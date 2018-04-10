@@ -1,5 +1,6 @@
 package com.aitec.sitesport.domain
 
+import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_CENTER_SPORT
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_PROFILE
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_CENTER
 import com.aitec.sitesport.domain.RetrofitApi.Companion.PATH_SEARCH_NAME_CENTER_SPORT
@@ -22,4 +23,8 @@ interface RetrofitServicie {
     @Headers("Content-Type: application/json")
     @GET(PATH_PROFILE + "{pk}")
     fun getProfile(@Path("pk") pk: String): Call<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @GET(PATH_CENTER_SPORT)
+    fun getSites(): Call<List<Enterprise>>
 }

@@ -9,4 +9,11 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_menu">Menú</string>
+    <string name="title_site">Sitios</string>
+    <string name="title_reserve">Reservas</string>
+
+    <string name="menu_option_termins_and_conditions">Terminos y condiciones</string>
+    <string name="menu_option_help">Ayuda</string>
+    <string name="menu_option_signout">Cerrar Sesión</string>
 </resources>

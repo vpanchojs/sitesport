@@ -11,6 +11,7 @@ class Enterprise() : Parcelable {
     lateinit var address: Address
     lateinit var urldetalle: String
     lateinit var foto_perfil: String
+    var idMarker: Long = 0
 
 
     var descripcion: String = ""
