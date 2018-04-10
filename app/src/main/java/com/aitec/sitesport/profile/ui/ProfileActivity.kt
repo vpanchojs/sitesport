@@ -23,7 +23,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.content_profile.*
-import kotlinx.android.synthetic.main.header_profile.*
 import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager

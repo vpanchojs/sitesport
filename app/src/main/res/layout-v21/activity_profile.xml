@@ -47,15 +47,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
 
-                <include
-                    android:id="@+id/toolbar_header_profile"
-                    layout="@layout/header_profile"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginRight="@dimen/header_view_end_margin_right"
-                    android:visibility="gone"
-                    />
-
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -63,37 +54,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_profile" />
-
-
-    <include
-        android:id="@+id/float_header_profile"
-        layout="@layout/header_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.aitec.sitesport.profile.ui.custom.ViewBehavior"
-        />
-
-    <LinearLayout
-        android:id="@+id/contentReservar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="12dp"
-        android:layout_gravity="bottom"
-        android:background="@color/white">
-
-        <Button
-            android:id="@+id/btnReservacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:textColor="@drawable/txt_color_dialog"
-            android:background="@drawable/bg_buttom_dialog"
-            android:layout_margin="12dp"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            style="@style/AppTheme.RoundedCornerMaterialButton"
-            android:text="RESERVAR"/>
-
-    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
