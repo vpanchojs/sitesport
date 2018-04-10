@@ -30,6 +30,7 @@ import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
+import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
 
     override fun navigatioProfile(entrepise: Enterprise) {
-        //startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.tag_enterprise, entrepise))
+        startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
     }
 
 
