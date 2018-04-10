@@ -1,13 +1,9 @@
 package com.aitec.sitesport.sites.ui
 
-import android.annotation.SuppressLint
-import android.content.IntentSender
-import android.location.Location
+import android.content.Intent
 import android.os.Bundle
-import android.os.Looper
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +12,9 @@ import android.widget.ToggleButton
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.sites.SitesPresenter
 import com.aitec.sitesport.sites.adapter.EntrepiseAdapter
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.fragment_sites.*
 import javax.inject.Inject
 
@@ -58,7 +52,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     override fun navigatioProfile(entrepise: Enterprise) {
-        // startActivity(Intent(context, ProfileActivity::class.java).putExtra(ProfileActivity.tag_enterprise, entrepise))
+        startActivity(Intent(context, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
     }
 
     private val TAG = "MenuFragment"
@@ -137,7 +131,6 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     override fun clearSearchResults() {
 
     }
-
 
 
 }
