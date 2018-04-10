@@ -15,7 +15,6 @@ import android.view.WindowManager
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.graphics.Palette
-import com.aitec.sitesport.profile.ui.custom.HeaderView
 import android.util.DisplayMetrics
 import com.mapbox.mapboxsdk.annotations.IconFactory
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
@@ -48,8 +47,6 @@ import com.aitec.sitesport.entities.enterprise.Precio
 import com.aitec.sitesport.entities.TableTime
 import com.aitec.sitesport.entities.enterprise.Hora
 import com.aitec.sitesport.profile.ProfilePresenter
-import com.aitec.sitesport.profile.ui.dialog.BusinessHoursFragment
-import com.aitec.sitesport.profile.ui.dialog.RateDayFragment
 import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
@@ -59,112 +56,55 @@ import java.net.URL
 import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener, ProfileView {
+class ProfileActivity : AppCompatActivity(), ProfileView{
+
 
     companion object {
-        var tag_enterprise = "entrepise"
+        const val SHARE = ""
+        const val TAG = "ProfileActivity"
+        const val EMOTICON_HAPPY = 0x1F60A
+        const val ENTERPRISE = "enterprise"
+        const val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
     }
-
-    private val EMOTICON_HAPPY = 0x1F60A
-
-    private var isHideToolbarView = false
-    private val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
-    private val TAG = "ProfileActivity"
-    private var enterprise : Enterprise? = null
-    private var share = ""
-
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
+    private var enterprise: Enterprise? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         setupInjection()
+        onCreateMapBox(savedInstanceState)
 
-        if(intent != null){
-            this.enterprise = intent.getParcelableExtra(ProfileActivity.tag_enterprise)
-        }
+        this.enterprise = intent.getParcelableExtra(ENTERPRISE)
+        /*
+            enterprise extras bundle
+            lateinit var pk: String
+            lateinit var nombres: String
+            lateinit var address: Address
+            lateinit var urldetalle: String
+            lateinit var foto_perfil: String
+         */
 
-        share = "Te invito a jugar en " + enterprise!!.nombres + ". Descarga canchis para poder saber todo sobre los sitios deportivos " + String(Character.toChars(EMOTICON_HAPPY))
-
-        setupMapBox()
-        setLatLngLocationMap(LatLng(enterprise!!.latitud, enterprise!!.longitud))
-        setNameProfile(enterprise!!.nombres)
-
-        Log.e("onCreate", enterprise!!.pk)
         setupToolBar()
-        setupImageProfile()
-        setupAppBarSizeDynamic()
-        //setupBarsFromColorImageProfile() //cambia el color de statusBar(DarkColor) y toolbar(PrimaryColor) de acuerdo a la imagen de perfil
-        //setupHeader()
-        setupListenerScrollAppBarLayout()
-        setupMapBox(savedInstanceState)
-        setupBusinessHours()
-
-        btnReloadEnterprise.setOnClickListener{
-            profilePresenter.getProfile(enterprise)
-        }
+        //setupImageProfile()
+        //setupAppBarSizeDynamic()
+        //setupMapBox(savedInstanceState)
+        //setupBusinessHours()
+        profilePresenter.getProfile(enterprise!!.urldetalle)
     }
 
     private fun setupInjection() {
-        val app : MyApplication = this.application as MyApplication
+        val app: MyApplication = this.application as MyApplication
         val profileComponent = app.getProfileComponent(this)
         profileComponent.inject(this)
     }
 
-    // ProfileView.kt implementation
 
-    override fun showProgressBar() {
-        pbLoadEnterprise.visibility = View.VISIBLE
-    }
-
-    override fun hideProgressBar() {
-        pbLoadEnterprise.visibility = View.GONE
-    }
-
-    override fun showContentLoading() {
-        //lockAppBarClosed()
-        isScrollAppBar(false)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentReservar.elevation = 0f
-        }
-        contentInfo.visibility = View.GONE
-        btnReservacion.visibility = View.INVISIBLE
-        contentReservar.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        contentLoading.visibility = View.VISIBLE
-    }
-
-    private fun lockAppBarClosed() {
-        app_bar_layout_profile.setExpanded(false, false);
-        app_bar_layout_profile.setActivated(false);
-        //val lp : CoordinatorLayout.LayoutParams  = app_bar_layout_profile.getLayoutParams() as CoordinatorLayout.LayoutParams
-        //lp.height = resources.getDimension(R.dimen.app_bar_height).toInt()
-    }
-
-    private fun unlockAppBarOpen() {
-        app_bar_layout_profile.setExpanded(true, false);
-        app_bar_layout_profile.setActivated(true);
-        //val lp : CoordinatorLayout.LayoutParams  = app_bar_layout_profile.getLayoutParams() as CoordinatorLayout.LayoutParams
-        //lp.height = resources.getDimension(R.dimen.app_bar_height).toInt()
-    }
-
-    override fun hideContentLoading() {
-        //unlockAppBarOpen()
-        isScrollAppBar(true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentReservar.elevation = 12f
-        }
-        contentInfo.visibility = View.VISIBLE
-        contentLoading.visibility = View.GONE
-        btnReservacion.visibility = View.VISIBLE
-        contentReservar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-    }
-
-
-
-    private fun isScrollAppBar(boolean: Boolean){
-        ViewCompat.setNestedScrollingEnabled (nsvEnterprise, boolean)
+    private fun isScrollAppBar(boolean: Boolean) {
+        ViewCompat.setNestedScrollingEnabled(nsvEnterprise, boolean)
         /*val params = app_bar_layout_profile.layoutParams as CoordinatorLayout.LayoutParams
         if (params.behavior == null)
             params.behavior = AppBarLayout.Behavior()
@@ -176,17 +116,17 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         })*/
     }
 
-    override fun showTextInfoLoading(){
+    /*override fun showTextInfoLoading() {
         tvMsg.visibility = View.VISIBLE
         btnReloadEnterprise.visibility = View.VISIBLE
     }
 
-    override fun hideTextInfoLoading(){
+    override fun hideTextInfoLoading() {
         tvMsg.visibility = View.GONE
         btnReloadEnterprise.visibility = View.GONE
     }
 
-    override fun setTextInfoLoading(msg : String) {
+    override fun setTextInfoLoading(msg: String) {
         tvMsg.text = msg
     }
 
@@ -208,51 +148,36 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         this.enterprise!!.fotos = enterprise.fotos
         this.enterprise!!.telefonos = enterprise.telefonos
         this.enterprise!!.red_social = enterprise.red_social
-        this.enterprise!!.categoria = enterprise.categoria
+        //this.enterprise!!.categoria = enterprise.categoria
         this.enterprise!!.precio = enterprise.precio
-        this.enterprise!!.horario = enterprise.horario
+        //this.enterprise!!.horario = enterprise.horario
         this.enterprise!!.hora = enterprise.hora
     }
 
     override fun setImageProfile(urls: List<Fotos>?) {
-        if(urls != null && urls.isNotEmpty() && !(urls[0].imagen.isEmpty())){
+        if (urls != null && urls.isNotEmpty() && !(urls[0].imagen.isEmpty())) {
             GlideApp.with(this)
-                .load(URL(urls[0].imagen).toString())
-                .placeholder(img_image_profile.drawable)
-                //.fitCenter()
-                .centerCrop()
-                .error(img_image_profile.drawable)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(img_image_profile)
+                    .load(URL(urls[0].imagen).toString())
+                    .placeholder(img_image_profile.drawable)
+                    //.fitCenter()
+                    .centerCrop()
+                    .error(img_image_profile.drawable)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(img_image_profile)
             //setupImageProfile()
         }
     }
 
-    override fun setNameProfile(name: String?) {
-        collapse_toolbar_profile.title = ""
-        (toolbar_header_profile as HeaderView).setTitle(name!!)
-        (float_header_profile as HeaderView).setTitle(name)
-    }
+    */
 
-    override fun setQualificationProfile(qualification: Float?) {
-        //rtbQualificationSite.rating = qualification
-    }
-
-    override fun setVisits(visits: String?) {
-        (toolbar_header_profile as HeaderView).setSubTitle(visits!!)
-        (float_header_profile as HeaderView).setSubTitle(visits)
-    }
-
-    override fun setupCollapsibleDynamic(){
-        setupAppBarSizeDynamic()
-        setupListenerScrollAppBarLayout()
-    }
-
-    private fun setupMapBox(){
+/*
+    private fun setupMapBox() {
         mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true })
     }
 
-    override fun setLatLngLocationMap(locationLatLng: LatLng?) {
+
+
+    /*override fun setupMap(locationLatLng: LatLng?) {
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
             Log.e("ESTADO", enterprise!!.abierto.toString())
@@ -269,17 +194,14 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         })
     }
 
-    override fun setMarkerLocationMap(marker: Bitmap?) {}
-
     // setup GUI and Life cycle
 
-    private fun setupListenerScrollAppBarLayout() {
-        app_bar_layout_profile.addOnOffsetChangedListener(this)
-    }
+    */*/
 
+/*
     private fun setupBusinessHours() {
 
-        btnShowBusinessHours.setOnClickListener {
+        /*btnShowBusinessHours.setOnClickListener {
             //tvDayTitle
             //tvHourStartEnd
             if(enterprise != null && enterprise!!.hora != null && enterprise!!.hora != null) {
@@ -319,38 +241,24 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         }
 
         ibtnPhone.setOnClickListener {
-            //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    callPhone()
-                    Log.e("permisos", "llamando")
-                }else{
-                    Log.e("permisos", "lanzando permisos")
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
-                    return@setOnClickListener
-                }
-            //}else{
-                // No se necesita requerir permiso OS menos a 6.0.
-            //}
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_CODE_CALL_PHONE_PERMISSIONS -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Log.i(TAG, "Permission has been denied by user")
-                } else {
-                    callPhone()
-                    Log.i(TAG, "Permission has been granted by user")
-                }
+            if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                callPhone()
+            }else{
+                ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
+                return@setOnClickListener
             }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
+
+        */
+        * */
+
+
+    override fun setEnterprise(enterprise: Enterprise) {
+        this.enterprise = enterprise
     }
 
-    private fun setupMapBox(savedInstanceState: Bundle?){
-        mvProfile.onCreate(savedInstanceState)
-    }
 
     private fun setupAppBarSizeDynamic(){
         app_bar_layout_profile.post({
@@ -360,51 +268,11 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
     }
 
     private fun setupImageProfile(){
-        //img_image_profile.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.piscina))
-        //val displayMetrics = DisplayMetrics()
-        //this.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        //img_image_profile.layoutParams.height = displayMetrics.widthPixels
-
         img_image_profile.setImageDrawable(resources.getDrawable(R.drawable.bg_image_progile))
         val displayMetrics = DisplayMetrics()
         this.windowManager.defaultDisplay.getMetrics(displayMetrics)
         img_image_profile.layoutParams.height = displayMetrics.widthPixels
     }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun setupBarsFromColorImageProfile(){
-        val bitmap = (img_image_profile.drawable as BitmapDrawable).bitmap
-        Palette.from(bitmap).generate { palette ->
-            val mutedColor = palette.getMutedColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            setupColorToolbar(mutedColor)
-            setupColorStatusBar(getDarkColor(mutedColor))
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun setupColorStatusBar(darkColor : Int){
-        val window = this@ProfileActivity.window
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = darkColor //DarkColor
-    }
-
-    private fun setupColorToolbar(lightColor : Int){
-        collapse_toolbar_profile.setContentScrimColor(lightColor) //LigtColor
-    }
-
-    private fun getDarkColor(color : Int): Int{
-        val hsv = FloatArray(3)
-        Color.colorToHSV(color, hsv)
-        hsv[2] *= 0.8f // value component
-        return Color.HSVToColor(hsv)
-    }
-
-    /*private fun setupHeader(){
-        collapse_toolbar_profile.title = ""
-        (toolbar_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
-        (float_header_profile as HeaderView).bindTo("Centro XYZ", "24 visitas")
-    }*/
 
     private fun setupToolBar(){
         setSupportActionBar(toolbar_profile)
@@ -420,21 +288,6 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         params.behavior = AppBarLayout.Behavior()
         val behavior = params.behavior as AppBarLayout.Behavior
         behavior.onNestedPreScroll(cordinator_layout_profile, app_bar_layout_profile, collapse_toolbar_profile, 0, offsetPx, intArrayOf(0, 0), 0)
-    }
-
-    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-        val maxScroll = appBarLayout.totalScrollRange
-        val percentage = Math.abs(verticalOffset).toFloat() / maxScroll.toFloat()
-        if (percentage == 1f && isHideToolbarView) {
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            params.setMargins(0, 0, 0, 0)
-            header_tv_title.layoutParams = params
-            toolbar_header_profile.visibility = View.VISIBLE
-            isHideToolbarView = !isHideToolbarView
-        } else if (percentage < 1f && !isHideToolbarView) {
-            toolbar_header_profile.visibility = View.GONE
-            isHideToolbarView = !isHideToolbarView
-        }
     }
 
     private fun openWhatsApp() {
@@ -515,14 +368,13 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         val sendIntent = Intent(android.content.Intent.ACTION_SEND)
         sendIntent.type = "text/plain"
         sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"share_option");
-        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, share)
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, SHARE)
         startActivity(Intent.createChooser(sendIntent,"Compartir a través de..."));
     }
 
     public override fun onResume() {
         super.onResume()
         profilePresenter.onResume()
-        profilePresenter.getProfile(enterprise)
         mvProfile.onResume()
     }
 
@@ -557,13 +409,29 @@ class ProfileActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListene
         super.onSaveInstanceState(outState)
         mvProfile.onSaveInstanceState(outState!!)
         //outState.putParcelable("enterprise", enterprise)
-        outState.putBoolean("isHideToolbarView", isHideToolbarView)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         Log.i(TAG, "onRestoreInstanceState")
         //this.enterprise = savedInstanceState?.getParcelable("enterprise")
-        this.isHideToolbarView = savedInstanceState!!.getBoolean("isHideToolbarView")
+    }
+
+    private fun onCreateMapBox(savedInstanceState: Bundle?){
+        mvProfile.onCreate(savedInstanceState)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_CALL_PHONE_PERMISSIONS -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    callPhone()
+                    Log.i(TAG, "Permission has been granted by user")
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 }

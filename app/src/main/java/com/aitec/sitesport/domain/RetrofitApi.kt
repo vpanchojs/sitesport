@@ -7,11 +7,18 @@ import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.JsonObject
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.ResponseBody
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 
 
 class RetrofitApi {
@@ -29,10 +36,12 @@ class RetrofitApi {
 
 
     companion object {
-        const val PATH_API = "http://18.219.31.241:8050/"
+        const val TAG = "RetrofitApi"
+        val PATH_API = "http://18.219.31.241:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
         const val PATH_PROFILE = "api/centros-deportivos/"
+        const val PATH_IMAGES = "api/centros-deportivos/"
         const val PATH_CENTER_SPORT = "api/centros-deportivos/"
 
     }
@@ -258,5 +267,42 @@ class RetrofitApi {
                 })
             }
         })
+    }
+
+    fun downloadImages(urls : Array<String>, callback: onApiActionListener){
+
+        val arrayImagesBitmap : MutableList<Bitmap> = arrayListOf()
+
+
+        for (i in urls.indices) {
+            val call: Call<ResponseBody> = request.getImage(urls[i])
+
+            call.enqueue(object : Callback<ResponseBody> {
+
+                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+                    Log.e(TAG, "Descarga exitosa")
+
+                    try {
+                        val byteArray = response!!.body()!!.bytes()
+                        val imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size);
+                        arrayImagesBitmap.add(imageBitmap)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error en la conversion de imagenes")
+                        e.printStackTrace()
+                    }
+
+                    if(i == urls.size) {
+                        callback.onSucces(arrayImagesBitmap)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+                    Log.e(TAG, "Error en la descarga")
+                    if(i == urls.size) {
+                        callback.onError(t!!.message)
+                    }
+                }
+            })
+        }
     }
 }

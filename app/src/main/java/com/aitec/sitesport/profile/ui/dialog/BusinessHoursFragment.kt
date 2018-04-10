@@ -8,11 +8,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.widget.TextView
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.TableTime
 import com.aitec.sitesport.entities.enterprise.Hora
-import com.aitec.sitesport.entities.enterprise.Horario
 import kotlinx.android.synthetic.main.fragment_business_hours.view.*
-import org.json.JSONObject
 
 class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
     private var tvLunesToViernes : TextView? = null
@@ -35,7 +32,7 @@ class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
-        view.tvDayTitle.text = (arguments!!.getParcelableArrayList<Horario>("horario"))[0].nombre
+        //view.tvDayTitle.text = (arguments!!.getParcelableArrayList<Horario>("horario"))[0].nombre
         view.tvHourStartEnd.text = ((arguments!!.getParcelableArrayList<Hora>("hora"))[0].inicio
                 + " - "  + (arguments!!.getParcelableArrayList<Hora>("hora"))[0].fin)
 
@@ -55,14 +52,14 @@ class BusinessHoursFragment : DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-        fun newInstance(hora: List<Hora>, horario: List<Horario>): BusinessHoursFragment {
+        /*fun newInstance(hora: List<Hora>, horario: List<Horario>): BusinessHoursFragment {
             val bundle = Bundle()
             bundle.putParcelableArrayList("hora", ArrayList(hora))
             bundle.putParcelableArrayList("horario", ArrayList(horario))
             val fragment = BusinessHoursFragment()
             fragment.arguments = bundle
             return fragment
-        }
+        }*/
     }
 
 }

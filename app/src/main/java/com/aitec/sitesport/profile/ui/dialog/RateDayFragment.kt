@@ -7,8 +7,6 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.enterprise.Hora
-import com.aitec.sitesport.entities.enterprise.Horario
 import com.aitec.sitesport.entities.enterprise.Precio
 import kotlinx.android.synthetic.main.fragment_rate_day.*
 import kotlinx.android.synthetic.main.fragment_rate_day.view.*

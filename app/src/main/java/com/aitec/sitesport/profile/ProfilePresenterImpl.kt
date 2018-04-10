@@ -25,11 +25,8 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
     override fun onDestroy() {}
 
-    override fun getProfile(enterprise : Enterprise?){
-        profileView.hideTextInfoLoading()
-        profileView.showProgressBar()
-        profileView.showContentLoading()
-        profileInteractor.getProfile(enterprise)
+    override fun getProfile(urlDetail : String){
+        profileInteractor.getProfile(urlDetail)
     }
 
     @Subscribe
@@ -37,22 +34,12 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
         when (profileEvent.eventType) {
             ProfileEvent.SUCCESS_PROFILE ->{
-                profileView.setEnterprise(profileEvent.eventEnterprise!!)
-                profileView.setNameProfile((profileEvent.eventEnterprise as Enterprise).nombres)
-                profileView.setImageProfile((profileEvent.eventEnterprise as Enterprise).fotos)
-                profileView.setStateEnterprise(if((profileEvent.eventEnterprise as Enterprise).abierto) "Abierto" else "Cerrado")
-                profileView.setPriceDayStandar("$ " + (profileEvent.eventEnterprise as Enterprise).precio!![0].dia)
-                profileView.setPriceNightStandar("$ " + (profileEvent.eventEnterprise as Enterprise).precio!![0].noche)
-                profileView.hideProgressBar()
-                profileView.hideContentLoading()
+
 
             }
 
             ProfileEvent.ERROR_PROFILE -> {
-                Log.e("ERROR_PROFILE", profileEvent.eventMsg)
-                profileView.hideProgressBar()
-                profileView.setTextInfoLoading(profileEvent.eventMsg)
-                profileView.showTextInfoLoading()
+
             }
 
             else -> {

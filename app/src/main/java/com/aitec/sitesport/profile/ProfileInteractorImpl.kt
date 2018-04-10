@@ -7,8 +7,8 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
  */
 class ProfileInteractorImpl(val profileRepository : ProfileRepository) : ProfileInteractor {
 
-    override fun getProfile(enterprise: Enterprise?) {
-        profileRepository.getProfile(enterprise)
+    override fun getProfile(urlDetail : String) {
+        profileRepository.getProfile(urlDetail)
     }
 
 }

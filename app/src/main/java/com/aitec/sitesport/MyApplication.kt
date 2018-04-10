@@ -18,6 +18,10 @@ import com.aitec.sitesport.menu.di.DaggerMenusComponent
 import com.aitec.sitesport.menu.di.MenusComponent
 import com.aitec.sitesport.menu.di.MenusModule
 import com.aitec.sitesport.menu.ui.MenusView
+import com.aitec.sitesport.profile.di.DaggerProfileComponent
+import com.aitec.sitesport.profile.di.ProfileComponent
+import com.aitec.sitesport.profile.di.ProfileModule
+import com.aitec.sitesport.profile.ui.ProfileView
 import com.aitec.sitesport.sites.domain.di.DaggerSitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesModule
@@ -113,7 +117,7 @@ class MyApplication : MultiDexApplication() {
 
 
 
-    /*
+
     fun getProfileComponent(profileView: ProfileView): ProfileComponent {
         return DaggerProfileComponent
                 .builder()
@@ -122,6 +126,6 @@ class MyApplication : MultiDexApplication() {
                 .profileModule(ProfileModule(profileView))
                 .build()
     }
-*/
+
 
 }

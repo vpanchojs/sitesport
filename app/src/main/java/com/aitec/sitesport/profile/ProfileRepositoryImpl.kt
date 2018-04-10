@@ -21,12 +21,12 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
     override fun stopRequests() {
     }
 
-    override fun getProfile(enterprise: Enterprise?) {
-        retrofitApi.getProfile(enterprise!!.pk, object : onApiActionListener {
+    override fun getProfile(urlDetail : String) {
+        retrofitApi.getProfile(urlDetail, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 postEvent(ProfileEvent.SUCCESS_PROFILE, "",
                         Gson().fromJson(response.toString(), Enterprise::class.java))
-                Log.e("getProfile:onSucces()", enterprise.toString())
+                Log.e("getProfile:onSucces()", Gson().fromJson(response.toString(), Enterprise::class.java).toString())
             }
 
             override fun onError(error: Any?) {

@@ -10,7 +10,7 @@ interface ProfilePresenter {
     fun onResume()
     fun onPause()
     fun onDestroy()
-    fun getProfile(enterprise : Enterprise?)
+    fun getProfile(urlDetail : String)
     fun onEventProfileThread(profileEvent: ProfileEvent)
 
 }
