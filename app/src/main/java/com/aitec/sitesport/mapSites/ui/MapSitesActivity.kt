@@ -482,7 +482,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     override fun addMarker(entreprise: Enterprise) {
         var icono: Icon
 
-        if (entreprise.abierto) {
+        if (entreprise.abierta) {
             icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
         } else {
             icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
@@ -518,7 +518,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
     override fun onMarkerClick(marker: Marker): Boolean {
         if (markerSelect != null) {
-            if (entrepiseSelect.abierto) {
+            if (entrepiseSelect.abierta) {
                 markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open)
             } else {
                 markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close)
@@ -534,7 +534,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 entrepiseSelect = it
                 markerSelect = marker
 
-                if (it.abierto) {
+                if (it.abierta) {
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open_select)
                 } else {
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)

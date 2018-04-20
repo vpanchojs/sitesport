@@ -38,8 +38,8 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 //profileView.setNameProfile(profileEvent.eventEnterprise!!.nombres)
                 val enterprise: Enterprise = profileEvent.eventObject as Enterprise
                 profileView.setImages(enterprise.fotos!!)
-                profileView.setLikes(enterprise.likes)
-                profileView.setStateEnterprise(enterprise.abierto)
+                profileView.setLikes(enterprise.puntuacion)
+                profileView.setStateEnterprise(enterprise.abierta)
                 profileView.setPriceDayStandard(enterprise.precio!![0].dia)
                 profileView.setPriceNightStandard(enterprise.precio!![0].noche)
                 profileView.setEnterprise(enterprise)

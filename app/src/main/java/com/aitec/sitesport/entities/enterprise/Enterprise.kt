@@ -17,6 +17,7 @@ class Enterprise() : Parcelable {
     var puntuacion: Int = 0
     var distancia: Float = 0f
     var abierta: Boolean = false
+    var idMarker: Long = 0L
 
     // OBJETO URL DETALLE
     var descripcion: String = ""
@@ -43,6 +44,7 @@ class Enterprise() : Parcelable {
         puntuacion = parcel.readInt()
         distancia = parcel.readFloat()
         abierta = parcel.readByte() != 0.toByte()
+        idMarker = parcel.readLong()
         /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
         numero_canchas = parcel.readString()
@@ -67,7 +69,7 @@ class Enterprise() : Parcelable {
         parcel.writeInt(puntuacion)
         parcel.writeFloat(distancia)
         parcel.writeByte(if (abierta) 1 else 0)
-
+        parcel.writeLong(idMarker)
         /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)
         parcel.writeString(numero_canchas)
