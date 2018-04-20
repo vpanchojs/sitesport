@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_entrepise_search_name.view.*
  */
 class SearchNamesEntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepiseSearchNameListener) : RecyclerView.Adapter<SearchNamesEntrepiseAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchNamesEntrepiseAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchNamesEntrepiseAdapter.ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise_search_name, parent, false);
         return SearchNamesEntrepiseAdapter.ViewHolder(view);
     }
@@ -22,7 +22,7 @@ class SearchNamesEntrepiseAdapter(var data: ArrayList<Enterprise>, var callback:
         return data.size
     }
 
-    override fun onBindViewHolder(holder: SearchNamesEntrepiseAdapter.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: SearchNamesEntrepiseAdapter.ViewHolder, position: Int) {
         var entrepise = data.get(position)
         holder!!.view.tv_name_entrepise.text = entrepise.nombres
         holder!!.onNavigationProfile(entrepise, callback!!)

@@ -26,12 +26,10 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
             override fun onSucces(response: Any?) {
                 postEvent(ProfileEvent.SUCCESS_PROFILE, "",
                         Gson().fromJson(response.toString(), Enterprise::class.java))
-                Log.e("getProfile:onSucces()", Gson().fromJson(response.toString(), Enterprise::class.java).toString())
             }
 
             override fun onError(error: Any?) {
                 postEvent(ProfileEvent.ERROR_PROFILE, error.toString(), null)
-                Log.e("getProfile:onError()", error.toString())
             }
         })
     }
@@ -40,8 +38,8 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
         sharePreferencesApi.savePkEnterprise(pk)
     }
 
-    private fun postEvent(type: Int, any: Any, enterprise : Enterprise?) {
-        val event = ProfileEvent(type, any.toString(), enterprise)
+    private fun postEvent(type: Int, any: Any, eventObject: Any?) {
+        val event = ProfileEvent(type, any.toString(), eventObject)
         eventBusInterface.post(event)
     }
 

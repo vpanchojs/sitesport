@@ -16,4 +16,7 @@
     <string name="menu_option_termins_and_conditions">Terminos y condiciones</string>
     <string name="menu_option_help">Ayuda</string>
     <string name="menu_option_signout">Cerrar Sesión</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.aitec.sitesport.profile
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
@@ -34,8 +35,14 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
         when (profileEvent.eventType) {
             ProfileEvent.SUCCESS_PROFILE ->{
-
-
+                //profileView.setNameProfile(profileEvent.eventEnterprise!!.nombres)
+                val enterprise: Enterprise = profileEvent.eventObject as Enterprise
+                profileView.setImages(enterprise.fotos!!)
+                profileView.setLikes(enterprise.likes)
+                profileView.setStateEnterprise(enterprise.abierto)
+                profileView.setPriceDayStandard(enterprise.precio!![0].dia)
+                profileView.setPriceNightStandard(enterprise.precio!![0].noche)
+                profileView.setEnterprise(enterprise)
             }
 
             ProfileEvent.ERROR_PROFILE -> {
@@ -46,7 +53,6 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 Log.e("ProfileEvent", "new constant undefine")
             }
         }
-
     }
 
 }

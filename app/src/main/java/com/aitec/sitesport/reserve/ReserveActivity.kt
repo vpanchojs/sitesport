@@ -67,8 +67,8 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         courtList.add(Courts(name = "Cancha 6"))
 
         val adapter = CourtAdapter(courtList, this)
-        rv_fields.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_fields.adapter = adapter
+        rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_fields_profile.adapter = adapter
     }
 
     private fun setupRecyclerViewTimeTable() {

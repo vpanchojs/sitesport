@@ -6,33 +6,44 @@ import com.aitec.sitesport.entities.Address
 
 class Enterprise() : Parcelable {
 
+    // OBJETO INICIAL
     lateinit var pk: String
     lateinit var nombres: String
-    lateinit var address: Address
     lateinit var urldetalle: String
+    var servicios: Servicios = Servicios()
     lateinit var foto_perfil: String
-    var idMarker: Long = 0
+    lateinit var address: Address
+    var me_gusta: Boolean = false
+    var puntuacion: Int = 0
+    var distancia: Float = 0f
+    var abierta: Boolean = false
 
-
+    // OBJETO URL DETALLE
     var descripcion: String = ""
-    var abierto: Boolean = false
-    var numero_canchas: String = "0"
-    var likes: Int = 0
     var fotos: List<Fotos>? = arrayListOf()
     var telefonos: List<Telefonos>? = arrayListOf()
+    var numero_canchas: String = "0"
     var red_social: List<RedSocial>? = arrayListOf()
-    //var categoria: List<Categoria>? = arrayListOf()
     var precio: List<Precio>? = arrayListOf()
+
+    /*var abierto: Boolean = false
+    var likes: Int = 0
+    //var categoria: List<Categoria>? = arrayListOf()
     //var horario: List<Horario>? = arrayListOf()
-    var hora: List<Hora>? = arrayListOf()
+    var hora: List<Hora>? = arrayListOf()*/
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         nombres = parcel.readString()
-        address = parcel.readParcelable(Address::class.java.classLoader)
         urldetalle = parcel.readString()
+        servicios = parcel.readParcelable(Servicios::class.java.classLoader)
         foto_perfil = parcel.readString()
-        descripcion = parcel.readString()
+        address = parcel.readParcelable(Address::class.java.classLoader)
+        me_gusta = parcel.readByte() != 0.toByte()
+        puntuacion = parcel.readInt()
+        distancia = parcel.readFloat()
+        abierta = parcel.readByte() != 0.toByte()
+        /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
         numero_canchas = parcel.readString()
         likes = parcel.readInt()
@@ -42,16 +53,22 @@ class Enterprise() : Parcelable {
         //parcel.readList(categoria, Categoria::class.java.classLoader)
         parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
-        parcel.readList(hora, Hora::class.java.classLoader)
+        parcel.readList(hora, Hora::class.java.classLoader)*/
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
         parcel.writeString(nombres)
-        parcel.writeParcelable(address, flags)
         parcel.writeString(urldetalle)
+        parcel.writeParcelable(servicios, flags)
         parcel.writeString(foto_perfil)
-        parcel.writeString(descripcion)
+        parcel.writeParcelable(address, flags)
+        parcel.writeByte(if (me_gusta) 1 else 0)
+        parcel.writeInt(puntuacion)
+        parcel.writeFloat(distancia)
+        parcel.writeByte(if (abierta) 1 else 0)
+
+        /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)
         parcel.writeString(numero_canchas)
         parcel.writeInt(likes)
@@ -61,7 +78,7 @@ class Enterprise() : Parcelable {
         //parcel.writeList(categoria)
         parcel.writeList(precio)
         //parcel.writeList(horario)
-        parcel.writeList(hora)
+        parcel.writeList(hora)*/
     }
 
     override fun describeContents(): Int {
@@ -69,8 +86,6 @@ class Enterprise() : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<Enterprise> {
-
-        //val DEFAULT = Enterprise("James", 40)
 
         override fun createFromParcel(parcel: Parcel): Enterprise {
             return Enterprise(parcel)

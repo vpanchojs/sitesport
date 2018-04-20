@@ -26,14 +26,10 @@ interface RetrofitServicie {
     fun searchNameCenterSport(@Query("nombres") nombres: String, @Query("page") page: Int): Call<SearchCentersName>
 
     @Headers("Content-Type: application/json")
-    @GET(PATH_PROFILE + "{pk}")
-    fun getProfile(@Path("pk") pk: String): Call<JsonObject>
+    @GET()
+    fun getProfile(@Url urlDetail: String): Call<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET(PATH_CENTER_SPORT)
     fun getSites(): Call<List<Enterprise>>
-
-    @Headers("Content-Type: application/json")
-    @GET(PATH_IMAGES + "{url}")
-    fun getImage(@Path("url") url: String): Call<ResponseBody>
 }

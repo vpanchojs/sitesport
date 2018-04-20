@@ -11,7 +11,7 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_1"
+        android:id="@+id/cmMainDinamyc"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
@@ -21,7 +21,7 @@
 
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/clOut"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginBottom="4dp"
@@ -75,14 +75,14 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="2dp"
             android:background="#d4d4d4"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toStartOf="@+id/rv_fields"
+            app:layout_constraintBottom_toBottomOf="@+id/clOut"
+            app:layout_constraintEnd_toStartOf="@+id/rv_fields_profile"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+            app:layout_constraintStart_toEndOf="@+id/clOut"
+            app:layout_constraintTop_toTopOf="@+id/clOut" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_fields"
+            android:id="@+id/rv_fields_profile"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -90,10 +90,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/clOut"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vw_divider_1"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toTopOf="@+id/clOut" />
 
 
         <android.support.constraint.ConstraintLayout
@@ -106,7 +106,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+            app:layout_constraintTop_toBottomOf="@+id/clOut">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cl_price_nigth"

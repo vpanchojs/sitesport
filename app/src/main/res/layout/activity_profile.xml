@@ -23,7 +23,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:title="Mi canchita"
             app:expandedTitleMarginStart="18dp"
-            app:expandedTitleMarginBottom="18dp"
+            app:expandedTitleMarginBottom="28dp"
             app:expandedTitleMarginEnd="118dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/img_image_profile"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPagerImagesProfile"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:contentDescription="@null"
@@ -42,25 +42,43 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_fire_off" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/viewPagerCountDots"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/contentOptions"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="18dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabImageProfileDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_margin="2dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-                
+                    app:layout_constraintEnd_toEndOf="@+id/viewPagerImagesProfile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:tabBackground="@drawable/tab_selector_image_enterprise"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabPadding="0dp" />
+
+                <ImageView
+                    android:id="@+id/imgLike"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_fire_off" />
+
+                <TextView
+                    android:id="@+id/tvLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="28dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imgLike" />
+
             </android.support.constraint.ConstraintLayout>
-
-
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_profile"
@@ -73,6 +91,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<include layout="@layout/content_profile" />-->
+    <include layout="@layout/content_profile" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:background="@color/colorWhiteTransparent"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_buttom_buttom_sheet"
+            android:text="Registrar"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

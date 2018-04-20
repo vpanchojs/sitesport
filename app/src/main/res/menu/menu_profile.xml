@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.yavac.chanchs.ScrollingActivity">
 
-    <item
+    <!--<item
         android:id="@+id/action_like"
         android:orderInCategory="100"
         android:icon="@drawable/ic_fire_off"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
 
     <item
         android:id="@+id/action_share"

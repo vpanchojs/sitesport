@@ -1,23 +1,13 @@
 package com.aitec.sitesport.profile.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
 import com.aitec.sitesport.R
-import android.support.design.widget.CollapsingToolbarLayout.LayoutParams
 import android.view.View
-import android.widget.LinearLayout
-import android.support.v4.content.ContextCompat
-import android.view.WindowManager
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.support.v7.graphics.Palette
-import android.util.DisplayMetrics
 import com.mapbox.mapboxsdk.annotations.IconFactory
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -26,37 +16,64 @@ import kotlinx.android.synthetic.main.content_profile.*
 import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
-import android.support.annotation.NonNull
-import android.support.annotation.RequiresApi
-import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.CoordinatorLayout
-import android.support.v4.app.ActivityCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.Toolbar
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.enterprise.Fotos
-import com.aitec.sitesport.entities.enterprise.Precio
-import com.aitec.sitesport.entities.TableTime
-import com.aitec.sitesport.entities.enterprise.Hora
 import com.aitec.sitesport.profile.ProfilePresenter
-import com.aitec.sitesport.profile.ui.dialog.RateNightFragment
+import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.util.BaseActivitys
-import com.aitec.sitesport.util.GlideApp
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import kotlinx.android.synthetic.main.item_entrepise.*
-import java.net.URL
 import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), ProfileView{
+class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener, ProfileView{
 
+    override fun setData(courts: Courts) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setImages(imagesUrls: List<Fotos>) {
+        setupViewPager(imagesUrls)
+        tabImageProfileDots.setupWithViewPager(viewPagerImagesProfile, true)
+    }
+
+    private fun setupRecyclerViewClourt() {
+        val courtList = ArrayList<Courts>()
+
+        courtList.add(Courts(name = "Cancha 1"))
+        courtList.add(Courts(name = "Cancha 2"))
+        courtList.add(Courts(name = "Cancha 3"))
+        courtList.add(Courts(name = "Cancha 4"))
+        courtList.add(Courts(name = "Cancha 5"))
+        courtList.add(Courts(name = "Cancha 6"))
+
+        val adapter = CourtAdapter(courtList, this)
+        rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_fields_profile.adapter = adapter
+    }
+
+    override fun setLikes(likes: Int) {
+        tvLike.text = likes.toString()
+    }
+
+    override fun setStateEnterprise(state: Boolean) {
+        tvStateEnterprise.text = if(state) "abierto" else "cerrado"
+    }
+
+    override fun setPriceDayStandard(priceDay: String?) {
+        //tvPriceDayStandar.text = priceDay
+    }
+
+    override fun setPriceNightStandard(priceNight: String?) {
+        //tvPriceNightStandar.text = priceNight
+    }
 
     companion object {
         const val SHARE = ""
@@ -68,6 +85,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
+    private var viewPagerAdapter: ViewPagerAdapter? = null
     private var enterprise: Enterprise? = null
 
 
@@ -78,6 +96,9 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
         onCreateMapBox(savedInstanceState)
 
         this.enterprise = intent.getParcelableExtra(ENTERPRISE)
+
+        setNameProfile(enterprise!!.nombres)
+        setupMap(enterprise!!.address.latitud, enterprise!!.address.longitud)
         /*
             enterprise extras bundle
             lateinit var pk: String
@@ -93,7 +114,28 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
         //setupMapBox(savedInstanceState)
         //setupBusinessHours()
         profilePresenter.getProfile(enterprise!!.urldetalle)
+        setupRecyclerViewClourt()
     }
+
+
+    private fun setupViewPager(fotos: List<Fotos>){
+        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
+        viewPagerImagesProfile.adapter = viewPagerAdapter
+
+        viewPagerImagesProfile.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+            }
+
+        })
+    }
+
+
+
 
     private fun setupInjection() {
         val app: MyApplication = this.application as MyApplication
@@ -102,18 +144,6 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
     }
 
 
-    private fun isScrollAppBar(boolean: Boolean) {
-        ViewCompat.setNestedScrollingEnabled(nsvEnterprise, boolean)
-        /*val params = app_bar_layout_profile.layoutParams as CoordinatorLayout.LayoutParams
-        if (params.behavior == null)
-            params.behavior = AppBarLayout.Behavior()
-        val behaviour = params.behavior as AppBarLayout.Behavior
-        behaviour.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                return boolean
-            }
-        })*/
-    }
 
     /*override fun showTextInfoLoading() {
         tvMsg.visibility = View.VISIBLE
@@ -169,33 +199,25 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
 
     */
 
-/*
-    private fun setupMapBox() {
-        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true })
-    }
-
-
-
-    /*override fun setupMap(locationLatLng: LatLng?) {
+    private fun setupMap(latitude: Double, longitude: Double) {
         mvProfile.getMapAsync({
             val iconFactory = IconFactory.getInstance(this)
-            Log.e("ESTADO", enterprise!!.abierto.toString())
-            val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
+            /*val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
             it.addMarker(MarkerOptions()
-                    .position(LatLng(locationLatLng!!.latitude, locationLatLng.longitude))
-                    .icon(icon))
-
+                    .position(LatLng(latitude, longitude))
+                    .icon(icon))*/
             val position = CameraPosition.Builder()
-                    .target(LatLng(locationLatLng.latitude, locationLatLng.longitude)) // Sets the new camera position
+                    .target(LatLng(latitude, longitude)) // Sets the new camera position
                     .zoom(15.0) // Sets the zoom
                     .build() // Creates a CameraPosition from the builder
             it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 500)
         })
+        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true })
     }
 
     // setup GUI and Life cycle
 
-    */*/
+
 
 /*
     private fun setupBusinessHours() {
@@ -253,24 +275,12 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
         */
         * */
 
+    private fun setNameProfile(name: String) {
+        toolbar_profile.title = name
+    }
 
     override fun setEnterprise(enterprise: Enterprise) {
         this.enterprise = enterprise
-    }
-
-
-    private fun setupAppBarSizeDynamic(){
-        app_bar_layout_profile.post({
-            val heightPx = (img_image_profile.height / 2.2).toInt()
-            setAppBarOffset(heightPx)
-        })
-    }
-
-    private fun setupImageProfile(){
-        img_image_profile.setImageDrawable(resources.getDrawable(R.drawable.bg_image_progile))
-        val displayMetrics = DisplayMetrics()
-        this.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        img_image_profile.layoutParams.height = displayMetrics.widthPixels
     }
 
     private fun setupToolBar(){
@@ -433,4 +443,5 @@ class ProfileActivity : AppCompatActivity(), ProfileView{
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
+
 }

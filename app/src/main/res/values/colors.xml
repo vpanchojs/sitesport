@@ -9,6 +9,8 @@
     <color name="colorBackgroundContents">#F7F7FA</color>
     <color name="colorDivider">#78849E</color>
     <color name="color_background">#F7F7FA</color>
+    <color name="colorWhiteTransparent">#9b2a2e43</color>
+
 
     <color name="icon_transparent">#64454f63</color>
     <color name="white">#FFFFFF</color>
@@ -16,6 +18,20 @@
     <color name="colorNormalIButton">#353A50</color>
     <color name="colorPressIButton">#1f222e</color>
     <color name="colorDisableIButton">#b6b6b6</color>
+
+    <color name="colorStartGradient">#19686868</color>
+    <color name="colorMediumGradient">#64686868</color>
+    <color name="colorEndGradient">#af131313</color>
+
+    <color name="colorDotEnable">#96ffffff</color>
+    <color name="colorDotDisable">#64ffffff</color>
+
+
+    <color name="colorTextProfile">@color/colorPrimary</color>
+    <color name="colorDividerProfile">#642a2e43</color>
+
+
+
 
 
 </resources>
