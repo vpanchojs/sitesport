@@ -25,4 +25,6 @@
     <include layout="@layout/content_reserve" />
 
 
+    <include layout="@layout/bottom_sheet_resume_reserve" />
+
 </android.support.design.widget.CoordinatorLayout>

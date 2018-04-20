@@ -2,6 +2,8 @@ package com.aitec.sitesport.reserve
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +13,7 @@ import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.TableTimeAdapter
 import kotlinx.android.synthetic.main.activity_reserve.*
+import kotlinx.android.synthetic.main.bottom_sheet_resume_reserve.*
 import kotlinx.android.synthetic.main.content_reserve.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,11 +23,22 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
 
 
     var fromDatePickerDialog: DatePickerDialog? = null
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_calendar -> {
                 showDatePicker()
+            }
+            R.id.cl_header_bs -> {
+                when (bottomSheetBehavior.state) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                }
             }
         }
     }
@@ -40,6 +54,29 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         setupRecyclerViewClourt()
         setupRecyclerViewTimeTable()
         setupEventsElements()
+        setupBottomSheet()
+    }
+
+    private fun setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        iv_icon_open.rotation = 0F
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        iv_icon_open.rotation = 180F
+
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
     }
 
 
@@ -54,7 +91,9 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
 
     private fun setupEventsElements() {
         btn_calendar.setOnClickListener(this)
+        cl_header_bs.setOnClickListener(this)
     }
+
 
     private fun setupRecyclerViewClourt() {
         val courtList = ArrayList<Courts>()
@@ -87,7 +126,7 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
 
     }
 
-
     data class Hours(var start: String, var end: String, var state: Boolean)
+
 
 }

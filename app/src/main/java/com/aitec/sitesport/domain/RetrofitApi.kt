@@ -16,11 +16,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.ResponseBody
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.aitec.sitesport.entities.enterprise.Fotos
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.net.URL
 
 
 class RetrofitApi {
@@ -192,14 +190,18 @@ class RetrofitApi {
         handlerSearchName!!.postDelayed(runnableSearchName, LAG.toLong())
     }
 
-    fun getProfile(urlDetail: String, callback: onApiActionListener) {
-        request.getProfile(urlDetail).enqueue(object : Callback<JsonObject> {
+    fun getProfile(pk: String, callback: onApiActionListener) {
+        val parametros = HashMap<String, String>()
+        parametros.put("pk", pk)
 
+
+        request.getProfile(pk).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 callback.onSucces(response.body())
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                //callback.onError(t.message.toString())
                 RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
                     override fun networkError(e: String) {
                         callback.onError(e)
@@ -211,6 +213,7 @@ class RetrofitApi {
                 })
             }
         })
+
     }
 
     fun deleteRequestSearchName() {
@@ -266,4 +269,40 @@ class RetrofitApi {
         })
     }
 
+    fun downloadImages(urls : Array<String>, callback: onApiActionListener){
+
+        val arrayImagesBitmap : MutableList<Bitmap> = arrayListOf()
+
+
+        for (i in urls.indices) {
+            val call: Call<ResponseBody> = request.getImage(urls[i])
+
+            call.enqueue(object : Callback<ResponseBody> {
+
+                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+                    Log.e(TAG, "Descarga exitosa")
+
+                    try {
+                        val byteArray = response!!.body()!!.bytes()
+                        val imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size);
+                        arrayImagesBitmap.add(imageBitmap)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error en la conversion de imagenes")
+                        e.printStackTrace()
+                    }
+
+                    if(i == urls.size) {
+                        callback.onSucces(arrayImagesBitmap)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+                    Log.e(TAG, "Error en la descarga")
+                    if(i == urls.size) {
+                        callback.onError(t!!.message)
+                    }
+                }
+            })
+        }
+    }
 }
