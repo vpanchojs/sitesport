@@ -12,11 +12,11 @@ class Enterprise() : Parcelable {
     lateinit var urldetalle: String
     var servicios: Servicios = Servicios()
     var foto_perfil: String = ""
-    lateinit var address: Address
+    lateinit var direccion: Address
     var me_gusta: Boolean = false
     var puntuacion: Int = 0
     var distancia: Float = 0f
-    var abierta: Boolean = false
+    var abierto: Boolean = false
     var idMarker: Long = 0L
 
     // OBJETO URL DETALLE
@@ -39,11 +39,11 @@ class Enterprise() : Parcelable {
         urldetalle = parcel.readString()
         servicios = parcel.readParcelable(Servicios::class.java.classLoader)
         foto_perfil = parcel.readString()
-        address = parcel.readParcelable(Address::class.java.classLoader)
+        direccion = parcel.readParcelable(Address::class.java.classLoader)
         me_gusta = parcel.readByte() != 0.toByte()
         puntuacion = parcel.readInt()
         distancia = parcel.readFloat()
-        abierta = parcel.readByte() != 0.toByte()
+        abierto = parcel.readByte() != 0.toByte()
         idMarker = parcel.readLong()
         /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
@@ -64,11 +64,11 @@ class Enterprise() : Parcelable {
         parcel.writeString(urldetalle)
         parcel.writeParcelable(servicios, flags)
         parcel.writeString(foto_perfil)
-        parcel.writeParcelable(address, flags)
+        parcel.writeParcelable(direccion, flags)
         parcel.writeByte(if (me_gusta) 1 else 0)
         parcel.writeInt(puntuacion)
         parcel.writeFloat(distancia)
-        parcel.writeByte(if (abierta) 1 else 0)
+        parcel.writeByte(if (abierto) 1 else 0)
         parcel.writeLong(idMarker)
         /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)

@@ -35,13 +35,13 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
         //holder!!.view.tv_address.text = df.format(entrepise.address.direction) + " Km"
 
         GlideApp.with(context)
-                .load(entrepise.foto_perfil.trim())
+                .load(entrepise.foto_perfil)
                 .placeholder(R.drawable.ic_sites)
                 .centerCrop()
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(holder!!.view.iv_entrepise)
 
-        holder!!.view.tv_address.text = entrepise.address.calles
+        holder!!.view.tv_address.text = entrepise.direccion.calles
         holder!!.onNavigationProfile(entrepise, callback)
 
     }

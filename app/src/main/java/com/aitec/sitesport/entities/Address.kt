@@ -11,7 +11,6 @@ class Address() : Parcelable {
     lateinit var pais: String
     var latitud: Double = 0.0
     lateinit var calles: String
-    var distance: Double = 0.0
 
     constructor(parcel: Parcel) : this() {
         longitud = parcel.readDouble()

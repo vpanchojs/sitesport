@@ -482,7 +482,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     override fun addMarker(entreprise: Enterprise) {
         var icono: Icon
 
-        if (entreprise.abierta) {
+        if (entreprise.abierto) {
             icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
         } else {
             icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
@@ -490,7 +490,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
 
         var marker = mapboxMap!!.addMarker(MarkerOptions()
-                .position(LatLng(entreprise.address.latitud, entreprise.address.longitud))
+                .position(LatLng(entreprise.direccion.latitud, entreprise.direccion.longitud))
                 .icon(icono))
 
         entreprise.idMarker = marker.id
@@ -518,7 +518,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
     override fun onMarkerClick(marker: Marker): Boolean {
         if (markerSelect != null) {
-            if (entrepiseSelect.abierta) {
+            if (entrepiseSelect.abierto) {
                 markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open)
             } else {
                 markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close)
@@ -534,13 +534,13 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 entrepiseSelect = it
                 markerSelect = marker
 
-                if (it.abierta) {
+                if (it.abierto) {
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open_select)
                 } else {
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
                 }
                 tv_title_bs.setText(it.nombres)
-                tv_subtitle_bs.setText(df.format(it.address.distance).toString() + " Km")
+                tv_subtitle_bs.setText(df.format(it.distancia).toString() + " Km")
             }
         }
 
