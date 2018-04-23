@@ -17,18 +17,20 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
     }
 
     override fun onGetSites() {
+        view.showProgresBar(true)
         interactor.onGetSites()
     }
 
     @Subscribe
     fun onEventThread(event: SitesEvents) {
+        view.showProgresBar(false)
         when (event.type) {
             SitesEvents.ON_GET_SITES_SUCCESS -> {
                 view.setResultsSearchs(event.any as List<Enterprise>)
             }
 
             SitesEvents.ON_GET_SITES_ERROR -> {
-
+                view.showMessagge(event.any.toString())
             }
 
         }

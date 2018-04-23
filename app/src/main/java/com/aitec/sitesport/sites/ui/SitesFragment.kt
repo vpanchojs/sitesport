@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.ToggleButton
+import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.sites.SitesPresenter
 import com.aitec.sitesport.sites.adapter.EntrepiseAdapter
+import com.aitec.sitesport.util.BaseActivitys
 import kotlinx.android.synthetic.main.fragment_sites.*
 import javax.inject.Inject
 
@@ -24,28 +25,18 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         when (p0!!.id) {
 
-            R.id.tb_distance -> {
-                setBackground(p0 as ToggleButton, p1)
+            R.id.cb_distance -> {
+
             }
-            R.id.tb_open -> {
-                setBackground(p0 as ToggleButton, p1)
+            R.id.cb_open -> {
+
             }
-            R.id.tb_favorites -> {
-                setBackground(p0 as ToggleButton, p1)
+            R.id.cb_score -> {
+
             }
         }
     }
 
-
-    fun setBackground(tb: ToggleButton, state: Boolean) {
-        if (state) {
-            tb.background = resources.getDrawable(R.drawable.bg_chip_on)
-            tb.setTextColor(resources.getColor(R.color.white))
-        } else {
-            tb.background = resources.getDrawable(R.drawable.bg_chip_off)
-            tb.setTextColor(resources.getColor(R.color.colorDisableIButton))
-        }
-    }
 
     override fun onClick(p0: View?) {
 
@@ -88,9 +79,9 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     private fun setupEvents() {
-        tb_distance.setOnCheckedChangeListener(this)
-        tb_open.setOnCheckedChangeListener(this)
-        tb_favorites.setOnCheckedChangeListener(this)
+        cb_distance.setOnCheckedChangeListener(this)
+        cb_open.setOnCheckedChangeListener(this)
+        cb_score.setOnCheckedChangeListener(this)
     }
 
     private fun setupRecyclerView() {
@@ -115,7 +106,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
 
     override fun showMessagge(message: Any) {
-
+        BaseActivitys.showToastMessage(context!!, message, Toast.LENGTH_LONG)
     }
 
     override fun setResultsSearchs(listEnterprise: List<Enterprise>) {
@@ -125,7 +116,10 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     override fun showProgresBar(show: Boolean) {
-
+        if (show)
+            progressbar.visibility = View.VISIBLE
+        else
+            progressbar.visibility = View.GONE
     }
 
     override fun clearSearchResults() {

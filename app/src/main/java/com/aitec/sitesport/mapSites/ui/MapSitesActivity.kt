@@ -493,7 +493,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 .position(LatLng(entreprise.address.latitud, entreprise.address.longitud))
                 .icon(icono))
 
-        // entreprise.idMarker = marker.id
+        entreprise.idMarker = marker.id
         // marker.title = "Que mas v"
         // marker.showInfoWindow(mapboxMap, mapView)
 

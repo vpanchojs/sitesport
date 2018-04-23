@@ -11,7 +11,7 @@ class Enterprise() : Parcelable {
     lateinit var nombres: String
     lateinit var urldetalle: String
     var servicios: Servicios = Servicios()
-    lateinit var foto_perfil: String
+    var foto_perfil: String = ""
     lateinit var address: Address
     var me_gusta: Boolean = false
     var puntuacion: Int = 0

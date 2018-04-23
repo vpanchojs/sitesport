@@ -269,40 +269,4 @@ class RetrofitApi {
         })
     }
 
-    fun downloadImages(urls : Array<String>, callback: onApiActionListener){
-
-        val arrayImagesBitmap : MutableList<Bitmap> = arrayListOf()
-
-
-        for (i in urls.indices) {
-            val call: Call<ResponseBody> = request.getImage(urls[i])
-
-            call.enqueue(object : Callback<ResponseBody> {
-
-                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                    Log.e(TAG, "Descarga exitosa")
-
-                    try {
-                        val byteArray = response!!.body()!!.bytes()
-                        val imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size);
-                        arrayImagesBitmap.add(imageBitmap)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error en la conversion de imagenes")
-                        e.printStackTrace()
-                    }
-
-                    if(i == urls.size) {
-                        callback.onSucces(arrayImagesBitmap)
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                    Log.e(TAG, "Error en la descarga")
-                    if(i == urls.size) {
-                        callback.onError(t!!.message)
-                    }
-                }
-            })
-        }
-    }
 }
