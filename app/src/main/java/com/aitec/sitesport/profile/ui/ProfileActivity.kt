@@ -1,6 +1,8 @@
 package com.aitec.sitesport.profile.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -18,7 +20,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
@@ -27,13 +32,306 @@ import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.enterprise.Fotos
+import com.aitec.sitesport.entities.enterprise.Servicios
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.util.BaseActivitys
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import javax.inject.Inject
 
 
 class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener, ProfileView{
+
+    override fun showLoading() {
+        btnReload.visibility = View.GONE
+        tvInfo.text = ""
+        pbLoading.visibility = View.VISIBLE
+        if(clLoader.visibility == View.GONE) clLoader.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading(msg: String) {
+        Log.e(TAG, msg)
+        if(msg.isNotBlank()){
+            pbLoading.visibility = View.GONE
+            tvInfo.text = msg
+            btnReload.visibility = View.VISIBLE
+        }else{
+            clLoader.visibility = View.GONE
+        }
+    }
+
+
+    @Inject
+    lateinit var profilePresenter: ProfilePresenter
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var enterprise: Enterprise? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setVectorCompatibility()
+        setContentView(R.layout.activity_profile)
+        setupInjection()
+        onCreateMapBox(savedInstanceState)
+
+        this.enterprise = intent.getParcelableExtra(ENTERPRISE)
+        setupUI()
+        profilePresenter.register()
+        profilePresenter.getProfile(enterprise!!.urldetalle)
+    }
+
+    override fun onDestroy() {
+        profilePresenter.unregister()
+        super.onDestroy()
+    }
+
+    private fun setVectorCompatibility(){
+        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+    }
+
+    private fun setupViewPager(fotos: List<Fotos>){
+        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
+        viewPagerImagesProfile.adapter = viewPagerAdapter
+
+        viewPagerImagesProfile.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+            }
+
+        })
+    }
+
+    private fun setupInjection() {
+        val app: MyApplication = this.application as MyApplication
+        val profileComponent = app.getProfileComponent(this)
+        profileComponent.inject(this)
+    }
+
+    private fun setupMap(latitude: Double, longitude: Double) {
+        mvProfile.getMapAsync({
+            val iconFactory = IconFactory.getInstance(this)
+            val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
+            it.addMarker(MarkerOptions()
+                    .position(LatLng(latitude, longitude))
+                    .icon(icon))
+            val position = CameraPosition.Builder()
+                    .target(LatLng(latitude, longitude)) // Sets the new camera position
+                    .zoom(15.0) // Sets the zoom
+                    .build() // Creates a CameraPosition from the builder
+            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 500)
+        })
+        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true }) //desabilitar el touch en el mapa
+    }
+
+    // setup GUI and Life cycle
+
+    private fun setNameProfile(name: String) {
+        toolbar_profile.title = name
+    }
+
+    override fun setEnterprise(enterprise: Enterprise) {
+        this.enterprise = enterprise
+    }
+
+    private fun setupToolBar(){
+        setSupportActionBar(toolbar_profile)
+        if (supportActionBar != null) {
+            supportActionBar!!.title = ""
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+    }
+
+    private fun openInstagram(){
+
+        if(enterprise!!.red_social!!.isNotEmpty()){
+            for(network in enterprise!!.red_social!!.iterator()) {
+                when (network.nombre) {
+                    "INSTAGRAM" -> {
+                        var uri: Uri= Uri.parse("http://instagram.com/_u/" + network.url)
+                        var likeIng: Intent =  Intent(Intent.ACTION_VIEW, uri)
+
+                        likeIng.setPackage("com.instagram.android")
+
+                        try {
+                            startActivity(likeIng);
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(network.url)));
+                        }
+                        return
+                    }
+                    else -> {
+                        BaseActivitys.showToastMessage(this, "Instagram no disponible", Toast.LENGTH_SHORT)
+                    }
+                }
+            }
+        }else{
+            BaseActivitys.showToastMessage(this, "Instagram no disponible", Toast.LENGTH_SHORT)
+        }
+    }
+
+    private fun openWhatsApp() {
+        if(enterprise!!.red_social!!.isNotEmpty()){
+            for(network in enterprise!!.red_social!!.iterator()){
+                when (network.nombre){
+                    "WHATSAPP" -> {
+                        val ECU = "593"
+                        val formattedNumber: String = ECU + network.url
+                        try {
+                            val sendIntent: Intent
+                            sendIntent = Intent("android.intent.action.MAIN")
+                            sendIntent.setComponent(ComponentName("com.nombre", "com.nombre.Conversation"))
+                            sendIntent.setAction(Intent.ACTION_SEND)
+                            sendIntent.setType("text/plain")
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, "")
+                            sendIntent.putExtra("jid", formattedNumber + "@s.nombre.net")
+                            sendIntent.setPackage("com.nombre")
+                            startActivity(sendIntent)
+                        } catch (e: Exception) {
+                            //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "No tienes whatsapp instalado", Toast.LENGTH_SHORT).show();
+                        }
+                        return
+                    }
+                    else -> {
+                        BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
+                    }
+
+                }
+            }
+        }else{
+            BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
+        }
+    }
+
+    private fun setupUI(){
+        btnReload.setOnClickListener{
+            profilePresenter.getProfile(enterprise!!.urldetalle)
+        }
+        clLoader.visibility = View.GONE
+        setNameProfile(enterprise!!.nombres)
+        setupMap(enterprise!!.direccion.latitud, enterprise!!.direccion.longitud)
+        setupToolBar()
+        setupRecyclerViewClourt()
+
+        if(enterprise!!.me_gusta) imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_on))
+        else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
+
+        clLike.setOnClickListener {
+            if(enterprise!!.me_gusta) {
+                Toast.makeText(this, "Ya has calificado a " + enterprise!!.nombres, Toast.LENGTH_SHORT).show()
+            }else{
+                //MANDAR A CALIFICAR AQUIIIII XD
+                //profilePresenter.like()
+            }
+
+        }
+
+        btnReservation.setOnClickListener {
+            Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
+        }
+
+        //NetworkSocial - Phone
+
+        ibtnWhatsapp.setOnClickListener {
+            openWhatsApp()
+        }
+
+        ibtnFacebook.setOnClickListener {
+            openFacebook()
+        }
+
+        ibtnInstagram.setOnClickListener {
+            openInstagram()
+        }
+
+        ibtnPhone.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                callPhone()
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
+                return@setOnClickListener
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu to use in the action bar
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_profile, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home)
+            onBackPressed()
+        else if (item.itemId == R.id.action_share)
+            shareProfile()
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareProfile(){
+        val i = Intent(android.content.Intent.ACTION_SEND)
+        i.type = "text/plain"
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, "Sitesport")
+        i.putExtra(android.content.Intent.EXTRA_TEXT, "Aquí va un texto")
+        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+    }
+
+    private fun openFacebook() {
+        if(enterprise!!.red_social!!.isNotEmpty()){
+            for(network in enterprise!!.red_social!!.iterator()){
+                when (network.nombre){
+                    "FACEBOOK" -> {
+                        var intent: Intent?
+                        try {
+                            getPackageManager()
+                                    .getPackageInfo("com.url.katana", 0) //Checks if FB is even installed.
+                            intent = Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("fb://profile/" + network.url)) //Trys to make intent with FB's URI
+                        } catch (e: Exception) {
+                            intent = Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.url.com/" + network.url)) //catches and opens a url to the desired page
+                        }
+
+                        if (intent != null) startActivity(intent)
+                        return
+                    }
+                    else-> {
+                        BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
+                    }
+                }
+            }
+        }else{
+            BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun callPhone() {
+        //if(enterprise != null && enterprise!!.telefonos!![0].convencional.isNotBlank()) {
+        if(enterprise != null && enterprise!!.telefonos!!.isNotEmpty()) {
+            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise!!.telefonos!![0].convencional)))
+        }else{
+            BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
+        }
+    }
+
+    override fun setServices(servicios: Servicios) {
+        if (servicios.BAR) ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.WIFI) ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.PARKER) ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.DUCHA) ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.LOKER) ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+    }
 
     override fun setData(courts: Courts) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -67,365 +365,6 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         tvStateEnterprise.text = if(state) "abierto" else "cerrado"
     }
 
-    override fun setPriceDayStandard(priceDay: String?) {
-        //tvPriceDayStandar.text = priceDay
-    }
-
-    override fun setPriceNightStandard(priceNight: String?) {
-        //tvPriceNightStandar.text = priceNight
-    }
-
-    companion object {
-        const val SHARE = ""
-        const val TAG = "ProfileActivity"
-        const val EMOTICON_HAPPY = 0x1F60A
-        const val ENTERPRISE = "enterprise"
-        const val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
-    }
-
-    @Inject
-    lateinit var profilePresenter: ProfilePresenter
-    private var viewPagerAdapter: ViewPagerAdapter? = null
-    private var enterprise: Enterprise? = null
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-        setupInjection()
-        onCreateMapBox(savedInstanceState)
-
-        this.enterprise = intent.getParcelableExtra(ENTERPRISE)
-
-        setNameProfile(enterprise!!.nombres)
-        setupMap(enterprise!!.address.latitud, enterprise!!.address.longitud)
-        /*
-            enterprise extras bundle
-            lateinit var pk: String
-            lateinit var nombres: String
-            lateinit var address: Address
-            lateinit var urldetalle: String
-            lateinit var foto_perfil: String
-         */
-
-        setupToolBar()
-        //setupImageProfile()
-        //setupAppBarSizeDynamic()
-        //setupMapBox(savedInstanceState)
-        //setupBusinessHours()
-        profilePresenter.getProfile(enterprise!!.urldetalle)
-        setupRecyclerViewClourt()
-    }
-
-
-    private fun setupViewPager(fotos: List<Fotos>){
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
-        viewPagerImagesProfile.adapter = viewPagerAdapter
-
-        viewPagerImagesProfile.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrollStateChanged(state: Int) {}
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-            }
-
-        })
-    }
-
-
-
-
-    private fun setupInjection() {
-        val app: MyApplication = this.application as MyApplication
-        val profileComponent = app.getProfileComponent(this)
-        profileComponent.inject(this)
-    }
-
-
-
-    /*override fun showTextInfoLoading() {
-        tvMsg.visibility = View.VISIBLE
-        btnReloadEnterprise.visibility = View.VISIBLE
-    }
-
-    override fun hideTextInfoLoading() {
-        tvMsg.visibility = View.GONE
-        btnReloadEnterprise.visibility = View.GONE
-    }
-
-    override fun setTextInfoLoading(msg: String) {
-        tvMsg.text = msg
-    }
-
-    override fun setStateEnterprise(state: String?) {
-        tvStateEnterprise.text = state
-    }
-
-    override fun setPriceDayStandar(priceDay: String?) {
-        tvPriceDayStandar.text = priceDay
-    }
-
-    override fun setPriceNightStandar(priceNight: String?) {
-        tvPriceNightStandar.text = priceNight
-    }
-
-    override fun setEnterprise(enterprise: Enterprise) {
-        this.enterprise!!.descripcion = enterprise.descripcion
-        this.enterprise!!.abierto = enterprise.abierto
-        this.enterprise!!.fotos = enterprise.fotos
-        this.enterprise!!.telefonos = enterprise.telefonos
-        this.enterprise!!.red_social = enterprise.red_social
-        //this.enterprise!!.categoria = enterprise.categoria
-        this.enterprise!!.precio = enterprise.precio
-        //this.enterprise!!.horario = enterprise.horario
-        this.enterprise!!.hora = enterprise.hora
-    }
-
-    override fun setImageProfile(urls: List<Fotos>?) {
-        if (urls != null && urls.isNotEmpty() && !(urls[0].imagen.isEmpty())) {
-            GlideApp.with(this)
-                    .load(URL(urls[0].imagen).toString())
-                    .placeholder(img_image_profile.drawable)
-                    //.fitCenter()
-                    .centerCrop()
-                    .error(img_image_profile.drawable)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img_image_profile)
-            //setupImageProfile()
-        }
-    }
-
-    */
-
-    private fun setupMap(latitude: Double, longitude: Double) {
-        mvProfile.getMapAsync({
-            val iconFactory = IconFactory.getInstance(this)
-            /*val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
-            it.addMarker(MarkerOptions()
-                    .position(LatLng(latitude, longitude))
-                    .icon(icon))*/
-            val position = CameraPosition.Builder()
-                    .target(LatLng(latitude, longitude)) // Sets the new camera position
-                    .zoom(15.0) // Sets the zoom
-                    .build() // Creates a CameraPosition from the builder
-            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 500)
-        })
-        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true })
-    }
-
-    // setup GUI and Life cycle
-
-
-
-/*
-    private fun setupBusinessHours() {
-
-        /*btnShowBusinessHours.setOnClickListener {
-            //tvDayTitle
-            //tvHourStartEnd
-            if(enterprise != null && enterprise!!.hora != null && enterprise!!.hora != null) {
-                val businessHoursFragment = BusinessHoursFragment
-                        .newInstance(enterprise!!.hora!!, enterprise!!.horario!!)
-                businessHoursFragment.show(supportFragmentManager, "BusinessHoursFragment")
-            }else{
-                BaseActivitys.showToastMessage(this,"Horarios no disponibles", Toast.LENGTH_SHORT)
-            }
-        }
-
-        btnShowRateDay.setOnClickListener {
-            if(enterprise != null && enterprise!!.precio != null) {
-                val rateDayFragment = RateDayFragment.newInstance(enterprise!!.precio!!)
-                rateDayFragment.show(supportFragmentManager, "RateDayFragment")
-            }else{
-                BaseActivitys.showToastMessage(this,"Precios no disponibles", Toast.LENGTH_SHORT)
-            }
-        }
-
-        btnShowRateNight.setOnClickListener {
-            if(enterprise != null && enterprise!!.precio != null) {
-
-                val rateNightFragment = RateNightFragment.newInstance(enterprise!!.precio!!)
-                rateNightFragment.show(supportFragmentManager, "RateNightFragment")
-            }else{
-                BaseActivitys.showToastMessage(this,"Precios no disponibles", Toast.LENGTH_SHORT)
-            }
-        }
-
-        ibtnWhatsapp.setOnClickListener {
-            openWhatsApp()
-        }
-
-        ibtnFacebook.setOnClickListener {
-            openFacebook()
-        }
-
-        ibtnPhone.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                callPhone()
-            }else{
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
-                return@setOnClickListener
-            }
-        }
-
-        */
-        * */
-
-    private fun setNameProfile(name: String) {
-        toolbar_profile.title = name
-    }
-
-    override fun setEnterprise(enterprise: Enterprise) {
-        this.enterprise = enterprise
-    }
-
-    private fun setupToolBar(){
-        setSupportActionBar(toolbar_profile)
-        if (supportActionBar != null) {
-            supportActionBar!!.title = ""
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-    }
-
-    private fun setAppBarOffset(offsetPx: Int) {
-        val params = app_bar_layout_profile.layoutParams as CoordinatorLayout.LayoutParams
-        params.behavior = AppBarLayout.Behavior()
-        val behavior = params.behavior as AppBarLayout.Behavior
-        behavior.onNestedPreScroll(cordinator_layout_profile, app_bar_layout_profile, collapse_toolbar_profile, 0, offsetPx, intArrayOf(0, 0), 0)
-    }
-
-    private fun openWhatsApp() {
-
-        if(enterprise != null && enterprise!!.telefonos!![0].celular.isNotBlank()) {
-            val ECU = "593"
-            val formattedNumber: String = ECU + enterprise!!.telefonos!![0].celular
-            try {
-                val sendIntent: Intent
-                sendIntent = Intent("android.intent.action.MAIN")
-                sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
-                sendIntent.setAction(Intent.ACTION_SEND)
-                sendIntent.setType("text/plain")
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "")
-                sendIntent.putExtra("jid", formattedNumber + "@s.whatsapp.net")
-                sendIntent.setPackage("com.whatsapp")
-                startActivity(sendIntent)
-            } catch (e: Exception) {
-                //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "No tienes whatsapp instalado", Toast.LENGTH_SHORT).show();
-            }
-        }else {
-            BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
-        }
-    }
-
-    private fun openFacebook() {
-
-        if(enterprise != null && enterprise!!.red_social!![0].facebook.isNotBlank()) {
-
-            var intent: Intent?
-            try {
-                getPackageManager()
-                        .getPackageInfo("com.facebook.katana", 0) //Checks if FB is even installed.
-                intent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse("fb://profile/" + enterprise!!.red_social!![0].facebook)) //Trys to make intent with FB's URI
-            } catch (e: Exception) {
-                intent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://www.facebook.com/" + enterprise!!.red_social!![0].facebook)) //catches and opens a url to the desired page
-            }
-
-            if (intent != null) startActivity(intent)
-        }else {
-            BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
-        }
-
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun callPhone() {
-        if(enterprise != null && enterprise!!.telefonos!![0].convencional.isNotBlank()) {
-            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise!!.telefonos!![0].convencional)))
-        }else{
-            BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_profile, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_share ->{
-                shareProfile()
-                return true
-            }
-            android.R.id.home ->{
-                onBackPressed()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun shareProfile(){
-        val sendIntent = Intent(android.content.Intent.ACTION_SEND)
-        sendIntent.type = "text/plain"
-        sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"share_option");
-        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, SHARE)
-        startActivity(Intent.createChooser(sendIntent,"Compartir a través de..."));
-    }
-
-    public override fun onResume() {
-        super.onResume()
-        profilePresenter.onResume()
-        mvProfile.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mvProfile.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mvProfile.onStop()
-    }
-
-    public override fun onPause() {
-        super.onPause()
-        profilePresenter.onPause()
-        mvProfile.onPause()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mvProfile.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        profilePresenter.onDestroy()
-        mvProfile.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        mvProfile.onSaveInstanceState(outState!!)
-        //outState.putParcelable("enterprise", enterprise)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        Log.i(TAG, "onRestoreInstanceState")
-        //this.enterprise = savedInstanceState?.getParcelable("enterprise")
-    }
-
     private fun onCreateMapBox(savedInstanceState: Bundle?){
         mvProfile.onCreate(savedInstanceState)
     }
@@ -442,6 +381,15 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
+    }
+
+    companion object {
+        const val SHARE = ""
+        const val TAG = "ProfileActivity"
+        const val EMOTICON_HAPPY = 0x1F60A
+        const val EMOTICON_EYE = 0x1F609
+        const val ENTERPRISE = "enterprise"
+        const val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
     }
 
 }

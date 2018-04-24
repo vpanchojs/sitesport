@@ -24,11 +24,13 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
     override fun getProfile(urlDetail : String) {
         retrofitApi.getProfile(urlDetail, object : onApiActionListener {
             override fun onSucces(response: Any?) {
+                Log.e("ProfileRepositoryImpl", response.toString())
                 postEvent(ProfileEvent.SUCCESS_PROFILE, "",
                         Gson().fromJson(response.toString(), Enterprise::class.java))
             }
 
             override fun onError(error: Any?) {
+                Log.e("ProfileRepositoryImpl", error.toString())
                 postEvent(ProfileEvent.ERROR_PROFILE, error.toString(), null)
             }
         })

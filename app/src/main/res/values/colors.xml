@@ -9,7 +9,7 @@
     <color name="colorBackgroundContents">#F7F7FA</color>
     <color name="colorDivider">#78849E</color>
     <color name="color_background">#F7F7FA</color>
-    <color name="colorWhiteTransparent">#9b2a2e43</color>
+    <color name="colorWhiteTransparent">#64ffffff</color>
 
 
     <color name="icon_transparent">#64454f63</color>
@@ -18,6 +18,10 @@
     <color name="colorNormalIButton">#353A50</color>
     <color name="colorPressIButton">#1f222e</color>
     <color name="colorDisableIButton">#b6b6b6</color>
+
+    <color name="colorNormalNoIButton">#f2f2f2</color>
+    <color name="colorPressNoIButton">#f1f1f1</color>
+    <color name="colorDisableNoIButton">#f1f1f1</color>
 
     <color name="colorStartGradient">#19686868</color>
     <color name="colorMediumGradient">#64686868</color>
@@ -28,7 +32,7 @@
 
 
     <color name="colorTextProfile">@color/colorPrimary</color>
-    <color name="colorDividerProfile">#642a2e43</color>
+    <color name="colorDividerProfile">#4b2a2e43</color>
 
 
 

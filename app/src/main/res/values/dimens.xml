@@ -24,7 +24,7 @@
     <dimen name="header_view_start_text_size">32sp</dimen>
     <dimen name="header_view_end_text_size">18sp</dimen>
 
-    <dimen name="size_btn_profile">46dp</dimen>
+    <dimen name="size_btn_profile">40dp</dimen> <!--46-->
     <dimen name="text_margin">16dp</dimen>
 
     <!-- //dimensiones del perfil -->

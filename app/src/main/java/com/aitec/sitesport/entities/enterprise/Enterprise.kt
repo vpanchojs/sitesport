@@ -45,17 +45,18 @@ class Enterprise() : Parcelable {
         distancia = parcel.readFloat()
         abierto = parcel.readByte() != 0.toByte()
         idMarker = parcel.readLong()
+        parcel.readList(red_social, RedSocial::class.java.classLoader)
+
         /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
         numero_canchas = parcel.readString()
         likes = parcel.readInt()
         parcel.readList(fotos, Fotos::class.java.classLoader)
-        parcel.readList(telefonos, Telefonos::class.java.classLoader)
-        parcel.readList(red_social, RedSocial::class.java.classLoader)
+        parcel.readList(telefonos, Telefonos::class.java.classLoader)*/
         //parcel.readList(categoria, Categoria::class.java.classLoader)
-        parcel.readList(precio, Precio::class.java.classLoader)
+        //parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
-        parcel.readList(hora, Hora::class.java.classLoader)*/
+       // parcel.readList(hora, Hora::class.java.classLoader)*/
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -70,17 +71,18 @@ class Enterprise() : Parcelable {
         parcel.writeFloat(distancia)
         parcel.writeByte(if (abierto) 1 else 0)
         parcel.writeLong(idMarker)
+        parcel.writeList(red_social)
+
         /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)
         parcel.writeString(numero_canchas)
         parcel.writeInt(likes)
         parcel.writeList(fotos)
-        parcel.writeList(telefonos)
-        parcel.writeList(red_social)
+        parcel.writeList(telefonos)*/
         //parcel.writeList(categoria)
-        parcel.writeList(precio)
+       // parcel.writeList(precio)
         //parcel.writeList(horario)
-        parcel.writeList(hora)*/
+        //parcel.writeList(hora)*/
     }
 
     override fun describeContents(): Int {

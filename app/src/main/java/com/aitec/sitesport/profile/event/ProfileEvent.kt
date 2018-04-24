@@ -5,7 +5,7 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 /**
  * Created by Yavac on 16/3/2018.
  */
-class ProfileEvent(var eventType: Int, var eventMsg: String, var eventObject : Any?) {
+class ProfileEvent(var eventType: Int, var eventMsg: String?, var eventObject : Any?) {
 
     companion object {
         const val SUCCESS_PROFILE = 1

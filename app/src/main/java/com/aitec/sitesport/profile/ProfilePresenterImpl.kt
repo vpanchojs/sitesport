@@ -16,17 +16,18 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                            val eventBusInterface : EventBusInterface) : ProfilePresenter{
 
 
-    override fun onResume() {
+    override fun register() {
         eventBusInterface.register(this)
     }
 
-    override fun onPause() {
+    override fun unregister() {
         eventBusInterface.unregister(this)
     }
 
     override fun onDestroy() {}
 
     override fun getProfile(urlDetail : String){
+        profileView.showLoading()
         profileInteractor.getProfile(urlDetail)
     }
 
@@ -36,17 +37,18 @@ class ProfilePresenterImpl(var profileView : ProfileView,
         when (profileEvent.eventType) {
             ProfileEvent.SUCCESS_PROFILE ->{
                 //profileView.setNameProfile(profileEvent.eventEnterprise!!.nombres)
+                Log.e("ProfilePresenterImpl", "OnSuccesProfile")
                 val enterprise: Enterprise = profileEvent.eventObject as Enterprise
                 profileView.setImages(enterprise.fotos!!)
                 profileView.setLikes(enterprise.puntuacion)
-                profileView.setStateEnterprise(enterprise.abierta)
-                profileView.setPriceDayStandard(enterprise.precio!![0].dia)
-                profileView.setPriceNightStandard(enterprise.precio!![0].noche)
+                profileView.setStateEnterprise(enterprise.abierto)
+                profileView.setServices(enterprise.servicios)
                 profileView.setEnterprise(enterprise)
+                profileView.hideLoading(profileEvent.eventMsg!!)
             }
 
             ProfileEvent.ERROR_PROFILE -> {
-
+                profileView.hideLoading(profileEvent.eventMsg!!)
             }
 
             else -> {
