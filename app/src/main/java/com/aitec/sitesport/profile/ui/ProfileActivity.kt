@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
 import com.aitec.sitesport.R
 import android.view.View
@@ -19,7 +18,6 @@ import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -30,36 +28,34 @@ import android.view.Menu
 import android.view.MenuItem
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.entities.Courts
-import com.aitec.sitesport.entities.enterprise.Enterprise
-import com.aitec.sitesport.entities.enterprise.Fotos
-import com.aitec.sitesport.entities.enterprise.Servicios
+import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
+import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.util.BaseActivitys
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener, ProfileView{
+class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
-    override fun showLoading() {
-        btnReload.visibility = View.GONE
-        tvInfo.text = ""
-        pbLoading.visibility = View.VISIBLE
-        if(clLoader.visibility == View.GONE) clLoader.visibility = View.VISIBLE
+    override fun onClick(court: Cancha) {
+        tv_price_day.text = court.dia.toString()
+        tv_price_nigth.text = court.noche.toString()
+        tv_num_players.text = court.numero_jugadores
+        tv_floor.text = court.piso
+        setImages(court.fotos!!)
     }
 
-    override fun hideLoading(msg: String) {
-        Log.e(TAG, msg)
-        if(msg.isNotBlank()){
-            pbLoading.visibility = View.GONE
-            tvInfo.text = msg
-            btnReload.visibility = View.VISIBLE
-        }else{
-            clLoader.visibility = View.GONE
-        }
+    override fun setTableTime(horarios: List<Horario>) {
+
     }
 
+    override fun setCourts(canchas: List<Cancha>) {
+        val adapter = CourtAdapter(canchas, this)
+        rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_fields_profile.adapter = adapter
+    }
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
@@ -90,20 +86,9 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
-    private fun setupViewPager(fotos: List<Fotos>){
+    private fun setupViewPager(fotos: List<Foto>){
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
         viewPagerImagesProfile.adapter = viewPagerAdapter
-
-        viewPagerImagesProfile.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrollStateChanged(state: Int) {}
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-            }
-
-        })
     }
 
     private fun setupInjection() {
@@ -131,7 +116,7 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
     // setup GUI and Life cycle
 
     private fun setNameProfile(name: String) {
-        toolbar_profile.title = name
+        collapse_toolbar_profile.title = name
     }
 
     override fun setEnterprise(enterprise: Enterprise) {
@@ -218,7 +203,6 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         setNameProfile(enterprise!!.nombres)
         setupMap(enterprise!!.direccion.latitud, enterprise!!.direccion.longitud)
         setupToolBar()
-        setupRecyclerViewClourt()
 
         if(enterprise!!.me_gusta) imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_on))
         else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
@@ -260,6 +244,24 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
                         arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
                 return@setOnClickListener
             }
+        }
+    }
+
+    override fun showLoading() {
+        btnReload.visibility = View.GONE
+        tvInfo.text = ""
+        pbLoading.visibility = View.VISIBLE
+        if(clLoader.visibility == View.GONE) clLoader.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading(msg: String) {
+        Log.e(TAG, msg)
+        if(msg.isNotBlank()){
+            pbLoading.visibility = View.GONE
+            tvInfo.text = msg
+            btnReload.visibility = View.VISIBLE
+        }else{
+            clLoader.visibility = View.GONE
         }
     }
 
@@ -331,30 +333,17 @@ class ProfileActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         if (servicios.PARKER) ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
         if (servicios.DUCHA) ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
         if (servicios.LOKER) ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+
+        /*if (servicios.BAR) ibtnBar.visibility = View.VISIBLE
+        if (servicios.WIFI) ibtnWiFi.visibility = View.VISIBLE
+        if (servicios.PARKER) ibtnEstacionamiento.visibility = View.VISIBLE
+        if (servicios.DUCHA) ibtnDuchas.visibility = View.VISIBLE
+        if (servicios.LOKER) ibtnCasilleros.visibility = View.VISIBLE*/
     }
 
-    override fun setData(courts: Courts) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setImages(imagesUrls: List<Fotos>) {
+    override fun setImages(imagesUrls: List<Foto>) {
         setupViewPager(imagesUrls)
         tabImageProfileDots.setupWithViewPager(viewPagerImagesProfile, true)
-    }
-
-    private fun setupRecyclerViewClourt() {
-        val courtList = ArrayList<Courts>()
-
-        courtList.add(Courts(name = "Cancha 1"))
-        courtList.add(Courts(name = "Cancha 2"))
-        courtList.add(Courts(name = "Cancha 3"))
-        courtList.add(Courts(name = "Cancha 4"))
-        courtList.add(Courts(name = "Cancha 5"))
-        courtList.add(Courts(name = "Cancha 6"))
-
-        val adapter = CourtAdapter(courtList, this)
-        rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_fields_profile.adapter = adapter
     }
 
     override fun setLikes(likes: Int) {

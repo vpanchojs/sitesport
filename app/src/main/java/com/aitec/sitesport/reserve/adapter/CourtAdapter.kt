@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Courts
+import com.aitec.sitesport.entities.enterprise.Cancha
 import kotlinx.android.synthetic.main.item_court.view.*
 
 
-class CourtAdapter(var courtsList: List<Courts>, var callback: onCourtAdapterListener) : RecyclerView.Adapter<CourtAdapter.ViewHolder>() {
+class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCourt) : RecyclerView.Adapter<CourtAdapter.ViewHolder>() {
     lateinit var rb_select: RadioButton
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_court, parent, false);
@@ -25,7 +25,7 @@ class CourtAdapter(var courtsList: List<Courts>, var callback: onCourtAdapterLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val courts = courtsList.get(position)
-        holder.view!!.rb_court.text = courts.name
+        holder.view!!.rb_court.text = courts.nombre
 
         holder.view.rb_court.setOnCheckedChangeListener { compoundButton, b ->
 
@@ -36,20 +36,16 @@ class CourtAdapter(var courtsList: List<Courts>, var callback: onCourtAdapterLis
             rb_select = compoundButton as RadioButton
         }
 
+        holder.view.setOnClickListener {
+            callback.onClick(courts)
+        }
+
         //holder.onListener(courts, callback)
     }
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
-        fun onListener(courts: Courts, callback: onCourtAdapterListener) {
-
-
-        }
-    }
-
-    interface onCourtAdapterListener {
-        fun setData(courts: Courts)
     }
 
 

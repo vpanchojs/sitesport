@@ -10,19 +10,15 @@ class Hora() : Parcelable{
 
     var inicio: String = ""
     var fin: String = ""
-    var horario : String = ""
 
     constructor(parcel: Parcel) : this() {
         inicio = parcel.readString()
         fin = parcel.readString()
-        horario = parcel.readString()
-
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(inicio)
         parcel.writeString(fin)
-        parcel.writeString(horario)
     }
 
     override fun describeContents(): Int {

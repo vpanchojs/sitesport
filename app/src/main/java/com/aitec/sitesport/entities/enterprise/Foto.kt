@@ -6,7 +6,7 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 22/3/2018.
  */
-class Fotos() : Parcelable{
+class Foto() : Parcelable{
 
     var imagen: String = ""
 
@@ -22,12 +22,12 @@ class Fotos() : Parcelable{
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Fotos> {
-        override fun createFromParcel(parcel: Parcel): Fotos {
-            return Fotos(parcel)
+    companion object CREATOR : Parcelable.Creator<Foto> {
+        override fun createFromParcel(parcel: Parcel): Foto {
+            return Foto(parcel)
         }
 
-        override fun newArray(size: Int): Array<Fotos?> {
+        override fun newArray(size: Int): Array<Foto?> {
             return arrayOfNulls(size)
         }
     }

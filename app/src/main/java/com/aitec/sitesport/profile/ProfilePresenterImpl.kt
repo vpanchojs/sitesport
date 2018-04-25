@@ -39,9 +39,11 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 //profileView.setNameProfile(profileEvent.eventEnterprise!!.nombres)
                 Log.e("ProfilePresenterImpl", "OnSuccesProfile")
                 val enterprise: Enterprise = profileEvent.eventObject as Enterprise
-                profileView.setImages(enterprise.fotos!!)
+                profileView.setImages(enterprise.fotos)
                 profileView.setLikes(enterprise.puntuacion)
+                profileView.setTableTime(enterprise.horarios)
                 profileView.setStateEnterprise(enterprise.abierto)
+                profileView.setCourts(enterprise.canchas)
                 profileView.setServices(enterprise.servicios)
                 profileView.setEnterprise(enterprise)
                 profileView.hideLoading(profileEvent.eventMsg!!)

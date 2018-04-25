@@ -6,7 +6,7 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 22/3/2018.
  */
-class Telefonos() : Parcelable{
+class Telefono() : Parcelable{
 
     var celular : String = ""
     var convencional : String = ""
@@ -25,12 +25,12 @@ class Telefonos() : Parcelable{
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Telefonos> {
-        override fun createFromParcel(parcel: Parcel): Telefonos {
-            return Telefonos(parcel)
+    companion object CREATOR : Parcelable.Creator<Telefono> {
+        override fun createFromParcel(parcel: Parcel): Telefono {
+            return Telefono(parcel)
         }
 
-        override fun newArray(size: Int): Array<Telefonos?> {
+        override fun newArray(size: Int): Array<Telefono?> {
             return arrayOfNulls(size)
         }
     }

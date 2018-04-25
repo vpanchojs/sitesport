@@ -29,10 +29,11 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:title="Mi canchita"
+            app:title="Sitesport"
             app:expandedTitleMarginStart="18dp"
             app:expandedTitleMarginBottom="28dp"
             app:expandedTitleMarginEnd="118dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.constraint.ConstraintLayout
@@ -146,6 +147,7 @@
         android:id="@+id/clLoader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="@color/white">
 
         <ProgressBar

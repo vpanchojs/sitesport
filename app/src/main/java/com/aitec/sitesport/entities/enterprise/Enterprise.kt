@@ -15,17 +15,18 @@ class Enterprise() : Parcelable {
     lateinit var direccion: Address
     var me_gusta: Boolean = false
     var puntuacion: Int = 0
-    var distancia: Float = 0f
+    var distance: Float = 0f
     var abierto: Boolean = false
     var idMarker: Long = 0L
 
     // OBJETO URL DETALLE
     var descripcion: String = ""
-    var fotos: List<Fotos>? = arrayListOf()
-    var telefonos: List<Telefonos>? = arrayListOf()
+    var fotos: List<Foto> = arrayListOf()
+    var telefonos: List<Telefono> = arrayListOf()
     var numero_canchas: String = "0"
-    var red_social: List<RedSocial>? = arrayListOf()
-    var precio: List<Precio>? = arrayListOf()
+    var red_social: List<RedSocial> = arrayListOf()
+    var canchas: List<Cancha> = arrayListOf()
+    var horarios: List<Horario> = arrayListOf()
 
     /*var abierto: Boolean = false
     var likes: Int = 0
@@ -42,17 +43,19 @@ class Enterprise() : Parcelable {
         direccion = parcel.readParcelable(Address::class.java.classLoader)
         me_gusta = parcel.readByte() != 0.toByte()
         puntuacion = parcel.readInt()
-        distancia = parcel.readFloat()
+        distance = parcel.readFloat()
         abierto = parcel.readByte() != 0.toByte()
         idMarker = parcel.readLong()
         parcel.readList(red_social, RedSocial::class.java.classLoader)
+        parcel.readList(canchas, Cancha::class.java.classLoader)
+        parcel.readList(horarios, Horario::class.java.classLoader)
 
         /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
         numero_canchas = parcel.readString()
         likes = parcel.readInt()
-        parcel.readList(fotos, Fotos::class.java.classLoader)
-        parcel.readList(telefonos, Telefonos::class.java.classLoader)*/
+        parcel.readList(fotos, Foto::class.java.classLoader)
+        parcel.readList(telefonos, Telefono::class.java.classLoader)*/
         //parcel.readList(categoria, Categoria::class.java.classLoader)
         //parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
@@ -68,10 +71,12 @@ class Enterprise() : Parcelable {
         parcel.writeParcelable(direccion, flags)
         parcel.writeByte(if (me_gusta) 1 else 0)
         parcel.writeInt(puntuacion)
-        parcel.writeFloat(distancia)
+        parcel.writeFloat(distance)
         parcel.writeByte(if (abierto) 1 else 0)
         parcel.writeLong(idMarker)
         parcel.writeList(red_social)
+        parcel.writeList(canchas)
+        parcel.writeList(horarios)
 
         /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)

@@ -1,12 +1,6 @@
 package com.aitec.sitesport.profile.ui
 
-import android.graphics.Bitmap
-import com.aitec.sitesport.entities.enterprise.Enterprise
-import com.aitec.sitesport.entities.enterprise.Fotos
-import com.aitec.sitesport.entities.enterprise.Precio
-import com.aitec.sitesport.entities.TableTime
-import com.aitec.sitesport.entities.enterprise.Servicios
-import com.mapbox.mapboxsdk.geometry.LatLng
+import com.aitec.sitesport.entities.enterprise.*
 
 /**
  * Created by Yavac on 12/3/2018.
@@ -14,9 +8,11 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 interface ProfileView {
     fun setEnterprise(enterprise: Enterprise)
     fun setLikes(likes: Int)
-    fun setImages(imagesUrls: List<Fotos>)
+    fun setImages(imagesUrls: List<Foto>)
     fun setStateEnterprise(state: Boolean)
     fun setServices(servicios: Servicios)
+    fun setTableTime(horarios: List<Horario>)
+    fun setCourts(canchas: List<Cancha>)
 
     fun showLoading()
     fun hideLoading(msg: String)
