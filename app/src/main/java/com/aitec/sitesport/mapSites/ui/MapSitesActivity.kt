@@ -540,7 +540,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
                 }
                 tv_title_bs.setText(it.nombres)
-                tv_subtitle_bs.setText(df.format(it.distancia).toString() + " Km")
+                tv_subtitle_bs.setText(df.format(it.distance).toString() + " Km")
             }
         }
 

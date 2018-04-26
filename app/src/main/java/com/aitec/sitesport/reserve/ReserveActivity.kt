@@ -9,8 +9,9 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Courts
+import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
+import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.reserve.adapter.TableTimeAdapter
 import kotlinx.android.synthetic.main.activity_reserve.*
 import kotlinx.android.synthetic.main.bottom_sheet_resume_reserve.*
@@ -19,7 +20,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+
+    override fun onClick(court: Cancha) {
+
+    }
 
 
     var fromDatePickerDialog: DatePickerDialog? = null
@@ -43,9 +48,6 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         }
     }
 
-    override fun setData(courts: Courts) {
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,14 +98,9 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
 
 
     private fun setupRecyclerViewClourt() {
-        val courtList = ArrayList<Courts>()
+        val courtList = ArrayList<Cancha>()
 
-        courtList.add(Courts(name = "Cancha 1"))
-        courtList.add(Courts(name = "Cancha 2"))
-        courtList.add(Courts(name = "Cancha 3"))
-        courtList.add(Courts(name = "Cancha 4"))
-        courtList.add(Courts(name = "Cancha 5"))
-        courtList.add(Courts(name = "Cancha 6"))
+        //courtList.add(Cancha(name = "Cancha 1"))
 
         val adapter = CourtAdapter(courtList, this)
         rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)

@@ -25,19 +25,17 @@
             app:mapbox_cameraZoom="12"
             app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/civ_user"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:elevation="1dp"
-            android:src="@drawable/ic_person_black_24dp"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="2dp"
-            app:civ_circle_background_color="#ffffff"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_person_pin_circle_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

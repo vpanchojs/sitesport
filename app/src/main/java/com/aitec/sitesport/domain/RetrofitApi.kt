@@ -7,18 +7,11 @@ import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.JsonObject
-import okhttp3.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import okhttp3.ResponseBody
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 
 
 class RetrofitApi {
@@ -267,6 +260,49 @@ class RetrofitApi {
                 })
             }
         })
+    }
+
+    fun getAllSites(params: HashMap<String, String>, callback: onApiActionListener) {
+        Log.e(TAG, "PARAMETROS ${params.toString()}")
+        request.getSites(params).enqueue(object : Callback<List<Enterprise>> {
+            override fun onFailure(call: Call<List<Enterprise>>?, t: Throwable?) {
+                RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<List<Enterprise>> {
+                    override fun networkError(e: String) {
+                        callback.onError(e)
+                    }
+
+                    override fun unexpectedError(t: Throwable) {
+                        callback.onError(t.toString())
+                    }
+                })
+
+            }
+
+            override fun onResponse(call: Call<List<Enterprise>>?, response: Response<List<Enterprise>>?) {
+                RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
+                    override fun success(response: Response<List<Enterprise>>) {
+                        callback.onSucces(response.body())
+                    }
+
+                    override fun unauthenticated(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun clientError(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun serverError(response: Response<*>) {
+                        callback.onError(response.toString())
+                    }
+
+                    override fun unexpectedError(t: Throwable) {
+                        callback.onError(t.toString())
+                    }
+                })
+            }
+        })
+
     }
 
 }

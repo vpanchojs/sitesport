@@ -1,9 +1,12 @@
 package com.aitec.sitesport.sites.ui
 
+import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,24 +20,33 @@ import com.aitec.sitesport.sites.SitesPresenter
 import com.aitec.sitesport.sites.adapter.EntrepiseAdapter
 import com.aitec.sitesport.util.BaseActivitys
 import kotlinx.android.synthetic.main.fragment_sites.*
+import java.util.*
 import javax.inject.Inject
 
 class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntrepiseAdapterListener, SitesView, CompoundButton.OnCheckedChangeListener {
 
 
+    var callback: onSitesFragmentListener? = null
+
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+
         when (p0!!.id) {
-
             R.id.cb_distance -> {
-
+                if (p1) {
+                    callback!!.getMyLocation()
+                } else {
+                    presenter.addFilterLocation("", false)
+                }
             }
             R.id.cb_open -> {
+                presenter.addFilterOpen(p1)
 
             }
             R.id.cb_score -> {
-
+                presenter.addFilterScore(p1)
             }
         }
+
     }
 
 
@@ -45,6 +57,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     override fun navigatioProfile(entrepise: Enterprise) {
         startActivity(Intent(context, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
     }
+
 
     private val TAG = "MenuFragment"
     private var adapter: EntrepiseAdapter? = null
@@ -104,6 +117,15 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is onSitesFragmentListener) {
+            callback = context
+        } else {
+            throw  RuntimeException(context.toString()
+                    + " must implement OnRecoveryPasswordListener");
+        }
+    }
 
     override fun showMessagge(message: Any) {
         BaseActivitys.showToastMessage(context!!, message, Toast.LENGTH_LONG)
@@ -126,5 +148,25 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callback = null
+    }
 
+    //Metodo llamado desde la actividad
+    fun setMyLocation(mCurrentLocation: Location) {
+        val ubicacion = "${mCurrentLocation.latitude},${mCurrentLocation.longitude}"
+        Log.e(TAG, "MI UBICACION ES $ubicacion")
+        presenter.addFilterLocation(ubicacion, true)
+    }
+
+    interface onSitesFragmentListener {
+        fun getMyLocation();
+    }
+
+    override fun clearListSites() {
+        data!!.clear()
+        adapter!!.notifyDataSetChanged()
+
+    }
 }

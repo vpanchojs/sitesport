@@ -21,6 +21,24 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
         interactor.onGetSites()
     }
 
+    override fun addFilterOpen(add: Boolean) {
+        view.showProgresBar(true)
+        view.clearListSites()
+        interactor.addFilterOpen(add)
+    }
+
+    override fun addFilterScore(add: Boolean) {
+        view.clearListSites()
+        view.showProgresBar(true)
+        interactor.addFilterScore(add)
+    }
+
+    override fun addFilterLocation(ubicacion: String, add: Boolean) {
+        view.clearListSites()
+        view.showProgresBar(true)
+        interactor.addFilterLocation(ubicacion, add)
+    }
+
     @Subscribe
     fun onEventThread(event: SitesEvents) {
         view.showProgresBar(false)

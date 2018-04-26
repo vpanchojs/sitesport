@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, MainView, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, MainView, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener, SitesFragment.onSitesFragmentListener {
 
 
     override fun navigatioProfile(entrepise: Enterprise) {
@@ -178,6 +178,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         return true
     }
 
+    fun sendMyLocation() {
+        if (fragment is SitesFragment) {
+            (fragment as SitesFragment).setMyLocation(mCurrentLocation)
+        }
+    }
+
 
     override fun onQueryTextChange(newText: String?): Boolean {
         presenter.stopSearchName()
@@ -240,6 +246,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                     Log.e(TAG, "" + location.latitude)
                     mCurrentLocation = location
                     stopLocationUpdates()
+                    sendMyLocation()
                 }
             }
         }
@@ -293,13 +300,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun permission() {
+
+    fun getLocation() {
         if (checkPermissions()) {
             startLocationUpdates();
         } else if (!checkPermissions()) {
             requestPermissions();
         }
     }
+
 
     /*Permisos*/
     private fun requestPermissions() {
@@ -364,5 +373,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 }
             }
         }
+    }
+
+    override fun getMyLocation() {
+        getLocation()
     }
 }

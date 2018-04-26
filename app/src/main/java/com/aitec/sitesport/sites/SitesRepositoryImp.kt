@@ -1,5 +1,6 @@
 package com.aitec.sitesport.sites
 
+import android.util.Log
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
@@ -10,6 +11,18 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retro
 
     override fun onGetSites() {
         retrofitApi.getAllSites(object : onApiActionListener {
+            override fun onSucces(response: Any?) {
+                postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response!!)
+            }
+
+            override fun onError(error: Any?) {
+                postEvent(SitesEvents.ON_GET_SITES_ERROR, error!!)
+            }
+        })
+    }
+
+    override fun onGetSites(parametros: HashMap<String, String>) {
+        retrofitApi.getAllSites(parametros, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response!!)
             }

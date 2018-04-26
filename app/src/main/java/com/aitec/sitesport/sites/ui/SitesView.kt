@@ -7,4 +7,5 @@ interface SitesView {
     fun setResultsSearchs(listUser: List<Enterprise>)
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
+    fun clearListSites()
 }

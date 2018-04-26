@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp"
+    android:layout_marginBottom="8dp"
+    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
@@ -15,7 +13,7 @@
     <ImageView
         android:id="@+id/iv_entrepise"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,16 +22,43 @@
         android:id="@+id/tv_name_entrepise"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
         android:text="Nombre Centro Deportivo"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_entrepise" />
+
+    <ImageView
+        android:id="@+id/iv_open"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        android:tint="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name_entrepise"
+        app:layout_constraintEnd_toStartOf="@+id/tv_distance"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_name_entrepise"
+        app:layout_constraintTop_toTopOf="@+id/tv_name_entrepise"
+        app:layout_constraintVertical_bias="0.51"
+        app:srcCompat="@drawable/ic_lens_black_24dp" />
+
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="4 km"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name_entrepise"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_name_entrepise" />
 
     <TextView
         android:id="@+id/tv_address"
@@ -42,6 +67,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="Dirección de la cancha"
         android:textColor="#959DAD"
         android:textSize="12sp"
