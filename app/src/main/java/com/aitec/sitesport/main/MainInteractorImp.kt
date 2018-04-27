@@ -27,4 +27,8 @@ class MainInteractorImp(var repository: MainRepository) : MainInteractor {
     override fun stopSearchVisibility() {
         repository.stopSearchVisibility()
     }
+
+    override fun initfirstRun() {
+        repository.initfirstRun()
+    }
 }

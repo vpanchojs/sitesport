@@ -45,6 +45,10 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
         interactor.stopSearchVisibility()
     }
 
+    override fun initfirstRun() {
+        interactor.initfirstRun()
+    }
+
     @Subscribe
     override fun onEventMainThread(event: MainEvents) {
 
@@ -57,6 +61,10 @@ class MainPresenterImp(var eventBus: EventBusInterface, var view: MainView, var 
 
             MainEvents.ON_RESULTS_SEARCH_NAMES_ERROR -> {
                 view.showMessagge(event.any as String)
+            }
+
+            MainEvents.ON_LAUCH_WELCOME_SUCCESS -> {
+                view.navigationWelcome()
             }
 
         }

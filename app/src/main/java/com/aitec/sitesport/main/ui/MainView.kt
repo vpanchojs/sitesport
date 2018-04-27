@@ -11,5 +11,6 @@ interface MainView {
     fun setResultsSearchs(listUser: ArrayList<Enterprise>)
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
+    fun navigationWelcome()
 
 }

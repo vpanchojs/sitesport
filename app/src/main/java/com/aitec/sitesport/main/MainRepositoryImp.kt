@@ -45,6 +45,19 @@ class MainRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: Retrof
     }
 
 
+    override fun initfirstRun() {
+
+        sharePreferencesApi.getFirstRun(object : onApiActionListener {
+            override fun onSucces(response: Any?) {
+                postEvent(MainEvents.ON_LAUCH_WELCOME_SUCCESS,response!!)
+            }
+
+            override fun onError(error: Any?) {
+
+            }
+        })
+    }
+
     private fun postEvent(type: Int, any: Any) {
         var event = MainEvents(type, any)
         eventBus.post(event)

@@ -21,5 +21,7 @@ interface MainPresenter {
 
     fun onEventMainThread(event: MainEvents)
 
+    fun initfirstRun()
+
 
 }

@@ -44,6 +44,7 @@
         <activity
             android:name=".welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity

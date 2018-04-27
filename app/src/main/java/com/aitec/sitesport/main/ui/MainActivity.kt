@@ -33,6 +33,7 @@ import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.record.RecordFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
+import com.aitec.sitesport.welcome.WelcomeActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -114,6 +115,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     override fun onResume() {
         super.onResume()
         presenter.onResume()
+        presenter.initfirstRun()
     }
 
     override fun onPause() {
@@ -378,5 +380,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
     override fun getMyLocation() {
         getLocation()
+    }
+
+    override fun navigationWelcome() {
+        startActivity(Intent(this, WelcomeActivity::class.java))
     }
 }

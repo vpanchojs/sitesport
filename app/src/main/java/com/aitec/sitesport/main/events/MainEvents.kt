@@ -10,6 +10,7 @@ class MainEvents(var type: Int, var any: Any) {
         val ON_RESULTS_SEARCHS_ERROR = 1
         val ON_RESULTS_SEARCH_NAMES_SUCCESS = 2
         val ON_RESULTS_SEARCH_NAMES_ERROR = 3
+        val ON_LAUCH_WELCOME_SUCCESS = 4
 
     }
 }
