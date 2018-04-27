@@ -20,14 +20,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.aitec.sitesport.MyApplication
-import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.TableTimeFragment
@@ -106,11 +104,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     private fun setupViewPager(fotos: List<Foto>) {
-        /*if (viewPagerAdapter != null) {
-            (viewPagerAdapter!! as ViewPagerAdapter).deletePages()
-            viewPagerAdapter = null
-        }*/
-        Log.e("setupViewPager", "setupViewPager")
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
         viewPagerImagesProfile.adapter = viewPagerAdapter
         viewPagerAdapter!!.notifyDataSetChanged()
@@ -158,39 +151,38 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     private fun openInstagram(){
-
-        if(enterprise!!.red_social!!.isNotEmpty()){
-            for(network in enterprise!!.red_social!!.iterator()) {
+        var isExist = false
+        if(enterprise!!.redes_sociales!!.isNotEmpty()){
+            for(network in enterprise!!.redes_sociales!!.iterator()) {
                 when (network.nombre) {
                     "INSTAGRAM" -> {
-                        var uri: Uri= Uri.parse("http://instagram.com/_u/" + network.url)
-                        var likeIng: Intent =  Intent(Intent.ACTION_VIEW, uri)
-
-                        likeIng.setPackage("com.instagram.android")
-
+                        isExist = true
                         try {
-                            startActivity(likeIng);
-                        } catch (e: ActivityNotFoundException) {
+                            val url = network.url.substring(0, network.url.length - 1);
+                            val username = url.substring(url.lastIndexOf("/") + 1);
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/" + username)))
+                        } catch (e: Exception) {
                             startActivity(Intent(Intent.ACTION_VIEW,
                                     Uri.parse(network.url)));
                         }
                         return
                     }
-                    else -> {
-                        BaseActivitys.showToastMessage(this, "Instagram no disponible", Toast.LENGTH_SHORT)
-                    }
                 }
             }
-        }else{
-            BaseActivitys.showToastMessage(this, "Instagram no disponible", Toast.LENGTH_SHORT)
         }
+
+        if(!isExist)
+            BaseActivitys.showToastMessage(this, "Instagram no disponible", Toast.LENGTH_SHORT)
+
     }
 
     private fun openWhatsApp() {
-        if(enterprise!!.red_social!!.isNotEmpty()){
-            for(network in enterprise!!.red_social!!.iterator()){
+        var isExist = false
+        /*if(enterprise!!.redes_sociales!!.isNotEmpty()){
+            for(network in enterprise!!.redes_sociales!!.iterator()){
                 when (network.nombre){
                     "WHATSAPP" -> {
+                        isExist = true
                         val ECU = "593"
                         val formattedNumber: String = ECU + network.url
                         try {
@@ -205,19 +197,63 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
                             startActivity(sendIntent)
                         } catch (e: Exception) {
                             //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
-                            Toast.makeText(this, "No tienes whatsapp instalado", Toast.LENGTH_SHORT).show();
+                            BaseActivitys.showToastMessage(this, "Algo salió mal, intéctalo más tarde", Toast.LENGTH_SHORT)
                         }
                         return
                     }
-                    else -> {
-                        BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
-                    }
-
                 }
+            }
+        }*/
+
+        if(enterprise!!.telefono.isNotEmpty()){
+
+            val ECU = "593"
+            val formattedNumber: String = ECU + enterprise!!.telefono
+            try {
+                val sendIntent: Intent
+                sendIntent = Intent("android.intent.action.MAIN")
+                sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
+                sendIntent.setAction(Intent.ACTION_SEND)
+                sendIntent.setType("text/plain")
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "")
+                sendIntent.putExtra("jid", formattedNumber + "@s.whatsapp.net")
+                sendIntent.setPackage("com.whatsapp")
+                startActivity(sendIntent)
+            } catch (e: Exception) {
+                //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
+                Log.e("ERROR WHATSAPP", e.message)
+                BaseActivitys.showToastMessage(this, "Algo salió mal, inténtalo más tarde", Toast.LENGTH_SHORT)
             }
         }else{
             BaseActivitys.showToastMessage(this, "Whatsapp no disponible", Toast.LENGTH_SHORT)
         }
+    }
+
+    private fun openFacebook() {
+        var isExist = false
+        if(enterprise!!.redes_sociales!!.isNotEmpty()){
+            for(network in enterprise!!.redes_sociales!!.iterator()){
+                when (network.nombre){
+                    "FACEBOOK" -> {
+                        isExist = true
+                        try {
+                            val url = network.url.substring(0, network.url.length - 1);
+                            val username = url.substring(url.lastIndexOf("/") + 1);
+                            getPackageManager().getPackageInfo("com.url.katana", 0)
+                            startActivity(Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("fb://profile/" + username)))
+                        } catch (e: Exception) {
+                            startActivity(Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(network.url))) //catches and opens a url to the desired page
+                        }
+                        return
+                    }
+                }
+            }
+        }
+        if(!isExist)
+            BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
+
     }
 
     private fun setupUI(){
@@ -314,40 +350,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
-    private fun openFacebook() {
-        if(enterprise!!.red_social!!.isNotEmpty()){
-            for(network in enterprise!!.red_social!!.iterator()){
-                when (network.nombre){
-                    "FACEBOOK" -> {
-                        var intent: Intent?
-                        try {
-                            getPackageManager()
-                                    .getPackageInfo("com.url.katana", 0) //Checks if FB is even installed.
-                            intent = Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("fb://profile/" + network.url)) //Trys to make intent with FB's URI
-                        } catch (e: Exception) {
-                            intent = Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.url.com/" + network.url)) //catches and opens a url to the desired page
-                        }
-
-                        if (intent != null) startActivity(intent)
-                        return
-                    }
-                    else-> {
-                        BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
-                    }
-                }
-            }
-        }else{
-            BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
-        }
-    }
 
     @SuppressLint("MissingPermission")
     private fun callPhone() {
         //if(enterprise != null && enterprise!!.telefonos!![0].convencional.isNotBlank()) {
-        if(enterprise != null && enterprise!!.telefonos!!.isNotEmpty()) {
-            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise!!.telefonos!![0].convencional)))
+        if(enterprise != null && enterprise!!.telefono.isNotEmpty()) {
+            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise!!.telefono)))
         }else{
             BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
         }
