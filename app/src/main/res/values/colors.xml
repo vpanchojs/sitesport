@@ -3,6 +3,7 @@
     <color name="colorPrimary">#2A2E43</color>
     <color name="colorPrimaryDark">#1b1d2b</color>
     <color name="colorAccent">#3ACCE1</color>
+    <color name="colorAccentLight">#323acce1</color>
     <color name="white_suave">#64ffffff</color>
     <color name="colorStarOn">#FFB900</color>
     <color name="colorStarOff">#707070</color>
@@ -10,6 +11,7 @@
     <color name="colorDivider">#78849E</color>
     <color name="color_background">#F7F7FA</color>
     <color name="colorWhiteTransparent">#64ffffff</color>
+    <color name="colorWhiteLittleTransparent">#c8ffffff</color>
 
 
     <color name="icon_transparent">#64454f63</color>
@@ -27,8 +29,8 @@
     <color name="colorMediumGradient">#64686868</color>
     <color name="colorEndGradient">#af131313</color>
 
-    <color name="colorDotEnable">#96ffffff</color>
-    <color name="colorDotDisable">#64ffffff</color>
+    <color name="colorDotEnable">#afffffff</color>
+    <color name="colorDotDisable">#4bffffff</color>
 
 
     <color name="colorTextProfile">@color/colorPrimary</color>

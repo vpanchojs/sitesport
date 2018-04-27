@@ -27,7 +27,7 @@ interface RetrofitServicie {
 
     @Headers("Content-Type: application/json")
     @GET()
-    fun getProfile(@Url urlDetail: String): Call<JsonObject>
+    fun getProfile(@Url urlDetail: String): Call<Enterprise>
 
     @Headers("Content-Type: application/json")
     @GET(PATH_CENTER_SPORT)

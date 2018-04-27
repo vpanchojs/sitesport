@@ -10,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Courts
+import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
+import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.reserve.adapter.TableTimeAdapter
 import kotlinx.android.synthetic.main.activity_reserve.*
 import kotlinx.android.synthetic.main.bottom_sheet_resume_reserve.*
@@ -19,7 +21,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+    override fun onCheckedCourt(court: Cancha) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     var fromDatePickerDialog: DatePickerDialog? = null
@@ -43,9 +48,6 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         }
     }
 
-    override fun setData(courts: Courts) {
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +107,9 @@ class ReserveActivity : AppCompatActivity(), CourtAdapter.onCourtAdapterListener
         courtList.add(Courts(name = "Cancha 5"))
         courtList.add(Courts(name = "Cancha 6"))
 
-        val adapter = CourtAdapter(courtList, this)
+       /* val adapter = CourtAdapter(courtList, this)
         rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_fields_profile.adapter = adapter
+        rv_fields_profile.adapter = adapter*/
     }
 
     private fun setupRecyclerViewTimeTable() {

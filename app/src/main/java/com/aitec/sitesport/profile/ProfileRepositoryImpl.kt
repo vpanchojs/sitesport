@@ -8,6 +8,9 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profile.event.ProfileEvent
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
+
 
 
 /**
@@ -25,8 +28,14 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
         retrofitApi.getProfile(urlDetail, object : onApiActionListener {
             override fun onSucces(response: Any?) {
                 Log.e("ProfileRepositoryImpl", response.toString())
+
+                /*val gsonBuilder = GsonBuilder()
+                gsonBuilder.serializeNulls()
+                val gson = gsonBuilder.create()
+
                 postEvent(ProfileEvent.SUCCESS_PROFILE, "",
-                        Gson().fromJson(response.toString(), Enterprise::class.java))
+                        gson.fromJson(response.toString(), Enterprise::class.java))*/
+                postEvent(ProfileEvent.SUCCESS_PROFILE, "", response)
             }
 
             override fun onError(error: Any?) {

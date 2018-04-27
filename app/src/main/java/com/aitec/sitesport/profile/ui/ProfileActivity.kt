@@ -30,6 +30,7 @@ import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profile.ProfilePresenter
+import com.aitec.sitesport.profile.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.util.BaseActivitys
@@ -39,16 +40,30 @@ import javax.inject.Inject
 
 class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
-    override fun onClick(court: Cancha) {
-        tv_price_day.text = court.dia.toString()
-        tv_price_nigth.text = court.noche.toString()
+    override fun loadImage(foto_perfil: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onCheckedCourt(court: Cancha) {
+        tv_price_day.text = "$ " + court.dia.toString()
+        tv_price_nigth.text = "$ " + court.noche.toString()
         tv_num_players.text = court.numero_jugadores
         tv_floor.text = court.piso
+
+        if(!court.isAddPhotoProfile){
+            val f= Foto()
+            f.imagen = enterprise!!.foto_perfil
+            court.fotos!!.add(f)
+            court.isAddPhotoProfile = true
+        }
         setImages(court.fotos!!)
     }
 
     override fun setTableTime(horarios: List<Horario>) {
-
+        btnShowTableTime.setOnClickListener {
+            val tableTImeFragment = TableTimeFragment.newInstance(horarios)
+            tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
+        }
     }
 
     override fun setCourts(canchas: List<Cancha>) {
@@ -86,9 +101,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
-    private fun setupViewPager(fotos: List<Foto>){
+    private fun setupViewPager(fotos: List<Foto>) {
+        /*if (viewPagerAdapter != null) {
+            (viewPagerAdapter!! as ViewPagerAdapter).deletePages()
+            viewPagerAdapter = null
+        }*/
+        Log.e("setupViewPager", "setupViewPager")
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
         viewPagerImagesProfile.adapter = viewPagerAdapter
+        viewPagerAdapter!!.notifyDataSetChanged()
     }
 
     private fun setupInjection() {
@@ -196,6 +217,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     private fun setupUI(){
+
         btnReload.setOnClickListener{
             profilePresenter.getProfile(enterprise!!.urldetalle)
         }

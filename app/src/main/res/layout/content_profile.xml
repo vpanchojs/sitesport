@@ -54,7 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <ImageButton
-                android:id="@+id/btnShowBusinessHours"
+                android:id="@+id/btnShowTableTime"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
                 android:layout_marginStart="16dp"
@@ -74,9 +74,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Cerrado"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/btnShowBusinessHours"
-                app:layout_constraintStart_toEndOf="@+id/btnShowBusinessHours"
-                app:layout_constraintTop_toTopOf="@+id/btnShowBusinessHours" />
+                app:layout_constraintBottom_toBottomOf="@+id/btnShowTableTime"
+                app:layout_constraintStart_toEndOf="@+id/btnShowTableTime"
+                app:layout_constraintTop_toTopOf="@+id/btnShowTableTime" />
 
             <TextView
                 android:id="@+id/tvFiltro"
@@ -85,12 +85,12 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Selección"
+                android:text="Canchas disponibles"
                 android:textColor="@color/colorTextProfile"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnShowBusinessHours" />
+                app:layout_constraintTop_toBottomOf="@+id/btnShowTableTime" />
 
             <View
                 android:id="@+id/textView14"
@@ -128,7 +128,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_fields_profile"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="16dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -152,7 +152,6 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/cl_price_day"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -177,10 +176,8 @@
                             android:id="@+id/tv_price_nigth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="$ 25"
+                            android:text="$"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -221,10 +218,8 @@
                             android:id="@+id/tv_price_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="$ 25"
+                            android:text="$"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -264,10 +259,8 @@
                             android:id="@+id/tv_num_players"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="5 vs 5"
+                            android:text="vs"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -281,7 +274,6 @@
                         android:id="@+id/cl_floor"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginEnd="4dp"
                         android:layout_marginStart="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -307,10 +299,8 @@
                             android:id="@+id/tv_floor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="Sintetico"
+                            android:text="piso"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintBottom_toBottomOf="parent"
