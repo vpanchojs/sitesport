@@ -61,8 +61,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     override fun setTableTime(horarios: List<Horario>) {
         btnShowTableTime.setOnClickListener {
-            val tableTImeFragment = TableTimeFragment.newInstance(horarios)
-            tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
+            if(horarios!= null && horarios.isNotEmpty()) {
+                val tableTImeFragment = TableTimeFragment.newInstance(horarios)
+                tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
+            }else{
+                BaseActivitys.showToastMessage(this, "Horarios no disponibles", Toast.LENGTH_SHORT)
+            }
         }
     }
 

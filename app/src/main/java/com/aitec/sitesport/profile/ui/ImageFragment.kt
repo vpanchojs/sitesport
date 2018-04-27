@@ -34,15 +34,18 @@ class ImageFragment : Fragment() {
 
 
     private fun loadImage(url: String, imageView: ImageView){
-        Log.e("ImageFragment", "url = " + url)
-        GlideApp.with(this)
-                .load(URL(url).toString())
-                .placeholder(resources.getDrawable(R.mipmap.ic_launcher))
-                //.fitCenter()
-                .centerCrop()
-                .error(resources.getDrawable(R.mipmap.ic_launcher))
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .into(imageView)
+        if(url!= null && url.isNotEmpty()) {
+            Log.e("ImageFragment", "url = " + url)
+            GlideApp.with(this)
+                    .load(URL(url).toString())
+                    .placeholder(resources.getDrawable(R.mipmap.ic_launcher))
+                    //.fitCenter()
+                    .fitCenter()
+                    //.override(600, 300)
+                    .error(resources.getDrawable(R.mipmap.ic_launcher))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView)
+        }
     }
 
     companion object {
