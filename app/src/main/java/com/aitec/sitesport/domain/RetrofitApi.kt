@@ -191,12 +191,12 @@ class RetrofitApi {
         parametros.put("pk", pk)
 
 
-        request.getProfile(pk).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+        request.getProfile(pk).enqueue(object : Callback<Enterprise> {
+            override fun onResponse(call: Call<Enterprise>, response: Response<Enterprise>) {
                 callback.onSucces(response.body())
             }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+            override fun onFailure(call: Call<Enterprise>, t: Throwable) {
                 //callback.onError(t.message.toString())
                 RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
                     override fun networkError(e: String) {

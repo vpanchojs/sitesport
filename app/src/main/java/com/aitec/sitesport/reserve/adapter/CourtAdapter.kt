@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.Cancha
 import kotlinx.android.synthetic.main.item_court.view.*
 
@@ -34,10 +33,11 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
             }
 
             rb_select = compoundButton as RadioButton
-        }
 
-        holder.view.setOnClickListener {
-            callback.onClick(courts)
+            if(b){
+                callback.onCheckedCourt(courts)
+            }
+
         }
 
         //holder.onListener(courts, callback)

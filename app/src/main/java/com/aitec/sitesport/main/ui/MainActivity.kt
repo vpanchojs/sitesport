@@ -31,6 +31,7 @@ import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.record.RecordFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 fragment = SitesFragment.newInstance()
             }
             R.id.navigation_my_reserve -> {
-                return@OnNavigationItemSelectedListener true
+                fragment = RecordFragment.newInstance()
             }
 
             R.id.navigation_menu -> {

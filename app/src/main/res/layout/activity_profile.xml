@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:title="Sitesport"
+            app:title="@string/app_name"
             app:expandedTitleMarginStart="18dp"
             app:expandedTitleMarginBottom="28dp"
             app:expandedTitleMarginEnd="118dp"
@@ -133,7 +133,7 @@
         <Button
             android:id="@+id/btnReservation"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="43dp"
             android:layout_gravity="center"
             android:background="@drawable/bg_buttom_buttom_sheet"
             android:text="Reservación"/>

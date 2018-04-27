@@ -10,7 +10,8 @@ class Cancha() : Parcelable{
     var noche: Float = 0f
     var numero_jugadores: String = ""
     var piso: String = ""
-    var fotos: List<Foto>? = arrayListOf()
+    var fotos: MutableList<Foto>? = arrayListOf()
+    var isAddPhotoProfile: Boolean = false
 
 
     constructor(parcel: Parcel) : this() {
