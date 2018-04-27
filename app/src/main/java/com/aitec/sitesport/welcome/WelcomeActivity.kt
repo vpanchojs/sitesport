@@ -1,17 +1,21 @@
 package com.aitec.sitesport.welcome
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
+import com.aitec.sitesport.main.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_welcome.*
+import kotlinx.android.synthetic.main.fragment_welcome.*
 
 class WelcomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     override fun onPageScrollStateChanged(state: Int) {
@@ -39,6 +43,12 @@ class WelcomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
         container.addOnPageChangeListener(this)
 
+        btn_omit.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+
 
     }
 
@@ -46,7 +56,21 @@ class WelcomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            return PlaceholderFragment.newInstance(position + 1)
+            when (position) {
+                0 -> {
+                    return PlaceholderFragment.newInstance("Encuentra", "Sitios deportivos mediante filtros para una buesqueda eficiente", R.drawable.ic_map_black_24dp)
+                }
+                1 -> {
+                    return PlaceholderFragment.newInstance("Visualiza", "Información relevante sobre el sitio deportivo de tu preferencia", R.drawable.ic_visibility_black_24dp)
+                }
+                2 -> {
+                    return PlaceholderFragment.newInstance("Reserva", "En el centro deportivo de preferencia mediante pagos electronicos (PROXIMAMENTE).", R.drawable.ic_credit_card_black_24dp)
+                }
+                else -> {
+                    return PlaceholderFragment.newInstance("Encuentra", "Sitios deportivos mediante filtros para una buesqueda eficiente", R.drawable.ic_map_black_24dp)
+                }
+            }
+
         }
 
         override fun getCount(): Int {
@@ -56,28 +80,33 @@ class WelcomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     class PlaceholderFragment : Fragment() {
 
+
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
-            //rootView.section_label.text = arguments!!.getInt(ARG_SECTION_NUMBER).toString()
-            return rootView
+            return inflater.inflate(R.layout.fragment_welcome, container, false)
+
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            tv_title.text = arguments!!.getString(ARG_TITLE)
+            tv_message.text = arguments!!.getString(ARG_MESSAGE)
+            iv_icon.setImageDrawable(ContextCompat.getDrawable(context!!, arguments!!.getInt(ARG_ICONO)))
         }
 
         companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = ""
 
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
+            const val ARG_TITLE = "titulo"
+            const val ARG_MESSAGE = "mensaje"
+            const val ARG_ICONO = "icono"
+
+
+            fun newInstance(title: String, message: String, icono: Int): PlaceholderFragment {
                 val fragment = PlaceholderFragment()
                 val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+                args.putString(ARG_TITLE, title)
+                args.putString(ARG_MESSAGE, message)
+                args.putInt(ARG_ICONO, icono)
                 fragment.arguments = args
                 return fragment
             }

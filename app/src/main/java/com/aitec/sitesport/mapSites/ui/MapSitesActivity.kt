@@ -490,7 +490,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
 
         var marker = mapboxMap!!.addMarker(MarkerOptions()
-                .position(LatLng(entreprise.direccion.latitud, entreprise.direccion.longitud))
+                .position(LatLng(entreprise.direccion!!.latitud, entreprise.direccion!!.longitud))
                 .icon(icono))
 
         entreprise.idMarker = marker.id

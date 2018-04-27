@@ -12,7 +12,7 @@ class Enterprise() : Parcelable {
     lateinit var urldetalle: String
     var servicios: Servicios = Servicios()
     var foto_perfil: String = ""
-    lateinit var direccion: Address
+    var direccion: Address? = null
     var me_gusta: Boolean = false
     var puntuacion: Int = 0
     var distance: Float = 0f
@@ -59,7 +59,7 @@ class Enterprise() : Parcelable {
         //parcel.readList(categoria, Categoria::class.java.classLoader)
         //parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
-       // parcel.readList(hora, Hora::class.java.classLoader)*/
+        // parcel.readList(hora, Hora::class.java.classLoader)*/
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -85,7 +85,7 @@ class Enterprise() : Parcelable {
         parcel.writeList(fotos)
         parcel.writeList(telefonos)*/
         //parcel.writeList(categoria)
-       // parcel.writeList(precio)
+        // parcel.writeList(precio)
         //parcel.writeList(horario)
         //parcel.writeList(hora)*/
     }

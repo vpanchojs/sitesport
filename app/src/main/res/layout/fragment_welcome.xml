@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:tint="#ffff"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
 
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -52,10 +52,10 @@
         android:text="Sitios deportivos,deslizando el mapa u obteniendo tu ubicacion"
         android:textAlignment="center"
         android:textColor="@color/white_suave"
-        android:textSize="14sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/section_label" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
 </android.support.constraint.ConstraintLayout>

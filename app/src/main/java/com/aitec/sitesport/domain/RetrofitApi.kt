@@ -6,6 +6,7 @@ import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +42,9 @@ class RetrofitApi {
 
     val retrofit = Retrofit.Builder()
             .baseUrl(PATH_API)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(
+                    GsonBuilder().serializeNulls().create())
+            )
             .build()
 
     val request = retrofit.create(RetrofitServicie::class.java)
