@@ -40,6 +40,10 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
 
         }
 
+        if(position == 0){
+            holder.view.rb_court.isChecked = true
+        }
+
         //holder.onListener(courts, callback)
     }
 

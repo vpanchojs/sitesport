@@ -22,9 +22,10 @@ class Enterprise() : Parcelable {
     // OBJETO URL DETALLE
     var descripcion: String = ""
     var fotos: List<Foto> = arrayListOf()
-    var telefonos: List<Telefono> = arrayListOf()
+    //var telefonos: List<Telefono> = arrayListOf()
+    var telefono: String = ""
     var numero_canchas: String = "0"
-    var red_social: List<RedSocial> = arrayListOf()
+    var redes_sociales: List<RedSocial> = arrayListOf()
     var canchas: List<Cancha> = arrayListOf()
     var horario: List<Horario> = arrayListOf()
 
@@ -45,8 +46,9 @@ class Enterprise() : Parcelable {
         puntuacion = parcel.readInt()
         distance = parcel.readFloat()
         abierto = parcel.readByte() != 0.toByte()
+        telefono = parcel.readString()
         idMarker = parcel.readLong()
-        parcel.readList(red_social, RedSocial::class.java.classLoader)
+        parcel.readList(redes_sociales, RedSocial::class.java.classLoader)
         parcel.readList(canchas, Cancha::class.java.classLoader)
         parcel.readList(horario, Horario::class.java.classLoader)
 
@@ -73,8 +75,9 @@ class Enterprise() : Parcelable {
         parcel.writeInt(puntuacion)
         parcel.writeFloat(distance)
         parcel.writeByte(if (abierto) 1 else 0)
+        parcel.writeString(telefono)
         parcel.writeLong(idMarker)
-        parcel.writeList(red_social)
+        parcel.writeList(redes_sociales)
         parcel.writeList(canchas)
         parcel.writeList(horario)
 
