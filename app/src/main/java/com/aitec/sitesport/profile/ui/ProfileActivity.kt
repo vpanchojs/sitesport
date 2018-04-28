@@ -354,8 +354,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     private fun shareProfile(){
         val i = Intent(android.content.Intent.ACTION_SEND)
         i.type = "text/plain"
-        i.putExtra(android.content.Intent.EXTRA_SUBJECT, "Sitesport")
-        i.putExtra(android.content.Intent.EXTRA_TEXT, "Aquí va un texto")
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
+        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShare))
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
