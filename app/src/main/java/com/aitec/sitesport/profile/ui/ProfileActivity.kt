@@ -153,9 +153,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     private fun openInstagram(){
         var isExist = false
         if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            for(network in enterprise!!.redes_sociales!!.iterator()) {
+            loop@ for(network in enterprise!!.redes_sociales!!.iterator()) {
                 when (network.nombre) {
                     "INSTAGRAM" -> {
+                        if(network.url.isEmpty()){
+                            break@loop
+                        }
                         isExist = true
                         try {
                             val url = network.url.substring(0, network.url.length - 1);
@@ -232,9 +235,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     private fun openFacebook() {
         var isExist = false
         if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            for(network in enterprise!!.redes_sociales!!.iterator()){
+            loop@ for(network in enterprise!!.redes_sociales!!.iterator()){
                 when (network.nombre){
                     "FACEBOOK" -> {
+                        if(network.url.isEmpty()){
+                            break@loop
+                        }
                         isExist = true
                         try {
                             val url = network.url.substring(0, network.url.length - 1);
