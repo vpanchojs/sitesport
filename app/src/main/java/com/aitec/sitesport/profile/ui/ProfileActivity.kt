@@ -153,9 +153,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     private fun openInstagram(){
         var isExist = false
         if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            for(network in enterprise!!.redes_sociales!!.iterator()) {
+            loop@ for(network in enterprise!!.redes_sociales!!.iterator()) {
                 when (network.nombre) {
                     "INSTAGRAM" -> {
+                        if(network.url.isEmpty()){
+                            break@loop
+                        }
                         isExist = true
                         try {
                             val url = network.url.substring(0, network.url.length - 1);
@@ -232,9 +235,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     private fun openFacebook() {
         var isExist = false
         if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            for(network in enterprise!!.redes_sociales!!.iterator()){
+            loop@ for(network in enterprise!!.redes_sociales!!.iterator()){
                 when (network.nombre){
                     "FACEBOOK" -> {
+                        if(network.url.isEmpty()){
+                            break@loop
+                        }
                         isExist = true
                         try {
                             val url = network.url.substring(0, network.url.length - 1);
@@ -270,12 +276,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
 
         clLike.setOnClickListener {
-            if(enterprise!!.me_gusta) {
+            BaseActivitys.showToastMessage(this,
+                    "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE)),
+                    Toast.LENGTH_SHORT)
+            /*if(enterprise!!.me_gusta) {
                 Toast.makeText(this, "Ya has calificado a " + enterprise!!.nombres, Toast.LENGTH_SHORT).show()
             }else{
                 //MANDAR A CALIFICAR AQUIIIII XD
                 //profilePresenter.like()
-            }
+            }*/
 
         }
 
