@@ -270,12 +270,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
 
         clLike.setOnClickListener {
-            if(enterprise!!.me_gusta) {
+            BaseActivitys.showToastMessage(this,
+                    "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE)),
+                    Toast.LENGTH_SHORT)
+            /*if(enterprise!!.me_gusta) {
                 Toast.makeText(this, "Ya has calificado a " + enterprise!!.nombres, Toast.LENGTH_SHORT).show()
             }else{
                 //MANDAR A CALIFICAR AQUIIIII XD
                 //profilePresenter.like()
-            }
+            }*/
 
         }
 
