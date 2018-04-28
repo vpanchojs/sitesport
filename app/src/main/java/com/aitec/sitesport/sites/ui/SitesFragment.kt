@@ -33,6 +33,8 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         when (p0!!.id) {
             R.id.cb_distance -> {
                 if (p1) {
+                    clearListSites()
+                    showProgresBar(true)
                     callback!!.getMyLocation()
                 } else {
                     presenter.addFilterLocation("", false)

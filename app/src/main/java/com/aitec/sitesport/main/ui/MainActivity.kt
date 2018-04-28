@@ -75,13 +75,16 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_site -> {
+                btn_map.visibility = View.VISIBLE
                 fragment = SitesFragment.newInstance()
             }
             R.id.navigation_my_reserve -> {
+                btn_map.visibility = View.INVISIBLE
                 fragment = RecordFragment.newInstance()
             }
 
             R.id.navigation_menu -> {
+                btn_map.visibility = View.INVISIBLE
                 fragment = MenuFragment.newInstance()
             }
         }

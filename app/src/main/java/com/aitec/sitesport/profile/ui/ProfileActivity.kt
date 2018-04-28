@@ -269,7 +269,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         }
         clLoader.visibility = View.GONE
         setNameProfile(enterprise!!.nombres)
-        setupMap(enterprise!!.direccion.latitud, enterprise!!.direccion.longitud)
+        setupMap(enterprise!!.direccion!!.latitud, enterprise!!.direccion!!.longitud)
         setupToolBar()
 
         if(enterprise!!.me_gusta) imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_on))
