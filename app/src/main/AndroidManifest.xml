@@ -45,10 +45,12 @@
             android:name=".welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".mapSites.ui.MapSitesActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
     </application>
