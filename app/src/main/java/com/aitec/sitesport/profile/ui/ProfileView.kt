@@ -16,5 +16,4 @@ interface ProfileView {
 
     fun showLoading()
     fun hideLoading(msg: String)
-    fun loadImage(foto_perfil: String)
 }

@@ -18,6 +18,7 @@ import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.PersistableBundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatDelegate
@@ -33,13 +34,132 @@ import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.util.BaseActivitys
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import kotlinx.android.synthetic.main.activity_mapsites.*
 import javax.inject.Inject
 
 
 class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
-    override fun loadImage(foto_perfil: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    @Inject
+    lateinit var profilePresenter: ProfilePresenter
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var enterprise: Enterprise? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setVectorCompatibility()
+        setContentView(R.layout.activity_profile)
+        setupInjection()
+        onCreateMapBox(savedInstanceState)
+
+        this.enterprise = intent.getParcelableExtra(ENTERPRISE)
+        setupUI()
+        profilePresenter.register()
+        profilePresenter.getProfile(enterprise!!.urldetalle)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mvProfile.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mvProfile.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mvProfile.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mvProfile.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        mvProfile.onSaveInstanceState(outState!!)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mvProfile.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        mvProfile.onDestroy()
+        profilePresenter.unregister()
+        super.onDestroy()
+    }
+
+    private fun setVectorCompatibility(){
+        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+    }
+
+    private fun setupViewPager(fotos: List<Foto>) {
+        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
+        viewPagerImagesProfile.adapter = viewPagerAdapter
+        viewPagerAdapter!!.notifyDataSetChanged()
+    }
+
+    private fun setupInjection() {
+        val app: MyApplication = this.application as MyApplication
+        val profileComponent = app.getProfileComponent(this)
+        profileComponent.inject(this)
+    }
+
+    // ProfileView.kt implementation
+
+    override fun showLoading() {
+        btnReload.visibility = View.GONE
+        tvInfo.text = ""
+        pbLoading.visibility = View.VISIBLE
+        if(clLoader.visibility == View.GONE) clLoader.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading(msg: String) {
+        Log.e(TAG, msg)
+        if(msg.isNotBlank()){
+            pbLoading.visibility = View.GONE
+            tvInfo.text = msg
+            btnReload.visibility = View.VISIBLE
+        }else{
+            clLoader.visibility = View.GONE
+        }
+    }
+
+    override fun setServices(servicios: Servicios) {
+        if (servicios.BAR) ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.WIFI) ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.PARKER) ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.DUCHA) ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.LOKER) ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+
+        /*if (servicios.BAR) ibtnBar.visibility = View.VISIBLE
+        if (servicios.WIFI) ibtnWiFi.visibility = View.VISIBLE
+        if (servicios.PARKER) ibtnEstacionamiento.visibility = View.VISIBLE
+        if (servicios.DUCHA) ibtnDuchas.visibility = View.VISIBLE
+        if (servicios.LOKER) ibtnCasilleros.visibility = View.VISIBLE*/
+    }
+
+    override fun setImages(imagesUrls: List<Foto>) {
+        setupViewPager(imagesUrls)
+        tabImageProfileDots.setupWithViewPager(viewPagerImagesProfile, true)
+    }
+
+    override fun setLikes(likes: Int) {
+        tvLike.text = likes.toString()
+    }
+
+    override fun setStateEnterprise(state: Boolean) {
+        tvStateEnterprise.text = if(state) "abierto" else "cerrado"
+    }
+
+    override fun setEnterprise(enterprise: Enterprise) {
+        this.enterprise = enterprise
     }
 
     override fun onCheckedCourt(court: Cancha) {
@@ -74,46 +194,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         rv_fields_profile.adapter = adapter
     }
 
-    @Inject
-    lateinit var profilePresenter: ProfilePresenter
-    private var viewPagerAdapter: ViewPagerAdapter? = null
-    private var enterprise: Enterprise? = null
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setVectorCompatibility()
-        setContentView(R.layout.activity_profile)
-        setupInjection()
-        onCreateMapBox(savedInstanceState)
-
-        this.enterprise = intent.getParcelableExtra(ENTERPRISE)
-        setupUI()
-        profilePresenter.register()
-        profilePresenter.getProfile(enterprise!!.urldetalle)
-    }
-
-    override fun onDestroy() {
-        profilePresenter.unregister()
-        super.onDestroy()
-    }
-
-    private fun setVectorCompatibility(){
-        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-    }
-
-    private fun setupViewPager(fotos: List<Foto>) {
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
-        viewPagerImagesProfile.adapter = viewPagerAdapter
-        viewPagerAdapter!!.notifyDataSetChanged()
-    }
-
-    private fun setupInjection() {
-        val app: MyApplication = this.application as MyApplication
-        val profileComponent = app.getProfileComponent(this)
-        profileComponent.inject(this)
-    }
+    // setup GUI
 
     private fun setupMap(latitude: Double, longitude: Double) {
         mvProfile.getMapAsync({
@@ -131,14 +213,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true }) //desabilitar el touch en el mapa
     }
 
-    // setup GUI and Life cycle
-
     private fun setNameProfile(name: String) {
         collapse_toolbar_profile.title = name
-    }
-
-    override fun setEnterprise(enterprise: Enterprise) {
-        this.enterprise = enterprise
     }
 
     private fun setupToolBar(){
@@ -318,24 +394,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         }
     }
 
-    override fun showLoading() {
-        btnReload.visibility = View.GONE
-        tvInfo.text = ""
-        pbLoading.visibility = View.VISIBLE
-        if(clLoader.visibility == View.GONE) clLoader.visibility = View.VISIBLE
-    }
-
-    override fun hideLoading(msg: String) {
-        Log.e(TAG, msg)
-        if(msg.isNotBlank()){
-            pbLoading.visibility = View.GONE
-            tvInfo.text = msg
-            btnReload.visibility = View.VISIBLE
-        }else{
-            clLoader.visibility = View.GONE
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
@@ -359,7 +417,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
-
     @SuppressLint("MissingPermission")
     private fun callPhone() {
         //if(enterprise != null && enterprise!!.telefonos!![0].convencional.isNotBlank()) {
@@ -368,33 +425,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         }else{
             BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
         }
-    }
-
-    override fun setServices(servicios: Servicios) {
-        if (servicios.BAR) ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.WIFI) ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.PARKER) ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.DUCHA) ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.LOKER) ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-
-        /*if (servicios.BAR) ibtnBar.visibility = View.VISIBLE
-        if (servicios.WIFI) ibtnWiFi.visibility = View.VISIBLE
-        if (servicios.PARKER) ibtnEstacionamiento.visibility = View.VISIBLE
-        if (servicios.DUCHA) ibtnDuchas.visibility = View.VISIBLE
-        if (servicios.LOKER) ibtnCasilleros.visibility = View.VISIBLE*/
-    }
-
-    override fun setImages(imagesUrls: List<Foto>) {
-        setupViewPager(imagesUrls)
-        tabImageProfileDots.setupWithViewPager(viewPagerImagesProfile, true)
-    }
-
-    override fun setLikes(likes: Int) {
-        tvLike.text = likes.toString()
-    }
-
-    override fun setStateEnterprise(state: Boolean) {
-        tvStateEnterprise.text = if(state) "abierto" else "cerrado"
     }
 
     private fun onCreateMapBox(savedInstanceState: Bundle?){
