@@ -2,6 +2,7 @@ package com.aitec.sitesport
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.aitec.sitesport.domain.di.DaggerMainComponent
@@ -33,6 +34,13 @@ class MyApplication : MultiDexApplication() {
     var domainModule: DomainModule? = null
     var appModule: MyAplicationModule? = null
     lateinit var mapbox: Mapbox
+
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -114,8 +122,6 @@ class MyApplication : MultiDexApplication() {
                 .mapSitesModule(MapSitesModule(view))
                 .build()
     }
-
-
 
 
     fun getProfileComponent(profileView: ProfileView): ProfileComponent {
