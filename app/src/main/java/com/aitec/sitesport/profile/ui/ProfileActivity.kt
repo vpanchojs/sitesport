@@ -155,7 +155,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     override fun setStateEnterprise(state: Boolean) {
-        tvStateEnterprise.text = if(state) "abierto" else "cerrado"
+        tvStateEnterprise.text = if(state) "Abierto" else "Cerrado"
     }
 
     override fun setEnterprise(enterprise: Enterprise) {
