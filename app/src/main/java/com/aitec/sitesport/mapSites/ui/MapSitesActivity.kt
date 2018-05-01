@@ -102,6 +102,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         setupMap(savedInstanceState)
         setupBottomSheet()
         setupReciclerView()
+        setupReciclerView()
         setupEvents()
 
     }
@@ -275,7 +276,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         showProgresBarResultsMapVisible(true)
-        setInfoHeaderBottomSheet("Centros Deportivos", "Obteniendo su Ubicación")
+        setInfoHeaderBottomSheet("Sitios Deportivos", "Obteniendo su ubicación")
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
                 .addOnSuccessListener(this) {
                     Log.e(TAG, "All location settings are satisfied.")
@@ -539,8 +540,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 } else {
                     markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
                 }
-                tv_title_bs.setText(it.nombres)
-                tv_subtitle_bs.setText(df.format(it.distance).toString() + " Km")
+                tv_title_bs.setText("A ${df.format(it.distance)} Km")
+                tv_subtitle_bs.setText(it.nombres)
             }
         }
 

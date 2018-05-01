@@ -89,7 +89,7 @@
                 app:layout_constraintStart_toEndOf="@+id/separator"
                 app:layout_constraintTop_toTopOf="@+id/separator"
                 app:queryBackground="@android:color/transparent"
-                app:queryHint="Buscar Centro Deportivo"
+                app:queryHint="Buscar sitio deportivo"
                 app:searchIcon="@null" />
 
         </android.support.constraint.ConstraintLayout>

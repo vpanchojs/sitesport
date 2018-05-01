@@ -36,12 +36,6 @@ class MyApplication : MultiDexApplication() {
     lateinit var mapbox: Mapbox
 
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
-
-
     override fun onCreate() {
         super.onCreate()
         Log.e("APLI", "on create")

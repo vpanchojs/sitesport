@@ -126,6 +126,7 @@ class RetrofitApi {
         if (::requestSearchVisibility.isInitialized) {
             Log.e("delte", "eliminar peticion visibility")
             requestSearchVisibility.cancel()
+
         }
     }
 

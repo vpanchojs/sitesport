@@ -22,7 +22,7 @@ class MapSitesPresenterImp(var eventBus: EventBusInterface, var view: MapSitesVi
     override fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double) {
         view.showProgresBarResultsMapVisible(true)
         view.hideButtonProfileEntrepise()
-        view.setInfoHeaderBottomSheet("Centro Deportivos", "Buscando centros deportivos")
+        view.setInfoHeaderBottomSheet("Sitios Deportivos", "Buscando sitios deportivos")
         interactor.onGetCenterSportVisible(latSouth, latNorth, lonWest, lonEast, latMe, lngMe)
     }
 
@@ -56,7 +56,7 @@ class MapSitesPresenterImp(var eventBus: EventBusInterface, var view: MapSitesVi
                     view.setResultsSearchs(entrepriseList)
                     view.showNoneResulstEntrepiseVisible(false)
                 } else {
-                    view.setInfoHeaderBottomSheet("Centro Deportivos", "Sin Resultados")
+                    view.setInfoHeaderBottomSheet("Sitios Deportivos", "Sin Resultados")
                     view.clearSearchResultsVisible()
                     view.showNoneResulstEntrepiseVisible(true)
                 }
