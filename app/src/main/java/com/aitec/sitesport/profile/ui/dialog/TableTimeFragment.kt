@@ -8,12 +8,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Dia
 import com.aitec.sitesport.entities.enterprise.Horario
-import kotlinx.android.synthetic.main.fragment_table_time.*
 import kotlinx.android.synthetic.main.fragment_table_time.view.*
 
 class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
@@ -23,7 +20,7 @@ class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val arg : List<Horario> = arguments!!.getParcelableArrayList("tableTime")
+        val arg : List<Horario> = arguments!!.getParcelableArrayList("tableTime")!!
         listTableTime = arg[0].dias
         Log.e("TableTimeFragment","listTableTime = " + listTableTime.toString())
     }
@@ -41,8 +38,8 @@ class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
                 android.graphics.PorterDuff.Mode.MULTIPLY)
 
         val adapter = AdapterTableTime(listTableTime!!)
-        view.rvTableTimeEnterprise.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
-        view.rvTableTimeEnterprise.adapter = adapter
+        view.tvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
+        view.tvInfoService.adapter = adapter
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)

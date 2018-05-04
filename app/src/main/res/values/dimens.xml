@@ -27,6 +27,8 @@
     <dimen name="size_btn_profile">46dp</dimen> <!--46-->
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="dimen_padding_btn_profile">7dp</dimen>
+
     <!-- //dimensiones del perfil -->
 
 

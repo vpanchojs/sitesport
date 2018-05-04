@@ -21,8 +21,8 @@
     <color name="colorPressIButton">#1f222e</color>
     <color name="colorDisableIButton">#b6b6b6</color>
 
-    <color name="colorNormalNoIButton">#f2f2f2</color>
-    <color name="colorPressNoIButton">#f1f1f1</color>
+    <color name="colorNormalNoIButton">#f4f4f4</color>
+    <color name="colorPressNoIButton">#e6e6e6</color>
     <color name="colorDisableNoIButton">#f1f1f1</color>
 
     <color name="colorStartGradient">#19686868</color>
@@ -35,6 +35,9 @@
 
     <color name="colorTextProfile">@color/colorPrimary</color>
     <color name="colorDividerProfile">#4b2a2e43</color>
+
+    <color name="colorIconsServicesDefault">#322a2e43</color>
+
 
 
 

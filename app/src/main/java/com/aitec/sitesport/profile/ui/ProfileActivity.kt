@@ -2,7 +2,6 @@ package com.aitec.sitesport.profile.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -26,15 +25,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profile.ProfilePresenter
+import com.aitec.sitesport.profile.ui.dialog.DefaultServicesFragment
+import com.aitec.sitesport.profile.ui.dialog.ViewPagerAdapter
 import com.aitec.sitesport.profile.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.util.BaseActivitys
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import kotlinx.android.synthetic.main.activity_mapsites.*
 import javax.inject.Inject
 
 
@@ -132,17 +135,34 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     override fun setServices(servicios: Servicios) {
-        if (servicios.BAR) ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.WIFI) ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.PARKER) ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.DUCHA) ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-        if (servicios.LOKER) ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        if (servicios.BAR) {
+            ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+            setDataFragmentServices("Bar", "Aqui va la info del bar", R.drawable.ic_bar, ibtnBar)
+        }
+        if (servicios.WIFI) {
+            ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+            setDataFragmentServices("WiFi", "Aqui va la info del wifi", R.drawable.ic_wifi, ibtnWiFi)
+        }
+        if (servicios.PARKER) {
+            ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+            setDataFragmentServices("Estacionamiento", "Aqui va la info del estacionamiento", R.drawable.ic_parked_car, ibtnEstacionamiento)
+        }
+        if (servicios.DUCHA){
+            ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+            setDataFragmentServices("Ducha", "Aqui va la info de las duchas", R.drawable.ic_shower, ibtnDuchas)
 
-        /*if (servicios.BAR) ibtnBar.visibility = View.VISIBLE
-        if (servicios.WIFI) ibtnWiFi.visibility = View.VISIBLE
-        if (servicios.PARKER) ibtnEstacionamiento.visibility = View.VISIBLE
-        if (servicios.DUCHA) ibtnDuchas.visibility = View.VISIBLE
-        if (servicios.LOKER) ibtnCasilleros.visibility = View.VISIBLE*/
+        }
+        if (servicios.LOKER) {
+            ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+            setDataFragmentServices("Casillero", "Aqui va la info de los casilleros", R.drawable.ic_lockers, ibtnCasilleros)
+        }
+    }
+
+    private fun setDataFragmentServices(title: String, info: String, idIcon: Int, imgButton: ImageView){
+        imgButton.setOnClickListener {
+            val defaultServicesFragment = DefaultServicesFragment.newInstance(title, info, idIcon)
+            defaultServicesFragment.show(supportFragmentManager, "DefaultServicesFragment")
+        }
     }
 
     override fun setImages(imagesUrls: List<Foto>) {

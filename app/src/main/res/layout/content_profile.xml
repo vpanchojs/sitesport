@@ -53,14 +53,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnShowTableTime"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
                 android:layout_marginStart="16dp"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_ibtn_profile"
-                android:tint="@color/white"
+                android:background="@drawable/bg_profile_no_buttons"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
                 app:srcCompat="@drawable/ic_clock" />
@@ -107,7 +108,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cmMainDinamyc"
                 android:layout_width="0dp"
-                android:layout_height="140dp"
+                android:layout_height="126dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
@@ -115,11 +116,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="@dimen/size_btn_profile"
                     android:layout_height="@dimen/size_btn_profile"
-                    android:background="@drawable/bg_ibtn_profile"
+                    android:padding="@dimen/dimen_padding_btn_profile"
+                    android:background="@drawable/bg_profile_no_buttons"
                     app:layout_constraintBottom_toTopOf="@+id/tv_sport"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -160,12 +162,12 @@
 
                         <ImageButton
                             android:id="@+id/iv_nigth"
-                            android:layout_width="@dimen/size_btn_profile"
-                            android:layout_height="@dimen/size_btn_profile"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_profile_no_buttons"
+                            android:background="@null"
                             android:tint="@color/colorAccent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -176,7 +178,7 @@
                             android:id="@+id/tv_price_nigth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:text="$"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
@@ -202,12 +204,12 @@
 
                         <ImageButton
                             android:id="@+id/iv_day"
-                            android:layout_width="@dimen/size_btn_profile"
-                            android:layout_height="@dimen/size_btn_profile"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_profile_no_buttons"
+                            android:background="@null"
                             android:tint="@color/colorAccent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +220,7 @@
                             android:id="@+id/tv_price_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:text="$"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
@@ -243,12 +245,12 @@
 
                         <ImageButton
                             android:id="@+id/iv_players"
-                            android:layout_width="@dimen/size_btn_profile"
-                            android:layout_height="@dimen/size_btn_profile"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_profile_no_buttons"
+                            android:background="@null"
                             android:tint="@color/colorAccent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -259,7 +261,7 @@
                             android:id="@+id/tv_num_players"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:text="vs"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
@@ -283,12 +285,12 @@
 
                         <ImageButton
                             android:id="@+id/iv_floor"
-                            android:layout_width="@dimen/size_btn_profile"
-                            android:layout_height="@dimen/size_btn_profile"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_profile_no_buttons"
+                            android:background="@null"
                             android:tint="@color/colorAccent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -299,7 +301,7 @@
                             android:id="@+id/tv_floor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:text="piso"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
@@ -328,7 +330,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ibtnBar" />
+                app:layout_constraintTop_toBottomOf="@+id/ibtnCasilleros" />
 
             <View
                 android:id="@+id/textView11"
@@ -342,48 +344,56 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTimeSabadoToDomingo" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnPhone"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_ibtn_profile"
+                android:background="@drawable/bg_profile_no_buttons"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                 app:srcCompat="@drawable/ic_phone" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnWhatsapp"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_ibtn_profile"
+                android:background="@drawable/bg_profile_no_buttons"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toEndOf="@+id/ibtnPhone"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                 app:srcCompat="@drawable/ic_whastapp" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnFacebook"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_ibtn_profile"
+                android:background="@drawable/bg_profile_no_buttons"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toEndOf="@+id/ibtnWhatsapp"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                 app:srcCompat="@drawable/ic_facebook" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnInstagram"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_ibtn_profile"
+                android:background="@drawable/bg_profile_no_buttons"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toEndOf="@+id/ibtnFacebook"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                 app:srcCompat="@drawable/ic_instagram" />
@@ -416,54 +426,67 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnBar"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_profile_no_buttons"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimeSabadoToDomingo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
                 app:srcCompat="@drawable/ic_bar" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnWiFi"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_profile_no_buttons"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimeSabadoToDomingo"
                 app:layout_constraintStart_toEndOf="@+id/ibtnBar"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
                 app:srcCompat="@drawable/ic_wifi" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnEstacionamiento"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_profile_no_buttons"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimeSabadoToDomingo"
                 app:layout_constraintStart_toEndOf="@+id/ibtnWiFi"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
                 app:srcCompat="@drawable/ic_parked_car" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnDuchas"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
+                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_profile_no_buttons"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimeSabadoToDomingo"
                 app:layout_constraintStart_toEndOf="@+id/ibtnEstacionamiento"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
                 app:srcCompat="@drawable/ic_shower" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibtnCasilleros"
                 android:layout_width="@dimen/size_btn_profile"
                 android:layout_height="@dimen/size_btn_profile"
+                android:padding="@dimen/dimen_padding_btn_profile"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_profile_no_buttons"
