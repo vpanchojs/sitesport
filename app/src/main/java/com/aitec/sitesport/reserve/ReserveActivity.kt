@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Courts
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
@@ -22,8 +21,9 @@ import kotlin.collections.ArrayList
 
 
 class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+
     override fun onCheckedCourt(court: Cancha) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
@@ -98,18 +98,14 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
 
     private fun setupRecyclerViewClourt() {
-        val courtList = ArrayList<Courts>()
+        val courtList = ArrayList<Cancha>()
 
-        courtList.add(Courts(name = "Cancha 1"))
-        courtList.add(Courts(name = "Cancha 2"))
-        courtList.add(Courts(name = "Cancha 3"))
-        courtList.add(Courts(name = "Cancha 4"))
-        courtList.add(Courts(name = "Cancha 5"))
-        courtList.add(Courts(name = "Cancha 6"))
+        courtList.add(Cancha())
+        courtList.add(Cancha())
 
-       /* val adapter = CourtAdapter(courtList, this)
+        val adapter = CourtAdapter(courtList, this)
         rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_fields_profile.adapter = adapter*/
+        rv_fields_profile.adapter = adapter
     }
 
     private fun setupRecyclerViewTimeTable() {

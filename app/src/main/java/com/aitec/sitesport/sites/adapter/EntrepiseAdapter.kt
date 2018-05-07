@@ -2,7 +2,6 @@ package com.aitec.sitesport.sites.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,6 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var entrepise = data.get(position)
         holder!!.view.tv_name_entrepise.text = entrepise.nombres
-        //holder!!.view.tv_address.text = df.format(entrepise.address.direction) + " Km"
 
         GlideApp.with(context)
                 .load(entrepise.foto_perfil.trim())
@@ -46,6 +44,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
 
         holder!!.view.tv_address.text = entrepise.direccion?.calles
 
+        holder!!.view.tv_raiting.text = entrepise.puntuacion.toString()
 
 
         if (entrepise.distance > 0) {
