@@ -38,8 +38,8 @@ class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
                 android.graphics.PorterDuff.Mode.MULTIPLY)
 
         val adapter = AdapterTableTime(listTableTime!!)
-        view.tvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
-        view.tvInfoService.adapter = adapter
+        view.rvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
+        view.rvInfoService.adapter = adapter
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)

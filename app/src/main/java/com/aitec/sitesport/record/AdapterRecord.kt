@@ -5,51 +5,67 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.Reservation
+import kotlinx.android.synthetic.main.item_rv_record_reservation.view.*
+import kotlinx.android.synthetic.main.item_rv_record_reservation_head.view.*
 
-class AdapterRecord(var ReservationsList: List<String>) : RecyclerView.Adapter<AdapterRecord.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        val inflater = LayoutInflater.from(parent.context)
 
-    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_rv_table_time, parent, false);
-        return AdapterRecord.ViewHolder(view)
-    }
+        when(viewType){
+            Reservation.HEAD -> {
+                val view = inflater.inflate(R.layout.item_rv_record_reservation_head, parent, false) as ViewGroup
+                return HeadViewHolder(view)
+            }
 
-    override fun getItemCount(): Int {
-        return tableTimeList.size
-    }
+            Reservation.RESERVATION -> {
+                val view = inflater.inflate(R.layout.item_rv_record_reservation, parent, false) as ViewGroup
+                return ReservationViewHolder(view)
+            }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val tableTime = tableTimeList.get(position)
-
-        var dia = ""
-        when(tableTime.nombre){
-            0 -> dia = "Lunes"
-            1 -> dia = "Martes"
-            2 -> dia = "Miércoles"
-            3 -> dia = "Jueves"
-            4 -> dia = "Viernes"
-            5 -> dia = "Sábado"
-            6 -> dia = "Domingo"
+            else ->{
+                val view = inflater.inflate(R.layout.item_rv_record_reservation_head, parent, false) as ViewGroup
+                return HeadViewHolder(view)
+            }
         }
 
-        holder.view.tvDia.text = dia
-        holder.view.tvHourStart.text = "Desde " + tableTime.horas[0].inicio
-        holder.view.tvHourEnd.text = "Hasta " + tableTime.horas[0].fin
+        //val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_record_reservation, parent, false);
+        //return AdapterRecord.ViewHolder(view)
+    }
 
-        Log.e("onBindViewHolder", position.toString() + "  -  " + tableTime.horas[0].inicio.toString())
+    override fun getItemCount(): Int {
+        return reservationsList.size
+    }
 
-    }*/
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val reservation = reservationsList[position]
 
 
-    class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {}
+        if(reservation.type == Reservation.RESERVATION){
+            val h = holder as ReservationViewHolder
+            h.view.tvSite.text = reservation.site
+            h.view.tvCourt.text = reservation.court
+            h.view.tvReservationDate.text = reservation.reservationDate
+            h.view.tvGameDate.text = reservation.gameDate
+        }else if(reservation.type == Reservation.HEAD){
+            val h = holder as HeadViewHolder
+            h.view.tvHead.text = reservation.head
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return reservationsList[position].type
+    }
+
+    fun getItem(index: Int) : Reservation{
+        return reservationsList[index]
+    }
+
+    class ReservationViewHolder(var view: View) : RecyclerView.ViewHolder(view) {}
+    class HeadViewHolder(var view: View) : RecyclerView.ViewHolder(view) {}
+
 }

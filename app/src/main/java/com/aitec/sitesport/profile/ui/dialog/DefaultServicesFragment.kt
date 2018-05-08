@@ -2,9 +2,7 @@ package com.aitec.sitesport.profile.ui.dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
@@ -37,7 +35,7 @@ class DefaultServicesFragment : DialogFragment() {
         }
 
         view.tvTitleService.text = title
-        view.tvInfoService.text = info
+        view.rvInfoService.text = info
         val icon = ContextCompat.getDrawable(activity!!, idIcon!!)
         view.imgBackground.setImageDrawable(icon)
         view.imgBackground.drawable.setColorFilter(ResourcesCompat.getColor(resources, R.color.icon_transparent, null), PorterDuff.Mode.SRC_IN)

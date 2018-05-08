@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <TextView
-        android:id="@+id/tvInfoService"
+        android:id="@+id/rvInfoService"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="16dp"
@@ -54,7 +54,7 @@
         android:textAlignment="center"
         android:textColor="@color/colorWhiteLittleTransparent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvInfoService"
+        app:layout_constraintBottom_toTopOf="@+id/rvInfoService"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ib_back"
         app:layout_constraintTop_toTopOf="parent" />
