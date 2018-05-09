@@ -34,13 +34,13 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
 
             rb_select = compoundButton as RadioButton
 
-            if(b){
+            if (b) {
                 callback.onCheckedCourt(courts)
             }
 
         }
 
-        if(position == 0){
+        if (position == 0) {
             holder.view.rb_court.isChecked = true
         }
 
@@ -51,8 +51,6 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
     }
-
-
 
 
 }

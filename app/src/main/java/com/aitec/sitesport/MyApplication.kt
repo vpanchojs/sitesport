@@ -2,7 +2,6 @@ package com.aitec.sitesport
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.aitec.sitesport.domain.di.DaggerMainComponent
@@ -23,6 +22,10 @@ import com.aitec.sitesport.profile.di.DaggerProfileComponent
 import com.aitec.sitesport.profile.di.ProfileComponent
 import com.aitec.sitesport.profile.di.ProfileModule
 import com.aitec.sitesport.profile.ui.ProfileView
+import com.aitec.sitesport.profileUser.di.DaggerProfileUserComponent
+import com.aitec.sitesport.profileUser.di.ProfileUserComponent
+import com.aitec.sitesport.profileUser.di.ProfileUserModule
+import com.aitec.sitesport.profileUser.ui.ProfileUserView
 import com.aitec.sitesport.sites.domain.di.DaggerSitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesModule
@@ -55,32 +58,6 @@ class MyApplication : MultiDexApplication() {
     }
 
 
-    /*
-    fun getLoginComponent(view: LoginView): LoginComponent {
-        return DaggerLoginComponent.builder()
-                .domainModule(domainModule)
-                .loginModule(LoginModule(view))
-                .build();
-    }
-
-    fun getSignupUserInfoComponent(signupUserInfoView: SignupUserInfoView): SignupUserInfoComponent {
-        return DaggerSignupUserInfoComponent
-                .builder()
-                .domainModule(domainModule)
-                .libModule(LibModule())
-                .signupUserInfoModule(SignupUserInfoModule(signupUserInfoView))
-                .build()
-    }
-
-    fun getSignupAcctInfoComponent(signupAcctInfoView: SignupAcctInfoView): SignupAcctInfoComponent {
-        return DaggerSignupAcctInfoComponent
-                .builder()
-                .domainModule(domainModule)
-                .libModule(LibModule())
-                .signupAcctInfoModule(SignupAcctInfoModule(signupAcctInfoView))
-                .build()
-    }
-*/
     fun getSitesComponent(sitesView: SitesView): SitesComponent {
         return DaggerSitesComponent
                 .builder()
@@ -124,6 +101,16 @@ class MyApplication : MultiDexApplication() {
                 .domainModule(domainModule)
                 .libModule(LibModule())
                 .profileModule(ProfileModule(profileView))
+                .build()
+    }
+
+
+    fun getProfileUserComponent(profileView: ProfileUserView): ProfileUserComponent {
+        return DaggerProfileUserComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .profileUserModule(ProfileUserModule(profileView))
                 .build()
     }
 

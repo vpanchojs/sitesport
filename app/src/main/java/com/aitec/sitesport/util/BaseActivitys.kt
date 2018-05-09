@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.Button
 import android.widget.Toast
-import com.aitec.sitesport.R
 
 /**
  * Created by victor on 25/1/18.
@@ -76,5 +75,30 @@ class BaseActivitys() {
             progressDialog = null
         }
 
+
+        fun validaDni(dni: String): Boolean {
+            if (dni.length == 10) {
+                val ultimo = dni.substring(9, 10).toInt()
+                val aux = dni.substring(0, 9)
+                val verificador = arrayOf(2, 1, 2, 1, 2, 1, 2, 1, 2)
+                var sum = 0
+                val region = dni.substring(0, 2).toInt()
+
+                if (region in 1..24) {
+                    for (i in 0..aux.length - 1) {
+                        val valor = aux[i].toString().toInt() * verificador[i]
+                        sum += if (valor >= 10) valor - 9 else valor
+                    }
+
+                    val result = ((10 - sum.rem(10)) + sum) - sum
+                    if (result == ultimo) return true else return result == 10 && ultimo == 0
+
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
     }
 }
