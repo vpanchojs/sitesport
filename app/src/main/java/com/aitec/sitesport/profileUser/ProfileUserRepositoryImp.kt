@@ -7,7 +7,6 @@ import com.aitec.sitesport.profileUser.events.ProfileUserEvents
 
 class ProfileUserRepositoryImp(var eventBus: EventBusInterface, var retrofitApi: RetrofitApi) : ProfileUserRepository {
 
-
     override fun getInfoUser() {
 
     }

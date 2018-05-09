@@ -32,9 +32,13 @@ class ProfileUserPresenterImp(var eventBus: EventBusInterface, var view: Profile
         when (event.type) {
             ProfileUserEvents.DNI_INVALID -> {
                 view.showErrorDniInput(event.any)
+                view.showProgresBar(View.GONE)
+                view.showButtonUpdate(View.VISIBLE)
             }
             ProfileUserEvents.PHONE_INVALID -> {
                 view.showErrorPhoneInput(event.any)
+                view.showProgresBar(View.GONE)
+                view.showButtonUpdate(View.VISIBLE)
             }
         }
     }
