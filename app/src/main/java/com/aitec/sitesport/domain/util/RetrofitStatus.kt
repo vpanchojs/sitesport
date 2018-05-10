@@ -1,4 +1,3 @@
-import android.util.Log
 import retrofit2.Response
 import java.io.IOException
 
@@ -21,8 +20,12 @@ class RetrofitStatus {
 
         fun <T> Failure(t: Throwable, callback: MyCallbackFailure<T>) {
             if (t is IOException) {
-                Log.e("network", t.toString())
-                callback.networkError("Verifique su conexion e inténtelo de nuevo")
+                if (t.localizedMessage.equals("Socket closed")) {
+                    callback.networkError("")
+                } else {
+                    callback.networkError("Verifique su conexion e inténtelo de nuevo")
+                }
+                //callback.networkError()
             } else {
                 callback.unexpectedError(t)
             }
