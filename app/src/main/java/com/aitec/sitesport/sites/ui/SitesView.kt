@@ -8,4 +8,5 @@ interface SitesView {
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
     fun clearListSites()
+    fun showButtonReload(visible: Int)
 }

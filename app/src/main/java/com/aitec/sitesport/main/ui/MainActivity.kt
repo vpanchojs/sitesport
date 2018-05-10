@@ -180,13 +180,20 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-
         return true
     }
 
+    /*Enviar ubicacion a la vista de lista de sitios deportivos*/
     fun sendMyLocation() {
         if (fragment is SitesFragment) {
             (fragment as SitesFragment).setMyLocation(mCurrentLocation)
+        }
+    }
+
+    /*Notificar imposibilidad de obtener la ubicacion*/
+    fun imposibleGetLocacion() {
+        if (fragment is SitesFragment) {
+            (fragment as SitesFragment).checkedDistanceNoneEvent(false)
         }
     }
 
@@ -354,7 +361,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 startLocationUpdates();
 
             } else {
-
+                Log.e(TAG, "no se han habilitado los permisos")
+                imposibleGetLocacion()
+                //notificar que el permiso no ha sido concedido
             }
         }
     }
@@ -368,11 +377,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
             REQUEST_CHECK_SETTINGS -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        Log.i(TAG, "User agreed to make required location settings changes.");
+                        Log.e(TAG, "User agreed to make required location settings changes.")
+                        startLocationUpdates();
 // Nothing to do. startLocationupdates() gets called in onResume again.
                     }
                     Activity.RESULT_CANCELED -> {
-                        Log.i(TAG, "User chose not to make required location settings changes.");
+                        Log.e(TAG, "User chose not to make required location settings changes.")
+                        imposibleGetLocacion()
+
                         //requestingLocationUpdates = false;
                         //updateUI();
                     }

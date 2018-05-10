@@ -6,7 +6,6 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,7 @@ import javax.inject.Inject
 
 class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntrepiseAdapterListener, SitesView, CompoundButton.OnCheckedChangeListener {
 
+    var ubicacion: String = ""
 
     var callback: onSitesFragmentListener? = null
 
@@ -33,9 +33,9 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         when (p0!!.id) {
             R.id.cb_distance -> {
                 if (p1) {
-                    clearListSites()
-                    showProgresBar(true)
                     callback!!.getMyLocation()
+                    showProgresBar(true)
+                    visibleListSites(View.INVISIBLE)
                 } else {
                     presenter.addFilterLocation("", false)
                 }
@@ -51,9 +51,26 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
     }
 
+    fun visibleListSites(visible: Int) {
+        rv_entrepise.visibility = visible
+    }
+
+    fun checkedDistanceNoneEvent(isCheck: Boolean) {
+        cb_distance.setOnCheckedChangeListener(null)
+        cb_distance.isChecked = isCheck
+        cb_distance.setOnCheckedChangeListener(this)
+
+        showProgresBar(false)
+        visibleListSites(View.VISIBLE)
+    }
+
 
     override fun onClick(p0: View?) {
-
+        when (p0!!.id) {
+            R.id.btn_reload -> {
+                presenter.onGetSites()
+            }
+        }
     }
 
     override fun navigatioProfile(entrepise: Enterprise) {
@@ -97,6 +114,8 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         cb_distance.setOnCheckedChangeListener(this)
         cb_open.setOnCheckedChangeListener(this)
         cb_score.setOnCheckedChangeListener(this)
+        btn_reload.setOnClickListener(this)
+
     }
 
     private fun setupRecyclerView() {
@@ -157,8 +176,10 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
     //Metodo llamado desde la actividad
     fun setMyLocation(mCurrentLocation: Location) {
-        val ubicacion = "${mCurrentLocation.latitude},${mCurrentLocation.longitude}"
-        Log.e(TAG, "MI UBICACION ES $ubicacion")
+        checkedDistanceNoneEvent(true)
+        visibleListSites(View.VISIBLE)
+        ubicacion = "${mCurrentLocation.latitude},${mCurrentLocation.longitude}"
+        //Log.e(TAG, "MI UBICACION ES $ubicacion")
         presenter.addFilterLocation(ubicacion, true)
     }
 
@@ -170,5 +191,9 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         data!!.clear()
         adapter!!.notifyDataSetChanged()
 
+    }
+
+    override fun showButtonReload(visible: Int) {
+        btn_reload.visibility = visible
     }
 }
