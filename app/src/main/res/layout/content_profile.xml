@@ -17,15 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/contentInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textView2"
@@ -125,78 +121,36 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView">
 
                     <android.support.constraint.ConstraintLayout
-                        android:id="@+id/cl_price_nigth"
+                        android:id="@+id/cl_price"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/cl_price_day"
+                        app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageButton
-                            android:id="@+id/iv_nigth"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:id="@+id/ivRatesCourt"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:background="@null"
+                            android:background="@drawable/bg_profile_no_buttons"
                             android:tint="@color/colorAccent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_moon" />
+                            app:srcCompat="@drawable/ic_money" />
 
                         <TextView
-                            android:id="@+id/tv_price_nigth"
+                            android:id="@+id/tvPrice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="$"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorPrimary"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_nigth" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/cl_price_day"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/cl_price_nigth"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageButton
-                            android:id="@+id/iv_day"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@null"
-                            android:tint="@color/colorAccent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_sun" />
-
-                        <TextView
-                            android:id="@+id/tv_price_day"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="$"
+                            android:text="$20 - $ 23"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -215,13 +169,13 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/cl_floor"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/cl_price_day"
+                        app:layout_constraintStart_toEndOf="@+id/cl_price"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageButton
                             android:id="@+id/iv_players"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
@@ -260,8 +214,8 @@
 
                         <ImageButton
                             android:id="@+id/iv_floor"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
@@ -430,7 +384,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="0dp"
-                android:layout_height="270dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="16dp"
                 android:clickable="false"
                 android:focusable="false"
@@ -458,6 +412,33 @@
                     app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10">
 
                 </com.mapbox.mapboxsdk.maps.MapView>
+
+                <ImageButton
+                    android:id="@+id/ivRunLocation"
+                    android:layout_width="@dimen/size_btn_profile"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_dark"
+                    app:layout_constraintBottom_toBottomOf="@+id/mvProfile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_run_man" />
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/icon_transparent"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:text="No disponible"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/mvProfile" />
 
                 <!--<ImageButton
                     android:id="@+id/ibtnRoute"

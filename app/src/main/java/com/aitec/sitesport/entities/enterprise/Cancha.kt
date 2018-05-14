@@ -2,6 +2,7 @@ package com.aitec.sitesport.entities.enterprise
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.aitec.sitesport.entities.Rate
 
 class Cancha() : Parcelable{
 
@@ -12,6 +13,7 @@ class Cancha() : Parcelable{
     var piso: String = ""
     var fotos: MutableList<Foto>? = arrayListOf()
     var isAddPhotoProfile: Boolean = false
+    var rates: MutableList<Rate> = arrayListOf()
 
 
     constructor(parcel: Parcel) : this() {
@@ -21,6 +23,7 @@ class Cancha() : Parcelable{
         numero_jugadores = parcel.readString()
         piso = parcel.readString()
         fotos = parcel.createTypedArrayList(Foto)
+        rates = parcel.createTypedArrayList(Rate)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -30,6 +33,7 @@ class Cancha() : Parcelable{
         parcel.writeString(numero_jugadores)
         parcel.writeString(piso)
         parcel.writeTypedList(fotos)
+        parcel.writeTypedList(rates)
     }
 
     override fun describeContents(): Int {

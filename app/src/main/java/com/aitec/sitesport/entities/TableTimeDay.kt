@@ -6,13 +6,13 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 13/3/2018.
  */
-class TableTime(var lunes : String,
-                var martes : String,
-                var miercoles : String,
-                var jueves : String,
-                var vieres : String,
-                var sabado : String,
-                var domingo : String) : Parcelable{
+class TableTimeDay(var lunes : String,
+                   var martes : String,
+                   var miercoles : String,
+                   var jueves : String,
+                   var vieres : String,
+                   var sabado : String,
+                   var domingo : String) : Parcelable{
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -38,12 +38,12 @@ class TableTime(var lunes : String,
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<TableTime> {
-        override fun createFromParcel(parcel: Parcel): TableTime {
-            return TableTime(parcel)
+    companion object CREATOR : Parcelable.Creator<TableTimeDay> {
+        override fun createFromParcel(parcel: Parcel): TableTimeDay {
+            return TableTimeDay(parcel)
         }
 
-        override fun newArray(size: Int): Array<TableTime?> {
+        override fun newArray(size: Int): Array<TableTimeDay?> {
             return arrayOfNulls(size)
         }
     }

@@ -25,14 +25,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.entities.Rate
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profile.ProfilePresenter
 import com.aitec.sitesport.profile.ui.dialog.DefaultServicesFragment
-import com.aitec.sitesport.profile.ui.dialog.ViewPagerAdapter
+import com.aitec.sitesport.profile.ui.dialog.ImageAdapter
+import com.aitec.sitesport.profile.ui.dialog.RateCourtFragment
 import com.aitec.sitesport.profile.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
@@ -45,7 +45,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
-    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var imageAdapter: ImageAdapter? = null
     private var enterprise: Enterprise? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,9 +103,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     private fun setupViewPager(fotos: List<Foto>) {
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, fotos)
-        viewPagerImagesProfile.adapter = viewPagerAdapter
-        viewPagerAdapter!!.notifyDataSetChanged()
+        imageAdapter = ImageAdapter(supportFragmentManager, fotos)
+        viewPagerImagesProfile.adapter = imageAdapter
+        imageAdapter!!.notifyDataSetChanged()
     }
 
     private fun setupInjection() {
@@ -182,8 +182,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     override fun onCheckedCourt(court: Cancha) {
-        tv_price_day.text = "$ " + court.dia.toString()
-        tv_price_nigth.text = "$ " + court.noche.toString()
+        //tvPrice.text = "$ " + court.dia.toString()
+        //tv_price_nigth.text = "$ " + court.noche.toString()
         tv_num_players.text = court.numero_jugadores
         tv_floor.text = court.piso
 
@@ -362,6 +362,27 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         btnReload.setOnClickListener{
             profilePresenter.getProfile(enterprise!!.urldetalle)
         }
+
+        tvLocation.text = enterprise!!.direccion!!.calles
+
+        ivRatesCourt.setOnClickListener {
+
+            val rateCourt : ArrayList<Rate> = arrayListOf()
+
+            for(i in 0 until 7){
+                val r = Rate()
+                r.nameDay = i
+                r.priceDay = "$20"
+                r.rankDay = "08:00 - 13:00"
+                r.priceNight = "$30"
+                r.rankNight = "13:00 - 23:00"
+                rateCourt.add(r)
+            }
+
+            val rateCourtFragment = RateCourtFragment.newInstance(rateCourt)
+            rateCourtFragment.show(supportFragmentManager, "RateCourtFragment")
+        }
+
         clLoader.visibility = View.GONE
         setNameProfile(enterprise!!.nombres)
         setupMap(enterprise!!.direccion!!.latitud, enterprise!!.direccion!!.longitud)

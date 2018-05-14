@@ -9,7 +9,7 @@ import android.util.Log
 import com.aitec.sitesport.profile.ui.dialog.ImageFragment
 
 
-class ViewPagerAdapter(fm: FragmentManager, var images: List<Foto>) : FragmentStatePagerAdapter(fm) {
+class ImageAdapter(fm: FragmentManager, var images: List<Foto>) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         Log.e("getItem = ", position.toString())

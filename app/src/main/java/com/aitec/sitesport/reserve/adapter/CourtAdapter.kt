@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_court.view.*
 
 
 class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCourt) : RecyclerView.Adapter<CourtAdapter.ViewHolder>() {
-    lateinit var rb_select: RadioButton
+    lateinit var rbSelect: RadioButton
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_court, parent, false);
@@ -28,11 +28,11 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
 
         holder.view.rb_court.setOnCheckedChangeListener { compoundButton, b ->
 
-            if (::rb_select.isInitialized) {
-                rb_select.isChecked = false
+            if (::rbSelect.isInitialized) {
+                rbSelect.isChecked = false
             }
 
-            rb_select = compoundButton as RadioButton
+            rbSelect = compoundButton as RadioButton
 
             if (b) {
                 callback.onCheckedCourt(courts)

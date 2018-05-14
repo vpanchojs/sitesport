@@ -114,7 +114,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/cl_price_day"
+                app:layout_constraintEnd_toStartOf="@+id/cl_price"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -152,7 +152,7 @@
 
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_price_day"
+                android:id="@+id/cl_price"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
@@ -176,7 +176,7 @@
                     app:srcCompat="@drawable/ic_sun" />
 
                 <TextView
-                    android:id="@+id/tv_price_day"
+                    android:id="@+id/tvPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -201,7 +201,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cl_floor"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/cl_price_day"
+                app:layout_constraintStart_toEndOf="@+id/cl_price"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView

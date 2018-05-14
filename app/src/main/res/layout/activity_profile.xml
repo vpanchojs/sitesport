@@ -78,8 +78,8 @@
 
                     <ImageView
                         android:id="@+id/imgLike"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"

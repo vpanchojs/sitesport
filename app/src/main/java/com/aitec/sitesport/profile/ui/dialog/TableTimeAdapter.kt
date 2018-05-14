@@ -1,7 +1,5 @@
 package com.aitec.sitesport.profile.ui.dialog
 
-import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Dia
-import com.aitec.sitesport.entities.enterprise.Horario
-import com.aitec.sitesport.reserve.adapter.CourtAdapter
-import kotlinx.android.synthetic.main.fragment_table_time.view.*
 import kotlinx.android.synthetic.main.item_rv_table_time.view.*
 
-class AdapterTableTime(var tableTimeList: List<Dia>) : RecyclerView.Adapter<AdapterTableTime.ViewHolder>() {
+class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<TableTimeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_rv_table_time, parent, false);
-        return AdapterTableTime.ViewHolder(view)
+        return TableTimeAdapter.ViewHolder(view)
     }
 
     override fun getItemCount(): Int {

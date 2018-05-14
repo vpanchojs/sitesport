@@ -37,7 +37,7 @@ class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
         view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY)
 
-        val adapter = AdapterTableTime(listTableTime!!)
+        val adapter = TableTimeAdapter(listTableTime!!)
         view.rvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
         view.rvInfoService.adapter = adapter
 
