@@ -36,6 +36,7 @@ import com.aitec.sitesport.profile.ui.dialog.RateCourtFragment
 import com.aitec.sitesport.profile.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
+import com.aitec.sitesport.reserve.ui.ReserveActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import javax.inject.Inject
@@ -406,6 +407,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
         btnReservation.setOnClickListener {
             Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
+            val i = Intent(this, ReserveActivity::class.java)
+            i.putExtra(ENTERPRISE, enterprise)
+            startActivity(i)
         }
 
         //NetworkSocial - Phone
