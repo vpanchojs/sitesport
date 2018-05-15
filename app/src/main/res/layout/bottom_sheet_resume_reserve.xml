@@ -42,10 +42,10 @@
             android:text="$ 150"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_reserve"
-            app:layout_constraintEnd_toStartOf="@+id/btn_reserve"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_reserve_1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_reserve_1"
             app:layout_constraintStart_toEndOf="@+id/tv_title_bs"
-            app:layout_constraintTop_toTopOf="@+id/btn_reserve" />
+            app:layout_constraintTop_toTopOf="@+id/btn_reserve_1" />
 
         <ImageView
             android:id="@+id/iv_icon_open"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toTopOf="@+id/tv_title_bs" />
 
         <Button
-            android:id="@+id/btn_reserve"
+            android:id="@+id/btn_reserve_1"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginBottom="8dp"
@@ -218,6 +218,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
+            android:visibility="invisible"
             android:background="#dfdfdf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -262,6 +263,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
+            android:visibility="invisible"
             android:background="#dfdfdf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -286,7 +288,7 @@
 
 
         <Button
-            android:id="@+id/btn_reserve_1"
+            android:id="@+id/btn_reserve"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -297,6 +299,18 @@
             android:textColor="@drawable/txt_color_dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_view_value" />
+
+        <ProgressBar
+            android:id="@id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_view_value" />
 

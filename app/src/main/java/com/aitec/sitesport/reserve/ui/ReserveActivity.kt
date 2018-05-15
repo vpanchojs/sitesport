@@ -1,4 +1,4 @@
-package com.aitec.sitesport.reserve
+package com.aitec.sitesport.reserve.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -8,27 +8,44 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.Toast
+import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.ItemReservation
 import com.aitec.sitesport.entities.enterprise.Cancha
-import com.aitec.sitesport.reserve.adapter.CourtAdapter
-import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
-import com.aitec.sitesport.reserve.adapter.TableTimeAdapter
+import com.aitec.sitesport.reserve.ReservePresenter
+import com.aitec.sitesport.reserve.adapter.*
+import com.aitec.sitesport.util.BaseActivitys
 import kotlinx.android.synthetic.main.activity_reserve.*
 import kotlinx.android.synthetic.main.bottom_sheet_resume_reserve.*
 import kotlinx.android.synthetic.main.content_reserve.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, TableTimeAdapter.onTableTimeAdapterListener {
+class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, ReserveView {
+
+    val application: MyApplication by lazy {
+        getApplication() as MyApplication
+    }
+
+
+    @Inject
+    lateinit var presenter: ReservePresenter
+
 
     override fun onCheckedCourt(court: Cancha) {
 
     }
 
+    private fun setupInject() {
+        application.getReserveComponent(this).inject(this)
+    }
 
     var fromDatePickerDialog: DatePickerDialog? = null
     lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
@@ -57,6 +74,14 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         setupRecyclerViewTimeTable()
         setupEventsElements()
         setupBottomSheet()
+        setupInject()
+        presenter.onSubscribe()
+        presenter.getItemsReserved()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onUnSubscribe()
     }
 
     private fun setupBottomSheet() {
@@ -109,22 +134,47 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     }
 
     private fun setupRecyclerViewTimeTable() {
-        val hoursList = ArrayList<Hours>()
-        hoursList.add(Hours("8:00", "9:00", true))
-        hoursList.add(Hours("9:00", "10:00", false))
-        hoursList.add(Hours("10:00", "11:00", false))
-        hoursList.add(Hours("11:00", "12:00", true))
-        hoursList.add(Hours("12:00", "13:00", false))
-        hoursList.add(Hours("12:00", "13:00", false))
-        hoursList.add(Hours("12:00", "13:00", true))
-        val adapterTableTime = TableTimeAdapter(hoursList, this)
+        var items = ArrayList<ItemReservation>()
+        items.add(ItemReservation("8:00", "9:00", true))
+        items.add(ItemReservation("9:00", "10:00", false))
+        items.add(ItemReservation("10:00", "11:00", false))
+        items.add(ItemReservation("11:00", "12:00", true))
+        items.add(ItemReservation("12:00", "13:00", false))
+        items.add(ItemReservation("12:00", "13:00", false))
+        items.add(ItemReservation("12:00", "13:00", true))
+        var adapterTableTime = ItemReservationAdapter(items)
+        rv_time_table.setHasFixedSize(true);
         rv_time_table.layoutManager = LinearLayoutManager(this)
         rv_time_table.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         rv_time_table.adapter = adapterTableTime
 
+
+
     }
 
-    data class Hours(var start: String, var end: String, var state: Boolean)
+    override fun showMessagge(message: Any) {
+        BaseActivitys.showToastMessage(this, message, Toast.LENGTH_LONG)
+    }
 
+    override fun showProgresBar(show: Int) {
+        progressbar.visibility = show
+    }
 
+    override fun showButtonReserve(show: Int) {
+        btn_reserve.visibility = show
+    }
+
+    override fun setItemsReserved(itemsReserved: List<ItemReservation>) {
+
+    }
+
+    override fun showProgresItemsReserve(visible: Int) {
+
+    }
+
+    override fun showContainerItemsReserve(visible: Int) {
+        rv_time_table.visibility = visible
+        btn_calendar.visibility = visible
+    }
 }
+

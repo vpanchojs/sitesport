@@ -26,6 +26,10 @@ import com.aitec.sitesport.profileUser.di.DaggerProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserModule
 import com.aitec.sitesport.profileUser.ui.ProfileUserView
+import com.aitec.sitesport.reserve.di.DaggerReserveComponent
+import com.aitec.sitesport.reserve.di.ReserveComponent
+import com.aitec.sitesport.reserve.di.ReserveModule
+import com.aitec.sitesport.reserve.ui.ReserveView
 import com.aitec.sitesport.sites.domain.di.DaggerSitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesModule
@@ -111,6 +115,15 @@ class MyApplication : MultiDexApplication() {
                 .domainModule(domainModule)
                 .libModule(LibModule())
                 .profileUserModule(ProfileUserModule(profileView))
+                .build()
+    }
+
+    fun getReserveComponent(view: ReserveView): ReserveComponent {
+        return DaggerReserveComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .reserveModule(ReserveModule(view))
                 .build()
     }
 
