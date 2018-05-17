@@ -28,7 +28,6 @@ class RetrofitApi {
 
     lateinit var requestSearchName: Call<SearchCentersName>
 
-
     companion object {
         const val TAG = "RetrofitApi"
         val PATH_API = "http://18.216.121.178:8050/"
