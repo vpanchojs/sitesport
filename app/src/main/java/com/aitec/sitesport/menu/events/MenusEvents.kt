@@ -13,5 +13,11 @@ class MenusEvents(var type: Int, var any: Any, var message: String) {
         val ON_UPDATE_PASSWORD_SUCCESS = 2
         val ON_UPDATE_PASSWORD_ERROR = 3
 
+        val ON_SUCCESS_FACEBOOK= 7
+        val ON_ON_ERROR=6
+        val ON_SUCCES_GOOGLE= 9
+        val ON_ERROR_GOOGLE=8
+
+
     }
 }

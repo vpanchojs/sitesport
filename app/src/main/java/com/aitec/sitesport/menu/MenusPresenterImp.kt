@@ -9,6 +9,25 @@ import org.greenrobot.eventbus.Subscribe
 
 class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, var interactor: MenusInteractor) : MenusPresenter {
 
+
+
+
+
+
+    override fun tokengoogle(idToken: String?) {
+
+        interactor.enviartokengoogle(idToken!!)
+
+    }
+
+    override fun tokenfacebook(token: String?) {
+
+
+        interactor.enviartoken(token!!)
+
+
+    }
+
     override fun onResume() {
         eventBus.register(this)
 
@@ -50,6 +69,21 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
                 view.setDataProfile(event.any as User)
             }
             MenusEvents.ON_GET_MY_PROFILE_ERROR -> {
+                view.showMessagge(event.message)
+            }
+
+            MenusEvents.ON_SUCCESS_FACEBOOK->{
+                view.showMessagge(event.message)
+                view.mostrarmenu()
+            }
+            MenusEvents.ON_ON_ERROR->{
+                view.showMessagge(event.message)
+            }
+            MenusEvents.ON_SUCCES_GOOGLE->{
+                view.showMessagge(event.message)
+                view.mostrarmenu()
+            }
+            MenusEvents.ON_ERROR_GOOGLE->{
                 view.showMessagge(event.message)
             }
 

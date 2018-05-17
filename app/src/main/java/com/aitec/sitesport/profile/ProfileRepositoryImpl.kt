@@ -4,13 +4,8 @@ import android.util.Log
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profile.event.ProfileEvent
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-
-
 
 
 /**

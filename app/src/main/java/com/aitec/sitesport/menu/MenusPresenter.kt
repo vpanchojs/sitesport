@@ -18,4 +18,11 @@ interface MenusPresenter {
     fun onUpdatePassword(password: String, passwordOld: String)
 
     fun onEventMenuThread(event: MenusEvents)
+
+    fun tokenfacebook(token: String?)
+
+    fun tokengoogle(idToken: String?)
+
+
+
 }

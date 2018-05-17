@@ -1,9 +1,11 @@
 package com.aitec.sitesport.menu.ui
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +17,22 @@ import com.aitec.sitesport.menu.MenusPresenter
 import com.aitec.sitesport.menu.adapter.OptionsAdapter
 import com.aitec.sitesport.menu.adapter.onOptionsAdapterListener
 import com.aitec.sitesport.util.OptionMenu
+import com.aitec.sitesport.work.Workme
+import com.facebook.*
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.GoogleApiClient
+import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 import javax.inject.Inject
 
-class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnClickListener {
+class MenuFragment :  Fragment(), MenusView, onOptionsAdapterListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private val TAG = "MenuFragment"
     private var adapterOptions: OptionsAdapter? = null
     private var data: ArrayList<OptionMenu>? = ArrayList()
@@ -29,14 +43,77 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     lateinit var presenter: MenusPresenter
     lateinit var myApplication: MyApplication
 
+    ////jhony//7
+    val SIGN_IN_CODE = 888
+    val face = 1
+    private var callbackManager: CallbackManager? = null
+    internal var accessToken: AccessToken? = null
+
+    //Google//
+    private var googleApiClient: GoogleApiClient? = null
+    private val mGoogleSignInClient: GoogleSignInClient? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
+        data!!.add(OptionMenu(R.drawable.ic_call_black_24dp,getString(R.string.menu_option_contact)))
         data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
         adapterOptions = OptionsAdapter(data!!, this)
+
+
+        /////jhony///////
+
+
     }
+//////////jhony//////777
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+        callbackManager!!.onActivityResult(requestCode, resultCode, data)
+
+        ///////Google///////77
+        if (requestCode == SIGN_IN_CODE) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            handleSignInResult(result)
+        }
+
+}
+
+    private fun handleSignInResult(result: GoogleSignInResult) {
+        if (result.isSuccess) {
+            val account = result.signInAccount
+            mostrarmenu()
+            Log.e("token de google", account!!.idToken)
+            presenter.tokengoogle(account.idToken.toString())
+            /*tv_name_user.setText(account.displayName)
+            tv_email.setText(account.email)*/
+
+
+
+
+        } else {
+            Toast.makeText(context, R.string.not_log_in, Toast.LENGTH_SHORT).show()
+            updateUI(false)
+
+        }
+    }
+    private fun updateUI(signedIn: Boolean) {
+        if (signedIn) {
+
+
+
+        } else {
+
+        }
+    }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult) {
+
+    }
+    ///////jhony hasta aqui////77
+
 
     override fun onResume() {
         super.onResume()
@@ -58,6 +135,70 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         setupInjection()
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        ///////////////facebook//////7777
+
+            callbackManager = CallbackManager.Factory.create()
+            loginButton!!.setReadPermissions("email")
+            loginButton.fragment = this
+            loginButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+
+                    ///////////////////////////////goMainScreen(MainActivity.face)
+                    Log.e("token de facebook", accessToken.toString())
+                    Log.e("inicio de sesion face", loginResult.toString())
+
+                    presenter.tokenfacebook(loginResult.accessToken.token)
+                }
+
+                override fun onCancel() {
+                    Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onError(error: FacebookException) {
+                    Toast.makeText(context, R.string.error_login, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+        //tv_email.setText(object.toStrgetString("email"))
+
+        //////////////77//Google///////////////////77
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.id_google2))
+                .build()
+
+        googleApiClient = GoogleApiClient.Builder(context!!)
+                .enableAutoManage(activity!!, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
+
+        //signInButton = findViewById<View>(R.id.signInButton) as SignInButton
+
+        signInButton!!.setSize(SignInButton.SIZE_WIDE)
+        signInButton.setColorScheme(SignInButton.COLOR_AUTO)
+        signInButton!!.setOnClickListener {
+            val intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
+            startActivityForResult(intent, SIGN_IN_CODE)
+        }
+    }
+
+    private fun enviar_token(token:String){
+
+        presenter.tokenfacebook(accessToken!!.token)
+
+    }
+
+    override fun mostrarmenu() {
+
+        menu.visibility=View.VISIBLE
+        ver_loguin.visibility=View.GONE
     }
 
     private fun setupInjection() {
@@ -108,11 +249,27 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 showMessagge("Ayuda")
             }
             2 -> {
-                showMessagge("Cerrar session")
+                val intento1 = Intent(context, Workme::class.java)
+                startActivity(intento1)
+                //showMessagge("Contactenos")
+            }
+            3 ->{
+                Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback { status ->
+                    if (status.isSuccess) {
+                        menu.visibility=View.GONE
+                        ver_loguin.visibility=View.VISIBLE
+                    } else {
+                        LoginManager.getInstance().logOut()
+                        Toast.makeText(context, R.string.not_revoke, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                //showMessagge("Cerrar session")
                 //presenter.onSingOut()
             }
         }
     }
+
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -146,4 +303,13 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             return fragment
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        googleApiClient!!.stopAutoManage(activity!!)
+        googleApiClient!!.disconnect()
+
+    }
+
+
 }

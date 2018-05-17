@@ -6,6 +6,8 @@ import com.aitec.sitesport.entities.User
  * Created by victor on 27/1/18.
  */
 interface MenusView {
+
+
     fun hideProgressDialog();
     fun showProgressDialog(message: Int)
     fun showMessagge(message: String)
@@ -13,5 +15,6 @@ interface MenusView {
     fun navigationToTermsAndConditions()
     fun navigationToLogin()
     fun setDataProfile(user: User)
+    fun mostrarmenu()
 
 }

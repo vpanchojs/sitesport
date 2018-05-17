@@ -1,6 +1,5 @@
 package com.aitec.sitesport.sites
 
-import android.util.Log
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener

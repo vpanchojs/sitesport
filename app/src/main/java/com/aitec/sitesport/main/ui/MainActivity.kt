@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         setupToolBar()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupInjection()

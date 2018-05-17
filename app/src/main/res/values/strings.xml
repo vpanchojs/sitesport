@@ -22,4 +22,34 @@
     <string name="textShare">Te invito a descargar SiteSport para que busques y reserves canchas en tu localidad. http://play.google.com/store/apps/details?id=com.aitec.sitesport</string>
     <string name="title_activity_maps">Map</string>
     <string name="string_without_service">No disponible</string>
+
+
+    <string name="facebook_app_id">246630842580035</string>
+    <string name="fb_login_protocol_scheme">fb246630842580035</string>*/
+
+
+    <string name="cancel_login">Cancelado</string>
+    <string name="error_login">Ocurrio un error</string>
+
+    <string name="welcome">Bienvenido</string>
+
+    <string name="log_out">Log Out</string>
+    <string name="revoke">Revoke</string>
+
+    <string name="logout">Cerrar sesión</string>
+    <string name="not_log_in">Error al ingresar</string>
+    <string name="not_close_session">No se pudo inciar sesion</string>
+    <string name="not_revoke">error revoke</string>
+
+
+    <string name="id_google">847171812577-qnpn76ff0j9ft20g7a006jchtfavs09b.apps.googleusercontent.com</string>
+    <string name="id_google2">1075530758347-edj4ddfm6tlathm8freij5ceak4c69sh.apps.googleusercontent.com</string>
+    <string name="fbloginText">INICIAR CON FACEBOOK</string>
+    <string name="googleloginText">INICIAR CON GOOGLE</string>
+    <string name="menu_option_contact">Contactenos</string>
+    <string name="service_not_available">error</string>
+    <string name="invalid_lat_long_used">invalido latitud</string>
+    <string name="no_address_found">No e|xiste direccion</string>
+    <string name="address_found">Direccion encontrada</string>
+    <string name="campo_lleno">Este campo no debe estar vacio</string>
 </resources>

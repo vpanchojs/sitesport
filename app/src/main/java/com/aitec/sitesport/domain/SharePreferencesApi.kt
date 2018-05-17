@@ -43,4 +43,13 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
 
     }
 
+    fun sesion(insesion:Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_IN_SESESION,insesion)
+
+    }
+
+    fun sesiongoogle(gosession: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_IN_SESESION,gosession)
+    }
+
 }

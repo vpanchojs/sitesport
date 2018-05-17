@@ -4,6 +4,7 @@ import RetrofitStatus
 import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.GsonBuilder
@@ -312,6 +313,42 @@ class RetrofitApi {
             }
         })
 
+    }
+
+    fun iniciarfacebook(token: String, callback: onApiActionListener) {
+
+        val hashMap = java.util.HashMap<String, String>()
+        hashMap.put("access_token", token)
+
+        request.enviartoken(hashMap).enqueue(object: Callback<Cuenta> {
+            override fun onResponse(call: Call<Cuenta>, response: Response<Cuenta>) {
+                Log.e("exitos envio facebook", response.toString())
+                Log.e("token face",hashMap.toString())
+                callback.onSucces(response.body().toString())
+            }
+
+            override fun onFailure(call: Call<Cuenta>, t: Throwable) {
+                Log.e("fallido facebook", t.toString())
+                callback.onError(t.toString())
+            }
+        })
+    }
+
+    fun iniciargoogle(idToken: String, callback:  onApiActionListener) {
+        val hashMap = java.util.HashMap<String, String>()
+        hashMap.put("access_token", idToken)
+
+        request.enviartokengoogle(hashMap).enqueue(object : Callback<Cuenta> {
+            override fun onResponse(call: Call<Cuenta>, response: Response<Cuenta>) {
+                Log.e("exitos envio google", response.toString())
+                callback.onSucces(response.body().toString())
+            }
+
+            override fun onFailure(call: Call<Cuenta>, t: Throwable) {
+                Log.e("fallido google", t.toString())
+                callback.onError(t.toString())
+            }
+        })
     }
 
 }
