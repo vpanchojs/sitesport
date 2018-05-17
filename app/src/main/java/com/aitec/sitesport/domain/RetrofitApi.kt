@@ -168,6 +168,8 @@ class RetrofitApi {
 
                 }
 
+
+
                 override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
 
                     RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
@@ -180,6 +182,7 @@ class RetrofitApi {
                             callback.onError(t!!.toString())
                         }
                     })
+
 
                 }
             })
@@ -212,6 +215,8 @@ class RetrofitApi {
         })
 
     }
+
+
 
     fun deleteRequestSearchName() {
         if (handlerSearchName != null) {
