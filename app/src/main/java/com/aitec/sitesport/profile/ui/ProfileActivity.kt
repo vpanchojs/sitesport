@@ -64,7 +64,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     private fun setupUI(){
 
         ivRunLocation.setOnClickListener {
-            BaseActivitys.showToastMessage(this, "AQUI ESTA EL BOTON COMPAÑERITO", Toast.LENGTH_SHORT)
+            //BaseActivitys.showToastMessage(this, "AQUI ESTA EL BOTON COMPAÑERITO", Toast.LENGTH_SHORT)
+            val gmmIntentUri = Uri.parse(
+                    "google.navigation:q=" + enterprise!!.direccion!!.latitud.toString() + "," +
+                            enterprise!!.direccion!!.longitud.toString())
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.`package` = "com.google.android.apps.maps"
+            if (mapIntent.resolveActivity(packageManager) != null) {
+                startActivity(mapIntent)
+            }
         }
 
         btnReload.setOnClickListener{
