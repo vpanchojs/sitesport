@@ -168,6 +168,8 @@ class RetrofitApi {
 
                 }
 
+
+
                 override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
 
                     RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
