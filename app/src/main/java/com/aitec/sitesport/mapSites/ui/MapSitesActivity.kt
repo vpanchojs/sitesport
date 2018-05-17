@@ -49,7 +49,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
         val cameraPosition = CameraPosition.Builder()
                 .target(com.google.android.gms.maps.model.LatLng(-4.008100, -79.21083))
-                .zoom(17F)
+                .zoom(14F)
                 .build()
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -476,7 +476,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     fun animateCamera(latLng: LatLng, zoom: Double) {
         val cameraPosition = CameraPosition.Builder()
                 .target(latLng)
-                .zoom(17F)
+                .zoom(14F)
                 .build()
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))

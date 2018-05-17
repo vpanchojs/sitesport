@@ -213,6 +213,8 @@ class RetrofitApi {
 
     }
 
+
+
     fun deleteRequestSearchName() {
         if (handlerSearchName != null) {
             handlerSearchName?.removeCallbacks(runnableSearchName)
