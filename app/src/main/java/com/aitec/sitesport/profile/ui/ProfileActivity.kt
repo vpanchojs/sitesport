@@ -214,23 +214,23 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     override fun setServices(servicios: Servicios) {
         if (servicios.BAR) {
             ibtnBar.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-            setDataFragmentServices("Bar", "Aqui va la info del bar", R.drawable.ic_bar, ibtnBar)
+            setDataFragmentServices("Bar", getString(R.string.string_without_service), R.drawable.ic_bar, ibtnBar)
         }else ibtnBar.visibility = View.GONE
         if (servicios.WIFI) {
             ibtnWiFi.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-            setDataFragmentServices("WiFi", "Aqui va la info del wifi", R.drawable.ic_wifi, ibtnWiFi)
+            setDataFragmentServices("WiFi", getString(R.string.string_without_service), R.drawable.ic_wifi, ibtnWiFi)
         }else ibtnWiFi.visibility = View.GONE
         if (servicios.PARKER) {
             ibtnEstacionamiento.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-            setDataFragmentServices("Estacionamiento", "Aqui va la info del estacionamiento", R.drawable.ic_parked_car, ibtnEstacionamiento)
+            setDataFragmentServices("Estacionamiento", getString(R.string.string_without_service), R.drawable.ic_parked_car, ibtnEstacionamiento)
         }else ibtnEstacionamiento.visibility = View.GONE
         if (servicios.DUCHA){
             ibtnDuchas.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-            setDataFragmentServices("Ducha", "Aqui va la info de las duchas", R.drawable.ic_shower, ibtnDuchas)
+            setDataFragmentServices("Ducha", getString(R.string.string_without_service), R.drawable.ic_shower, ibtnDuchas)
         }else ibtnDuchas.visibility = View.GONE
         if (servicios.LOKER) {
             ibtnCasilleros.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
-            setDataFragmentServices("Casillero", "Aqui va la info de los casilleros", R.drawable.ic_lockers, ibtnCasilleros)
+            setDataFragmentServices("Casillero", getString(R.string.string_without_service), R.drawable.ic_lockers, ibtnCasilleros)
         }else ibtnCasilleros.visibility = View.GONE
     }
 

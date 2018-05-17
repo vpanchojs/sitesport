@@ -21,4 +21,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textShare">Te invito a descargar SiteSport para que busques y reserves canchas en tu localidad. http://play.google.com/store/apps/details?id=com.aitec.sitesport</string>
     <string name="title_activity_maps">Map</string>
+    <string name="string_without_service">No disponible</string>
 </resources>
