@@ -34,13 +34,11 @@ import com.aitec.sitesport.sites.domain.di.DaggerSitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesComponent
 import com.aitec.sitesport.sites.domain.di.SitesModule
 import com.aitec.sitesport.sites.ui.SitesView
-import com.mapbox.mapboxsdk.Mapbox
 
 class MyApplication : MultiDexApplication() {
     val SHARED_PREFERENCES_NAME = "dsafio_preferences"
     var domainModule: DomainModule? = null
     var appModule: MyAplicationModule? = null
-    lateinit var mapbox: Mapbox
 
 
     override fun onCreate() {
@@ -58,7 +56,6 @@ class MyApplication : MultiDexApplication() {
     fun initModules() {
         appModule = MyAplicationModule(this)
         domainModule = DomainModule(this)
-        mapbox = Mapbox.getInstance(this, getString(R.string.accessTokenMapBox))
     }
 
 

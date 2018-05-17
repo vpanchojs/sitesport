@@ -28,6 +28,11 @@
     <dimen name="text_margin">16dp</dimen>
 
     <dimen name="dimen_padding_btn_profile">7dp</dimen>
+    <dimen name="dimen_rv_item_title">16sp</dimen>
+    <dimen name="dimen_rv_item_subtitle">13sp</dimen>
+    <dimen name="dimen_dialog_title">18sp</dimen>
+    <dimen name="dimen_dialog_subtitle">15sp</dimen>
+
 
     <!-- //dimensiones del perfil -->
 

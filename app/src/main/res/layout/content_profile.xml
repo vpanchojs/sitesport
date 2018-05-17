@@ -394,7 +394,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18">
 
-                <com.mapbox.mapboxsdk.maps.MapView
+                <!--<com.mapbox.mapboxsdk.maps.MapView
                     android:id="@+id/mvProfile"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -411,7 +411,24 @@
                     app:mapbox_cameraZoom="8"
                     app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10">
 
-                </com.mapbox.mapboxsdk.maps.MapView>
+                </com.mapbox.mapboxsdk.maps.MapView>-->
+
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/mvProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="50dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:context=".profile.ui.ProfileActivity" />
 
                 <ImageButton
                     android:id="@+id/ivRunLocation"
@@ -428,7 +445,7 @@
                     android:id="@+id/tvLocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/icon_transparent"
+                    android:background="@color/colorBgTextViewInfo"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:paddingTop="1dp"

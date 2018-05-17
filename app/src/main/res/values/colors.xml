@@ -10,11 +10,12 @@
     <color name="colorBackgroundContents">#F7F7FA</color>
     <color name="colorDivider">#78849E</color>
     <color name="color_background">#F7F7FA</color>
-    <color name="colorWhiteTransparent">#64ffffff</color>
+    <color name="colorWhiteTransparent">#7dffffff</color>
     <color name="colorWhiteLittleTransparent">#c8ffffff</color>
 
 
     <color name="icon_transparent">#64454f63</color>
+    <color name="colorBgTextViewInfo">#c878849e</color>
     <color name="white">#FFFFFF</color>
     
     <color name="colorNormalIButton">#353A50</color>

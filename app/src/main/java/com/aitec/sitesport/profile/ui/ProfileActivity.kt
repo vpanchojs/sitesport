@@ -7,10 +7,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.aitec.sitesport.R
 import android.view.View
-import com.mapbox.mapboxsdk.annotations.IconFactory
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.content_profile.*
 import android.widget.Toast
@@ -38,11 +34,13 @@ import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.reserve.ui.ReserveActivity
 import com.aitec.sitesport.util.BaseActivitys
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
+class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback{
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
@@ -54,46 +52,124 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         setVectorCompatibility()
         setContentView(R.layout.activity_profile)
         setupInjection()
-        onCreateMapBox(savedInstanceState)
-
+        //onCreateMapBox(savedInstanceState)
         this.enterprise = intent.getParcelableExtra(ENTERPRISE)
         setupUI()
+        setupMap()
         profilePresenter.register()
         profilePresenter.getProfile(enterprise!!.urldetalle)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mvProfile.onStart()
+
+    private fun setupUI(){
+
+        ivRunLocation.setOnClickListener {
+            BaseActivitys.showToastMessage(this, "AQUI ESTA EL BOTON COMPAÑERITO", Toast.LENGTH_SHORT)
+        }
+
+        btnReload.setOnClickListener{
+            profilePresenter.getProfile(enterprise!!.urldetalle)
+        }
+
+        tvLocation.text = enterprise!!.direccion!!.calles
+
+        ivRatesCourt.setOnClickListener {
+
+            val rateCourt : ArrayList<Rate> = arrayListOf()
+
+            for(i in 0 until 7){
+                val r = Rate()
+                r.nameDay = i
+                r.priceDay = "$20"
+                r.rankDay = "08:00 - 13:00"
+                r.priceNight = "$30"
+                r.rankNight = "13:00 - 23:00"
+                rateCourt.add(r)
+            }
+
+            val rateCourtFragment = RateCourtFragment.newInstance(rateCourt)
+            rateCourtFragment.show(supportFragmentManager, "RateCourtFragment")
+        }
+
+        clLoader.visibility = View.GONE
+        setNameProfile(enterprise!!.nombres)
+        setupToolBar()
+
+        if(enterprise!!.me_gusta) imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_on))
+        else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
+
+        clLike.setOnClickListener {
+            BaseActivitys.showToastMessage(this,
+                    "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE)),
+                    Toast.LENGTH_SHORT)
+            /*if(enterprise!!.me_gusta) {
+                Toast.makeText(this, "Ya has calificado a " + enterprise!!.nombres, Toast.LENGTH_SHORT).show()
+            }else{
+                //MANDAR A CALIFICAR AQUIIIII XD
+                //profilePresenter.like()
+            }*/
+
+        }
+
+        btnReservation.setOnClickListener {
+            Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
+            val i = Intent(this, ReserveActivity::class.java)
+            i.putExtra(ENTERPRISE, enterprise)
+            startActivity(i)
+        }
+
+        //NetworkSocial - Phone
+
+        ibtnWhatsapp.setOnClickListener {
+            openWhatsApp()
+        }
+
+        ibtnFacebook.setOnClickListener {
+            openFacebook()
+        }
+
+        ibtnInstagram.setOnClickListener {
+            openInstagram()
+        }
+
+        ibtnPhone.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                callPhone()
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
+                return@setOnClickListener
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        mvProfile.onResume()
+    private fun setupMap() {
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.mvProfile) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
-    override fun onPause() {
-        super.onPause()
-        mvProfile.onPause()
-    }
+    override fun onMapReady(map: GoogleMap?) {
+        if(map == null) return
 
-    override fun onStop() {
-        super.onStop()
-        mvProfile.onStop()
-    }
+        map.uiSettings.isScrollGesturesEnabled = false
+        map.uiSettings.isZoomGesturesEnabled = false
+        map.uiSettings.isMyLocationButtonEnabled = false
+        map.uiSettings.isMapToolbarEnabled = false
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        mvProfile.onSaveInstanceState(outState!!)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mvProfile.onLowMemory()
+        val cameraPosition = CameraPosition.Builder()
+                .target(com.google.android.gms.maps.model.LatLng(enterprise!!.direccion!!.latitud, enterprise!!.direccion!!.longitud))
+                .zoom(15F)
+                .build()
+        map.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(cameraPosition))
+        val icon = BitmapDescriptorFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
+        map.addMarker(MarkerOptions()
+                .position(LatLng(enterprise!!.direccion!!.latitud, enterprise!!.direccion!!.longitud))
+                .icon(icon)).showInfoWindow()
     }
 
     override fun onDestroy() {
-        mvProfile.onDestroy()
         profilePresenter.unregister()
         super.onDestroy()
     }
@@ -179,6 +255,10 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     override fun setEnterprise(enterprise: Enterprise) {
+        enterprise.pk = this.enterprise!!.pk
+        enterprise.nombres = this.enterprise!!.nombres
+        enterprise.urldetalle = this.enterprise!!.urldetalle
+
         this.enterprise = enterprise
     }
 
@@ -199,7 +279,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     override fun setTableTime(horarios: List<Horario>) {
         clTableTime.setOnClickListener {
-            if(horarios!= null && horarios.isNotEmpty()) {
+            if(horarios.isNotEmpty()) {
                 val tableTImeFragment = TableTimeFragment.newInstance(horarios)
                 tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
             }else{
@@ -217,21 +297,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     // setup GUI
 
-    private fun setupMap(latitude: Double, longitude: Double) {
-        mvProfile.getMapAsync({
-            val iconFactory = IconFactory.getInstance(this)
-            val icon = iconFactory.fromResource(if(enterprise!!.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
-            it.addMarker(MarkerOptions()
-                    .position(LatLng(latitude, longitude))
-                    .icon(icon))
-            val position = CameraPosition.Builder()
-                    .target(LatLng(latitude, longitude)) // Sets the new camera position
-                    .zoom(15.0) // Sets the zoom
-                    .build() // Creates a CameraPosition from the builder
-            it.animateCamera(CameraUpdateFactory.newCameraPosition(position), 500)
-        })
-        mvProfile.setOnTouchListener(View.OnTouchListener { v, event -> return@OnTouchListener true }) //desabilitar el touch en el mapa
-    }
 
     private fun setNameProfile(name: String) {
         collapse_toolbar_profile.title = name
@@ -248,8 +313,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     private fun openInstagram(){
         var isExist = false
-        if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            loop@ for(network in enterprise!!.redes_sociales!!.iterator()) {
+        if(enterprise!!.redes_sociales.isNotEmpty()){
+            loop@ for(network in enterprise!!.redes_sociales.iterator()) {
                 when (network.nombre) {
                     "INSTAGRAM" -> {
                         if(network.url.isEmpty()){
@@ -257,12 +322,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
                         }
                         isExist = true
                         try {
-                            val url = network.url.substring(0, network.url.length - 1);
-                            val username = url.substring(url.lastIndexOf("/") + 1);
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/" + username)))
+                            val url = network.url.substring(0, network.url.length - 1)
+                            val username = url.substring(url.lastIndexOf("/") + 1)
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username")))
                         } catch (e: Exception) {
                             startActivity(Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(network.url)));
+                                    Uri.parse(network.url)))
                         }
                         return
                     }
@@ -309,14 +374,13 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
             val ECU = "593"
             val formattedNumber: String = ECU + enterprise!!.telefono
             try {
-                val sendIntent: Intent
-                sendIntent = Intent("android.intent.action.MAIN")
-                sendIntent.setComponent(ComponentName("com.whatsapp", "com.whatsapp.Conversation"))
-                sendIntent.setAction(Intent.ACTION_SEND)
-                sendIntent.setType("text/plain")
+                val sendIntent = Intent("android.intent.action.MAIN")
+                sendIntent.component = ComponentName("com.whatsapp", "com.whatsapp.Conversation")
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.type = "text/plain"
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "")
-                sendIntent.putExtra("jid", formattedNumber + "@s.whatsapp.net")
-                sendIntent.setPackage("com.whatsapp")
+                sendIntent.putExtra("jid", "$formattedNumber@s.whatsapp.net")
+                sendIntent.`package` = "com.whatsapp"
                 startActivity(sendIntent)
             } catch (e: Exception) {
                 //Toast.makeText(this,"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
@@ -330,8 +394,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
 
     private fun openFacebook() {
         var isExist = false
-        if(enterprise!!.redes_sociales!!.isNotEmpty()){
-            loop@ for(network in enterprise!!.redes_sociales!!.iterator()){
+        if(enterprise!!.redes_sociales.isNotEmpty()){
+            loop@ for(network in enterprise!!.redes_sociales.iterator()){
                 when (network.nombre){
                     "FACEBOOK" -> {
                         if(network.url.isEmpty()){
@@ -339,11 +403,11 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
                         }
                         isExist = true
                         try {
-                            val url = network.url.substring(0, network.url.length - 1);
-                            val username = url.substring(url.lastIndexOf("/") + 1);
-                            getPackageManager().getPackageInfo("com.url.katana", 0)
+                            val url = network.url.substring(0, network.url.length - 1)
+                            val username = url.substring(url.lastIndexOf("/") + 1)
+                            packageManager.getPackageInfo("com.url.katana", 0)
                             startActivity(Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("fb://profile/" + username)))
+                                    Uri.parse("fb://profile/$username")))
                         } catch (e: Exception) {
                             startActivity(Intent(Intent.ACTION_VIEW,
                                     Uri.parse(network.url))) //catches and opens a url to the desired page
@@ -356,86 +420,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         if(!isExist)
             BaseActivitys.showToastMessage(this, "Facebook no disponible", Toast.LENGTH_SHORT)
 
-    }
-
-    private fun setupUI(){
-
-        btnReload.setOnClickListener{
-            profilePresenter.getProfile(enterprise!!.urldetalle)
-        }
-
-        tvLocation.text = enterprise!!.direccion!!.calles
-
-        ivRatesCourt.setOnClickListener {
-
-            val rateCourt : ArrayList<Rate> = arrayListOf()
-
-            for(i in 0 until 7){
-                val r = Rate()
-                r.nameDay = i
-                r.priceDay = "$20"
-                r.rankDay = "08:00 - 13:00"
-                r.priceNight = "$30"
-                r.rankNight = "13:00 - 23:00"
-                rateCourt.add(r)
-            }
-
-            val rateCourtFragment = RateCourtFragment.newInstance(rateCourt)
-            rateCourtFragment.show(supportFragmentManager, "RateCourtFragment")
-        }
-
-        clLoader.visibility = View.GONE
-        setNameProfile(enterprise!!.nombres)
-        setupMap(enterprise!!.direccion!!.latitud, enterprise!!.direccion!!.longitud)
-        setupToolBar()
-
-        if(enterprise!!.me_gusta) imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_on))
-        else imgLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fire_off))
-
-        clLike.setOnClickListener {
-            BaseActivitys.showToastMessage(this,
-                    "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE)),
-                    Toast.LENGTH_SHORT)
-            /*if(enterprise!!.me_gusta) {
-                Toast.makeText(this, "Ya has calificado a " + enterprise!!.nombres, Toast.LENGTH_SHORT).show()
-            }else{
-                //MANDAR A CALIFICAR AQUIIIII XD
-                //profilePresenter.like()
-            }*/
-
-        }
-
-        btnReservation.setOnClickListener {
-            Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
-            val i = Intent(this, ReserveActivity::class.java)
-            i.putExtra(ENTERPRISE, enterprise)
-            startActivity(i)
-        }
-
-        //NetworkSocial - Phone
-
-        ibtnWhatsapp.setOnClickListener {
-            openWhatsApp()
-        }
-
-        ibtnFacebook.setOnClickListener {
-            openFacebook()
-        }
-
-        ibtnInstagram.setOnClickListener {
-            openInstagram()
-        }
-
-        ibtnPhone.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                callPhone()
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL_PHONE_PERMISSIONS)
-                return@setOnClickListener
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -471,9 +455,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
         }
     }
 
-    private fun onCreateMapBox(savedInstanceState: Bundle?){
+    /*private fun onCreateMapBox(savedInstanceState: Bundle?){
         mvProfile.onCreate(savedInstanceState)
-    }
+    }*/
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -490,9 +474,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView{
     }
 
     companion object {
-        const val SHARE = ""
         const val TAG = "ProfileActivity"
-        const val EMOTICON_HAPPY = 0x1F60A
+        //const val EMOTICON_HAPPY = 0x1F60A
         const val EMOTICON_EYE = 0x1F609
         const val ENTERPRISE = "enterprise"
         const val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123

@@ -37,8 +37,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.mapbox.mapboxsdk.annotations.IconFactory
-import com.mapbox.mapboxsdk.maps.MapboxMap
 import kotlinx.android.synthetic.main.activity_mapsites.*
 import kotlinx.android.synthetic.main.bottom_sheet_results.*
 import java.text.DecimalFormat
@@ -81,9 +79,6 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     var entrepiseResultsSearchName = ArrayList<Enterprise>()
 
     lateinit var entrepiseSelect: Enterprise
-
-    lateinit var mapboxMap: MapboxMap
-    lateinit var iconFactory: IconFactory
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -358,7 +353,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 showSnackbar(R.string.permission_denied_explanation,
                         R.string.settings, new View . OnClickListener () {
                     @Override
-                    public void onClick(View view) {
+                    public void onCheckedCourt(View view) {
                         // Build intent that displays the App settings screen.
                         Intent intent = new Intent();
                         intent.setAction(

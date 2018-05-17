@@ -53,7 +53,7 @@
         android:text="Tarifas de Cancha"
         android:textAlignment="center"
         android:textColor="@color/colorWhiteLittleTransparent"
-        android:textSize="18sp"
+        android:textSize="@dimen/dimen_dialog_title"
         app:layout_constraintBottom_toTopOf="@+id/rvInfoService"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ib_back"
