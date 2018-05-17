@@ -72,8 +72,11 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
 
         tvLocation.text = enterprise!!.direccion!!.calles
-
-        ivRatesCourt.setOnClickListener {
+        if(enterprise!!.precio.isNotEmpty()) {
+            tvPrice.text = "$" + enterprise!!.precio[0].dia + " - $" + enterprise!!.precio[0].noche
+        }
+        else tvPrice.text = resources.getString(R.string.string_without_service)
+        /*ivRatesCourt.setOnClickListener {
 
             val rateCourt : ArrayList<Rate> = arrayListOf()
 
@@ -89,7 +92,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
             val rateCourtFragment = RateCourtFragment.newInstance(rateCourt)
             rateCourtFragment.show(supportFragmentManager, "RateCourtFragment")
-        }
+        }*/
 
         clLoader.visibility = View.GONE
         setNameProfile(enterprise!!.nombres)

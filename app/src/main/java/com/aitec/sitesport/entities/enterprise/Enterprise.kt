@@ -28,6 +28,7 @@ class Enterprise() : Parcelable {
     var redes_sociales: List<RedSocial> = arrayListOf()
     var canchas: List<Cancha> = arrayListOf()
     var horario: List<Horario> = arrayListOf()
+    var precio: List<Precio> = arrayListOf()
 
     /*var abierto: Boolean = false
     var likes: Int = 0
@@ -59,7 +60,7 @@ class Enterprise() : Parcelable {
         parcel.readList(fotos, Foto::class.java.classLoader)
         parcel.readList(telefonos, Telefono::class.java.classLoader)*/
         //parcel.readList(categoria, Categoria::class.java.classLoader)
-        //parcel.readList(precio, Precio::class.java.classLoader)
+        parcel.readList(precio, Precio::class.java.classLoader)
         //parcel.readList(horario, Horario::class.java.classLoader)
         // parcel.readList(hora, Hora::class.java.classLoader)*/
     }
@@ -80,6 +81,8 @@ class Enterprise() : Parcelable {
         parcel.writeList(redes_sociales)
         parcel.writeList(canchas)
         parcel.writeList(horario)
+
+        parcel.writeList(precio)
 
         /*parcel.writeString(descripcion)
         parcel.writeValue(abierto)
