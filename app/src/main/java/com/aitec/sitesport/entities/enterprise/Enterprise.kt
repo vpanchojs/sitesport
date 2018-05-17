@@ -17,7 +17,7 @@ class Enterprise() : Parcelable {
     var puntuacion: Int = 0
     var distance: Float = 0f
     var abierto: Boolean = false
-    var idMarker: Long = 0L
+    var idMarker: String = ""
 
     // OBJETO URL DETALLE
     var descripcion: String = ""
@@ -47,7 +47,7 @@ class Enterprise() : Parcelable {
         distance = parcel.readFloat()
         abierto = parcel.readByte() != 0.toByte()
         telefono = parcel.readString()
-        idMarker = parcel.readLong()
+        idMarker = parcel.readString()
         parcel.readList(redes_sociales, RedSocial::class.java.classLoader)
         parcel.readList(canchas, Cancha::class.java.classLoader)
         parcel.readList(horario, Horario::class.java.classLoader)
@@ -76,7 +76,7 @@ class Enterprise() : Parcelable {
         parcel.writeFloat(distance)
         parcel.writeByte(if (abierto) 1 else 0)
         parcel.writeString(telefono)
-        parcel.writeLong(idMarker)
+        parcel.writeString(idMarker)
         parcel.writeList(redes_sociales)
         parcel.writeList(canchas)
         parcel.writeList(horario)

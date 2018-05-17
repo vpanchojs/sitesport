@@ -1,8 +1,6 @@
 package com.aitec.sitesport.mapSites.ui
 
 import android.Manifest
-import android.animation.ObjectAnimator
-import android.animation.TypeEvaluator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +9,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
+import android.support.annotation.NonNull
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
@@ -34,22 +33,32 @@ import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.mapbox.mapboxsdk.annotations.Icon
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 import com.mapbox.mapboxsdk.annotations.IconFactory
-import com.mapbox.mapboxsdk.annotations.Marker
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import kotlinx.android.synthetic.main.activity_mapsites.*
 import kotlinx.android.synthetic.main.bottom_sheet_results.*
 import java.text.DecimalFormat
 import javax.inject.Inject
 
 
-class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, OnMapReadyCallback, View.OnClickListener, MapboxMap.OnCameraIdleListener, MapSitesView, MapboxMap.OnMarkerClickListener, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener {
+class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapterListener, SearchView.OnQueryTextListener, View.OnFocusChangeListener, View.OnClickListener, MapSitesView, SearchNamesEntrepiseAdapter.onEntrepiseSearchNameListener, com.google.android.gms.maps.OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
+    override fun onMapReady(@NonNull googleMap: GoogleMap) {
+        mMap = googleMap
+
+        val cameraPosition = CameraPosition.Builder()
+                .target(com.google.android.gms.maps.model.LatLng(-4.008100, -79.21083))
+                .zoom(17F)
+                .build()
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
+        mMap.setOnCameraIdleListener(this)
+        mMap.setOnMarkerClickListener(this)
+    }
 
     private val TAG = MapSitesActivity::class.java.simpleName
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
@@ -57,8 +66,11 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
     private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
 
+    //private var markerSelect: Marker? = null
+
     private var markerSelect: Marker? = null
 
+    lateinit var mMap: GoogleMap
 
     val REQUESTING_LOCATION_UPDATES_KEY = "location"
     var requestingLocationUpdates = false
@@ -107,41 +119,18 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        mapView.onStart()
-        Log.e("resume", "en resumen")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView.onStop()
-        Log.e("stop", "stop")
-    }
 
     public override fun onPause() {
         super.onPause()
         presenter.onPause()
-        mapView.onPause()
         stopLocationUpdates()
         Log.e("pause", "en pause")
     }
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
-    }
 
     public override fun onResume() {
         super.onResume()
         presenter.onResume()
-        mapView.onResume()
-
     }
 
     override fun onBackPressed() {
@@ -156,7 +145,6 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, requestingLocationUpdates)
         super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState!!)
     }
 
     /*Setup*/
@@ -187,8 +175,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     fun setupMap(savedInstanceState: Bundle?) {
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     fun setupBottomSheet() {
@@ -230,7 +219,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 for (location in locationResult.locations) {
                     Log.e(TAG, "" + location.latitude)
                     mCurrentLocation = location
-                    if (::mapboxMap.isInitialized) {
+                    if (::mMap.isInitialized) {
                         animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
                         showProgresBarResultsMapVisible(false)
                         stopLocationUpdates()
@@ -240,6 +229,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         }
     }
 
+    @SuppressLint("RestrictedApi")
     fun createLocationRequest() {
         locationRequest = LocationRequest().apply {
             interval = UPDATE_INTERVAL_IN_MILLISECONDS
@@ -470,45 +460,34 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
 
-    /*Mapa*/
-    override fun onMapReady(mapboxMaps: MapboxMap?) {
-        mapboxMap = mapboxMaps!!
-        mapboxMap.setOnMarkerClickListener(this)
-        iconFactory = IconFactory.getInstance(this)
-        mapboxMap.addOnCameraIdleListener(this)
-
-    }
-
-
     override fun addMarker(entreprise: Enterprise) {
-        var icono: Icon
+
+        var icono: BitmapDescriptor
 
         if (entreprise.abierto) {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_open)
+            icono = BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open)
         } else {
-            icono = iconFactory.fromResource(R.drawable.ic_futbol_close)
+            icono = BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close)
         }
 
-
-        var marker = mapboxMap!!.addMarker(MarkerOptions()
+        var marker = mMap.addMarker(MarkerOptions()
                 .position(LatLng(entreprise.direccion!!.latitud, entreprise.direccion!!.longitud))
                 .icon(icono))
 
         entreprise.idMarker = marker.id
-        // marker.title = "Que mas v"
-        // marker.showInfoWindow(mapboxMap, mapView)
 
     }
 
     fun animateCamera(latLng: LatLng, zoom: Double) {
-        val position = CameraPosition.Builder()
-                .target(latLng) // Sets the new camera position
-                .zoom(zoom) // Sets the zoom
-                .build() // Creates a CameraPosition from the builder
-        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
+        val cameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(17F)
+                .build()
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
-
+    /*
     override fun onCameraIdle() {
         presenter.stopSearchVisibility()
         var bounds = mapboxMap.projection.visibleRegion.latLngBounds
@@ -516,13 +495,25 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         presenter.onGetCenterSportVisible(bounds.latSouth, bounds.latNorth, bounds.lonWest, bounds.lonEast, bounds.center.latitude, bounds.center.longitude)
 
     }
+    */
+    override fun onCameraIdle() {
+        presenter.stopSearchVisibility()
+        var bounds = mMap.projection.visibleRegion.latLngBounds
+        var visible = mMap.projection.visibleRegion
+        Log.e("coordenadas", "bounds" + bounds.toString())
+        Log.e("coordenadas", "visible" + visible.toString())
+        Log.e("coordenadas", "center" + bounds.center.toString())
+        // presenter.onGetCenterSportVisible(bounds.southwest.latitude, bounds.northeast.latitude, bounds.southwest.longitude, bounds.southwest.longitude, bounds.center.latitude, bounds.center.longitude)
+        presenter.onGetCenterSportVisible(visible.nearLeft.latitude, visible.farRight.latitude, visible.farLeft.longitude, visible.farRight.longitude, bounds.center.latitude, bounds.center.longitude)
+    }
+
 
     override fun onMarkerClick(marker: Marker): Boolean {
         if (markerSelect != null) {
             if (entrepiseSelect.abierto) {
-                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open)
+                markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open))
             } else {
-                markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close)
+                markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close))
             }
         }
 
@@ -536,9 +527,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 markerSelect = marker
 
                 if (it.abierto) {
-                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_open_select)
+                    markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open_select))
                 } else {
-                    markerSelect!!.icon = iconFactory.fromResource(R.drawable.ic_futbol_close_select)
+                    markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
                 }
                 tv_title_bs.setText("A ${df.format(it.distance)} Km")
                 tv_subtitle_bs.setText(it.nombres)
@@ -584,7 +575,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     override fun setResultsSearchs(entrepriseList: List<Enterprise>) {
         Log.e(TAG, "id" + entrepriseList.get(0).pk)
         entrepiseResultsSearchVisible.clear()
-        mapboxMap.clear()
+        mMap.clear()
         entrepiseResultsSearchVisible.addAll(entrepriseList)
         tv_subtitle_bs.setText(entrepriseList.size.toString() + " encontrados")
         entrepiseAdapter.notifyDataSetChanged()
@@ -620,22 +611,4 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
 
-    class LatLngEvaluator : TypeEvaluator<LatLng> {
-        private val latLng = LatLng()
-
-        override fun evaluate(fraction: Float, startValue: LatLng?, endValue: LatLng?): LatLng {
-            latLng.setLatitude(startValue!!.getLatitude()
-                    + ((endValue!!.getLatitude() - startValue.getLatitude()) * fraction))
-            latLng.setLongitude(startValue.getLongitude()
-                    + ((endValue!!.getLongitude() - startValue.getLongitude()) * fraction))
-            return latLng
-        }
-    }
-
-    fun animateMarker(marker: Marker, point: LatLng) {
-        var markerAnimator = ObjectAnimator.ofObject(marker, "position",
-                LatLngEvaluator(), marker.getPosition(), point);
-        markerAnimator.setDuration(2000);
-        markerAnimator.start();
-    }
 }

@@ -31,7 +31,7 @@ class RetrofitApi {
 
     companion object {
         const val TAG = "RetrofitApi"
-        val PATH_API = "http://18.219.31.241:8050/"
+        val PATH_API = "http://18.216.121.178:8050/"
         const val PATH_SEARCH_CENTER = "api/search-centros/"
         const val PATH_SEARCH_NAME_CENTER_SPORT = "api/centros-deportivos/"
         const val PATH_PROFILE = "api/centros-deportivos/"
@@ -69,6 +69,7 @@ class RetrofitApi {
                     RetrofitStatus.Response(response, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
                         override fun success(response: Response<List<Enterprise>>) {
                             //Respuesta correcta
+                            Log.e(TAG, response.body()!!.size.toString())
                             callback.onSucces(response.body())
                         }
 
