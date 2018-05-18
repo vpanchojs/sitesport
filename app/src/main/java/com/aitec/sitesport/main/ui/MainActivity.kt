@@ -133,6 +133,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     }
 
 
+
     private fun setupToolBar() {
         params = toolbar.layoutParams as AppBarLayout.LayoutParams
         settoolbarScroll(true)
