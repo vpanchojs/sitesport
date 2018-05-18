@@ -13,7 +13,7 @@ interface MenusPresenter {
 
     fun inSession()
 
-    fun onSingOut(platform: Int)
+    fun onSingOut()
 
     fun getMyProfile()
 

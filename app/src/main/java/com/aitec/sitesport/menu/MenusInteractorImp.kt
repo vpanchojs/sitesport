@@ -13,8 +13,8 @@ class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
         repository.enviartoken(token)
     }
 
-    override fun onSingOut(platform: Int) {
-        repository.onSingOut(platform)
+    override fun onSingOut() {
+        repository.onSingOut()
     }
 
     override fun inSession() {

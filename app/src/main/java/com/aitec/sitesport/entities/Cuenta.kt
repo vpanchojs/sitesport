@@ -5,15 +5,12 @@ package com.aitec.sitesport.entities
  */
 class Cuenta {
     var token: String? = null
+    var user: User? = null
 
-    private val user: User? = null
-
-    inner class User {
-
-
-        var pk: String? = null
-        var email: String? = null
-        var username: String? = null
-        var isIs_active: Boolean = false
+    companion object {
+        const val EMAIL = 0
+        const val FACEBOOK = 1
+        const val GOOGLE = 2
     }
+
 }

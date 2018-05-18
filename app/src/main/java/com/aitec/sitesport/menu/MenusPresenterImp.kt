@@ -1,6 +1,7 @@
 package com.aitec.sitesport.menu
 
 import android.view.View
+import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.events.MenusEvents
 import com.aitec.sitesport.menu.ui.MenusView
@@ -24,8 +25,8 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
         eventBus.unregister(this)
     }
 
-    override fun onSingOut(platform: Int) {
-        interactor.onSingOut(platform)
+    override fun onSingOut() {
+        interactor.onSingOut()
     }
 
     override fun inSession() {
@@ -47,15 +48,18 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
             MenusEvents.ON_SIGNOUT_SUCCESS -> {
                 view.visibleMenuOptions(View.GONE)
                 view.visibleLogin(View.VISIBLE)
+                view.singOut(event.any as Int)
             }
             MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK -> {
                 view.visibleMenuOptions(View.VISIBLE)
                 view.visibleLogin(View.GONE)
+                view.setDataProfile(event.any as User)
 
             }
             MenusEvents.ON__SIGIN_SUCCES_GOOGLE -> {
                 view.visibleMenuOptions(View.VISIBLE)
                 view.visibleLogin(View.GONE)
+                view.setDataProfile(event.any as User)
             }
             MenusEvents.ON__SIGIN_ERROR -> {
                 view.showMessagge(event.any)

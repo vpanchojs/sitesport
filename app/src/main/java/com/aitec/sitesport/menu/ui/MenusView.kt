@@ -17,5 +17,6 @@ interface MenusView {
     fun mostrarmenu()
     fun visibleMenuOptions(visible: Int)
     fun visibleLogin(visible: Int)
+    fun singOut(platform: Int)
 
 }

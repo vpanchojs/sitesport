@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.menu.MenusPresenter
 import com.aitec.sitesport.menu.adapter.OptionsAdapter
@@ -199,25 +200,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 //showMessagge("Contactenos")
             }
             3 -> {
-                /*
-                Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback { status ->
-                    if (status.isSuccess) {
-                        menu.visibility = View.GONE
-                        ver_loguin.visibility = View.VISIBLE
-                    } else {
-                        LoginManager.getInstance().logOut()
-                        Toast.makeText(context, R.string.not_revoke, Toast.LENGTH_SHORT).show()
-                    }
-                }
-                //showMessagge("Cerrar session")
-                //presenter.onSingOut()
-                */
+                presenter.onSingOut()
             }
 
 
         }
     }
-
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -234,14 +222,13 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         }
     }
 
-
     override fun setDataProfile(user: User) {
         /*
         this.user = user
-        tv_name_user.text = user.names
+        tv_name_user.text = user.username
         tv_email.text = user.email
         GlideApp.with(context!!)
-                .load(user.photo)
+                .load("")
                 .placeholder(R.drawable.ic_person_black_24dp)
                 .centerCrop()
                 .error(R.drawable.ic_person_black_24dp)
@@ -256,12 +243,22 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         }
     }
 
-
     override fun visibleMenuOptions(visible: Int) {
         rv_menu_options.visibility = visible
     }
 
     override fun visibleLogin(visible: Int) {
         cl_login.visibility = visible
+    }
+
+    override fun singOut(platform: Int) {
+        when (platform) {
+            Cuenta.FACEBOOK -> {
+                LoginManager.getInstance().logOut()
+            }
+            Cuenta.GOOGLE -> {
+                mGoogleSignInClient!!.signOut()
+            }
+        }
     }
 }
