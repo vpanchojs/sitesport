@@ -72,7 +72,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             mapIntent.`package` = "com.google.android.apps.maps"
             if (mapIntent.resolveActivity(packageManager) != null) {
                 startActivity(mapIntent)
-            }
+            }else
+                BaseActivitys.showToastMessage(this, "No se encontró Google Maps", Toast.LENGTH_SHORT)
         }
 
         btnReload.setOnClickListener{
