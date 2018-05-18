@@ -3,7 +3,7 @@ package com.aitec.sitesport.menu.events
 /**
  * Created by victor on 27/1/18.
  */
-class MenusEvents(var type: Int, var any: Any, var message: String) {
+class MenusEvents(var type: Int, var any: Any) {
 
     companion object {
         val ON_GET_MY_PROFILE_SUCCESS = 4
@@ -13,10 +13,11 @@ class MenusEvents(var type: Int, var any: Any, var message: String) {
         val ON_UPDATE_PASSWORD_SUCCESS = 2
         val ON_UPDATE_PASSWORD_ERROR = 3
 
-        val ON_SUCCESS_FACEBOOK= 7
-        val ON_ON_ERROR=6
-        val ON_SUCCES_GOOGLE= 9
-        val ON_ERROR_GOOGLE=8
+        val ON_RECOVERY_SESSION = 10
+        val ON_SUCCESS_FACEBOOK = 7
+        val ON_ON_ERROR = 6
+        val ON_SUCCES_GOOGLE = 9
+        val ON_ERROR_GOOGLE = 8
 
 
     }

@@ -83,8 +83,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         try {
             val account = result.getResult(ApiException::class.java)
             Log.e(TAG, "signInResult:succes idtoken= ${account.idToken}")
+            showMessagge("Session Correctamente")
             presenter.tokenGoogle(account.idToken.toString())
         } catch (e: ApiException) {
+            showMessagge("Error al iniciar session")
             Log.e(TAG, "signInResult:failed code=" + e.toString());
         }
     }
@@ -93,7 +95,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     override fun onResume() {
         super.onResume()
         presenter.onResume()
-        presenter.getMyProfile()
+        presenter.inSession()
     }
 
     override fun onPause() {
@@ -120,15 +122,14 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     }
 
-
     fun setupSingInFacebook() {
         callbackManager = CallbackManager.Factory.create()
 
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-
                 Log.e("token de facebook", accessToken.toString())
                 presenter.tokenFacebook(loginResult.accessToken.token)
+                showMessagge("Session Correctamente")
             }
 
             override fun onCancel() {
@@ -150,7 +151,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
         mGoogleSignInClient = GoogleSignIn.getClient(activity!!, gso)
     }
-
 
     private fun enviar_token(token: String) {
 

@@ -27,6 +27,10 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
         return sharedPreferences.getBoolean(KEY_IN_SESESION, false)
     }
 
+    fun getInSessionPlatform(): Int {
+        return sharedPreferences.getInt(KEY_PLATFORM, -1)
+    }
+
     fun savePkEnterprise(pk: String) {
         sharedPreferences.edit().putString(PK_ENTERPRISE, pk).commit()
     }

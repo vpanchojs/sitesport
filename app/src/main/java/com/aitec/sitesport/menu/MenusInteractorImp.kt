@@ -17,6 +17,10 @@ class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
         repository.onSingOut(platform)
     }
 
+    override fun inSession() {
+        repository.inSession()
+    }
+
     override fun onUpdatePassword(password: String, passwordOld: String) {
         repository.onUpdatePassword(password, passwordOld)
     }

@@ -9,6 +9,7 @@ interface MenusRepository {
     fun onSingOut(platform: Int)
     fun onUpdatePassword(password: String, passwordOld: String)
     fun getMyProfile()
+    fun inSession()
     fun enviartoken(token: String)
     fun enviartokengoogle(idToken: String)
 }

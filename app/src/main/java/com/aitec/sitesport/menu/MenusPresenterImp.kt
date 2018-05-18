@@ -29,6 +29,10 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
         interactor.onSingOut(platform)
     }
 
+    override fun inSession() {
+        interactor.inSession()
+    }
+
     override fun getMyProfile() {
         interactor.getMyProfile()
     }
@@ -46,33 +50,33 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
             }
             MenusEvents.ON_UPDATE_PASSWORD_SUCCESS -> {
                 view.hideProgressDialog()
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
             }
             MenusEvents.ON_UPDATE_PASSWORD_ERROR -> {
                 view.hideProgressDialog()
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
             }
             MenusEvents.ON_GET_MY_PROFILE_SUCCESS -> {
                 Log.e("profile", "llegue")
                 view.setDataProfile(event.any as User)
             }
             MenusEvents.ON_GET_MY_PROFILE_ERROR -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
             }
 
             MenusEvents.ON_SUCCESS_FACEBOOK -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
                 view.mostrarmenu()
             }
             MenusEvents.ON_ON_ERROR -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
             }
             MenusEvents.ON_SUCCES_GOOGLE -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
                 view.mostrarmenu()
             }
             MenusEvents.ON_ERROR_GOOGLE -> {
-                view.showMessagge(event.message)
+                view.showMessagge(event.any)
             }
 
         }

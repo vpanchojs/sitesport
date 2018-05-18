@@ -11,6 +11,8 @@ interface MenusPresenter {
 
     fun onPause()
 
+    fun inSession()
+
     fun onSingOut(platform: Int)
 
     fun getMyProfile()
