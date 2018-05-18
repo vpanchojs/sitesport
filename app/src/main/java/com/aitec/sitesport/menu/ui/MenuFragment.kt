@@ -61,6 +61,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     private fun setupMenuOptions() {
+
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
         data!!.add(OptionMenu(R.drawable.ic_call_black_24dp, getString(R.string.menu_option_contact)))
@@ -101,7 +102,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         presenter.onPause()
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_menu, container, false)
         view.rv_menu_options.layoutManager = LinearLayoutManager(context)
@@ -117,7 +117,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         setupSingInGoogle()
         btn_sigin_google.setOnClickListener(this)
         btn_sigin_facebook.setOnClickListener(this)
-
     }
 
     fun setupSingInFacebook() {

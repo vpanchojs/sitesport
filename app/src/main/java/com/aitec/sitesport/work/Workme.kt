@@ -3,7 +3,9 @@ package com.aitec.sitesport.work
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -28,6 +30,7 @@ import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_workme.*
 import android.location.Address
 import android.text.TextUtils
+import android.view.MenuItem
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -170,7 +173,32 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
             }
         }
 
+        setupactionbar()
 
+
+
+    }
+
+
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId){
+
+            android.R.id.home->{
+                finish()
+            }
+        }
+
+        return super.onContextItemSelected(item)
+
+    }
+
+    private fun setupactionbar(){
+        val ActionBar = supportActionBar
+        if(ActionBar!=null){
+            ActionBar.setDisplayHomeAsUpEnabled(true)
+        }
 
     }
 
