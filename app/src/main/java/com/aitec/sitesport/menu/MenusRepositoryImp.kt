@@ -3,6 +3,7 @@ package com.aitec.sitesport.menu
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.events.MenusEvents
 
@@ -11,37 +12,37 @@ import com.aitec.sitesport.menu.events.MenusEvents
  */
 class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var retrofitApi: RetrofitApi) : MenusRepository {
 
-
     override fun enviartokengoogle(idToken: String) {
-        retrofitApi.iniciargoogle(idToken,object : onApiActionListener{
-            override fun onSucces(response: Any?) {
-                postEvent(MenusEvents.ON_SUCCES_GOOGLE,"",response!!)
-                sharePreferencesApi.sesiongoogle(true)
+        retrofitApi.iniciargoogle(idToken, object : onApiActionListener<Cuenta> {
+            override fun onSucces(response: Cuenta) {
+                postEvent(MenusEvents.ON_SUCCES_GOOGLE, "", response)
+                sharePreferencesApi.sesion(true, 1)
 
             }
 
             override fun onError(error: Any?) {
-               postEvent(MenusEvents.ON_ERROR_GOOGLE,"",error!!)
+                postEvent(MenusEvents.ON_ERROR_GOOGLE, "", error!!)
             }
         })
     }
 
     override fun enviartoken(token: String) {
-        retrofitApi.iniciarfacebook(token,object : onApiActionListener{
-            override fun onSucces(response: Any?) {
-                postEvent(MenusEvents.ON_SUCCESS_FACEBOOK,"",response!!)
-                sharePreferencesApi.sesion(true)
+        retrofitApi.iniciarfacebook(token, object : onApiActionListener<Cuenta> {
+            override fun onSucces(response: Cuenta) {
+                postEvent(MenusEvents.ON_SUCCESS_FACEBOOK, "", response!!)
+                sharePreferencesApi.sesion(true, 2)
             }
 
             override fun onError(error: Any?) {
-                postEvent(MenusEvents.ON_ON_ERROR,"",error!!)
+                postEvent(MenusEvents.ON_ON_ERROR, "", error!!)
             }
         })
 
 
     }
 
-    override fun onSingOut() {
+    override fun onSingOut(platform: Int) {
+        sharePreferencesApi.sesion(false, platform)
         postEvent(MenusEvents.ON_SIGNOUT_SUCCESS, "", Any())
     }
 

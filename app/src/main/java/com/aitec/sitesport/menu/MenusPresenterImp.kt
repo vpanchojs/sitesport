@@ -9,36 +9,24 @@ import org.greenrobot.eventbus.Subscribe
 
 class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, var interactor: MenusInteractor) : MenusPresenter {
 
-
-
-
-
-
-    override fun tokengoogle(idToken: String?) {
-
-        interactor.enviartokengoogle(idToken!!)
-
+    override fun tokenGoogle(idToken: String) {
+        interactor.enviartokengoogle(idToken)
     }
 
-    override fun tokenfacebook(token: String?) {
-
-
-        interactor.enviartoken(token!!)
-
-
+    override fun tokenFacebook(token: String) {
+        interactor.enviartoken(token)
     }
 
     override fun onResume() {
         eventBus.register(this)
-
     }
 
     override fun onPause() {
         eventBus.unregister(this)
     }
 
-    override fun onSingOut() {
-        interactor.onSingOut()
+    override fun onSingOut(platform: Int) {
+        interactor.onSingOut(platform)
     }
 
     override fun getMyProfile() {
@@ -72,18 +60,18 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
                 view.showMessagge(event.message)
             }
 
-            MenusEvents.ON_SUCCESS_FACEBOOK->{
+            MenusEvents.ON_SUCCESS_FACEBOOK -> {
                 view.showMessagge(event.message)
                 view.mostrarmenu()
             }
-            MenusEvents.ON_ON_ERROR->{
+            MenusEvents.ON_ON_ERROR -> {
                 view.showMessagge(event.message)
             }
-            MenusEvents.ON_SUCCES_GOOGLE->{
+            MenusEvents.ON_SUCCES_GOOGLE -> {
                 view.showMessagge(event.message)
                 view.mostrarmenu()
             }
-            MenusEvents.ON_ERROR_GOOGLE->{
+            MenusEvents.ON_ERROR_GOOGLE -> {
                 view.showMessagge(event.message)
             }
 

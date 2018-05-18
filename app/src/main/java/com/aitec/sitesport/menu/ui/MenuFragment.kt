@@ -16,23 +16,27 @@ import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.menu.MenusPresenter
 import com.aitec.sitesport.menu.adapter.OptionsAdapter
 import com.aitec.sitesport.menu.adapter.onOptionsAdapterListener
+import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.OptionMenu
 import com.aitec.sitesport.work.Workme
-import com.facebook.*
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.SignInButton
-import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
+import java.util.*
 import javax.inject.Inject
 
-class MenuFragment :  Fragment(), MenusView, onOptionsAdapterListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnClickListener {
     private val TAG = "MenuFragment"
     private var adapterOptions: OptionsAdapter? = null
     private var data: ArrayList<OptionMenu>? = ArrayList()
@@ -49,70 +53,41 @@ class MenuFragment :  Fragment(), MenusView, onOptionsAdapterListener, View.OnCl
     private var callbackManager: CallbackManager? = null
     internal var accessToken: AccessToken? = null
 
-    //Google//
-    private var googleApiClient: GoogleApiClient? = null
-    private val mGoogleSignInClient: GoogleSignInClient? = null
+    private var mGoogleSignInClient: GoogleSignInClient? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupMenuOptions();
+    }
+
+    private fun setupMenuOptions() {
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
-        data!!.add(OptionMenu(R.drawable.ic_call_black_24dp,getString(R.string.menu_option_contact)))
+        data!!.add(OptionMenu(R.drawable.ic_call_black_24dp, getString(R.string.menu_option_contact)))
         data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
         adapterOptions = OptionsAdapter(data!!, this)
-
-
-        /////jhony///////
-
-
     }
-//////////jhony//////777
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-    super.onActivityResult(requestCode, resultCode, data)
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
 
-        ///////Google///////77
         if (requestCode == SIGN_IN_CODE) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            handleSignInResult(result)
-        }
-
-}
-
-    private fun handleSignInResult(result: GoogleSignInResult) {
-        if (result.isSuccess) {
-            val account = result.signInAccount
-            mostrarmenu()
-            Log.e("token de google", account!!.idToken)
-            presenter.tokengoogle(account.idToken.toString())
-            /*tv_name_user.setText(account.displayName)
-            tv_email.setText(account.email)*/
-
-
-
-
-        } else {
-            Toast.makeText(context, R.string.not_log_in, Toast.LENGTH_SHORT).show()
-            updateUI(false)
-
-        }
-    }
-    private fun updateUI(signedIn: Boolean) {
-        if (signedIn) {
-
-
-
-        } else {
-
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
     }
 
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-
+    private fun handleSignInResult(result: Task<GoogleSignInAccount>) {
+        try {
+            val account = result.getResult(ApiException::class.java)
+            Log.e(TAG, "signInResult:succes idtoken= ${account.idToken}")
+            presenter.tokenGoogle(account.idToken.toString())
+        } catch (e: ApiException) {
+            Log.e(TAG, "signInResult:failed code=" + e.toString());
+        }
     }
-    ///////jhony hasta aqui////77
 
 
     override fun onResume() {
@@ -128,77 +103,64 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_menu, container, false)
+        var view = inflater.inflate(R.layout.fragment_menu, container, false)
         view.rv_menu_options.layoutManager = LinearLayoutManager(context)
         view.rv_menu_options.adapter = adapterOptions
         view.cl_my_profile.setOnClickListener(this)
         setupInjection()
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupSingInFacebook()
+        setupSingInGoogle()
+        btn_sigin_google.setOnClickListener(this)
+        btn_sigin_facebook.setOnClickListener(this)
 
-        ///////////////facebook//////7777
-
-            callbackManager = CallbackManager.Factory.create()
-            loginButton!!.setReadPermissions("email")
-            loginButton.fragment = this
-            loginButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(loginResult: LoginResult) {
-
-                    ///////////////////////////////goMainScreen(MainActivity.face)
-                    Log.e("token de facebook", accessToken.toString())
-                    Log.e("inicio de sesion face", loginResult.toString())
-
-                    presenter.tokenfacebook(loginResult.accessToken.token)
-                }
-
-                override fun onCancel() {
-                    Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onError(error: FacebookException) {
-                    Toast.makeText(context, R.string.error_login, Toast.LENGTH_SHORT).show()
-                }
-            })
-
-
-        //tv_email.setText(object.toStrgetString("email"))
-
-        //////////////77//Google///////////////////77
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(getString(R.string.id_google2))
-                .build()
-
-        googleApiClient = GoogleApiClient.Builder(context!!)
-                .enableAutoManage(activity!!, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build()
-
-        //signInButton = findViewById<View>(R.id.signInButton) as SignInButton
-
-        signInButton!!.setSize(SignInButton.SIZE_WIDE)
-        signInButton.setColorScheme(SignInButton.COLOR_AUTO)
-        signInButton!!.setOnClickListener {
-            val intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
-            startActivityForResult(intent, SIGN_IN_CODE)
-        }
     }
 
-    private fun enviar_token(token:String){
 
-        presenter.tokenfacebook(accessToken!!.token)
+    fun setupSingInFacebook() {
+        callbackManager = CallbackManager.Factory.create()
+
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+
+                Log.e("token de facebook", accessToken.toString())
+                presenter.tokenFacebook(loginResult.accessToken.token)
+            }
+
+            override fun onCancel() {
+                Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(error: FacebookException) {
+                Toast.makeText(context, R.string.error_login, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+
+    fun setupSingInGoogle() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("138055446583-vk1h8k95h1ksqqs5akl9eaa5rturnr44.apps.googleusercontent.com")
+                .requestEmail()
+                .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(activity!!, gso)
+    }
+
+
+    private fun enviar_token(token: String) {
+
+        presenter.tokenFacebook(accessToken!!.token)
 
     }
 
     override fun mostrarmenu() {
-
-        menu.visibility=View.VISIBLE
-        ver_loguin.visibility=View.GONE
+        //menu.visibility = View.VISIBLE
+        cl_login.visibility = View.GONE
     }
 
     private fun setupInjection() {
@@ -217,8 +179,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         progressDialog.hide()
     }
 
-    override fun showMessagge(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    override fun showMessagge(message: Any) {
+        BaseActivitys.showToastMessage(context!!, message, Toast.LENGTH_SHORT)
     }
 
     override fun navigationToProfile() {
@@ -235,13 +197,6 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
     override fun onClick(position: Int) {
         when (position) {
-        /*
-        0 -> {
-            showMessagge("Cambiar Contrasena")
-            val changePasswordFragment = ChangePasswordFragment.newInstance()
-            changePasswordFragment.show(childFragmentManager, "Cambiar Contrasena")
-        }
-        */
             0 -> {
                 showMessagge("Terminos y Condiciones")
             }
@@ -253,11 +208,12 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
                 startActivity(intento1)
                 //showMessagge("Contactenos")
             }
-            3 ->{
+            3 -> {
+                /*
                 Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback { status ->
                     if (status.isSuccess) {
-                        menu.visibility=View.GONE
-                        ver_loguin.visibility=View.VISIBLE
+                        menu.visibility = View.GONE
+                        ver_loguin.visibility = View.VISIBLE
                     } else {
                         LoginManager.getInstance().logOut()
                         Toast.makeText(context, R.string.not_revoke, Toast.LENGTH_SHORT).show()
@@ -265,10 +221,12 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
                 }
                 //showMessagge("Cerrar session")
                 //presenter.onSingOut()
+                */
             }
+
+
         }
     }
-
 
 
     override fun onClick(v: View?) {
@@ -276,12 +234,16 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
             R.id.cl_my_profile -> {
                 navigationToProfile()
             }
+            R.id.btn_sigin_google -> {
+                val intent = mGoogleSignInClient!!.signInIntent
+                startActivityForResult(intent, SIGN_IN_CODE)
+            }
+            R.id.btn_sigin_facebook -> {
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
+            }
         }
     }
 
-    fun onUpdatePassword(password: String, passwordOld: String) {
-        presenter.onUpdatePassword(password, passwordOld)
-    }
 
     override fun setDataProfile(user: User) {
         /*
@@ -302,13 +264,6 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
             val fragment = MenuFragment()
             return fragment
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        googleApiClient!!.stopAutoManage(activity!!)
-        googleApiClient!!.disconnect()
-
     }
 
 

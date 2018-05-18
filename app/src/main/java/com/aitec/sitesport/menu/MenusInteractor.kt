@@ -8,7 +8,7 @@ import com.google.android.gms.auth.api.credentials.IdToken
 interface MenusInteractor {
 
 
-    fun onSingOut()
+    fun onSingOut(platform: Int)
     fun onUpdatePassword(password: String, passwordOld: String)
     fun getMyProfile()
 

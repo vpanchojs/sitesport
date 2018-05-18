@@ -4,6 +4,7 @@ import android.util.Log
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profile.event.ProfileEvent
 
@@ -20,8 +21,8 @@ class ProfileRepositoryImpl(var retrofitApi: RetrofitApi,
     }
 
     override fun getProfile(urlDetail : String) {
-        retrofitApi.getProfile(urlDetail, object : onApiActionListener {
-            override fun onSucces(response: Any?) {
+        retrofitApi.getProfile(urlDetail, object : onApiActionListener<Enterprise> {
+            override fun onSucces(response: Enterprise) {
                 Log.e("ProfileRepositoryImpl", response.toString())
 
                 /*val gsonBuilder = GsonBuilder()

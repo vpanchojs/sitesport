@@ -6,7 +6,7 @@ import com.google.android.gms.auth.api.credentials.IdToken
  * Created by victor on 27/1/18.
  */
 interface MenusRepository {
-    fun onSingOut()
+    fun onSingOut(platform: Int)
     fun onUpdatePassword(password: String, passwordOld: String)
     fun getMyProfile()
     fun enviartoken(token: String)

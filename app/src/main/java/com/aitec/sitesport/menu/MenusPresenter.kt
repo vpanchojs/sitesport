@@ -11,7 +11,7 @@ interface MenusPresenter {
 
     fun onPause()
 
-    fun onSingOut()
+    fun onSingOut(platform: Int)
 
     fun getMyProfile()
 
@@ -19,10 +19,9 @@ interface MenusPresenter {
 
     fun onEventMenuThread(event: MenusEvents)
 
-    fun tokenfacebook(token: String?)
+    fun tokenFacebook(token: String)
 
-    fun tokengoogle(idToken: String?)
-
+    fun tokenGoogle(idToken: String)
 
 
 }

@@ -8,7 +8,6 @@ import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,7 +49,7 @@ class RetrofitApi {
     val request = retrofit.create(RetrofitServicie::class.java)
 
 
-    fun getCenterSport(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double, callback: onApiActionListener) {
+    fun getCenterSport(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double, callback: onApiActionListener<List<Enterprise>>) {
         var parametros = HashMap<String, String>()
         parametros.put("latitud", latMe.toString())
         parametros.put("longitud", lngMe.toString())
@@ -70,7 +69,7 @@ class RetrofitApi {
                         override fun success(response: Response<List<Enterprise>>) {
                             //Respuesta correcta
                             Log.e(TAG, response.body()!!.size.toString())
-                            callback.onSucces(response.body())
+                            callback.onSucces(response.body()!!)
                         }
 
                         override fun unauthenticated(response: Response<*>) {
@@ -131,7 +130,7 @@ class RetrofitApi {
         }
     }
 
-    fun onSearchNameCenterSport(query: String, callback: onApiActionListener) {
+    fun onSearchNameCenterSport(query: String, callback: onApiActionListener<SearchCentersName>) {
         requestSearchName = request.searchNameCenterSport(query, 1)
 
         handlerSearchName = Handler()
@@ -142,7 +141,7 @@ class RetrofitApi {
                     RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<SearchCentersName> {
 
                         override fun success(response: Response<SearchCentersName>) {
-                            callback.onSucces(response.body())
+                            callback.onSucces(response.body()!!)
                         }
 
                         override fun unauthenticated(response: Response<*>) {
@@ -169,8 +168,6 @@ class RetrofitApi {
 
                 }
 
-
-
                 override fun onFailure(call: Call<SearchCentersName>?, t: Throwable?) {
 
                     RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<SearchCentersName> {
@@ -191,14 +188,14 @@ class RetrofitApi {
         handlerSearchName!!.postDelayed(runnableSearchName, LAG.toLong())
     }
 
-    fun getProfile(pk: String, callback: onApiActionListener) {
+    fun getProfile(pk: String, callback: onApiActionListener<Enterprise>) {
         val parametros = HashMap<String, String>()
         parametros.put("pk", pk)
 
 
         request.getProfile(pk).enqueue(object : Callback<Enterprise> {
             override fun onResponse(call: Call<Enterprise>, response: Response<Enterprise>) {
-                callback.onSucces(response.body())
+                callback.onSucces(response.body()!!)
             }
 
             override fun onFailure(call: Call<Enterprise>, t: Throwable) {
@@ -217,8 +214,6 @@ class RetrofitApi {
 
     }
 
-
-
     fun deleteRequestSearchName() {
         if (handlerSearchName != null) {
             handlerSearchName?.removeCallbacks(runnableSearchName)
@@ -231,7 +226,7 @@ class RetrofitApi {
         }
     }
 
-    fun getAllSites(callback: onApiActionListener) {
+    fun getAllSites(callback: onApiActionListener<List<Enterprise>>) {
         request.getSites().enqueue(object : Callback<List<Enterprise>> {
             override fun onFailure(call: Call<List<Enterprise>>?, t: Throwable?) {
                 RetrofitStatus.Failure(t!!, object : RetrofitStatus.MyCallbackFailure<List<Enterprise>> {
@@ -249,7 +244,7 @@ class RetrofitApi {
             override fun onResponse(call: Call<List<Enterprise>>?, response: Response<List<Enterprise>>?) {
                 RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
                     override fun success(response: Response<List<Enterprise>>) {
-                        callback.onSucces(response.body())
+                        callback.onSucces(response.body()!!)
                     }
 
                     override fun unauthenticated(response: Response<*>) {
@@ -272,7 +267,7 @@ class RetrofitApi {
         })
     }
 
-    fun getAllSites(params: HashMap<String, String>, callback: onApiActionListener) {
+    fun getAllSites(params: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
         Log.e(TAG, "PARAMETROS ${params.toString()}")
         request.getSites(params).enqueue(object : Callback<List<Enterprise>> {
             override fun onFailure(call: Call<List<Enterprise>>?, t: Throwable?) {
@@ -291,7 +286,7 @@ class RetrofitApi {
             override fun onResponse(call: Call<List<Enterprise>>?, response: Response<List<Enterprise>>?) {
                 RetrofitStatus.Response(response!!, object : RetrofitStatus.MyCallbackResponse<List<Enterprise>> {
                     override fun success(response: Response<List<Enterprise>>) {
-                        callback.onSucces(response.body())
+                        callback.onSucces(response.body()!!)
                     }
 
                     override fun unauthenticated(response: Response<*>) {
@@ -315,16 +310,15 @@ class RetrofitApi {
 
     }
 
-    fun iniciarfacebook(token: String, callback: onApiActionListener) {
-
+    fun iniciarfacebook(token: String, callback: onApiActionListener<Cuenta>) {
         val hashMap = java.util.HashMap<String, String>()
         hashMap.put("access_token", token)
 
-        request.enviartoken(hashMap).enqueue(object: Callback<Cuenta> {
+        request.enviartoken(hashMap).enqueue(object : Callback<Cuenta> {
             override fun onResponse(call: Call<Cuenta>, response: Response<Cuenta>) {
                 Log.e("exitos envio facebook", response.toString())
-                Log.e("token face",hashMap.toString())
-                callback.onSucces(response.body().toString())
+                Log.e("token face", hashMap.toString())
+                callback.onSucces(response.body()!!)
             }
 
             override fun onFailure(call: Call<Cuenta>, t: Throwable) {
@@ -334,14 +328,14 @@ class RetrofitApi {
         })
     }
 
-    fun iniciargoogle(idToken: String, callback:  onApiActionListener) {
+    fun iniciargoogle(idToken: String, callback: onApiActionListener<Cuenta>) {
         val hashMap = java.util.HashMap<String, String>()
         hashMap.put("access_token", idToken)
 
         request.enviartokengoogle(hashMap).enqueue(object : Callback<Cuenta> {
             override fun onResponse(call: Call<Cuenta>, response: Response<Cuenta>) {
                 Log.e("exitos envio google", response.toString())
-                callback.onSucces(response.body().toString())
+                callback.onSucces(response.body()!!)
             }
 
             override fun onFailure(call: Call<Cuenta>, t: Throwable) {

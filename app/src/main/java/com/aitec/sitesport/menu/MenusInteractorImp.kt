@@ -5,22 +5,16 @@ package com.aitec.sitesport.menu
  */
 class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
 
-
-
-
-
     override fun enviartokengoogle(idToken: String) {
         repository.enviartokengoogle(idToken)
-
     }
 
     override fun enviartoken(token: String) {
-
         repository.enviartoken(token)
     }
 
-    override fun onSingOut() {
-        repository.onSingOut()
+    override fun onSingOut(platform: Int) {
+        repository.onSingOut(platform)
     }
 
     override fun onUpdatePassword(password: String, passwordOld: String) {
