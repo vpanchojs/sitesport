@@ -11,7 +11,10 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
 
     override fun inSession() {
         if (sharePreferencesApi.getInSession())
-            postEvent(MenusEvents.ON_RECOVERY_SESSION, sharePreferencesApi.getInSessionPlatform())
+            postEvent(MenusEvents.ON_RECOVERY_SESSION_SUCCESS, sharePreferencesApi.getInSessionPlatform())
+        else {
+            postEvent(MenusEvents.ON_RECOVERY_SESSION_ERROR, Any())
+        }
     }
 
     override fun enviartokengoogle(idToken: String) {
@@ -19,12 +22,12 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
             override fun onSucces(response: Cuenta) {
                 sharePreferencesApi.sesion(true, 1)
                 sharePreferencesApi.saveTokenAndSession(response.token!!)
-                postEvent(MenusEvents.ON_SUCCES_GOOGLE, response)
+                postEvent(MenusEvents.ON__SIGIN_SUCCES_GOOGLE, response)
 
             }
 
             override fun onError(error: Any?) {
-                postEvent(MenusEvents.ON_ERROR_GOOGLE, error!!)
+                postEvent(MenusEvents.ON__SIGIN_ERROR, error!!)
             }
         })
     }
@@ -32,20 +35,20 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
     override fun enviartoken(token: String) {
         retrofitApi.iniciarfacebook(token, object : onApiActionListener<Cuenta> {
             override fun onSucces(response: Cuenta) {
-                postEvent(MenusEvents.ON_SUCCESS_FACEBOOK, response)
+                postEvent(MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK, response)
                 sharePreferencesApi.sesion(true, 2)
                 sharePreferencesApi.saveTokenAndSession(response.token!!)
             }
 
             override fun onError(error: Any?) {
-                postEvent(MenusEvents.ON_ON_ERROR, error!!)
+                postEvent(MenusEvents.ON__SIGIN_ERROR, error!!)
             }
         })
     }
 
     override fun onSingOut(platform: Int) {
         sharePreferencesApi.sesion(false, platform)
-        postEvent(MenusEvents.ON_SIGNOUT_SUCCESS,Any())
+        postEvent(MenusEvents.ON_SIGNOUT_SUCCESS, Any())
     }
 
     override fun onUpdatePassword(password: String, passwordOld: String) {
@@ -70,4 +73,6 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
         var event = MenusEvents(type, any)
         eventBus.post(event)
     }
+
+
 }

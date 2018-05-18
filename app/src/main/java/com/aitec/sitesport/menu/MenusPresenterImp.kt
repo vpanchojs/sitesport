@@ -1,7 +1,6 @@
 package com.aitec.sitesport.menu
 
-import android.util.Log
-import com.aitec.sitesport.entities.User
+import android.view.View
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.events.MenusEvents
 import com.aitec.sitesport.menu.ui.MenusView
@@ -46,37 +45,30 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
     override fun onEventMenuThread(event: MenusEvents) {
         when (event.type) {
             MenusEvents.ON_SIGNOUT_SUCCESS -> {
-                view.navigationToLogin()
+                view.visibleMenuOptions(View.GONE)
+                view.visibleLogin(View.VISIBLE)
             }
-            MenusEvents.ON_UPDATE_PASSWORD_SUCCESS -> {
-                view.hideProgressDialog()
-                view.showMessagge(event.any)
+            MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK -> {
+                view.visibleMenuOptions(View.VISIBLE)
+                view.visibleLogin(View.GONE)
+
             }
-            MenusEvents.ON_UPDATE_PASSWORD_ERROR -> {
-                view.hideProgressDialog()
-                view.showMessagge(event.any)
+            MenusEvents.ON__SIGIN_SUCCES_GOOGLE -> {
+                view.visibleMenuOptions(View.VISIBLE)
+                view.visibleLogin(View.GONE)
             }
-            MenusEvents.ON_GET_MY_PROFILE_SUCCESS -> {
-                Log.e("profile", "llegue")
-                view.setDataProfile(event.any as User)
-            }
-            MenusEvents.ON_GET_MY_PROFILE_ERROR -> {
+            MenusEvents.ON__SIGIN_ERROR -> {
                 view.showMessagge(event.any)
             }
 
-            MenusEvents.ON_SUCCESS_FACEBOOK -> {
-                view.showMessagge(event.any)
-                view.mostrarmenu()
+            MenusEvents.ON_RECOVERY_SESSION_SUCCESS -> {
+                view.visibleMenuOptions(View.VISIBLE)
+                view.visibleLogin(View.GONE)
             }
-            MenusEvents.ON_ON_ERROR -> {
-                view.showMessagge(event.any)
-            }
-            MenusEvents.ON_SUCCES_GOOGLE -> {
-                view.showMessagge(event.any)
-                view.mostrarmenu()
-            }
-            MenusEvents.ON_ERROR_GOOGLE -> {
-                view.showMessagge(event.any)
+
+            MenusEvents.ON_RECOVERY_SESSION_ERROR -> {
+                view.visibleMenuOptions(View.GONE)
+                view.visibleLogin(View.VISIBLE)
             }
 
         }

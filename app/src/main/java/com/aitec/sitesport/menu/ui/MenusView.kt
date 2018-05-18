@@ -15,5 +15,7 @@ interface MenusView {
     fun navigationToLogin()
     fun setDataProfile(user: User)
     fun mostrarmenu()
+    fun visibleMenuOptions(visible: Int)
+    fun visibleLogin(visible: Int)
 
 }

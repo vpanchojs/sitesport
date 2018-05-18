@@ -19,7 +19,6 @@ import com.aitec.sitesport.menu.adapter.onOptionsAdapterListener
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.OptionMenu
 import com.aitec.sitesport.work.Workme
-import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -51,7 +50,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     val SIGN_IN_CODE = 888
     val face = 1
     private var callbackManager: CallbackManager? = null
-    internal var accessToken: AccessToken? = null
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
@@ -84,13 +82,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             val account = result.getResult(ApiException::class.java)
             Log.e(TAG, "signInResult:succes idtoken= ${account.idToken}")
             showMessagge("Session Correctamente")
-            presenter.tokenGoogle(account.idToken.toString())
+            presenter.tokenGoogle(account.idToken!!)
         } catch (e: ApiException) {
             showMessagge("Error al iniciar session")
             Log.e(TAG, "signInResult:failed code=" + e.toString());
         }
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -127,7 +124,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                Log.e("token de facebook", accessToken.toString())
                 presenter.tokenFacebook(loginResult.accessToken.token)
                 showMessagge("Session Correctamente")
             }
@@ -150,12 +146,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(activity!!, gso)
-    }
-
-    private fun enviar_token(token: String) {
-
-        presenter.tokenFacebook(accessToken!!.token)
-
     }
 
     override fun mostrarmenu() {
@@ -267,4 +257,11 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
 
+    override fun visibleMenuOptions(visible: Int) {
+        rv_menu_options.visibility = visible
+    }
+
+    override fun visibleLogin(visible: Int) {
+        cl_login.visibility = visible
+    }
 }
