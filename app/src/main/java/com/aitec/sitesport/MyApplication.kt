@@ -1,9 +1,11 @@
 package com.aitec.sitesport
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.multidex.MultiDexApplication
 import android.util.Log
+import com.aitec.sitesport.domain.db.SqliteDatabase
 import com.aitec.sitesport.domain.di.DaggerMainComponent
 import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.domain.di.MainComponent
@@ -39,6 +41,7 @@ class MyApplication : MultiDexApplication() {
     val SHARED_PREFERENCES_NAME = "dsafio_preferences"
     var domainModule: DomainModule? = null
     var appModule: MyAplicationModule? = null
+    lateinit var database: SqliteDatabase
 
 
     override fun onCreate() {
@@ -54,8 +57,10 @@ class MyApplication : MultiDexApplication() {
     }
 
     fun initModules() {
+        database = Room.databaseBuilder(this, SqliteDatabase::class.java, "sitespor-db").build()
         appModule = MyAplicationModule(this)
-        domainModule = DomainModule(this)
+        domainModule = DomainModule(this,database)
+
     }
 
 

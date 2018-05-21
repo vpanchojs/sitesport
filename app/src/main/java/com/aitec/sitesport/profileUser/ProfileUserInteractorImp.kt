@@ -31,7 +31,7 @@ class ProfileUserInteractorImp(var eventBus: EventBusInterface, var repository: 
             var user = User()
             user.dni = dni
             user.names = names
-            user.lastNames = lastName
+            user.lastName = lastName
             user.phone = phone
             repository.updateInfoUser(user)
         }

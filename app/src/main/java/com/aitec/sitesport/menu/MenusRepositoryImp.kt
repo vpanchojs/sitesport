@@ -2,12 +2,13 @@ package com.aitec.sitesport.menu
 
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.SqliteRoomApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.events.MenusEvents
 
-class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var retrofitApi: RetrofitApi) : MenusRepository {
+class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var retrofitApi: RetrofitApi, var sqliteRoomApi: SqliteRoomApi) : MenusRepository {
 
     override fun inSession() {
         if (sharePreferencesApi.getInSession())
@@ -23,7 +24,16 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
                 sharePreferencesApi.sesion(true, Cuenta.GOOGLE)
                 sharePreferencesApi.saveTokenAndSession(response.token!!)
                 postEvent(MenusEvents.ON__SIGIN_SUCCES_GOOGLE, response.user!!)
+                sqliteRoomApi.setUser(response.user!!, object : onApiActionListener<Long> {
+                    override fun onSucces(response: Long) {
 
+
+                    }
+
+                    override fun onError(error: Any?) {
+
+                    }
+                })
             }
 
             override fun onError(error: Any?) {

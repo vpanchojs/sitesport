@@ -30,7 +30,7 @@ class RetrofitApi {
 
     companion object {
         const val TAG = "RetrofitApi"
-        val PATH_API = "http://18.216.121.178:8050/"
+        val PATH_API = "http://18.191.105.191:8050/"
         //val PATH_API = "http://192.168.1.25:8050/"
 
         const val PATH_SEARCH_CENTER = "api/search-centros/"
