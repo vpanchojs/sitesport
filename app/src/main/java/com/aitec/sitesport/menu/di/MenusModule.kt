@@ -1,10 +1,11 @@
 package com.aitec.sitesport.menu.di
 
 import com.aitec.sitesport.domain.RetrofitApi
+import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.SqliteRoomApi
+import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.*
 import com.aitec.sitesport.menu.ui.MenusView
-import com.aitec.sitesport.domain.SharePreferencesApi
-import com.aitec.sitesport.lib.base.EventBusInterface
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -31,8 +32,8 @@ class MenusModule(var view: MenusView) {
 
     @Provides
     @Singleton
-    fun providesMenusRepository(eventBus: EventBusInterface, sharePreferencesApi: SharePreferencesApi, retrofitApi: RetrofitApi): MenusRepository {
-        return MenusRepositoryImp(eventBus, sharePreferencesApi,retrofitApi)
+    fun providesMenusRepository(eventBus: EventBusInterface, sharePreferencesApi: SharePreferencesApi, retrofitApi: RetrofitApi, sqliteRoomApi: SqliteRoomApi): MenusRepository {
+        return MenusRepositoryImp(eventBus, sharePreferencesApi, retrofitApi, sqliteRoomApi)
     }
 }
 

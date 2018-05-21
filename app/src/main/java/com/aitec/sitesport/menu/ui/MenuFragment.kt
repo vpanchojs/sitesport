@@ -125,6 +125,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 presenter.tokenFacebook(loginResult.accessToken.token)
+                Log.e(TAG, "TOKEN FA ${loginResult.accessToken.token}")
                 showMessagge("Session Correctamente")
             }
 
