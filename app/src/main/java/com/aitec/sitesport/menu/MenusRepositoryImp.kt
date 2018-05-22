@@ -49,6 +49,17 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
                 sharePreferencesApi.saveTokenAndSession(response.token!!)
                 postEvent(MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK, response.user!!)
 
+                sqliteRoomApi.setUser(response.user!!, object : onApiActionListener<Long> {
+                    override fun onSucces(response: Long) {
+
+
+                    }
+
+                    override fun onError(error: Any?) {
+
+                    }
+                })
+
             }
 
             override fun onError(error: Any?) {
