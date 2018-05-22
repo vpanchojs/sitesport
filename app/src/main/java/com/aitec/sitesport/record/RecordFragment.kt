@@ -10,6 +10,8 @@ import android.view.ViewGroup
 
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Reservation
+import com.aitec.sitesport.profile.ui.ProfileActivity
+import kotlinx.android.synthetic.main.fragment_record.*
 import kotlinx.android.synthetic.main.fragment_record.view.*
 
 
@@ -48,7 +50,7 @@ class RecordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(reservationsList.size == 0) return
+        /*if(reservationsList.size == 0) return
 
         val orderReservationsToView: MutableList<Reservation> = mutableListOf()
 
@@ -82,9 +84,9 @@ class RecordFragment : Fragment() {
 
         val dividerItemDecoration = ItemDecorator(styledAttributes.getDrawable(0))
         //view.rvRecordReservation.addItemDecoration(dividerItemDecoration)
-        view.rvRecordReservation.addItemDecoration(dividerItemDecoration, 3)
-        //tvInfo.text = "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE))
-        */
+        view.rvRecordReservation.addItemDecoration(dividerItemDecoration, 3)*/*/
+        tvInfo.text = "Próximamente... " + String(Character.toChars(ProfileActivity.EMOTICON_EYE))
+
     }
 
     companion object {
