@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
@@ -14,9 +15,9 @@ import com.aitec.sitesport.entities.ItemReservation
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Dia
 import com.aitec.sitesport.entities.enterprise.Enterprise
-import com.aitec.sitesport.profile.ui.ProfileActivity
 import com.aitec.sitesport.reserve.ReservePresenter
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
+import com.aitec.sitesport.reserve.adapter.ItemReservationAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.DayOfWeek
@@ -63,6 +64,13 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
             R.id.btn_calendar -> {
                 showDatePicker(c)
             }
+            R.id.ib_day_next -> {
+                addOrRemoveDaysCalendar(+1)
+            }
+
+            R.id.ib_day_back -> {
+                addOrRemoveDaysCalendar(-1)
+            }
             R.id.cl_header_bs -> {
                 when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
@@ -80,11 +88,11 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
-        enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
-        setupToolbar(enterprise.nombres)
-        setupRecyclerViewClourt(enterprise.canchas)
+        // enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
+        //setupToolbar(enterprise.nombres)
+        //  setupRecyclerViewClourt(enterprise.canchas)
         setupTodayDate(c)
-        setupRecyclerViewTimeTable(getTableTimeToday(getNameToday()))
+        // setupRecyclerViewTimeTable(getTableTimeToday(getNameToday()))
         setupEventsElements()
         setupBottomSheet()
         setupInject()
@@ -132,14 +140,29 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     fun showDatePicker(c: Calendar) {
         fromDatePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            updateCalendar(year, monthOfYear, dayOfMonth)
+            setupTodayDate(c)
+            //Log.e("picker", "fecha obtenida")
+
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
         fromDatePickerDialog!!.show()
-
     }
+
+    fun updateCalendar(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        c.set(year, monthOfYear, dayOfMonth)
+    }
+
+    fun addOrRemoveDaysCalendar(num: Int) {
+        c.add(Calendar.DAY_OF_WEEK, num)
+        setupTodayDate(c)
+    }
+
 
     private fun setupEventsElements() {
         btn_calendar.setOnClickListener(this)
         cl_header_bs.setOnClickListener(this)
+        ib_day_back.setOnClickListener(this)
+        ib_day_next.setOnClickListener(this)
     }
 
 
@@ -151,25 +174,23 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     }
 
     private fun setupRecyclerViewTimeTable(day: Dia?) {
-        val inicio = day!!.hora!!.inicio
-        val fin = day!!.hora!!.fin
-        
+        //val inicio = day!!.hora!!.inicio
+        //val fin = day!!.hora!!.fin
 
-        /*
+        var inicio = 8
+        var fin = 22
+
+
         var items = ArrayList<ItemReservation>()
-        items.add(ItemReservation("8:00", "9:00", true))
-        items.add(ItemReservation("9:00", "10:00", false))
-        items.add(ItemReservation("10:00", "11:00", false))
-        items.add(ItemReservation("11:00", "12:00", true))
-        items.add(ItemReservation("12:00", "13:00", false))
-        items.add(ItemReservation("12:00", "13:00", false))
-        items.add(ItemReservation("12:00", "13:00", true))
+        for (i in inicio..fin) {
+            items.add(ItemReservation("8:00", "9:00", true))
+        }
+
         var adapterTableTime = ItemReservationAdapter(items)
         rv_time_table.setHasFixedSize(true);
         rv_time_table.layoutManager = LinearLayoutManager(this)
         rv_time_table.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         rv_time_table.adapter = adapterTableTime
-        */
 
     }
 

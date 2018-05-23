@@ -220,10 +220,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 showMessagge("Estamos Trabajando en ello")
             }
             R.id.btn_sigin_facebook -> {
-                showMessagge("Estamos Trabajando en ello")
-                /*
+                //showMessagge("Estamos Trabajando en ello")
+
                 LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
-                */
+
             }
         }
     }

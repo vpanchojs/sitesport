@@ -241,7 +241,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <ImageButton
-            android:id="@+id/ib_day_next"
+            android:id="@+id/ib_day_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="8dp"
@@ -256,7 +256,7 @@
             app:srcCompat="@drawable/ic_open_top" />
 
         <ImageButton
-            android:id="@+id/ib_day_back"
+            android:id="@+id/ib_day_next"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="8dp"
@@ -275,15 +275,13 @@
             android:id="@+id/btn_calendar"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/bg_profile_no_buttons"
             android:text="12 de abril del 2018"
             android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toStartOf="@+id/ib_day_back"
-            app:layout_constraintStart_toEndOf="@+id/ib_day_next"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/ib_day_next"
+            app:layout_constraintStart_toEndOf="@+id/ib_day_back" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_time_table"
