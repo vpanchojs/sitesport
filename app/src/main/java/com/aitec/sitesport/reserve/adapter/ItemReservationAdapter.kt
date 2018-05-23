@@ -28,19 +28,15 @@ class ItemReservationAdapter(var hoursList: List<ItemReservation>) : RecyclerVie
 
         if (hours.state) {
             holder.view.tv_state.setText("Reservado")
-            holder.view.cb_item.isChecked = hours.state
+            holder.view.cb_item.isEnabled = false
         } else {
             holder!!.view.tv_state.setText("Disponible")
-            holder.view.cb_item.isChecked = hours.state
+            holder.view.cb_item.isEnabled = true
         }
-
     }
-
 
     class ViewHolder(var view: View, var hoursList: List<ItemReservation>) : RecyclerView.ViewHolder(view) {
 
-
     }
-
 
 }

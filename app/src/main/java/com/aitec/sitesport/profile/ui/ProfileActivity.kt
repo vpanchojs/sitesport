@@ -124,7 +124,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
 
         btnReservation.setOnClickListener {
-            Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Próximamente " + String(Character.toChars(EMOTICON_EYE)), Toast.LENGTH_SHORT).show()
             val i = Intent(this, ReserveActivity::class.java)
             i.putExtra(ENTERPRISE, enterprise)
             startActivity(i)

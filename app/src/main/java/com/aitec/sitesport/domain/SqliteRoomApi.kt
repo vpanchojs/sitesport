@@ -12,8 +12,17 @@ class SqliteRoomApi(var db: SqliteDatabase) {
     fun setUser(user: User, callback: onApiActionListener<Long>) {
         var id: Long = 0
         doAsync {
-            id = db.userDao().insertUser(user)
-            Log.e("db", "se guardo $id")
+
+            var userBd = db.userDao().getUser(user.pk!!)
+
+            if (userBd == null) {
+                id = db.userDao().insertUser(user)
+                Log.e("db", "se creo")
+            } else {
+                user.id = userBd.id
+                db.userDao().updateUser(user)
+                Log.e("db", "se actualizo")
+            }
             uiThread {
                 callback.onSucces(id)
             }

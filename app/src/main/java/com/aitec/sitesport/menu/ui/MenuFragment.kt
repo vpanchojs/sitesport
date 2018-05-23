@@ -75,7 +75,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
         if (requestCode == SIGN_IN_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            handleSignInResult(task)
         }
     }
 
@@ -213,11 +213,17 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 navigationToProfile()
             }
             R.id.btn_sigin_google -> {
+                /*
                 val intent = mGoogleSignInClient!!.signInIntent
                 startActivityForResult(intent, SIGN_IN_CODE)
+                */
+                showMessagge("Estamos Trabajando en ello")
             }
             R.id.btn_sigin_facebook -> {
+                //showMessagge("Estamos Trabajando en ello")
+
                 LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
+
             }
         }
     }
