@@ -35,10 +35,10 @@ class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<Tabl
         }
 
         holder.view.tvDia.text = dia
-        holder.view.tvHourStart.text = "Desde " + tableTime.horas[0].inicio
-        holder.view.tvHourEnd.text = "Hasta " + tableTime.horas[0].fin
+       // holder.view.tvHourStart.text = "Desde " + tableTime.horas[0].inicio
+       // holder.view.tvHourEnd.text = "Hasta " + tableTime.horas[0].fin
 
-        Log.e("onBindViewHolder", position.toString() + "  -  " + tableTime.horas[0].inicio.toString())
+       // Log.e("onBindViewHolder", position.toString() + "  -  " + tableTime.horas[0].inicio.toString())
 
     }
 

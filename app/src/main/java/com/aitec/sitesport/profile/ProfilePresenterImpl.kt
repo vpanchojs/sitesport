@@ -46,7 +46,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 fotoEnterprise.add(f) // solo para la imagen principal de la empresa de perfil
                 profileView.setImages(fotoEnterprise)
                 profileView.setLikes(enterprise.puntuacion)
-                profileView.setTableTime(enterprise.horario)
+                //profileView.setTableTime(enterprise.horario)
                 profileView.setStateEnterprise(enterprise.abierto)
                 profileView.setCourts(enterprise.canchas)
                 profileView.setServices(enterprise.servicios)

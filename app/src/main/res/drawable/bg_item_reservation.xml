@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/colorAccent" android:state_activated="true" />
-    <item android:drawable="@color/colorIconsServicesDefault" android:state_enabled="false" />
-    <item android:drawable="@android:color/white" />
+    <item android:state_checked="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/colorAccent" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/colorNormalNoIButton" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#c4c4c4" />
+        </shape>
+    </item>
 </selector>

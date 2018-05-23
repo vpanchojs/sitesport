@@ -27,7 +27,7 @@ class Enterprise() : Parcelable {
     var numero_canchas: String = "0"
     var redes_sociales: List<RedSocial> = arrayListOf()
     var canchas: List<Cancha> = arrayListOf()
-    var horario: List<Horario> = arrayListOf()
+    var horario: Horario? = null
     var precio: List<Precio> = arrayListOf()
 
     /*var abierto: Boolean = false
@@ -51,7 +51,7 @@ class Enterprise() : Parcelable {
         idMarker = parcel.readString()
         parcel.readList(redes_sociales, RedSocial::class.java.classLoader)
         parcel.readList(canchas, Cancha::class.java.classLoader)
-        parcel.readList(horario, Horario::class.java.classLoader)
+        horario = parcel.readParcelable(Horario::class.java.classLoader)
 
         /*descripcion = parcel.readString()
         abierto = if (parcel.readInt() == 0) false else true
@@ -80,7 +80,7 @@ class Enterprise() : Parcelable {
         parcel.writeString(idMarker)
         parcel.writeList(redes_sociales)
         parcel.writeList(canchas)
-        parcel.writeList(horario)
+        parcel.writeParcelable(horario, flags)
 
         parcel.writeList(precio)
 

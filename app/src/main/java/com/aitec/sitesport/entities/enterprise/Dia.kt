@@ -3,19 +3,19 @@ package com.aitec.sitesport.entities.enterprise
 import android.os.Parcel
 import android.os.Parcelable
 
-class Dia() : Parcelable{
+class Dia() : Parcelable {
 
     var nombre: Int = 0
-    var horas: List<Hora> = arrayListOf()
+    var hora: Hora? = null
 
     constructor(parcel: Parcel) : this() {
         nombre = parcel.readInt()
-        horas = parcel.createTypedArrayList(Hora)
+        hora = parcel.readParcelable(Hora::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(nombre)
-        parcel.writeTypedList(horas)
+        parcel.writeParcelable(hora, flags)
     }
 
     override fun describeContents(): Int {
@@ -31,5 +31,6 @@ class Dia() : Parcelable{
             return arrayOfNulls(size)
         }
     }
+
 
 }
