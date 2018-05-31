@@ -81,8 +81,9 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     private fun handleSignInResult(result: Task<GoogleSignInAccount>) {
         try {
+            Log.e(TAG, result.result.toJson())
             val account = result.getResult(ApiException::class.java)
-            Log.e(TAG, "signInResult:succes idtoken= ${account.idToken}")
+           // Log.e(TAG, "signInResult:succes idtoken= ${account.serverAuthCode}")
             showMessagge("Session Correctamente")
             presenter.tokenGoogle(account.idToken!!)
         } catch (e: ApiException) {
@@ -213,11 +214,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 navigationToProfile()
             }
             R.id.btn_sigin_google -> {
-                /*
+
                 val intent = mGoogleSignInClient!!.signInIntent
                 startActivityForResult(intent, SIGN_IN_CODE)
-                */
-                showMessagge("Estamos Trabajando en ello")
+                //showMessagge("Estamos Trabajando en ello")
             }
             R.id.btn_sigin_facebook -> {
                 //showMessagge("Estamos Trabajando en ello")

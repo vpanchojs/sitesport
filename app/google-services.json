@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "138055446583",
+    "firebase_url": "https://sitesport-204402.firebaseio.com",
+    "project_id": "sitesport-204402",
+    "storage_bucket": "sitesport-204402.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138055446583:android:26c5170e91835c5d",
+        "android_client_info": {
+          "package_name": "com.aitec.sitesport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138055446583-ksl6qqdbgo36h5c4ffgn2r6c87ed6c2c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "138055446583-894jesg60e6bvufjkjumkj5oe3hbcs2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aitec.sitesport",
+            "certificate_hash": "a84af792feb501f33dac7bf07ed87d8d7aeb0c9c"
+          }
+        },
+        {
+          "client_id": "138055446583-vk1h8k95h1ksqqs5akl9eaa5rturnr44.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "138055446583-ksl6qqdbgo36h5c4ffgn2r6c87ed6c2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgt3urH9zrNX_EorWiLUo42l6F8egq6Nk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138055446583-ksl6qqdbgo36h5c4ffgn2r6c87ed6c2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
