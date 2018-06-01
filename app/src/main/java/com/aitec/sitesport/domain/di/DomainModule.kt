@@ -1,10 +1,14 @@
 package com.aitec.sitesport.domain.di
 
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.SqliteRoomApi
 import com.aitec.sitesport.domain.db.SqliteDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -29,6 +33,12 @@ class DomainModule(var app: MyApplication, var database: SqliteDatabase) {
     @Singleton
     fun providesSqliteRoomApi():SqliteRoomApi{
         return SqliteRoomApi(database)
+    }
+
+    @Provides
+    @Singleton
+    fun providesFirebaseApi(): FirebaseApi {
+        return FirebaseApi(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance(), FirebaseStorage.getInstance().reference)
     }
 
 
