@@ -1,7 +1,6 @@
 package com.aitec.sitesport.profileUser.di
 
-import com.aitec.sitesport.domain.RetrofitApi
-import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileUser.*
 import com.aitec.sitesport.profileUser.ui.ProfileUserView
@@ -32,8 +31,8 @@ class ProfileUserModule(var view: ProfileUserView) {
 
     @Provides
     @Singleton
-    fun providesProfileUserRepository(eventBus: EventBusInterface, retrofitApi: RetrofitApi, sharePreferencesApi: SharePreferencesApi): ProfileUserRepository {
-        return com.aitec.sitesport.profileUser.ProfileUserRepositoryImp(eventBus, retrofitApi)
+    fun providesProfileUserRepository(eventBus: EventBusInterface, firebaseApi: FirebaseApi): ProfileUserRepository {
+        return ProfileUserRepositoryImp(eventBus, firebaseApi)
     }
 
 }

@@ -3,7 +3,7 @@ package com.aitec.sitesport.menu.events
 /**
  * Created by victor on 27/1/18.
  */
-class MenusEvents(var type: Int, var any: Any) {
+class MenusEvents(var type: Int, var any: Any?) {
 
     companion object {
         const val ON_GET_MY_PROFILE_SUCCESS = 4
