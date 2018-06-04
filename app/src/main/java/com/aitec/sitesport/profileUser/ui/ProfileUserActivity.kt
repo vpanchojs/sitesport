@@ -7,13 +7,21 @@ import android.view.View
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.profileUser.ProfileUserPresenter
 import com.aitec.sitesport.util.BaseActivitys
+import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_profile_user.*
 import javax.inject.Inject
 
 class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickListener {
 
+
+    companion object {
+        const val USER = "user"
+    }
+
+    lateinit var user: User
 
     val application: MyApplication by lazy {
         getApplication() as MyApplication
@@ -30,12 +38,25 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         setupInject()
         setupEventsElements()
         setupValidationInputs()
+        setDataProfile(intent.extras.getParcelable(USER))
         presenter.onSubscribe()
         presenter.getInfoUser()
     }
 
+    private fun setDataProfile(user: User) {
+        this.user = user
+        tie_names.setText(user.names.toString())
+        tie_email.setText(user.email)
+        GlideApp.with(this)
+                .load(user.photo)
+                .placeholder(R.mipmap.ic_launcher)
+                .centerCrop()
+                .error(R.mipmap.ic_launcher)
+                .into(civ_user)
+    }
+
     private fun setupValidationInputs() {
-        BaseActivitys.onTextChangedListener(arrayListOf(tie_names, tie_surname, tie_dni, tie_phone), btn_update)
+        BaseActivitys.onTextChangedListener(arrayListOf(tie_names, tie_dni, tie_phone), btn_update)
     }
 
     private fun setupEventsElements() {
@@ -70,7 +91,12 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_update -> {
-                presenter.updateInfoUser(tie_names.text.toString(), tie_surname.text.toString(), tie_dni.text.toString(), tie_phone.text.toString(), tie_email.text.toString())
+                presenter.updateInfoUser(
+                        tie_names.text.toString(),
+                        tie_dni.text.toString(),
+                        tie_phone.text.toString(),
+                        user.photo.toString()
+                )
             }
         }
     }
@@ -94,4 +120,23 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
     override fun showErrorPhoneInput(message: Any) {
         tie_phone.error = message.toString()
     }
+
+    override fun showViewInfo(visibility: Int) {
+        cl_info_get_user.visibility = visibility
+    }
+
+    override fun setInfoUser(dni: String?, phone: String?) {
+        tie_dni.setText(dni)
+        tie_phone.setText(phone)
+    }
+
+    override fun showButtonReload(visibility: Int) {
+        btn_reload.visibility = visibility
+    }
+
+    override fun showProgressAndMessagin(visibility: Int) {
+        progressbar_get_info_user.visibility = visibility
+        tv_info.visibility = visibility
+    }
+
 }

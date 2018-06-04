@@ -13,7 +13,7 @@ class ProfileUserInteractorImp(var eventBus: EventBusInterface, var repository: 
     }
 
 
-    override fun updateInfoUser(names: String, lastName: String, dni: String, phone: String, idUser: String) {
+    override fun updateInfoUser(names: String, dni: String, phone: String, photo: String) {
         var correct = true
 
         if (!BaseActivitys.validaDni(dni)) {
@@ -31,8 +31,8 @@ class ProfileUserInteractorImp(var eventBus: EventBusInterface, var repository: 
             var user = User()
             user.dni = dni
             user.names = names
-            user.lastName = lastName
             user.phone = phone
+            user.photo = photo
             repository.updateInfoUser(user)
         }
 

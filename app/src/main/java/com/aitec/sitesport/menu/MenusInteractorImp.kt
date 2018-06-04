@@ -1,9 +1,11 @@
 package com.aitec.sitesport.menu
 
+import com.aitec.sitesport.lib.base.EventBusInterface
+
 /**
  * Created by victor on 27/1/18.
  */
-class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
+class MenusInteractorImp(var repository: MenusRepository, eventBus: EventBusInterface) : MenusInteractor {
 
     override fun enviartokengoogle(idToken: String) {
         repository.enviartokengoogle(idToken)
@@ -17,8 +19,12 @@ class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
         repository.onSingOut()
     }
 
-    override fun inSession() {
-        repository.inSession()
+    override fun subscribeAuth() {
+        repository.subscribeAuth()
+    }
+
+    override fun unSubscribeAuth() {
+        repository.unSubscribeAuth()
     }
 
     override fun onUpdatePassword(password: String, passwordOld: String) {
@@ -28,4 +34,5 @@ class MenusInteractorImp(var repository: MenusRepository) : MenusInteractor {
     override fun getMyProfile() {
         repository.getMyProfile()
     }
+
 }

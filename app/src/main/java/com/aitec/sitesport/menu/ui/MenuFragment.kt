@@ -17,7 +17,9 @@ import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.menu.MenusPresenter
 import com.aitec.sitesport.menu.adapter.OptionsAdapter
 import com.aitec.sitesport.menu.adapter.onOptionsAdapterListener
+import com.aitec.sitesport.profileUser.ui.ProfileUserActivity
 import com.aitec.sitesport.util.BaseActivitys
+import com.aitec.sitesport.util.GlideApp
 import com.aitec.sitesport.util.OptionMenu
 import com.aitec.sitesport.work.Workme
 import com.facebook.CallbackManager
@@ -81,26 +83,23 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     private fun handleSignInResult(result: Task<GoogleSignInAccount>) {
         try {
-            Log.e(TAG, result.result.toJson())
             val account = result.getResult(ApiException::class.java)
-           // Log.e(TAG, "signInResult:succes idtoken= ${account.serverAuthCode}")
-            showMessagge("Session Correctamente")
+            // Log.e(TAG, "signInResult:succes idtoken= ${account.serverAuthCode}")
+            // showMessagge("Session Correctamente")
             presenter.tokenGoogle(account.idToken!!)
-        } catch (e: ApiException) {
-            showMessagge("Error al iniciar session")
+        } catch (e: Exception) {
+            showMessagge("Error al autenticarse en google")
             Log.e(TAG, "signInResult:failed code=" + e.toString());
         }
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume()
-        presenter.inSession()
+
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.onPause()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -118,6 +117,8 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         setupSingInGoogle()
         btn_sigin_google.setOnClickListener(this)
         btn_sigin_facebook.setOnClickListener(this)
+        presenter.onResume()
+        presenter.subscribeAuth()
     }
 
     fun setupSingInFacebook() {
@@ -126,16 +127,16 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 presenter.tokenFacebook(loginResult.accessToken.token)
-                Log.e(TAG, "TOKEN FA ${loginResult.accessToken.token}")
-                showMessagge("Session Correctamente")
+                //Log.e(TAG, "TOKEN FA ${loginResult.accessToken.token}")
             }
 
             override fun onCancel() {
-                Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: FacebookException) {
-                Toast.makeText(context, R.string.error_login, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, R.string.error_login, Toast.LENGTH_SHORT).show()
+                showMessagge("Error al autenticarse con facebook")
             }
         })
 
@@ -171,12 +172,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         progressDialog.hide()
     }
 
-    override fun showMessagge(message: Any) {
-        BaseActivitys.showToastMessage(context!!, message, Toast.LENGTH_SHORT)
+    override fun showMessagge(message: Any?) {
+        BaseActivitys.showToastMessage(context!!, message!!, Toast.LENGTH_SHORT)
     }
 
     override fun navigationToProfile() {
-        //startActivity(Intent(context, ProfileActivity::class.java))
+        startActivity(Intent(context, ProfileUserActivity::class.java).putExtra(ProfileUserActivity.USER, user))
     }
 
     override fun navigationToTermsAndConditions() {
@@ -229,17 +230,15 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     override fun setDataProfile(user: User) {
-        /*
         this.user = user
-        tv_name_user.text = user.username
+        tv_name_user.text = user.names
         tv_email.text = user.email
         GlideApp.with(context!!)
-                .load("")
-                .placeholder(R.drawable.ic_person_black_24dp)
+                .load(user.photo)
+                .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
-                .error(R.drawable.ic_person_black_24dp)
+                .error(R.mipmap.ic_launcher)
                 .into(civ_user)
-                */
     }
 
     companion object {
@@ -258,6 +257,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     override fun singOut(platform: Int) {
+        Log.e(TAG, "la plataforma ha cerrar session $platform")
         when (platform) {
             Cuenta.FACEBOOK -> {
                 LoginManager.getInstance().logOut()
@@ -266,5 +266,15 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 mGoogleSignInClient!!.signOut()
             }
         }
+    }
+
+    override fun showProgress(visible: Int) {
+        progressbar.visibility = visible
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onPause()
+        presenter.unSubscribeAuth()
     }
 }

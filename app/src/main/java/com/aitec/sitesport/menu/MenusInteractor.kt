@@ -6,11 +6,13 @@ package com.aitec.sitesport.menu
 interface MenusInteractor {
 
 
+    fun subscribeAuth()
+
+    fun unSubscribeAuth()
+
     fun onSingOut()
     fun onUpdatePassword(password: String, passwordOld: String)
     fun getMyProfile()
-
-    fun inSession()
     fun enviartoken(token:String)
 
     fun enviartokengoogle(idToken: String)

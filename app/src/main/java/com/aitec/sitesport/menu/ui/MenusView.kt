@@ -9,7 +9,7 @@ interface MenusView {
 
     fun hideProgressDialog();
     fun showProgressDialog(message: Int)
-    fun showMessagge(message: Any)
+    fun showMessagge(message: Any?)
     fun navigationToProfile();
     fun navigationToTermsAndConditions()
     fun navigationToLogin()
@@ -18,5 +18,6 @@ interface MenusView {
     fun visibleMenuOptions(visible: Int)
     fun visibleLogin(visible: Int)
     fun singOut(platform: Int)
+    fun showProgress(visible: Int)
 
 }
