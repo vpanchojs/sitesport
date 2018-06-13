@@ -37,6 +37,7 @@ import com.aitec.sitesport.welcome.WelcomeActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -95,8 +96,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setupToolBar()
+        onGetDynamicLink()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupInjection()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -113,6 +114,23 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
             //permission()
             startActivity(Intent(this, MapSitesActivity::class.java))
         }
+    }
+
+    private fun onGetDynamicLink() {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener {
+                    if (it != null) {
+                        Log.e(TAG, "query param ${it.link.getQueryParameter("idSportCenter")}")
+                        var pkSportCenter = it.link.getQueryParameter("idSportCenter")
+                        if (pkSportCenter != null) {
+                            startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, pkSportCenter))
+                        }
+                    }
+                }
+                .addOnFailureListener {
+
+                }
     }
 
     override fun onResume() {

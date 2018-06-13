@@ -2,12 +2,16 @@ package com.aitec.sitesport.util
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.net.Uri
 import android.support.design.widget.TextInputEditText
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.Button
 import android.widget.Toast
+import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
 /**
  * Created by victor on 25/1/18.
@@ -100,5 +104,36 @@ class BaseActivitys() {
                 return false
             }
         }
+
+
+        fun buildDinamycLinkShareApp(pk: String?, callbacks: onApiActionListener<String>) {
+            var link = "https://sitesport.aitecec.com"
+            if (pk != null) {
+                link = "https://sitesport.aitecec.com?idSportCenter=$pk"
+            }
+
+            FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(link))
+                    .setDynamicLinkDomain("sitesport.page.link")
+                    // Open links with this app on Android
+                    .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener {
+                        callbacks.onSucces(it.shortLink.toString())
+                        /*
+                        Log.e(TAG, "el link es: ${it.shortLink}")
+                        val i = Intent(Intent.ACTION_SEND)
+                        i.type = "text/plain"
+                        i.putExtra(Intent.EXTRA_TEXT, "descarga " + it.shortLink.toString())
+                        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                        */
+                    }
+                    .addOnFailureListener {
+                        callbacks.onError(it.toString())
+                    }
+
+        }
+
+
     }
 }

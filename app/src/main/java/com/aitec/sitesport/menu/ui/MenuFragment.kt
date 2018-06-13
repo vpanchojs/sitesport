@@ -2,7 +2,6 @@ package com.aitec.sitesport.menu.ui
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -13,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.menu.MenusPresenter
@@ -34,8 +34,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 import java.util.*
@@ -197,7 +195,18 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         when (position) {
             0 -> {
                 showMessagge("Compartir")
-                buildDinamycLinkShareApp()
+                BaseActivitys.buildDinamycLinkShareApp(null, object : onApiActionListener<String> {
+                    override fun onSucces(response: String) {
+                        val i = Intent(android.content.Intent.ACTION_SEND)
+                        i.type = "text/plain"
+                        i.putExtra(Intent.EXTRA_TEXT, "descarga " + response)
+                        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                    }
+
+                    override fun onError(error: Any?) {
+                        Log.e(TAG, "Error dynamic link $error")
+                    }
+                })
             }
 
             1 -> {
@@ -219,10 +228,11 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         }
     }
 
+    /*
 
     fun buildDinamycLinkShareApp() {
         FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://sitesport.aitecec.com/"))
+                .setLink(Uri.parse("https://sitesport.aitecec.com?idSportCenter=1"))
                 .setDynamicLinkDomain("sitesport.page.link")
                 // Open links with this app on Android
                 .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
@@ -238,7 +248,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
                 }
     }
-
+*/
 
     override fun onClick(v: View?) {
         when (v?.id) {
