@@ -30,13 +30,14 @@ import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
-import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import com.aitec.sitesport.record.RecordFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.aitec.sitesport.welcome.WelcomeActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -45,9 +46,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
 
     override fun navigatioProfile(entrepise: Enterprise) {
-        startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
+        startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise.pk))
     }
-
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -96,8 +96,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setupToolBar()
+        onGetDynamicLink()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupInjection()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -116,6 +116,23 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         }
     }
 
+    private fun onGetDynamicLink() {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener {
+                    if (it != null) {
+                        Log.e(TAG, "query param ${it.link.getQueryParameter("idSportCenter")}")
+                        var pkSportCenter = it.link.getQueryParameter("idSportCenter")
+                        if (pkSportCenter != null) {
+                            startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, pkSportCenter))
+                        }
+                    }
+                }
+                .addOnFailureListener {
+
+                }
+    }
+
     override fun onResume() {
         super.onResume()
         presenter.onResume()
@@ -131,7 +148,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         application = getApplication() as MyApplication
         application.getMainComponent(this).inject(this)
     }
-
 
 
     private fun setupToolBar() {

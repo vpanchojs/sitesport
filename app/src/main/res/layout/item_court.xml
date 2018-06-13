@@ -18,7 +18,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingStart="8dp"
-        android:text="asdasdasdasdasd"
+        android:text="Cancha"
         android:textColor="@drawable/txt_color_chips_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

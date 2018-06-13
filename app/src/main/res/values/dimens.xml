@@ -32,6 +32,7 @@
     <dimen name="dimen_rv_item_subtitle">13sp</dimen>
     <dimen name="dimen_dialog_title">18sp</dimen>
     <dimen name="dimen_dialog_subtitle">15sp</dimen>
+    <dimen name="dimen_text_image_icon">14sp</dimen>
 
 
     <!-- //dimensiones del perfil -->

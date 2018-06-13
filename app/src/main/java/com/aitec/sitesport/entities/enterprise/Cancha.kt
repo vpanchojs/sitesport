@@ -7,33 +7,33 @@ import com.aitec.sitesport.entities.Rate
 class Cancha() : Parcelable{
 
     var nombre: String = ""
-    var dia: Float = 0f
-    var noche: Float = 0f
+    var precio_dia: Float = 0f
+    var precio_noche: Float = 0f
     var numero_jugadores: String = ""
     var piso: String = ""
-    var fotos: MutableList<Foto>? = arrayListOf()
+    var hora_intermedia: String = ""
+    var fotos: ArrayList<String>? = arrayListOf()
     var isAddPhotoProfile: Boolean = false
-    var rates: MutableList<Rate> = arrayListOf()
 
 
     constructor(parcel: Parcel) : this() {
         nombre = parcel.readString()
-        dia = parcel.readFloat()
-        noche = parcel.readFloat()
+        precio_dia = parcel.readFloat()
+        precio_noche = parcel.readFloat()
         numero_jugadores = parcel.readString()
         piso = parcel.readString()
-        fotos = parcel.createTypedArrayList(Foto)
-        rates = parcel.createTypedArrayList(Rate)
+        hora_intermedia = parcel.readString()
+        fotos = parcel.createStringArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(nombre)
-        parcel.writeFloat(dia)
-        parcel.writeFloat(noche)
+        parcel.writeFloat(precio_dia)
+        parcel.writeFloat(precio_noche)
         parcel.writeString(numero_jugadores)
         parcel.writeString(piso)
-        parcel.writeTypedList(fotos)
-        parcel.writeTypedList(rates)
+        parcel.writeString(hora_intermedia)
+        parcel.readArrayList(String::class.java.classLoader)
     }
 
     override fun describeContents(): Int {

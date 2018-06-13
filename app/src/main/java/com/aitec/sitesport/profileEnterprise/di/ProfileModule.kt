@@ -1,10 +1,11 @@
-package com.aitec.sitesport.profile.di
+package com.aitec.sitesport.profileEnterprise.di
 
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.lib.base.EventBusInterface
-import com.aitec.sitesport.profile.*
-import com.aitec.sitesport.profile.ui.ProfileView
+import com.aitec.sitesport.profileEnterprise.*
+import com.aitec.sitesport.profileEnterprise.ui.ProfileView
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,7 +33,7 @@ class ProfileModule(private val profileView : ProfileView){
 
     @Provides
     @Singleton
-    fun providesProfileRepository(retrofitApi: RetrofitApi, eventBusInterface : EventBusInterface, sharePreferencesApi: SharePreferencesApi)
-            : ProfileRepository = ProfileRepositoryImpl(retrofitApi, eventBusInterface, sharePreferencesApi)
+    fun providesProfileRepository(firebaseApi: FirebaseApi, eventBusInterface : EventBusInterface, sharePreferencesApi: SharePreferencesApi)
+            : ProfileRepository = ProfileRepositoryImpl(firebaseApi, eventBusInterface, sharePreferencesApi)
 
 }

@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.dialog
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -33,8 +33,7 @@ class ImageFragment : Fragment() {
 
 
     private fun loadImage(url: String, imageView: ImageView){
-        if(url!= null && url.isNotEmpty()) {
-            Log.e("ImageFragment", "url = " + url)
+        if(url.isNotEmpty()) {
             GlideApp.with(this)
                     .load(URL(url).toString())
                     .placeholder(resources.getDrawable(R.mipmap.ic_launcher))

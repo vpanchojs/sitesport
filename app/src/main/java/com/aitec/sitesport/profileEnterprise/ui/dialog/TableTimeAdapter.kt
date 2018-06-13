@@ -1,5 +1,6 @@
-package com.aitec.sitesport.profile.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.dialog
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.item_rv_table_time.view.*
 class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<TableTimeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_rv_table_time, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_table_time, parent, false);
         return TableTimeAdapter.ViewHolder(view)
     }
 
@@ -20,26 +21,12 @@ class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<Tabl
         return tableTimeList.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tableTime = tableTimeList.get(position)
-
-        var dia = ""
-        when(tableTime.nombre){
-            0 -> dia = "Lunes"
-            1 -> dia = "Martes"
-            2 -> dia = "Miércoles"
-            3 -> dia = "Jueves"
-            4 -> dia = "Viernes"
-            5 -> dia = "Sábado"
-            6 -> dia = "Domingo"
-        }
-
-        holder.view.tvDia.text = dia
-       // holder.view.tvHourStart.text = "Desde " + tableTime.horas[0].inicio
-       // holder.view.tvHourEnd.text = "Hasta " + tableTime.horas[0].fin
-
-       // Log.e("onBindViewHolder", position.toString() + "  -  " + tableTime.horas[0].inicio.toString())
-
+        holder.view.tvDia.text = tableTime.nombre
+        holder.view.tvHourStart.text = "Desde ${tableTime.hora_inicio}"
+        holder.view.tvHourEnd.text = "Hasta ${tableTime.hora_fin}"
     }
 
 

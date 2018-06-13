@@ -10,7 +10,7 @@ import android.view.ViewGroup
 
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Reservation
-import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import kotlinx.android.synthetic.main.fragment_record.*
 import kotlinx.android.synthetic.main.fragment_record.view.*
 

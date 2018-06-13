@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.dialog
 
 import android.content.Context
 import android.support.v4.content.ContextCompat

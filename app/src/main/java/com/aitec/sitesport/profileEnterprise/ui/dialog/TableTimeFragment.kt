@@ -1,58 +1,58 @@
-package com.aitec.sitesport.profile.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.view.View
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Dia
-import com.aitec.sitesport.entities.enterprise.Horario
 import kotlinx.android.synthetic.main.fragment_table_time.view.*
 
-class TableTimeFragment : DialogFragment(), DialogInterface.OnShowListener {
+class TableTimeFragment : DialogFragment(){
 
-    var listTableTime: List<Dia>? = null
+    var listTableTime: List<Dia> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val arg : List<Horario> = arguments!!.getParcelableArrayList("tableTime")!!
-        listTableTime = arg[0].dias
-        Log.e("TableTimeFragment","listTableTime = " + listTableTime.toString())
+        listTableTime = arguments!!.getParcelableArrayList("tableTime")!!
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
-        val view = activity!!.layoutInflater.inflate(R.layout.fragment_table_time, null)
-        builder.setView(view)
+        val view: View?
+        if(listTableTime.isNotEmpty()) {
+            view = activity!!.layoutInflater.inflate(R.layout.fragment_table_time, null)
+            builder.setView(view)
+            val adapter = TableTimeAdapter(listTableTime)
+            view.rvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
+            view.rvInfoService.adapter = adapter
+        }else {
+            view = activity!!.layoutInflater.inflate(R.layout.layout_info_textview, null)
+            builder.setView(view)
+        }
 
         view.ib_back.setOnClickListener {
             this.dismiss()
         }
 
-        view.imgBackground.setColorFilter(ContextCompat.getColor(activity!!, R.color.icon_transparent),
+        view.imgBackground.setColorFilter(
+                ContextCompat.getColor(activity!!, R.color.icon_transparent),
                 android.graphics.PorterDuff.Mode.MULTIPLY)
 
-        val adapter = TableTimeAdapter(listTableTime!!)
-        view.rvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
-        view.rvInfoService.adapter = adapter
+
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.setOnShowListener(this)
         return dialog
     }
 
-    override fun onShow(dialog: DialogInterface?) {
-        val dialogo = getDialog() as AlertDialog
-    }
-
     companion object {
-        fun newInstance(tableTime: List<Horario>): TableTimeFragment {
+        fun newInstance(tableTime: List<Dia>): TableTimeFragment {
             val bundle = Bundle()
             bundle.putParcelableArrayList("tableTime", ArrayList(tableTime))
             val fragment = TableTimeFragment()

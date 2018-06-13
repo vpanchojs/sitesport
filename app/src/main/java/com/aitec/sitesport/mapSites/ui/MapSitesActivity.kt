@@ -28,7 +28,7 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.mapSites.MapSitesPresenter
 import com.aitec.sitesport.mapSites.adapter.EntrepiseAdapter
 import com.aitec.sitesport.mapSites.adapter.SearchNamesEntrepiseAdapter
-import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -466,7 +466,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         }
 
         var marker = mMap.addMarker(MarkerOptions()
-                .position(LatLng(entreprise.direccion!!.latitud, entreprise.direccion!!.longitud))
+                .position(LatLng(entreprise.direccion!!.gPointParcelable.geoPoint.latitude, entreprise.direccion!!.gPointParcelable.geoPoint.longitude))
                 .icon(icono))
 
         entreprise.idMarker = marker.id

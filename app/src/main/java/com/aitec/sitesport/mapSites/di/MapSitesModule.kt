@@ -1,7 +1,6 @@
 package com.aitec.sitesport.domapSites.di
 
-import com.aitec.sitesport.domain.RetrofitApi
-import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.mapSites.*
 import com.aitec.sitesport.mapSites.ui.MapSitesView
@@ -32,8 +31,8 @@ class MapSitesModule(var view: MapSitesView) {
 
     @Provides
     @Singleton
-    fun providesmapSitesRepository(eventBus: EventBusInterface, retrofitApi: RetrofitApi, sharePreferencesApi: SharePreferencesApi): MapSitesRepository {
-        return MapSitesRepositoryImp(eventBus, retrofitApi, sharePreferencesApi)
+    fun providesmapSitesRepository(eventBus: EventBusInterface, firebaseApi: FirebaseApi): MapSitesRepository {
+        return MapSitesRepositoryImp(eventBus, firebaseApi)
     }
 
 }

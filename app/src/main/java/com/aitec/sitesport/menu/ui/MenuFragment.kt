@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.menu.MenusPresenter
@@ -63,11 +64,13 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     private fun setupMenuOptions() {
-
+        data!!.add(OptionMenu(R.drawable.ic_share, getString(R.string.menu_option_share_app)))
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
-        data!!.add(OptionMenu(R.drawable.ic_call_black_24dp, getString(R.string.menu_option_contact)))
+        data!!.add(OptionMenu(R.drawable.ic_email_black_24dp, getString(R.string.menu_option_contact)))
         data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
+
+
         adapterOptions = OptionsAdapter(data!!, this)
     }
 
@@ -191,23 +194,61 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     override fun onClick(position: Int) {
         when (position) {
             0 -> {
+                showMessagge("Compartir")
+                BaseActivitys.buildDinamycLinkShareApp(null, object : onApiActionListener<String> {
+                    override fun onSucces(response: String) {
+                        val i = Intent(android.content.Intent.ACTION_SEND)
+                        i.type = "text/plain"
+                        i.putExtra(Intent.EXTRA_TEXT, "descarga " + response)
+                        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                    }
+
+                    override fun onError(error: Any?) {
+                        Log.e(TAG, "Error dynamic link $error")
+                    }
+                })
+            }
+
+            1 -> {
                 showMessagge("Terminos y Condiciones")
             }
-            1 -> {
+            2 -> {
                 showMessagge("Ayuda")
             }
-            2 -> {
+            3 -> {
                 val intento1 = Intent(context, Workme::class.java)
                 startActivity(intento1)
                 //showMessagge("Contactenos")
             }
-            3 -> {
+            4 -> {
                 presenter.onSingOut()
             }
 
 
         }
     }
+
+    /*
+
+    fun buildDinamycLinkShareApp() {
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://sitesport.aitecec.com?idSportCenter=1"))
+                .setDynamicLinkDomain("sitesport.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener {
+                    Log.e(TAG, "el link es: ${it.shortLink}")
+                    val i = Intent(android.content.Intent.ACTION_SEND)
+                    i.type = "text/plain"
+                    i.putExtra(Intent.EXTRA_TEXT, "descarga " + it.shortLink.toString())
+                    startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                }
+                .addOnFailureListener {
+
+                }
+    }
+*/
 
     override fun onClick(v: View?) {
         when (v?.id) {

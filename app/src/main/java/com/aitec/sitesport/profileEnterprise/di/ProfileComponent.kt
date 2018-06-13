@@ -1,9 +1,9 @@
-package com.aitec.sitesport.profile.di
+package com.aitec.sitesport.profileEnterprise.di
 
 import com.aitec.sitesport.MyAplicationModule
 import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.lib.di.LibModule
-import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import dagger.Component
 import javax.inject.Singleton
 

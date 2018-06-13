@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".profile.ui.ProfileActivity"
+    tools:context=".profileEnterprise.ui.ProfileActivity"
     tools:showIn="@layout/activity_profile">
 
     <android.support.constraint.ConstraintLayout
@@ -77,7 +77,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvFiltro" />
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/cmMainDinamyc"
+                android:id="@+id/clCourts"
                 android:layout_width="0dp"
                 android:layout_height="126dp"
                 android:layout_marginEnd="16dp"
@@ -85,7 +85,8 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14">
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -93,13 +94,12 @@
                     android:layout_height="@dimen/size_btn_profile"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_sport"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_futbol_ball" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_fields_profile"
+                    android:id="@+id/rvCourts"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
@@ -121,57 +121,101 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView">
 
                     <android.support.constraint.ConstraintLayout
-                    android:id="@+id/cl_price"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/ivRatesCourt"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/bg_profile_no_buttons"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/clPriceDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cl_price"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:clickable="false"
-                        app:srcCompat="@drawable/ic_money" />
+                        app:layout_constraintVertical_bias="0.0">
 
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="$20 - $ 23"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
+                        <ImageButton
+                            android:id="@+id/imgPriceDay"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@null"
+                            android:tint="@color/colorAccent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_sun" />
+
+                        <TextView
+                            android:id="@+id/tvPriceDay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="$20:00"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/dimen_text_image_icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_day" />
+                        app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/clPriceDay"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
-                </android.support.constraint.ConstraintLayout>
+                        <ImageButton
+                            android:id="@+id/imgPriceNight"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@null"
+                            android:tint="@color/colorAccent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_moon" />
+
+                        <TextView
+                            android:id="@+id/tvPriceNight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="$20:00"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/dimen_text_image_icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_num_gamers"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/cl_floor"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/cl_price"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
                         <ImageButton
                             android:id="@+id/iv_players"
@@ -188,13 +232,14 @@
                             app:srcCompat="@drawable/ic_players" />
 
                         <TextView
-                            android:id="@+id/tv_num_players"
+                            android:id="@+id/tvNumPlayers"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="vs"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/dimen_text_image_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -204,14 +249,16 @@
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_floor"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/cl_num_gamers"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
                         <ImageButton
                             android:id="@+id/iv_floor"
@@ -228,13 +275,14 @@
                             app:srcCompat="@drawable/ic_court" />
 
                         <TextView
-                            android:id="@+id/tv_floor"
+                            android:id="@+id/tvFloor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="piso"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/dimen_text_image_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -260,7 +308,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/clServices" />
 
             <View
                 android:id="@+id/textView11"
@@ -273,60 +321,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTimeSabadoToDomingo" />
-
-            <ImageView
-                android:id="@+id/ibtnPhone"
-                android:layout_width="@dimen/size_btn_profile"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_profile_no_buttons"
-                android:padding="@dimen/dimen_padding_btn_profile"
-                android:tint="@color/colorAccent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:srcCompat="@drawable/ic_phone" />
-
-            <ImageView
-                android:id="@+id/ibtnWhatsapp"
-                android:layout_width="@dimen/size_btn_profile"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_profile_no_buttons"
-                android:padding="@dimen/dimen_padding_btn_profile"
-                android:tint="@color/colorAccent"
-                app:layout_constraintStart_toEndOf="@+id/ibtnPhone"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:srcCompat="@drawable/ic_whastapp" />
-
-            <ImageView
-                android:id="@+id/ibtnFacebook"
-                android:layout_width="@dimen/size_btn_profile"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_profile_no_buttons"
-                android:padding="@dimen/dimen_padding_btn_profile"
-                android:tint="@color/colorAccent"
-                app:layout_constraintStart_toEndOf="@+id/ibtnWhatsapp"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:srcCompat="@drawable/ic_facebook" />
-
-            <ImageView
-                android:id="@+id/ibtnInstagram"
-                android:layout_width="@dimen/size_btn_profile"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_profile_no_buttons"
-                android:padding="@dimen/dimen_padding_btn_profile"
-                android:tint="@color/colorAccent"
-                app:layout_constraintStart_toEndOf="@+id/ibtnFacebook"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:srcCompat="@drawable/ic_instagram" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -342,7 +336,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.489"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cmMainDinamyc" />
+                app:layout_constraintTop_toBottomOf="@+id/clCourts" />
 
             <View
                 android:id="@+id/textView12"
@@ -368,7 +362,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ibtnPhone" />
+                app:layout_constraintTop_toBottomOf="@+id/clContacts" />
 
             <View
                 android:id="@+id/textView18"
@@ -418,7 +412,7 @@
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:id="@+id/mvProfile"
+                    android:id="@+id/mapViewProfile"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginBottom="50dp"
@@ -429,7 +423,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:context=".profile.ui.ProfileActivity" />
+                    tools:context=".profileEnterprise.ui.ProfileActivity" />
 
                 <ImageButton
                     android:id="@+id/ivRunLocation"
@@ -438,7 +432,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/bg_button_dark"
-                    app:layout_constraintBottom_toBottomOf="@+id/mvProfile"
+                    app:layout_constraintBottom_toBottomOf="@+id/mapViewProfile"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/ic_run_man" />
 
@@ -456,7 +450,7 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/mvProfile" />
+                    app:layout_constraintTop_toTopOf="@+id/mapViewProfile" />
 
                 <!--<ImageButton
                     android:id="@+id/ibtnRoute"
@@ -473,11 +467,12 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraintLayout"
+                android:id="@+id/clServices"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/size_btn_profile"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12">
@@ -489,6 +484,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@+id/ibtnWiFi"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread"
@@ -502,6 +499,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@+id/ibtnEstacionamiento"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/ibtnBar"
@@ -514,6 +513,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@+id/ibtnDuchas"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/ibtnWiFi"
@@ -526,6 +527,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@+id/ibtnCasilleros"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/ibtnEstacionamiento"
@@ -538,6 +541,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/bg_profile_no_buttons"
                     android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/ibtnDuchas"
                     app:srcCompat="@drawable/ic_lockers" />
 
@@ -547,10 +552,11 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/clTableTime"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/size_btn_profile"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4">
@@ -574,11 +580,139 @@
                     android:layout_marginTop="8dp"
                     android:text="Cerrado"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/dimen_text_image_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/btnShowTableTime"
                     app:layout_constraintStart_toEndOf="@+id/btnShowTableTime"
                     app:layout_constraintTop_toTopOf="@+id/btnShowTableTime" />
 
             </android.support.constraint.ConstraintLayout>
+
+            <include
+                android:id="@+id/loadingTableTime"
+                layout="@layout/layout_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvFiltro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <include
+                android:id="@+id/loadingCourts"
+                layout="@layout/layout_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <include
+                android:id="@+id/loadingServices"
+                layout="@layout/layout_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvTimeSabadoToDomingo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/clContacts"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/size_btn_profile"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+                <ImageView
+                    android:id="@+id/ibtnPhone"
+                    android:layout_width="@dimen/size_btn_profile"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_profile_no_buttons"
+                    android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                    app:layout_constraintEnd_toStartOf="@+id/ibtnWhatsapp"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/clContacts"
+                    app:srcCompat="@drawable/ic_phone" />
+
+                <ImageView
+                    android:id="@+id/ibtnWhatsapp"
+                    android:layout_width="@dimen/size_btn_profile"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_profile_no_buttons"
+                    android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                    app:layout_constraintEnd_toStartOf="@+id/ibtnFacebook"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ibtnPhone"
+                    app:layout_constraintTop_toTopOf="@+id/clContacts"
+                    app:srcCompat="@drawable/ic_whastapp" />
+
+                <ImageView
+                    android:id="@+id/ibtnFacebook"
+                    android:layout_width="@dimen/size_btn_profile"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_profile_no_buttons"
+                    android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                    app:layout_constraintEnd_toStartOf="@+id/ibtnInstagram"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ibtnWhatsapp"
+                    app:layout_constraintTop_toTopOf="@+id/clContacts"
+                    app:srcCompat="@drawable/ic_facebook" />
+
+                <ImageView
+                    android:id="@+id/ibtnInstagram"
+                    android:layout_width="@dimen/size_btn_profile"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_profile_no_buttons"
+                    android:padding="@dimen/dimen_padding_btn_profile"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                    app:layout_constraintStart_toEndOf="@+id/ibtnFacebook"
+                    app:layout_constraintTop_toTopOf="@+id/clContacts"
+                    app:srcCompat="@drawable/ic_instagram" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <include
+                android:id="@+id/loadingContacts"
+                layout="@layout/layout_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvUbication"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         </android.support.constraint.ConstraintLayout>
 
