@@ -38,7 +38,7 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
     }
 
     override fun onUpdatePassword(password: String, passwordOld: String) {
-        //view.showProgressDialog(R.string.update_password)
+        //view.showLoadingTableTimeSection(R.string.update_password)
         interactor.onUpdatePassword(password, passwordOld)
     }
 

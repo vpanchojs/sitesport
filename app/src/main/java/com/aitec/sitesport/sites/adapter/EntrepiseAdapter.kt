@@ -42,7 +42,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(holder!!.view.iv_entrepise)
 
-        holder!!.view.tv_address.text = entrepise.direccion?.calles
+        holder!!.view.tv_address.text = entrepise.direccion?.referencia
 
         holder!!.view.tv_raiting.text = entrepise.puntuacion.toString()
 

@@ -47,8 +47,8 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     lateinit var presenter: ReservePresenter
 
     override fun onCheckedCourt(court: Cancha) {
-        tv_num_players.text = court.numero_jugadores
-        tv_floor.text = court.piso
+        tvNumPlayers.text = court.numero_jugadores
+        tvFloor.text = court.piso
     }
 
     private fun setupInject() {
@@ -169,8 +169,8 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     private fun setupRecyclerViewClourt(canchas: List<Cancha>) {
 
         val adapter = CourtAdapter(canchas, this)
-        rv_fields_profile.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_fields_profile.adapter = adapter
+        rvCourts.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvCourts.adapter = adapter
     }
 
     private fun setupRecyclerViewTimeTable(day: Dia?) {
@@ -227,10 +227,10 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
 
     fun getTableTimeToday(day: Int): Dia? {
-        return enterprise.horario!!.dias.find {
-            it.nombre == day
-        }
-
+        //return enterprise.horario!!.dias.find {
+          //  it.nombre == day
+        //}
+        return null
     }
 
 

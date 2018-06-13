@@ -14,7 +14,7 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
     lateinit var rbSelect: RadioButton
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_court, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_court, parent, false)
         return CourtAdapter.ViewHolder(view)
     }
 
@@ -24,7 +24,7 @@ class CourtAdapter(var courtsList: List<Cancha>, var callback: OnClickListenerCo
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val courts = courtsList.get(position)
-        holder.view!!.rb_court.text = courts.nombre
+        holder.view.rb_court.text = courts.nombre
 
         holder.view.rb_court.setOnCheckedChangeListener { compoundButton, b ->
 

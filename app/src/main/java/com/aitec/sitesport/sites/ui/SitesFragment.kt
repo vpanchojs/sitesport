@@ -14,7 +14,7 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
-import com.aitec.sitesport.profile.ui.ProfileActivity
+import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import com.aitec.sitesport.sites.SitesPresenter
 import com.aitec.sitesport.sites.adapter.EntrepiseAdapter
 import com.aitec.sitesport.util.BaseActivitys

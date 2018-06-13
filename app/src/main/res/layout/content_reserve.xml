@@ -11,7 +11,7 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cmMainDinamyc"
+        android:id="@+id/clCourts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
-            app:layout_constraintEnd_toStartOf="@+id/rv_fields_profile"
+            app:layout_constraintEnd_toStartOf="@+id/rvCourts"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +58,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_fields_profile"
+            android:id="@+id/rvCourts"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -153,7 +153,7 @@
                     app:srcCompat="@drawable/ic_players" />
 
                 <TextView
-                    android:id="@+id/tv_num_players"
+                    android:id="@+id/tvNumPlayers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
@@ -196,7 +196,7 @@
                     app:srcCompat="@drawable/ic_court" />
 
                 <TextView
-                    android:id="@+id/tv_floor"
+                    android:id="@+id/tvFloor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
@@ -228,7 +228,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cmMainDinamyc">
+        app:layout_constraintTop_toBottomOf="@+id/clCourts">
 
         <ImageButton
             android:id="@+id/ib_day_back"

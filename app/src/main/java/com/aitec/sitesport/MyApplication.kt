@@ -20,10 +20,10 @@ import com.aitec.sitesport.menu.di.DaggerMenusComponent
 import com.aitec.sitesport.menu.di.MenusComponent
 import com.aitec.sitesport.menu.di.MenusModule
 import com.aitec.sitesport.menu.ui.MenusView
-import com.aitec.sitesport.profile.di.DaggerProfileComponent
-import com.aitec.sitesport.profile.di.ProfileComponent
-import com.aitec.sitesport.profile.di.ProfileModule
-import com.aitec.sitesport.profile.ui.ProfileView
+import com.aitec.sitesport.profileEnterprise.di.DaggerProfileComponent
+import com.aitec.sitesport.profileEnterprise.di.ProfileComponent
+import com.aitec.sitesport.profileEnterprise.di.ProfileModule
+import com.aitec.sitesport.profileEnterprise.ui.ProfileView
 import com.aitec.sitesport.profileUser.di.DaggerProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserModule

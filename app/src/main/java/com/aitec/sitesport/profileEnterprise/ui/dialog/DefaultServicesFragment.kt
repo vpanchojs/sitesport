@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profile.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog

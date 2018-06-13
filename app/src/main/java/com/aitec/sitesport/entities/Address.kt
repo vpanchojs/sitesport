@@ -2,34 +2,42 @@ package com.aitec.sitesport.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.firestore.GeoPoint
 
 class Address() : Parcelable {
-    var longitud: Double = 0.0
+
+    /*
+				pais : ""
+				proincia : ""
+				ciudad : ""
+				gpoint
+				reference : ""
+     */
+
     lateinit var referencia: String
     lateinit var provincia: String
     lateinit var ciudad: String
     lateinit var pais: String
-    var latitud: Double = 0.0
-    lateinit var calles: String
+    var calles: String = ""
+    var gPointParcelable : ParcelableGeoPoint = ParcelableGeoPoint(GeoPoint(-4.034063, -79.202306))
+
 
     constructor(parcel: Parcel) : this() {
-        longitud = parcel.readDouble()
         referencia = parcel.readString()
         provincia = parcel.readString()
         ciudad = parcel.readString()
         pais = parcel.readString()
-        latitud = parcel.readDouble()
         calles = parcel.readString()
+        gPointParcelable = parcel.readParcelable(ParcelableGeoPoint::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeDouble(longitud)
         parcel.writeString(referencia)
         parcel.writeString(provincia)
         parcel.writeString(ciudad)
         parcel.writeString(pais)
-        parcel.writeDouble(latitud)
         parcel.writeString(calles)
+        parcel.writeParcelable(gPointParcelable, flags)
     }
 
     override fun describeContents(): Int {

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/clMainScreen"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        tools:context="com.aitec.sitesport.profile.ui.ProfileActivity">
+        tools:context="com.aitec.sitesport.profileEnterprise.ui.ProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout_profile"

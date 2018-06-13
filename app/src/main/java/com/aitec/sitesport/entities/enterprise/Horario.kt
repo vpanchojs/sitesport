@@ -5,22 +5,22 @@ import android.os.Parcelable
 
 class Horario() : Parcelable {
 
-    var nombre: String = ""
-    var es_general: Boolean = false
-    var pk: String = ""
+    //var nombre: String = ""
+    //var es_general: Boolean = false
+    //var pk: String = ""
     var dias: List<Dia> = arrayListOf()
 
     constructor(parcel: Parcel) : this() {
-        nombre = parcel.readString()
-        es_general = parcel.readByte() != 0.toByte()
-        pk = parcel.readString()
+        //nombre = parcel.readString()
+        //es_general = parcel.readByte() != 0.toByte()
+        //pk = parcel.readString()
         dias = parcel.createTypedArrayList(Dia)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(nombre)
-        parcel.writeByte(if (es_general) 1 else 0)
-        parcel.writeString(pk)
+        //parcel.writeString(nombre)
+        //parcel.writeByte(if (es_general) 1 else 0)
+        //parcel.writeString(pk)
         parcel.writeTypedList(dias)
     }
 
