@@ -9,7 +9,6 @@ class Enterprise() : Parcelable {
     // OBJETO INICIAL
     lateinit var pk: String
     lateinit var nombres: String
-    lateinit var urldetalle: String
     var foto_perfil: String = ""
     var direccion: Address? = null
     var me_gusta: Boolean = false
@@ -33,7 +32,6 @@ class Enterprise() : Parcelable {
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         nombres = parcel.readString()
-        urldetalle = parcel.readString()
         foto_perfil = parcel.readString()
         direccion = parcel.readParcelable(Address::class.java.classLoader)
         me_gusta = parcel.readByte() != 0.toByte()
@@ -52,7 +50,6 @@ class Enterprise() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
         parcel.writeString(nombres)
-        parcel.writeString(urldetalle)
         parcel.writeString(foto_perfil)
         parcel.writeParcelable(direccion, flags)
         parcel.writeByte(if (me_gusta) 1 else 0)
