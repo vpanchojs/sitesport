@@ -67,7 +67,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         data!!.add(OptionMenu(R.drawable.ic_share, getString(R.string.menu_option_share_app)))
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
-        data!!.add(OptionMenu(R.drawable.ic_call_black_24dp, getString(R.string.menu_option_contact)))
+        data!!.add(OptionMenu(R.drawable.ic_email_black_24dp, getString(R.string.menu_option_contact)))
         data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
 
 
