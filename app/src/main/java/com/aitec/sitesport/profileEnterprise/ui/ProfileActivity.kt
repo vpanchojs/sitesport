@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.aitec.sitesport.R
 import android.view.View
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.content_profile.*
+import kotlinx.android.synthetic.main.activity_profile_enterprise.*
+import kotlinx.android.synthetic.main.content_profile_enterprise.*
 import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -53,58 +53,29 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setVectorCompatibility()
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_profile_enterprise)
         setupInjection()
-
-        setupUI()
-        //this.enterprise = intent.getParcelableExtra(ENTERPRISE)
-        //setupUI()
-        //setupMap()
-
-        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("Ok") {}
-
         profilePresenter.register()
-        profilePresenter.getBasicProfile("ZrBgMjjn8Pta8YlbLBLI")
-        profilePresenter.getTableTimeProfile("ZrBgMjjn8Pta8YlbLBLI")
-        profilePresenter.getCourtsProfile("ZrBgMjjn8Pta8YlbLBLI")
-        profilePresenter.getServicesProfile("ZrBgMjjn8Pta8YlbLBLI")
-        profilePresenter.getContactsProfile("ZrBgMjjn8Pta8YlbLBLI")
-
-        setupTableTimeSection()
-        setupCourtsSection()
-        setupPhotosSection()
+        enterprise.pk = intent.getStringExtra(ENTERPRISE)
+        setupUI()
+        callSections()
     }
 
-    private fun setupUI(){
-        setupToolBar()
-        ibtnBar.visibility = View.GONE
-        ibtnWiFi.visibility = View.GONE
-        ibtnEstacionamiento.visibility = View.GONE
-        ibtnDuchas.visibility = View.GONE
-        ibtnCasilleros.visibility = View.GONE
-
-        ibtnPhone.visibility = View.GONE
-        ibtnWhatsapp.visibility = View.GONE
-        ibtnFacebook.visibility = View.GONE
-        ibtnInstagram.visibility = View.GONE
-        ivRunLocation.visibility = View.GONE
-        setupMap()
+    private fun callSections(){
+        profilePresenter.getBasicProfile(enterprise.pk)
+        profilePresenter.getCourtsProfile(enterprise.pk)
+        profilePresenter.getTableTimeProfile(enterprise.pk)
+        profilePresenter.getServicesProfile(enterprise.pk)
+        profilePresenter.getContactsProfile(enterprise.pk)
+        profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
-
-
-    private fun setupMap() {
-        val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.mapViewProfile) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
-
 
     // ======= ProfileView.kt implementation
 
     override fun updateBasicProfile() {
         collapse_toolbar_profile.title = enterprise.nombres
         tvLike.text = enterprise.likes.toString()
-        updateImage(enterprise.foto_perfil)
+        //updateImage(enterprise.foto_perfil)
         setMapView()
     }
 
@@ -114,15 +85,14 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         for(url in imageList){
             images.add(url)
         }
-        //images.add("https://firebasestorage.googleapis.com/v0/b/sitesport-204402.appspot.com/o/sport_center%2FZrBgMjjn8Pta8YlbLBLI%2FZrBgMjjn8Pta8YlbLBLI.jpg?alt=media&token=714cc694-05ef-4cae-9ea3-df00cf8c641c")
-        //images.add(enterprise.foto_perfil)
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
     }
 
-    private fun updateImage(url: String){
+    /*private fun updateImage(url: String){
+        if(images.size > 0) return
         images.add(url)
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
-    }
+    }*/
 
     private fun setupTableTimeSection() {
         clTableTime.setOnClickListener {
@@ -169,6 +139,23 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             enterprise.redesSociales.add(networkSocial)
             setNetworkSocial(networkSocial)
         }
+    }
+
+    override fun isQualified(qualify: Boolean) {
+        imgLike.setImageDrawable(
+                if(qualify) ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
+                else ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
+        )
+        this.enterprise.isQualified = qualify
+    }
+
+    override fun updateLike(like: Int) {
+        tvLike.text = like.toString()
+        imgLike.setImageDrawable(
+                if(enterprise.likes > like) ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
+                else ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
+        )
+        this.enterprise.isQualified = !this.enterprise.isQualified
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -230,8 +217,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         val profileComponent = app.getProfileComponent(this)
         profileComponent.inject(this)
     }
-
-    // ProfileView.kt implementation
 
     override fun setEnterprise(enterprise: Enterprise) {
         this.enterprise = enterprise
@@ -326,7 +311,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
 
         imageView.visibility = View.VISIBLE
-        imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN);
+        imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
         setDataFragmentServices(service.nombre, service.descripcion, idIcon, imageView)
     }
 
@@ -340,7 +325,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     private fun setNetworkSocial(networkSocial: RedSocial) {
 
         var imageView = ImageView(this)
-        var idIcon = R.drawable.ic_court
 
         when(networkSocial.nombre.toLowerCase()){
             "phone" -> {
@@ -373,7 +357,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
 
         imageView.visibility = View.VISIBLE
-        imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN);
+        imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
     private fun openFacebook(url: String) {
@@ -399,7 +383,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun openWhatsApp(number: String) {
-        val ECU = "593"
         val formattedNumber: String = ECU + number.substring(1, number.length)
         try {
             val sendIntent = Intent("android.intent.action.MAIN")
@@ -417,6 +400,45 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
 
     // ========= setup GUI
+
+    private fun setupUI(){
+        setupToolBar()
+        hideViewInitial()
+        setupMap()
+        setupTableTimeSection()
+        setupCourtsSection()
+        setupPhotosSection()
+        setupLikes()
+        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("Ok") {}
+    }
+
+    private fun setupLikes(){
+        clLike.setOnClickListener{
+            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, enterprise.isQualified)
+            BaseActivitys.showToastMessage(this, "Like " + enterprise.pk, Toast.LENGTH_LONG)
+        }
+    }
+
+    private fun hideViewInitial(){
+        ibtnBar.visibility = View.GONE
+        ibtnWiFi.visibility = View.GONE
+        ibtnEstacionamiento.visibility = View.GONE
+        ibtnDuchas.visibility = View.GONE
+        ibtnCasilleros.visibility = View.GONE
+
+        ibtnPhone.visibility = View.GONE
+        ibtnWhatsapp.visibility = View.GONE
+        ibtnFacebook.visibility = View.GONE
+        ibtnInstagram.visibility = View.GONE
+        ivRunLocation.visibility = View.GONE
+    }
+
+
+    private fun setupMap() {
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.mapViewProfile) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
 
     private fun setupToolBar(){
         setSupportActionBar(toolbar_profile)
@@ -478,12 +500,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         //const val EMOTICON_HAPPY = 0x1F60A
         const val EMOTICON_EYE = 0x1F609
         const val ENTERPRISE = "enterprise"
+        const val ECU = "593"
         const val REQUEST_CODE_CALL_PHONE_PERMISSIONS = 123
         const val SECTION_TABLE_TIME = 0
         const val SECTION_COURTS = 1
         const val SECTION_SERVICES = 2
         const val SECTION_CONTACTS = 3
         const val SECTION_BASIC = 4
+        const val SECTION_INITIAL_LIKE = 5
+        const val SECTION_UPDATE_LIKE = 6
     }
 
 }

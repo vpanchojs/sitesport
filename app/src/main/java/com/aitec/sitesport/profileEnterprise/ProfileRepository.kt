@@ -11,5 +11,8 @@ interface ProfileRepository {
     fun getCourts(idEnterprise: String)
     fun getServices(idEnterprise: String)
     fun getContacts(idEnterprise: String)
+    fun getLike(idUser: String, idEnterprise: String)
+
+    fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean)
     fun stopRequests()
 }

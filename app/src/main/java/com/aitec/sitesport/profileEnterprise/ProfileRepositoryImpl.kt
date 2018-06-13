@@ -77,11 +77,12 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
     }
 
 
+
+
     override fun stopRequests() {
     }
 
     override fun getBasicProfile(idEnterprise : String) {
-
         firebaseApi.getBasicProfile(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
@@ -91,29 +92,50 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
             override fun onError(error: Any?) {
                 postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_BASIC, error.toString(), null)
             }
-
         })
     }
-        /*retrofitApi.getBasicProfile(urlDetail, object : onApiActionListener<Enterprise> {
-            override fun onSucces(response: Enterprise) {
-                Log.e("ProfileRepositoryImpl", response.toString())
 
-                /*val gsonBuilder = GsonBuilder()
-                gsonBuilder.serializeNulls()
-                val gson = gsonBuilder.create()
-
-                postEvent(ProfileEvent.SUCCESS_PROFILE, "",
-                        gson.fromJson(response.toString(), Enterprise::class.java))*/
-                postEvent(ProfileEvent.SUCCESS_PROFILE, "", response)
+    override fun getLike(idUser: String, idEnterprise: String) {
+        firebaseApi.getLike(idUser, idEnterprise, object : onApiActionListener<Boolean>{
+            override fun onSucces(response: Boolean) {
+                val msg: String? = null
+                //if(!response.isOnline) msg = MSG_ERROR_CONNECTION
+                postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_INITIAL_LIKE, msg, response)
             }
 
             override fun onError(error: Any?) {
-                Log.e("ProfileRepositoryImpl", error.toString())
-                postEvent(ProfileEvent.ERROR_PROFILE, error.toString(), null)
+                postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_INITIAL_LIKE, error.toString(), null)
             }
-        })*/
 
-    /*}*/
+        })
+    }
+
+    override fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean) {
+
+        if(isQualified) {
+            firebaseApi.removeLike(idUser, idEnterprise, object : onApiActionListener<Int> {
+                override fun onSucces(response: Int) {
+                    val msg: String? = null
+                    postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_UPDATE_LIKE, msg, response)
+                }
+
+                override fun onError(error: Any?) {
+                    postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_UPDATE_LIKE, error.toString(), null)
+                }
+            })
+        }else{
+            firebaseApi.setLike(idUser, idEnterprise, object : onApiActionListener<Int> {
+                override fun onSucces(response: Int) {
+                    val msg: String? = null
+                    postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_UPDATE_LIKE, msg, response)
+                }
+
+                override fun onError(error: Any?) {
+                    postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_UPDATE_LIKE, error.toString(), null)
+                }
+            })
+        }
+    }
 
     private fun saveIdEnterprise(pk : String){
         sharePreferencesApi.savePkEnterprise(pk)

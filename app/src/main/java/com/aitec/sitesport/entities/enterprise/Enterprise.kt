@@ -9,6 +9,7 @@ class Enterprise() : Parcelable {
     // OBJETO INICIAL
     lateinit var pk: String
     lateinit var nombres: String
+    lateinit var urldetalle: String
     var foto_perfil: String = ""
     var direccion: Address? = null
     var me_gusta: Boolean = false
@@ -28,6 +29,8 @@ class Enterprise() : Parcelable {
 
     var likes: Int = 0
     var isOnline: Boolean = true
+
+    var isQualified = false
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()

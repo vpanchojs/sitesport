@@ -14,6 +14,9 @@ interface ProfilePresenter {
     fun getCourtsProfile(idEnterprise : String)
     fun getServicesProfile(idEnterprise : String)
     fun getContactsProfile(idEnterprise : String)
+    fun getLike(idUser: String, idEnterprise: String)
+    fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean)
+
     fun onEventProfileThread(profileEvent: ProfileEvent)
 
 }
