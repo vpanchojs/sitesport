@@ -2,6 +2,7 @@ package com.aitec.sitesport.menu.ui
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -33,6 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 import java.util.*
@@ -63,11 +66,13 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     private fun setupMenuOptions() {
-
+        data!!.add(OptionMenu(R.drawable.ic_share, getString(R.string.menu_option_share_app)))
         data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
         data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
         data!!.add(OptionMenu(R.drawable.ic_call_black_24dp, getString(R.string.menu_option_contact)))
         data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
+
+
         adapterOptions = OptionsAdapter(data!!, this)
     }
 
@@ -191,23 +196,49 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     override fun onClick(position: Int) {
         when (position) {
             0 -> {
+                showMessagge("Compartir")
+                buildDinamycLinkShareApp()
+            }
+
+            1 -> {
                 showMessagge("Terminos y Condiciones")
             }
-            1 -> {
+            2 -> {
                 showMessagge("Ayuda")
             }
-            2 -> {
+            3 -> {
                 val intento1 = Intent(context, Workme::class.java)
                 startActivity(intento1)
                 //showMessagge("Contactenos")
             }
-            3 -> {
+            4 -> {
                 presenter.onSingOut()
             }
 
 
         }
     }
+
+
+    fun buildDinamycLinkShareApp() {
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://sitesport.aitecec.com/"))
+                .setDynamicLinkDomain("sitesport.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener {
+                    Log.e(TAG, "el link es: ${it.shortLink}")
+                    val i = Intent(android.content.Intent.ACTION_SEND)
+                    i.type = "text/plain"
+                    i.putExtra(Intent.EXTRA_TEXT, "descarga " + it.shortLink.toString())
+                    startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                }
+                .addOnFailureListener {
+
+                }
+    }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {

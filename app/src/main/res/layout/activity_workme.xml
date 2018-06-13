@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre del sitio deportivo"
-            android:inputType="textPersonName"
-            android:textSize="14sp" />
+            android:inputType="textPersonName" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -36,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_name">
@@ -48,8 +47,7 @@
             android:layout_height="wrap_content"
             android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_email">
@@ -71,8 +69,7 @@
             android:layout_height="wrap_content"
             android:hint="Teléfono"
             android:inputType="phone"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -83,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,8 +92,7 @@
             android:layout_height="wrap_content"
             android:hint="Dirección"
             android:inputType="textMultiLine"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -142,8 +138,8 @@
 
         <ImageButton
             android:id="@+id/btn_location"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_buttom_blank"
@@ -160,8 +156,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_buttom_dialog"
         android:enabled="false"
         android:text="ENVIAR"

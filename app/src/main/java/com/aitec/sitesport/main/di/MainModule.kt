@@ -1,6 +1,6 @@
 package com.aitec.sitesport.domain.di
 
-import com.aitec.sitesport.domain.RetrofitApi
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.main.*
@@ -32,8 +32,8 @@ class MainModule(var view: MainView) {
 
     @Provides
     @Singleton
-    fun providesMainRepository(eventBus: EventBusInterface, retrofitApi: RetrofitApi, sharePreferencesApi: SharePreferencesApi): MainRepository {
-        return MainRepositoryImp(eventBus, retrofitApi, sharePreferencesApi)
+    fun providesMainRepository(eventBus: EventBusInterface, firebaseApi: FirebaseApi, sharePreferencesApi: SharePreferencesApi): MainRepository {
+        return MainRepositoryImp(eventBus, firebaseApi, sharePreferencesApi)
     }
 
 }

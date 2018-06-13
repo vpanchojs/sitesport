@@ -1,7 +1,6 @@
 package com.aitec.sitesport.sites.domain.di
 
-import com.aitec.sitesport.domain.RetrofitApi
-import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.sites.*
 import com.aitec.sitesport.sites.ui.SitesView
@@ -32,8 +31,8 @@ class SitesModule(var view: SitesView) {
 
     @Provides
     @Singleton
-    fun providesRepository(eventBus: EventBusInterface, retrofitApi: RetrofitApi, sharePreferencesApi: SharePreferencesApi): SitesRepository {
-        return SitesRepositoryImp(eventBus, retrofitApi, sharePreferencesApi)
+    fun providesRepository(eventBus: EventBusInterface, firebaseApi: FirebaseApi): SitesRepository {
+        return SitesRepositoryImp(eventBus, firebaseApi)
     }
 
 }

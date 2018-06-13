@@ -1,21 +1,25 @@
 package com.aitec.sitesport.domain
 
 import android.net.Uri
+import android.os.Handler
 import com.aitec.sitesport.entities.User
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.*
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
 
 
-class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference) {
+class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
 
     companion object {
         const val TAG = "FirebaseApi"
@@ -24,6 +28,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var handlerSearchName: Handler? = null
+    private var runnableSearchName: Runnable? = null
 
     fun autenticationGoogle(idToken: String, callback: onApiActionListener<User>) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -266,4 +272,129 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onError(it.message)
                 }
     }
+
+    fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
+        var parametros = HashMap<String, String>()
+        parametros.put("query", query)
+        val gson = Gson()
+        handlerSearchName = Handler()
+        runnableSearchName = Runnable {
+            fuctions.getHttpsCallable("searchCentersName")
+                    .call(parametros)
+                    .addOnSuccessListener {
+                        val searchCentersName = SearchCentersName()
+                        val listSportCenter = ArrayList<Enterprise>()
+
+
+                        var data = it.data as ArrayList<HashMap<String, Any>>
+                        data.forEach { item ->
+                            val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
+                            listSportCenter.add(entrepise)
+                            Log.e(TAG, "error ${entrepise.nombres}")
+                        }
+                        searchCentersName.results = listSportCenter
+                        listener.onSucces(searchCentersName)
+                    }
+                    .addOnFailureListener {
+                        Log.e(TAG, "error $it")
+                        listener.onError(it.message)
+                    }
+        }
+        val LAG = 1000
+        handlerSearchName!!.postDelayed(runnableSearchName, LAG.toLong())
+
+
+    }
+
+    fun deleteRequestSearchName() {
+        if (handlerSearchName != null) {
+            handlerSearchName?.removeCallbacks(runnableSearchName)
+            handlerSearchName = null
+        }
+    }
+
+    fun getAllSites(parametros: HashMap<String, String>, onApiActionListener: onApiActionListener<List<Enterprise>>) {
+        val gson = Gson()
+        parametros.put("query", "ti")
+        Log.e(TAG, "llegue")
+        //db.collection(CENTER_SPORT_PATH).orderBy("numero_likes", Query.Direction.DESCENDING)
+        /*
+        fuctions.getHttpsCallable("helloWorld")
+                .call(parametros)
+                .addOnSuccessListener {
+                    val query = it.data as ArrayList<HashMap<String, Any>>
+                    query.forEach { item ->
+                        var entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
+                        Log.e(TAG, "error ${entrepise.nombres}")
+                    }
+
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, "error $it")
+                }
+                */
+    }
+
+    /*
+    fun onSetRaiting(raiting: Raiting, update: Boolean, oldRaiting: Double) {
+
+        raiting.nameUser = getNameUser()
+        raiting.me = true
+
+        var newAvgRating: Double = 0.0
+        /*Referencia al cuestionrio a calificar */
+        var questionaireRef = db.collection(QUESTIONNAIRE_PATH).document(raiting.idQuestionaire)
+
+        var ratingsRef: DocumentReference
+
+        /*Referencia al nodo de calificaciones*/
+        //if (raiting.idRaiting.isNullOrBlank()) {
+        ratingsRef = questionaireRef.collection(RATING_PATH).document(getUid())
+        //} else {
+        //ratingsRef = questionaireRef.collection(RATING_PATH).document(raiting.idRaiting)
+        //}
+
+
+        db.runTransaction {
+            var questionnaire = it.get(questionaireRef).toObject(Questionaire::class.java)
+
+
+            // Compute new number of ratings
+            val newNumRatings = if (update) questionnaire!!.numAssessment else questionnaire!!.numAssessment + 1
+
+            var aux = questionnaire!!.assessment
+            if (update) {
+                aux = questionnaire!!.assessment - oldRaiting
+            }
+
+            // Compute new average rating
+            val oldRatingTotal = aux * questionnaire.numAssessment
+            newAvgRating = (oldRatingTotal + raiting.value) / newNumRatings
+
+            // Set new info
+            questionnaire.numAssessment = newNumRatings
+            questionnaire.assessment = newAvgRating
+
+            raiting.idRaiting = questionaireRef.id
+
+            // actualizamos el cuestionnario
+            it.update(questionaireRef, questionnaire.toMapRating())
+
+            //creamos la calificacion
+            it.set(ratingsRef, raiting.toMap())
+
+        }
+                .addOnSuccessListener {
+                    Log.e("R", "todo bien" + newAvgRating)
+                    callback.onSuccess(raiting)
+                }
+                .addOnFailureListener {
+                    Log.e("R", it.toString())
+                    callback.onError(it.message)
+                }
+    }
+    */
+
+
+
 }
