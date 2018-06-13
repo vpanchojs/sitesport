@@ -1,8 +1,6 @@
 package com.aitec.sitesport.domain
 
 import android.net.Uri
-import android.util.Log
-import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.User
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
@@ -268,9 +266,4 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onError(it.message)
                 }
     }
-
-    companion object {
-        const val TAG = "FirebaseApi"
-    }
-
 }
