@@ -46,11 +46,11 @@
     <string name="id_google2">1075530758347-edj4ddfm6tlathm8freij5ceak4c69sh.apps.googleusercontent.com</string>
     <string name="fbloginText">INICIAR CON FACEBOOK</string>
     <string name="googleloginText">INICIAR CON GOOGLE</string>
-    <string name="menu_option_contact">Trabaja con Nosotros</string>
+    <string name="menu_option_contact">Trabaja con nosotros</string>
     <string name="service_not_available">error</string>
     <string name="invalid_lat_long_used">invalido latitud</string>
     <string name="no_address_found">No e|xiste direccion</string>
     <string name="address_found">Direccion encontrada</string>
     <string name="campo_lleno">Este campo no debe estar vacio</string>
-    <string name="menu_option_share_app">Compartir aplicacion</string>
+    <string name="menu_option_share_app">Compartir aplicación</string>
 </resources>
