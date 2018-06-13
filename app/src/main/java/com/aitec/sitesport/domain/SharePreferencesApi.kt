@@ -1,6 +1,7 @@
 package com.aitec.sitesport.domain
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 
 /**
@@ -16,7 +17,7 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
 
 
     fun saveTokenAndSession(tokenAccess: String) {
-        sharedPreferences.edit().putString(KEY_TOKEN_ACCESS, tokenAccess).commit()
+        sharedPreferences.edit().putString(KEY_TOKEN_ACCESS, tokenAccess).apply()
     }
 
     fun getTokenAccess(): String {
@@ -32,7 +33,7 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
     }
 
     fun savePkEnterprise(pk: String) {
-        sharedPreferences.edit().putString(PK_ENTERPRISE, pk).commit()
+        sharedPreferences.edit().putString(PK_ENTERPRISE, pk).apply()
     }
 
     fun getPkEnterprise(): String {
@@ -42,15 +43,17 @@ class SharePreferencesApi(var sharedPreferences: SharedPreferences) {
     fun getFirstRun(callback: onApiActionListener<Any>) {
         val firts = sharedPreferences.getBoolean(KEY_FIRST_RUN, true)
         if (firts) {
-            sharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).commit()
+            sharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply()
             callback.onSucces(Any())
         }
 
     }
 
     fun sesion(session: Boolean, platform: Int) {
-        sharedPreferences.edit().putBoolean(KEY_IN_SESESION, session).commit()
-        sharedPreferences.edit().putInt(KEY_PLATFORM, platform).commit()
+        //sharedPreferences.edit().putBoolean(KEY_IN_SESESION, session).apply()
+
+        sharedPreferences.edit().putInt(KEY_PLATFORM, platform).apply()
+        Log.e("share", "codigo " + platform)
     }
 
 }

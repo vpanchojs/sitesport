@@ -11,7 +11,9 @@ interface MenusPresenter {
 
     fun onPause()
 
-    fun inSession()
+    fun subscribeAuth()
+
+    fun unSubscribeAuth()
 
     fun onSingOut()
 
