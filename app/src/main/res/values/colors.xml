@@ -13,6 +13,7 @@
     <color name="colorWhiteTransparent">#87ffffff</color>
     <color name="colorWhiteLittleTransparent">#c8ffffff</color>
 
+    <color name="colorAccentTransparent">#af3acce1</color>
 
     <color name="icon_transparent">#64454f63</color>
     <color name="colorBgTextViewInfo">#c878849e</color>

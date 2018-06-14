@@ -72,19 +72,20 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/clLike"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_marginBottom="18dp"
-                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_dynamic_rating"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <ImageView
                         android:id="@+id/imgLike"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginBottom="4dp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.85"
@@ -96,13 +97,15 @@
                         android:id="@+id/tvLike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="0"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/imgLike"
                         app:layout_constraintEnd_toStartOf="@+id/imgLike"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imgLike" />
 
                 </android.support.constraint.ConstraintLayout>
 
