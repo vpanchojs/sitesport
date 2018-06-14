@@ -11,6 +11,9 @@ import javax.inject.Singleton
  * Created by victor on 27/1/18.
  */
 @Singleton
+
+
+
 @Component(modules = [LibModule::class, MenusModule::class, MyAplicationModule::class, DomainModule::class])
 interface MenusComponent {
     fun inject(menuFragment: MenuFragment)

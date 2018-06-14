@@ -7,6 +7,7 @@ import com.aitec.sitesport.entities.User
  */
 interface MenusView {
 
+
     fun hideProgressDialog();
     fun showProgressDialog(message: Int)
     fun showMessagge(message: Any?)

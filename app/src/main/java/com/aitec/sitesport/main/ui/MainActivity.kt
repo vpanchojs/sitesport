@@ -12,7 +12,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -26,6 +26,7 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.home.ui.HomeFragment
 import com.aitec.sitesport.main.MainPresenter
 import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
@@ -72,8 +73,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
     var searchResultsAdapter: SearchNamesEntrepiseAdapter? = null
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
+
+            R.id.navigation_home->{
+                btn_map.visibility=View.INVISIBLE
+                fragment= HomeFragment.newInstance()
+            }
             R.id.navigation_site -> {
                 btn_map.visibility = View.VISIBLE
                 fragment = SitesFragment.newInstance()

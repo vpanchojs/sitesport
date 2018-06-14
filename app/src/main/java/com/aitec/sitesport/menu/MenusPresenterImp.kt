@@ -64,11 +64,11 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
                 /*
                 *
                 * */
-
                 var siteportUser = User()
                 siteportUser.names = "SiteSport"
                 siteportUser.email = "soporte@aitecec.com"
                 view.setDataProfile(siteportUser)
+
             }
             MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK -> {
                 view.showProgress(View.GONE)

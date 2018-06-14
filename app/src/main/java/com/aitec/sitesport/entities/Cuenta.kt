@@ -4,6 +4,11 @@ package com.aitec.sitesport.entities
  * Created by Jhony on 27 abr 2018.
  */
 class Cuenta {
+
+
+
+
+
     var token: String? = null
     var user: User? = null
 

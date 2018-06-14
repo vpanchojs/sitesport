@@ -4,7 +4,9 @@ import android.net.Uri
 import android.os.Handler
 import com.aitec.sitesport.entities.User
 import android.util.Log
+import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.Publications
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.*
 import com.google.firebase.auth.FacebookAuthProvider
@@ -15,6 +17,10 @@ import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
+import android.support.constraint.solver.widgets.ResolutionNode.REMOVED
+import com.google.firebase.firestore.DocumentChange
+
+
 
 
 class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
@@ -26,6 +32,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    var pulistener: ListenerRegistration?=null
     private var handlerSearchName: Handler? = null
     private var runnableSearchName: Runnable? = null
 
@@ -410,6 +417,36 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     Log.e(TAG, "error $it")
                 }
                 */
+    }
+
+    fun getHome(callback: RealTimeListener<Publications>) {
+        pulistener=db.collection("publish").addSnapshotListener { querySnapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "listen:error", e)
+                callback.omError(e)
+            }
+            querySnapshot!!.documentChanges.forEach {
+                when (it.getType()) {
+                    DocumentChange.Type.ADDED ->{
+                        var pu=it.document.toObject(Publications::class.java)
+                        pu.id=it.document.id
+                        callback.addDocument(pu)
+                    }
+                    DocumentChange.Type.MODIFIED ->{
+                        var pu=it.document.toObject(Publications::class.java)
+                        pu.id=it.document.id
+                        callback.updateDocument(pu)
+                }
+                    DocumentChange.Type.REMOVED ->{
+                        var pu=it.document.toObject(Publications::class.java)
+                        pu.id=it.document.id
+                        callback.removeDocument(pu)
+                }
+                }
+            }
+
+        }
+
     }
 
     /*

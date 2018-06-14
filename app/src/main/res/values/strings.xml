@@ -53,4 +53,5 @@
     <string name="address_found">Direccion encontrada</string>
     <string name="campo_lleno">Este campo no debe estar vacio</string>
     <string name="menu_option_share_app">Compartir aplicación</string>
+    <string name="ic_home">Home</string>
 </resources>

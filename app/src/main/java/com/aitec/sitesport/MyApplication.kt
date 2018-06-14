@@ -11,6 +11,10 @@ import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.domain.di.MainComponent
 import com.aitec.sitesport.domain.di.MainModule
 import com.aitec.sitesport.domapSites.di.MapSitesModule
+import com.aitec.sitesport.home.di.DaggerHomeComponent
+import com.aitec.sitesport.home.di.HomeComponent
+import com.aitec.sitesport.home.di.HomeModule
+import com.aitec.sitesport.home.ui.HomeView
 import com.aitec.sitesport.lib.di.LibModule
 import com.aitec.sitesport.main.ui.MainView
 import com.aitec.sitesport.mapSites.di.DaggerMapSitesComponent
@@ -128,6 +132,16 @@ class MyApplication : MultiDexApplication() {
                 .reserveModule(ReserveModule(view))
                 .build()
     }
+
+    fun getHomeComponent(view: HomeView): HomeComponent {
+        return DaggerHomeComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .homeModule(HomeModule(view))
+                .build()
+    }
+
 
 
 }

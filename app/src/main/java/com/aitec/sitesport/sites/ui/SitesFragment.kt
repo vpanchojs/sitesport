@@ -42,13 +42,11 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
             }
             R.id.cb_open -> {
                 presenter.addFilterOpen(p1)
-
             }
             R.id.cb_score -> {
                 presenter.addFilterScore(p1)
             }
         }
-
     }
 
     fun visibleListSites(visible: Int) {
