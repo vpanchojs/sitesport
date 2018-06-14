@@ -26,4 +26,14 @@ class ProfileInteractorImpl(val profileRepository : ProfileRepository) : Profile
         profileRepository.getBasicProfile(idEnterprise)
     }
 
+    override fun getLike(idUser: String, idEnterprise: String) {
+        profileRepository.getLike(idUser, idEnterprise)
+    }
+
+    override fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean) {
+        profileRepository.toggleLike(idUser, idEnterprise, isQualified)
+    }
+
+
+
 }

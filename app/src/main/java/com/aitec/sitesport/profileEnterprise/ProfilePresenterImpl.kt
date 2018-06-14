@@ -47,12 +47,22 @@ class ProfilePresenterImpl(var profileView : ProfileView,
         profileInteractor.getContacts(idEnterprise)
     }
 
+    override fun getLike(idUser: String, idEnterprise: String) {
+        profileInteractor.getLike(idUser, idEnterprise)
+    }
+
+    override fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean) {
+        profileInteractor.toggleLike(idUser, idEnterprise, isQualified)
+    }
+
+    private fun existConnection(event: ProfileEvent){
+        if(!(event.eventObject as Enterprise).isOnline){
+            profileView.showMsgInfo(event.eventMsg!!)
+        }
+    }
+
     @Subscribe
     override fun onEventProfileThread(profileEvent: ProfileEvent) {
-
-        if(!(profileEvent.eventObject as Enterprise).isOnline){
-            profileView.showMsgInfo(profileEvent.eventMsg!!)
-        }
 
         when(profileEvent.sectionView){
 
@@ -67,6 +77,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 e.direccion = response.direccion
                 profileView.setEnterprise(e)
                 profileView.updateBasicProfile()
+                existConnection(profileEvent)
             }
 
             ProfileActivity.SECTION_TABLE_TIME -> {
@@ -74,22 +85,34 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 e.horario = (profileEvent.eventObject as Enterprise).horario
                 profileView.setEnterprise(e)
                 profileView.hideLoadingTableTimeSection(profileEvent.eventMsg)
+                existConnection(profileEvent)
             }
 
             ProfileActivity.SECTION_COURTS -> {
                 profileView.updateCourts((profileEvent.eventObject as Enterprise).canchas)
                 profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].fotos!!)
                 profileView.hideLoadingCourtSection(profileEvent.eventMsg)
+                existConnection(profileEvent)
             }
 
             ProfileActivity.SECTION_SERVICES -> {
                 profileView.updateServices((profileEvent.eventObject as Enterprise).servicios)
                 profileView.hideLoadingServicesSection(profileEvent.eventMsg)
+                existConnection(profileEvent)
             }
 
             ProfileActivity.SECTION_CONTACTS -> {
                 profileView.updateContacts((profileEvent.eventObject as Enterprise).redesSociales)
                 profileView.hideLoadingContactsSection(profileEvent.eventMsg)
+                existConnection(profileEvent)
+            }
+
+            ProfileActivity.SECTION_INITIAL_LIKE -> {
+                profileView.isQualified((profileEvent.eventObject as Boolean))
+            }
+
+            ProfileActivity.SECTION_UPDATE_LIKE -> {
+                profileView.updateLike((profileEvent.eventObject as Int))
             }
         }
 

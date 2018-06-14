@@ -11,9 +11,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
@@ -154,8 +152,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
     //S1lqtUnghcdcPwPRsRPr
-    fun getBasicProfile(pk: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(pk)
+    fun getBasicProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+        db.collection("centro_deportivo").document(idEnterprise)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     Log.e(TAG, it.id + "getBasicProfile() => " + it.data)
@@ -183,8 +181,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }*/
 
-    fun getTableTimeProfile(idSportCenter: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(idSportCenter).collection("table_time")
+    fun getTableTimeProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+        db.collection("centro_deportivo").document(idEnterprise).collection("table_time")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val dayList = ArrayList<Dia>()
@@ -205,8 +203,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getCourts(idSportCenter: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(idSportCenter).collection("court")
+    fun getCourts(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+        db.collection("centro_deportivo").document(idEnterprise).collection("court")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val courtList = ArrayList<Cancha>()
@@ -228,8 +226,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getServices(idSportCenter: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(idSportCenter).collection("service")
+    fun getServices(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+        db.collection("centro_deportivo").document(idEnterprise).collection("service")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val serviceList = ArrayList<Servicio>()
@@ -253,8 +251,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getContacts(idSportCenter: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(idSportCenter).collection("social_network")
+    fun getContacts(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+        db.collection("centro_deportivo").document(idEnterprise).collection("social_network")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val redSocialList = ArrayList<RedSocial>()
@@ -272,6 +270,85 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onError(it.message)
                 }
     }
+
+    fun getLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>){
+        db.collection("centro_deportivo")
+                .document(idEnterprise)
+                .collection("like").document(idUser)
+                .get()
+                .addOnSuccessListener {
+                    callback.onSucces(it.exists())
+                }
+    }
+
+    fun removeLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>){
+        val ref = db.collection("centro_deportivo")
+                .document(idEnterprise)
+
+        val refEnterprise = db.collection("centro_deportivo")
+                .document(idEnterprise)
+                .collection("like")
+                .document(idUser)
+
+        val refUser = db.collection("users")
+                .document(idUser)
+                .collection("like")
+                .document(idEnterprise)
+
+        db.runTransaction { it ->
+            val e = it.get(ref).toObject(Enterprise::class.java)!!
+            val likes = e.likes - 1
+
+            val hashMapLikes = HashMap<String, Any>()
+            hashMapLikes["likes"] = likes
+            it.update(ref, hashMapLikes)
+
+            it.delete(refEnterprise)
+            it.delete(refUser)
+            likes
+        }.addOnSuccessListener{
+            callback.onSucces(it)
+        }.addOnFailureListener{
+            callback.onError(it.message)
+        }
+    }
+
+    fun setLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>){
+        val ref = db.collection("centro_deportivo")
+                .document(idEnterprise)
+
+        val refEnterprise = db.collection("centro_deportivo")
+                .document(idEnterprise)
+                .collection("like")
+                .document(idUser)
+
+        val refUser = db.collection("users")
+                .document(idUser)
+                .collection("like")
+                .document(idEnterprise)
+
+        db.runTransaction { it ->
+            val e = it.get(ref).toObject(Enterprise::class.java)!!
+            val likes = e.likes + 1
+
+            val hashMapLikes = HashMap<String, Any>()
+            hashMapLikes["likes"] = likes
+            it.update(ref, hashMapLikes)
+
+            val hashMapDate = HashMap<String, Any>()
+            hashMapDate["fecha_like"] = FieldValue.serverTimestamp()
+
+            it.set(refEnterprise, hashMapDate)
+            it.set(refUser, hashMapDate)
+            likes
+        }.addOnSuccessListener{
+            callback.onSucces(it)
+        }.addOnFailureListener{
+            callback.onError(it.message)
+        }
+    }
+
+
 
     fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
         var parametros = HashMap<String, String>()

@@ -31,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginTop="16dp"
-
             android:background="@drawable/bg_raiting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">

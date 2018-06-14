@@ -25,6 +25,8 @@ interface ProfileView {
     fun updateServices(serviceList: List<Servicio>)
     fun updateContacts(contactList: List<RedSocial>)
 
+    fun updateLike(like: Int)
+    fun isQualified(qualify: Boolean)
 
     fun getEnterprise() : Enterprise
     fun setEnterprise(enterprise: Enterprise)
