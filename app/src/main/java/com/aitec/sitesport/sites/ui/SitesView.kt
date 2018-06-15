@@ -15,4 +15,5 @@ interface SitesView {
     fun clearSearchResults()
     fun clearListSites()
     fun showButtonReload(visible: Int)
+    fun showFilters(visible: Int)
 }

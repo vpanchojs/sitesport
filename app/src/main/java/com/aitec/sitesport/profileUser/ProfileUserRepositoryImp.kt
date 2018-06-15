@@ -37,6 +37,18 @@ class ProfileUserRepositoryImp(var eventBus: EventBusInterface, var firebaseApi:
         })
     }
 
+    override fun updatePhotoUser(photo: String) {
+        firebaseApi.updatePhoto(photo, object : onApiActionListener<String> {
+            override fun onSucces(response: String) {
+                postEvent(ProfileUserEvents.ON_UPDATE_PHOTO_USER_SUCCESS, response)
+            }
+
+            override fun onError(error: Any?) {
+                postEvent(ProfileUserEvents.ON_UPDATE_PHOTO_USER_ERROR, error)
+            }
+        })
+    }
+
     private fun postEvent(type: Int, any: Any?) {
         eventBus.post(ProfileUserEvents(type, any))
     }

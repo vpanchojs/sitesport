@@ -38,8 +38,14 @@ class ProfileUserInteractorImp(var eventBus: EventBusInterface, var repository: 
 
     }
 
+    override fun updatePhotoUser(photo: String) {
+        repository.updatePhotoUser(photo)
+    }
+
     private fun postEvent(type: Int, any: Any) {
         var event = ProfileUserEvents(type, any)
         eventBus.post(event)
     }
+
+
 }

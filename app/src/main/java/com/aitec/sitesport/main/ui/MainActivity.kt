@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
 
-            R.id.navigation_home->{
-                btn_map.visibility=View.INVISIBLE
-                fragment= HomeFragment.newInstance()
+            R.id.navigation_home -> {
+                btn_map.visibility = View.INVISIBLE
+                fragment = HomeFragment.newInstance()
             }
             R.id.navigation_site -> {
                 btn_map.visibility = View.VISIBLE
@@ -337,11 +337,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-
     fun getLocation() {
         if (checkPermissions()) {
             startLocationUpdates();
-        } else if (!checkPermissions()) {
+        } else {
             requestPermissions();
         }
     }
@@ -353,6 +352,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
+
+        ActivityCompat.requestPermissions(this@MainActivity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_PERMISSIONS_REQUEST_CODE)
+
+        /*
         Log.e("permisos", "pidiendo permiso" + shouldProvideRationale)
         if (shouldProvideRationale) {
             Log.e("permisos", "true")
@@ -366,6 +371,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                     REQUEST_PERMISSIONS_REQUEST_CODE)
 
         }
+        */
     }
 
     private fun checkPermissions(): Boolean {

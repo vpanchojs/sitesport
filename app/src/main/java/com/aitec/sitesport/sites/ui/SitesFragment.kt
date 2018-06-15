@@ -6,10 +6,11 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
@@ -22,12 +23,41 @@ import kotlinx.android.synthetic.main.fragment_sites.*
 import java.util.*
 import javax.inject.Inject
 
-class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntrepiseAdapterListener, SitesView, CompoundButton.OnCheckedChangeListener {
+class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntrepiseAdapterListener, SitesView, RadioGroup.OnCheckedChangeListener {
+    override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
+        when (p0!!.checkedRadioButtonId) {
+            R.id.cb_distance -> {
+                callback!!.getMyLocation()
+                //showProgresBar(true)
+                //visibleListSites(View.INVISIBLE)
+
+                /*
+                if (p1) {
+                    callback!!.getMyLocation()
+                    showProgresBar(true)
+                    visibleListSites(View.INVISIBLE)
+                } else {
+                    presenter.addFilterLocation("", false)
+                }
+                */
+                Log.e(TAG, "distancia $p1")
+            }
+            R.id.cb_open -> {
+                presenter.addFilterOpen(true)
+                Log.e(TAG, "open $")
+            }
+            R.id.cb_score -> {
+                presenter.addFilterScore(true)
+                Log.e(TAG, "puntaje $p1")
+            }
+        }
+    }
 
     var ubicacion: String = ""
 
     var callback: onSitesFragmentListener? = null
 
+    /*
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
 
         when (p0!!.id) {
@@ -48,18 +78,26 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
             }
         }
     }
+    */
 
     fun visibleListSites(visible: Int) {
         rv_entrepise.visibility = visible
     }
 
     fun checkedDistanceNoneEvent(isCheck: Boolean) {
+        Log.e(TAG, "desabilitando")
+        rg_filters.setOnCheckedChangeListener(null)
+        cb_distance.isChecked = isCheck
+        rg_filters.setOnCheckedChangeListener(this)
+
+        /*
         cb_distance.setOnCheckedChangeListener(null)
         cb_distance.isChecked = isCheck
         cb_distance.setOnCheckedChangeListener(this)
 
         showProgresBar(false)
         visibleListSites(View.VISIBLE)
+        */
     }
 
 
@@ -72,7 +110,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     override fun navigatioProfile(entrepise: Enterprise) {
-        startActivity(Intent(context, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
+        startActivity(Intent(context, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise.pk))
     }
 
 
@@ -97,7 +135,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_sites, container, false)
+        val view = inflater.inflate(R.layout.fragment_sites, container, false)
         return view
     }
 
@@ -109,9 +147,10 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     private fun setupEvents() {
-        cb_distance.setOnCheckedChangeListener(this)
-        cb_open.setOnCheckedChangeListener(this)
-        cb_score.setOnCheckedChangeListener(this)
+        //cb_distance.setOnCheckedChangeListener(this)
+        //cb_open.setOnCheckedChangeListener(this)
+        //cb_score.setOnCheckedChangeListener(this)
+        rg_filters.setOnCheckedChangeListener(this)
         btn_reload.setOnClickListener(this)
 
     }
@@ -174,7 +213,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
     //Metodo llamado desde la actividad
     fun setMyLocation(mCurrentLocation: Location) {
-        checkedDistanceNoneEvent(true)
+        //checkedDistanceNoneEvent(true)
         visibleListSites(View.VISIBLE)
         ubicacion = "${mCurrentLocation.latitude},${mCurrentLocation.longitude}"
         //Log.e(TAG, "MI UBICACION ES $ubicacion")
@@ -193,5 +232,9 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
 
     override fun showButtonReload(visible: Int) {
         btn_reload.visibility = visible
+    }
+
+    override fun showFilters(visible: Int) {
+        cl_chips.visibility = visible
     }
 }

@@ -31,6 +31,11 @@ class ProfileUserPresenterImp(var eventBus: EventBusInterface, var view: Profile
         interactor.updateInfoUser(names, dni, phone, photo)
     }
 
+    override fun updatePhotoUser(photo: String) {
+        interactor.updatePhotoUser(photo)
+        view.showMessagge("Actualizando foto de perfil")
+    }
+
     @Subscribe
     fun onMainEvent(event: ProfileUserEvents) {
         when (event.type) {
@@ -67,6 +72,13 @@ class ProfileUserPresenterImp(var eventBus: EventBusInterface, var view: Profile
                 view.showViewInfo(View.VISIBLE)
                 view.showButtonReload(View.VISIBLE)
                 view.showProgressAndMessagin(View.GONE)
+            }
+            ProfileUserEvents.ON_UPDATE_PHOTO_USER_SUCCESS -> {
+                view.setPhoto(event.any.toString())
+                view.showMessagge("Foto Actualizada")
+            }
+            ProfileUserEvents.ON_UPDATE_PHOTO_USER_ERROR -> {
+                view.showMessagge(event.any!!)
             }
         }
     }

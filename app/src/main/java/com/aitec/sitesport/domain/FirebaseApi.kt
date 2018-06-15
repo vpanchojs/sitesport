@@ -1,13 +1,15 @@
 package com.aitec.sitesport.domain
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Handler
-import com.aitec.sitesport.entities.User
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
 import com.aitec.sitesport.entities.SearchCentersName
+import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.entities.enterprise.*
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -17,10 +19,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
-import android.support.constraint.solver.widgets.ResolutionNode.REMOVED
-import com.google.firebase.firestore.DocumentChange
-
-
+import java.io.ByteArrayOutputStream
 
 
 class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
@@ -28,11 +27,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     companion object {
         const val TAG = "FirebaseApi"
         const val PATH_USER = "users"
+        private val STORAGE_USER_PHOTO_PATH = "user-photos"
 
     }
 
     var mAuthListener: FirebaseAuth.AuthStateListener? = null
-    var pulistener: ListenerRegistration?=null
+    var pulistener: ListenerRegistration? = null
     private var handlerSearchName: Handler? = null
     private var runnableSearchName: Runnable? = null
 
@@ -159,7 +159,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
     //S1lqtUnghcdcPwPRsRPr
-    fun getBasicProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+    fun getBasicProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -188,7 +188,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }*/
 
-    fun getTableTimeProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+    fun getTableTimeProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise).collection("table_time")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -200,7 +200,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     val enterprise = Enterprise()
                     enterprise.horario = dayList
 
-                    if(it.metadata.isFromCache) enterprise.isOnline = false
+                    if (it.metadata.isFromCache) enterprise.isOnline = false
                     callback.onSucces(enterprise)
                 }
                 .addOnFailureListener {
@@ -210,7 +210,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getCourts(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+    fun getCourts(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise).collection("court")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -222,7 +222,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     val enterprise = Enterprise()
                     enterprise.canchas = courtList
 
-                    if(it.metadata.isFromCache) enterprise.isOnline = false
+                    if (it.metadata.isFromCache) enterprise.isOnline = false
 
                     callback.onSucces(enterprise)
                 }
@@ -233,7 +233,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getServices(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+    fun getServices(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise).collection("service")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -247,7 +247,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     val enterprise = Enterprise()
                     enterprise.servicios = serviceList
 
-                    if(it.metadata.isFromCache) enterprise.isOnline = false
+                    if (it.metadata.isFromCache) enterprise.isOnline = false
 
                     callback.onSucces(enterprise)
                 }
@@ -258,7 +258,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getContacts(idEnterprise: String, callback: onApiActionListener<Enterprise>){
+    fun getContacts(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise).collection("social_network")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -269,7 +269,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }
                     val enterprise = Enterprise()
                     enterprise.redesSociales = redSocialList
-                    if(it.metadata.isFromCache) enterprise.isOnline = false
+                    if (it.metadata.isFromCache) enterprise.isOnline = false
                     callback.onSucces(enterprise)
                 }
                 .addOnFailureListener {
@@ -278,7 +278,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun getLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>){
+    fun getLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>) {
         db.collection("centro_deportivo")
                 .document(idEnterprise)
                 .collection("like").document(idUser)
@@ -288,7 +288,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun removeLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>){
+    fun removeLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>) {
         val ref = db.collection("centro_deportivo")
                 .document(idEnterprise)
 
@@ -313,14 +313,14 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             it.delete(refEnterprise)
             it.delete(refUser)
             likes
-        }.addOnSuccessListener{
+        }.addOnSuccessListener {
             callback.onSucces(it)
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             callback.onError(it.message)
         }
     }
 
-    fun setLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>){
+    fun setLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>) {
         val ref = db.collection("centro_deportivo")
                 .document(idEnterprise)
 
@@ -348,13 +348,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             it.set(refEnterprise, hashMapDate)
             it.set(refUser, hashMapDate)
             likes
-        }.addOnSuccessListener{
+        }.addOnSuccessListener {
             callback.onSucces(it)
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             callback.onError(it.message)
         }
     }
-
 
 
     fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
@@ -397,10 +396,27 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }
     }
 
-    fun getAllSites(parametros: HashMap<String, String>, onApiActionListener: onApiActionListener<List<Enterprise>>) {
+    fun getAllSites(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
+        db.collection("centro_deportivo").get()
+                .addOnSuccessListener {
+                    val enterprises = ArrayList<Enterprise>()
+                    it.forEach {
+                        val e = it.toObject(Enterprise::class.java)
+                        e.pk = it.id
+                        enterprises.add(e)
+                    }
+
+                    callback.onSucces(enterprises)
+                }
+                .addOnFailureListener {
+                    callback.onError(it.message)
+                }
+
+        /*
         val gson = Gson()
         parametros.put("query", "ti")
         Log.e(TAG, "llegue")
+        */
         //db.collection(CENTER_SPORT_PATH).orderBy("numero_likes", Query.Direction.DESCENDING)
         /*
         fuctions.getHttpsCallable("helloWorld")
@@ -420,32 +436,121 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getHome(callback: RealTimeListener<Publications>) {
-        pulistener=db.collection("publish").addSnapshotListener { querySnapshot, e ->
+        pulistener = db.collection("publish").addSnapshotListener { querySnapshot, e ->
             if (e != null) {
                 Log.w(TAG, "listen:error", e)
                 callback.omError(e)
             }
             querySnapshot!!.documentChanges.forEach {
                 when (it.getType()) {
-                    DocumentChange.Type.ADDED ->{
-                        var pu=it.document.toObject(Publications::class.java)
-                        pu.id=it.document.id
+                    DocumentChange.Type.ADDED -> {
+                        var pu = it.document.toObject(Publications::class.java)
+                        pu.id = it.document.id
                         callback.addDocument(pu)
                     }
-                    DocumentChange.Type.MODIFIED ->{
-                        var pu=it.document.toObject(Publications::class.java)
-                        pu.id=it.document.id
+                    DocumentChange.Type.MODIFIED -> {
+                        var pu = it.document.toObject(Publications::class.java)
+                        pu.id = it.document.id
                         callback.updateDocument(pu)
-                }
-                    DocumentChange.Type.REMOVED ->{
-                        var pu=it.document.toObject(Publications::class.java)
-                        pu.id=it.document.id
+                    }
+                    DocumentChange.Type.REMOVED -> {
+                        var pu = it.document.toObject(Publications::class.java)
+                        pu.id = it.document.id
                         callback.removeDocument(pu)
-                }
+                    }
                 }
             }
 
         }
+
+    }
+
+    fun getSitesScore(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
+        db.collection("centro_deportivo").orderBy("likes", Query.Direction.DESCENDING).get()
+                .addOnSuccessListener {
+                    val enterprises = ArrayList<Enterprise>()
+                    it.forEach {
+                        val e = it.toObject(Enterprise::class.java)
+                        e.pk = it.id
+                        enterprises.add(e)
+                    }
+
+                    callback.onSucces(enterprises)
+                }
+                .addOnFailureListener {
+                    callback.onError(it.message)
+                }
+
+    }
+
+    fun updatePhoto(photo: String, callback: onApiActionListener<String>) {
+
+        val bmp = BitmapFactory.decodeFile(photo)
+
+        val bos = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.JPEG, 20, bos)
+
+        val data = bos.toByteArray()
+
+
+        storage.child(STORAGE_USER_PHOTO_PATH).child(mAuth.currentUser!!.uid).putBytes(data)
+                .addOnFailureListener {
+                    callback.onError(it.message)
+                }
+                .addOnSuccessListener {
+                    it.storage.downloadUrl
+                            .addOnSuccessListener { uri ->
+                                var profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
+                                        .setPhotoUri(uri).build()
+
+                                mAuth.currentUser!!.updateProfile(profileUpdate)
+                                        .addOnSuccessListener {
+                                            Log.e(TAG, "Se actualizo la photo")
+                                            callback.onSucces(uri.toString())
+                                        }
+                                        .addOnFailureListener {
+                                            Log.e(TAG, it.toString())
+                                            callback.onError(it.message)
+                                        }
+
+                            }
+                            .addOnFailureListener {
+
+                                callback.onError(it.message)
+                            }
+
+                }
+        /*
+        .addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot> {
+
+
+
+            override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
+                val downloadUrl = taskSnapshot.downloadUrl
+                /*db.collection(USERS_PATH).document(mAuth.currentUser!!.uid).update("url_photo", downloadUrl!!.toString())
+                        .addOnSuccessListener {
+                            Log.e(TAG, "foto actualizada")
+                            callback.onSuccess(null)
+                        }.addOnFailureListener {
+                            Log.e(TAG, "error actualizando")
+                            callback.onError(it.toString())
+                        }*/
+
+                var profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
+                        .setPhotoUri(downloadUrl).build()
+
+                mAuth.currentUser!!.updateProfile(profileUpdate)
+                        .addOnSuccessListener {
+                            Log.e(TAG, "Se actualizo la photo")
+                            callback.onSuccess()
+                        }
+                        .addOnFailureListener {
+                            Log.e(TAG, it.toString())
+                            callback.onError(it.message)
+                        }
+            }
+        })
+        */
 
     }
 
@@ -508,7 +613,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
     */
-
 
 
 }

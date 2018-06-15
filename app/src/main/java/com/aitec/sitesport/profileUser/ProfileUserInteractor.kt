@@ -6,4 +6,6 @@ interface ProfileUserInteractor {
 
     fun updateInfoUser(names: String, dni: String, phone: String, photo: String)
 
+    fun updatePhotoUser(photo: String)
+
 }

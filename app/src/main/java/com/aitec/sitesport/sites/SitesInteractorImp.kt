@@ -9,37 +9,49 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
 
     }
 
-    val parametros = HashMap<String, String>()
+    //val parametros = HashMap<String, String>()
 
     override fun onGetSites() {
         repository.onGetSites()
     }
 
     override fun addFilterOpen(add: Boolean) {
+        val parametros = HashMap<String, String>()
+        /*
         if (add) {
             parametros.put(FILTER_OPEN, "2")
         } else {
             parametros.remove(FILTER_OPEN)
         }
+        */
         repository.onGetSites(parametros)
     }
 
     override fun addFilterScore(add: Boolean) {
+        val parametros = HashMap<String, String>()
+        parametros.put(FILTER_SCORE, "-puntuacion")
+        /*
         if (add) {
             parametros.put(FILTER_SCORE, "-puntuacion")
         } else {
             parametros.remove(FILTER_SCORE)
         }
+        */
         repository.onGetSites(parametros)
     }
 
 
     override fun addFilterLocation(ubicacion: String, add: Boolean) {
+        val parametros = HashMap<String, String>()
+        parametros.put(FILTER_LOCATION, ubicacion)
+
+        /*
         if (add) {
             parametros.put(FILTER_LOCATION, ubicacion)
         } else {
             parametros.remove(FILTER_LOCATION)
         }
+        */
         repository.onGetSites(parametros)
     }
 

@@ -11,4 +11,5 @@ interface ProfileUserView {
     fun setInfoUser(dni: String?, phone: String?)
     fun showButtonReload(visibility: Int)
     fun showProgressAndMessagin(visibility: Int)
+    fun setPhoto(url: String)
 }

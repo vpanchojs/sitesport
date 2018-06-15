@@ -9,5 +9,7 @@ class ProfileUserEvents(var type: Int, var any: Any?) {
         val ON_GET_PROFILE_ERROR = 3
         val ON_UPDATE_PROFILE_SUCCESS = 4
         val ON_UPDATE_PROFILE_ERROR = 5
+        val ON_UPDATE_PHOTO_USER_SUCCESS = 6
+        val ON_UPDATE_PHOTO_USER_ERROR = 7
     }
 }
