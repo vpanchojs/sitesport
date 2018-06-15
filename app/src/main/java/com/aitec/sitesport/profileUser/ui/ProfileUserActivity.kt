@@ -55,7 +55,7 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         setupInject()
         setupEventsElements()
         setupValidationInputs()
-        setDataProfile(intent.extras.getParcelable(USER))
+        // setDataProfile(intent.extras.getParcelable(USER))
         presenter.onSubscribe()
         presenter.getInfoUser()
     }
@@ -111,6 +111,7 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
             R.id.btn_update -> {
                 presenter.updateInfoUser(
                         tie_names.text.toString(),
+                        tie_lastnames.text.toString(),
                         tie_dni.text.toString(),
                         tie_phone.text.toString(),
                         user.photo.toString()
@@ -290,9 +291,20 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         cl_info_get_user.visibility = visibility
     }
 
-    override fun setInfoUser(dni: String?, phone: String?) {
-        tie_dni.setText(dni)
-        tie_phone.setText(phone)
+    override fun setInfoUser(user: User) {
+        this.user = user
+        tie_names.setText(user.names)
+        tie_lastnames.setText(user.lastName)
+        tie_email.setText(user.email)
+        tie_dni.setText(user.dni)
+        tie_phone.setText(user.phone)
+        GlideApp.with(this)
+                .load(user.photo)
+                .placeholder(R.mipmap.ic_launcher)
+                .centerCrop()
+                .error(R.mipmap.ic_launcher)
+                .into(civ_user)
+
     }
 
     override fun showButtonReload(visibility: Int) {

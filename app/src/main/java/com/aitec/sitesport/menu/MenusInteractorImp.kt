@@ -1,5 +1,7 @@
 package com.aitec.sitesport.menu
 
+import android.net.Uri
+import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
 
 /**
@@ -7,12 +9,22 @@ import com.aitec.sitesport.lib.base.EventBusInterface
  */
 class MenusInteractorImp(var repository: MenusRepository, eventBus: EventBusInterface) : MenusInteractor {
 
-    override fun enviartokengoogle(idToken: String) {
-        repository.enviartokengoogle(idToken)
+    override fun enviartokengoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
+        val user = User()
+        user.photo = photoUrl.toString()
+        user.lastName = lastname!!
+        user.names = name!!
+        user.email = email!!
+        repository.enviartokengoogle(idToken, user)
     }
 
-    override fun enviartoken(token: String) {
-        repository.enviartoken(token)
+    override fun enviartoken(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
+        val user = User()
+        user.photo = photoUrl.toString()
+        user.lastName = lastname!!
+        user.names = name
+        user.email = email!!
+        repository.enviartoken(token,user)
     }
 
     override fun onSingOut() {

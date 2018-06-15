@@ -15,11 +15,11 @@ class User() : Parcelable {
     var pk: String? = null
     var names: String? = null
     @ColumnInfo(name = "last_name")
-    var lastName: String? = null
-    var photo: String? = null
-    var phone: String? = null
-    var email: String? = null
-    var dni: String? = null
+    var lastName: String = ""
+    var photo: String = ""
+    var phone: String = ""
+    var email: String = ""
+    var dni: String? = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -36,8 +36,21 @@ class User() : Parcelable {
     @Exclude
     fun toMapPost(): Map<String, Any> {
         val result = HashMap<String, Any>()
+        result["names"] = names!!
+        result["lastName"] = lastName
+        result["photo"] = photo!!
         result["dni"] = dni!!
         result["phone"] = phone!!
+        return result
+    }
+
+    @Exclude
+    fun toMapPostSave(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["names"] = names!!
+        result["lastName"] = lastName
+        result["photo"] = photo!!
+        result["email"] = email!!
         return result
     }
 

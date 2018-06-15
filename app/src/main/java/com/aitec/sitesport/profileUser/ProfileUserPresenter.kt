@@ -9,7 +9,7 @@ interface ProfileUserPresenter {
 
     fun getInfoUser()
 
-    fun updateInfoUser(names: String, dni: String, phone: String, photo: String)
+    fun updateInfoUser(names: String, lastname: String, dni: String, phone: String, photo: String)
 
     fun updatePhotoUser(photo: String)
 

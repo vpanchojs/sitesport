@@ -1,5 +1,6 @@
 package com.aitec.sitesport.menu
 
+import android.net.Uri
 import com.aitec.sitesport.menu.events.MenusEvents
 
 /**
@@ -23,9 +24,9 @@ interface MenusPresenter {
 
     fun onEventMenuThread(event: MenusEvents)
 
-    fun tokenFacebook(token: String)
+    fun tokenFacebook(token: String,name: String?, lastname: String?, email: String?, photoUrl: Uri?)
 
-    fun tokenGoogle(idToken: String)
+    fun tokenGoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?)
 
 
 }

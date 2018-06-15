@@ -1,5 +1,6 @@
 package com.aitec.sitesport.menu
 
+import android.net.Uri
 import android.view.View
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
@@ -9,16 +10,16 @@ import org.greenrobot.eventbus.Subscribe
 
 class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, var interactor: MenusInteractor) : MenusPresenter {
 
-    override fun tokenGoogle(idToken: String) {
+    override fun tokenGoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         view.showProgress(View.VISIBLE)
         view.visibleLogin(View.INVISIBLE)
-        interactor.enviartokengoogle(idToken)
+        interactor.enviartokengoogle(idToken, name, lastname, email, photoUrl)
     }
 
-    override fun tokenFacebook(token: String) {
+    override fun tokenFacebook(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         view.showProgress(View.VISIBLE)
         view.visibleLogin(View.INVISIBLE)
-        interactor.enviartoken(token)
+        interactor.enviartoken(token, name, lastname, email, photoUrl)
     }
 
     override fun onResume() {

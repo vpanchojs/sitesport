@@ -28,8 +28,8 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
         firebaseApi.unSuscribeAuth()
     }
 
-    override fun enviartokengoogle(idToken: String) {
-        firebaseApi.autenticationGoogle(idToken, object : onApiActionListener<User> {
+    override fun enviartokengoogle(idToken: String, user: User) {
+        firebaseApi.autenticationGoogle(idToken,user, object : onApiActionListener<User> {
             override fun onSucces(response: User) {
                 sharePreferencesApi.sesion(true, Cuenta.GOOGLE)
                 postEvent(MenusEvents.ON__SIGIN_SUCCES_GOOGLE, response)
@@ -39,33 +39,11 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
                 postEvent(MenusEvents.ON__SIGIN_ERROR, error)
             }
         })
-        /*
-        retrofitApi.iniciargoogle(idToken, object : onApiActionListener<Cuenta> {
-            override fun onSucces(response: Cuenta) {
-                sharePreferencesApi.sesion(true, Cuenta.GOOGLE)
-                sharePreferencesApi.saveTokenAndSession(response.token!!)
-                postEvent(MenusEvents.ON__SIGIN_SUCCES_GOOGLE, response.user!!)
-                sqliteRoomApi.setUser(response.user!!, object : onApiActionListener<Long> {
-                    override fun onSucces(response: Long) {
 
-
-                    }
-
-                    override fun onError(error: Any?) {
-
-                    }
-                })
-            }
-
-            override fun onError(error: Any?) {
-                postEvent(MenusEvents.ON__SIGIN_ERROR, error!!)
-            }
-        })
-        */
     }
 
-    override fun enviartoken(token: String) {
-        firebaseApi.autenticationFacebook(token, object : onApiActionListener<User> {
+    override fun enviartoken(token: String, user: User) {
+        firebaseApi.autenticationFacebook(token,user, object : onApiActionListener<User> {
             override fun onSucces(response: User) {
                 sharePreferencesApi.sesion(true, Cuenta.FACEBOOK)
                 postEvent(MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK, response)

@@ -2,7 +2,6 @@ package com.aitec.sitesport.domain
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.RealTimeListener
@@ -36,17 +35,33 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     private var handlerSearchName: Handler? = null
     private var runnableSearchName: Runnable? = null
 
-    fun autenticationGoogle(idToken: String, callback: onApiActionListener<User>) {
+    fun autenticationGoogle(idToken: String, user: User, callback: onApiActionListener<User>) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener {
-                    Log.e(TAG, "BIEN" + it.user.providers)
+                    Log.e(TAG, "BIEN" + it.additionalUserInfo.isNewUser)
+                    /*
                     val user = User()
                     user.pk = it.user.uid
                     user.names = it.user.displayName
                     user.email = it.user.email
+
                     user.photo = it.user.photoUrl.toString()
-                    callback.onSucces(user)
+                    */
+                    if (it.additionalUserInfo.isNewUser) {
+                        user.pk = it.user.uid
+                        saveUser(user, object : onApiActionListener<Unit> {
+                            override fun onSucces(response: Unit) {
+                                callback.onSucces(user)
+                            }
+
+                            override fun onError(error: Any?) {
+                                callback.onError(error)
+                            }
+                        })
+                    } else {
+                        callback.onSucces(user)
+                    }
                 }
                 .addOnFailureListener {
                     Log.e(TAG, it.toString())
@@ -54,22 +69,52 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun autenticationFacebook(accesToken: String, callback: onApiActionListener<User>) {
+    fun autenticationFacebook(accesToken: String, user: User, callback: onApiActionListener<User>) {
         val credential = FacebookAuthProvider.getCredential(accesToken);
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener {
                     Log.e(TAG, "BIEN" + it.user.providers)
+                    /*
                     val user = User()
                     user.pk = it.user.uid
                     user.names = it.user.displayName
                     user.email = it.user.email
                     user.photo = it.user.photoUrl.toString()
-                    callback.onSucces(user)
+                    */
+                    user.email = it.user.email!!
+
+                    if (it.additionalUserInfo.isNewUser) {
+                        user.pk = it.user.uid
+
+                        saveUser(user, object : onApiActionListener<Unit> {
+                            override fun onSucces(response: Unit) {
+                                callback.onSucces(user)
+                            }
+
+                            override fun onError(error: Any?) {
+                                callback.onError(error)
+                            }
+                        })
+                    } else {
+                        callback.onSucces(user)
+                    }
+
+
                 }.addOnFailureListener {
                     Log.e(TAG, it.toString())
                     callback.onError(it.message + "")
                 }
     }
+
+
+    fun saveUser(user: User, callback: onApiActionListener<Unit>) {
+        db.collection(PATH_USER).document(user.pk!!).set(user.toMapPostSave()).addOnSuccessListener {
+            callback.onSucces(Unit)
+        }.addOnFailureListener {
+            callback.onError(it.message)
+        }
+    }
+
 
     fun sigOut() {
         mAuth.signOut()
@@ -84,7 +129,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 val user = User()
                 user.pk = userAuth.uid
                 user.names = userAuth.displayName
-                user.email = userAuth.email
+                user.email = userAuth.email!!
                 user.photo = userAuth.photoUrl.toString()
                 callback.onSucces(user)
             } else {
@@ -103,10 +148,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun updateUser(user: User, listener: onApiActionListener<Unit>) {
 
-        updateProfileData(user.names!!, user.photo!!, object : onApiActionListener<Unit> {
+        updateProfileData(user.names + " " + user.lastName, object : onApiActionListener<Unit> {
             override fun onSucces(response: Unit) {
-                db.collection(PATH_USER).document(mAuth.currentUser!!.uid).set(user.toMapPost())
+                db.collection(PATH_USER).document(mAuth.currentUser!!.uid).update(user.toMapPost())
                         .addOnSuccessListener {
+
                             listener.onSucces(Unit)
 
                         }.addOnFailureListener {
@@ -120,15 +166,13 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             }
         })
 
-
     }
 
 
-    fun updateProfileData(names: String, photo: String, listener: onApiActionListener<Unit>) {
+    fun updateProfileData(names: String, listener: onApiActionListener<Unit>) {
 
         val profileUpdates = UserProfileChangeRequest.Builder()
                 .setDisplayName(names)
-                .setPhotoUri(Uri.parse(photo))
                 .build()
 
         mAuth.currentUser!!.updateProfile(profileUpdates)
@@ -500,19 +544,27 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnSuccessListener {
                     it.storage.downloadUrl
                             .addOnSuccessListener { uri ->
-                                var profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
+
+                                val profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri).build()
 
-                                mAuth.currentUser!!.updateProfile(profileUpdate)
-                                        .addOnSuccessListener {
-                                            Log.e(TAG, "Se actualizo la photo")
-                                            callback.onSucces(uri.toString())
-                                        }
-                                        .addOnFailureListener {
-                                            Log.e(TAG, it.toString())
-                                            callback.onError(it.message)
-                                        }
+                                db.collection(PATH_USER).document(getUid()).update("photo", uri.toString()).addOnSuccessListener {
 
+                                    mAuth.currentUser!!.updateProfile(profileUpdate)
+                                            .addOnSuccessListener {
+                                                Log.e(TAG, "Se actualizo la photo")
+                                                //callback.onSucces(uri.toString())
+                                            }
+                                            .addOnFailureListener {
+                                                Log.e(TAG, it.toString())
+                                                //callback.onError(it.message)
+                                            }
+                                    callback.onSucces(uri.toString())
+
+                                }.addOnFailureListener {
+
+                                    callback.onError(it.message)
+                                }
                             }
                             .addOnFailureListener {
 

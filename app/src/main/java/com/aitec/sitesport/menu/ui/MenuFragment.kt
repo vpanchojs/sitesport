@@ -26,6 +26,7 @@ import com.aitec.sitesport.work.Workme
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -87,9 +88,9 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     private fun handleSignInResult(result: Task<GoogleSignInAccount>) {
         try {
             val account = result.getResult(ApiException::class.java)
-            // Log.e(TAG, "signInResult:succes idtoken= ${account.serverAuthCode}")
+            Log.e(TAG, "signInResult:succes idtoken= ${account.givenName}")
             // showMessagge("Session Correctamente")
-            presenter.tokenGoogle(account.idToken!!)
+            presenter.tokenGoogle(account.idToken!!, account.givenName, account.familyName, account.email, account.photoUrl)
         } catch (e: Exception) {
             showMessagge("Error al autenticarse en google")
             Log.e(TAG, "signInResult:failed code=" + e.toString());
@@ -129,8 +130,16 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                presenter.tokenFacebook(loginResult.accessToken.token)
-                //Log.e(TAG, "TOKEN FA ${loginResult.accessToken.token}")
+
+                Log.e(TAG, "TOKEN FA ${loginResult.recentlyGrantedPermissions}")
+
+                val profile = Profile.getCurrentProfile()
+
+                if (profile.firstName != null && profile.lastName != null) {
+                    presenter.tokenFacebook(loginResult.accessToken.token, profile.firstName, profile.lastName, "", profile.getProfilePictureUri(200, 200))
+                } else {
+                    showMessagge("Tenemos problemas al obtener su información de Facebook, intentelo nuevamente")
+                }
             }
 
             override fun onCancel() {
@@ -228,27 +237,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         }
     }
 
-    /*
-
-    fun buildDinamycLinkShareApp() {
-        FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://sitesport.aitecec.com?idSportCenter=1"))
-                .setDynamicLinkDomain("sitesport.page.link")
-                // Open links with this app on Android
-                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
-                .buildShortDynamicLink()
-                .addOnSuccessListener {
-                    Log.e(TAG, "el link es: ${it.shortLink}")
-                    val i = Intent(android.content.Intent.ACTION_SEND)
-                    i.type = "text/plain"
-                    i.putExtra(Intent.EXTRA_TEXT, "descarga " + it.shortLink.toString())
-                    startActivity(Intent.createChooser(i, "Compartir mediante..."))
-                }
-                .addOnFailureListener {
-
-                }
-    }
-*/
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -264,7 +252,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             R.id.btn_sigin_facebook -> {
                 //showMessagge("Estamos Trabajando en ello")
 
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
 
             }
         }
@@ -272,7 +260,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     override fun setDataProfile(user: User) {
         this.user = user
-        tv_name_user.text = user.names
+        tv_name_user.text = "${user.names} ${user.lastName}"
         tv_email.text = user.email
         GlideApp.with(context!!)
                 .load(user.photo)
