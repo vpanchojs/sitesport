@@ -13,7 +13,9 @@
     <color name="colorWhiteTransparent">#87ffffff</color>
     <color name="colorWhiteLittleTransparent">#c8ffffff</color>
 
-    <color name="colorAccentTransparent">#af3acce1</color>
+    <color name="colorAccentTransparent">#c83acce1</color>
+    <color name="colorAccentDark">#146e7b</color>
+
 
     <color name="icon_transparent">#64454f63</color>
     <color name="colorBgTextViewInfo">#c878849e</color>
@@ -31,8 +33,8 @@
     <color name="colorMediumGradient">#64686868</color>
     <color name="colorEndGradient">#af131313</color>
 
-    <color name="colorDotEnable">#afffffff</color>
-    <color name="colorDotDisable">#4bffffff</color>
+    <color name="colorDotEnable">#beffffff</color>
+    <color name="colorDotDisable">#5affffff</color>
 
 
     <color name="colorTextProfile">@color/colorPrimary</color>

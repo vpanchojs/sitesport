@@ -19,8 +19,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.CheckBox
 import android.widget.ImageView
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
@@ -74,7 +76,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateBasicProfile() {
         collapse_toolbar_profile.title = enterprise.nombres
-        tvLike.text = enterprise.likes.toString()
+        cbRating.text = enterprise.likes.toString()
         //updateImage(enterprise.foto_perfil)
         setMapView()
     }
@@ -142,20 +144,18 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun isQualified(qualify: Boolean) {
-        imgLike.setImageDrawable(
-                if(qualify) ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
-                else ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
-        )
-        this.enterprise.isQualified = qualify
+        cbRating.isChecked = qualify
+        cbRating.isEnabled = true
     }
 
     override fun updateLike(like: Int) {
-        tvLike.text = like.toString()
-        imgLike.setImageDrawable(
+        cbRating.text = like.toString()
+        profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
+        /*imgLike.setImageDrawable(
                 if(enterprise.likes > like) ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
                 else ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
         )
-        this.enterprise.isQualified = !this.enterprise.isQualified
+        this.enterprise.isQualified = !this.enterprise.isQualified*/
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -403,7 +403,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun setupUI(){
         setupToolBar()
-        hideViewInitial()
+        stateInitialView()
         setupMap()
         setupTableTimeSection()
         setupCourtsSection()
@@ -413,13 +413,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun setupLikes(){
-        clLike.setOnClickListener{
-            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, enterprise.isQualified)
-            BaseActivitys.showToastMessage(this, "Like " + enterprise.pk, Toast.LENGTH_LONG)
+        cbRating.setOnClickListener {
+            val checkBox: CheckBox = it as CheckBox
+            checkBox.isChecked = !checkBox.isChecked
+            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, checkBox.isChecked)
+            cbRating.isEnabled = false
         }
     }
 
-    private fun hideViewInitial(){
+    private fun stateInitialView(){
         ibtnBar.visibility = View.GONE
         ibtnWiFi.visibility = View.GONE
         ibtnEstacionamiento.visibility = View.GONE
@@ -431,6 +433,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         ibtnFacebook.visibility = View.GONE
         ibtnInstagram.visibility = View.GONE
         ivRunLocation.visibility = View.GONE
+
+        cbRating.isEnabled = false
     }
 
 
@@ -465,10 +469,24 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun shareProfile(){
+        BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
+        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, object : onApiActionListener<String>{
+            override fun onSucces(response: String) {
+                intentShared(response)
+            }
+            override fun onError(error: Any?) {
+                intentShared(null)
+            }
+        })
+    }
+
+    private fun intentShared(link: String?){
+        var auxLink = " ${resources.getString(R.string.url_play_store)}"
+        if(link != null) auxLink = " $link"
         val i = Intent(android.content.Intent.ACTION_SEND)
         i.type = "text/plain"
         i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
-        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShare))
+        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShare) + auxLink)
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
