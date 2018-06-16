@@ -51,7 +51,7 @@ class HomeRepositoryImp (var eventBus: EventBusInterface, var sharePreferencesAp
     }
 
     override fun remove(){
-        firebaseApi.removelistener()
+       firebaseApi.removelistener()
     }
 
     private fun postEvent(type: Int, any: Any) {

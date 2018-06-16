@@ -78,19 +78,24 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
             R.id.navigation_home -> {
                 btn_map.visibility = View.INVISIBLE
+                toolbar.title="Inicio"
                 fragment = HomeFragment.newInstance()
             }
             R.id.navigation_site -> {
                 btn_map.visibility = View.VISIBLE
+                toolbar.title="Sitios Deportivos"
                 fragment = SitesFragment.newInstance()
             }
             R.id.navigation_my_reserve -> {
                 btn_map.visibility = View.INVISIBLE
+                toolbar.title="Mis Reservas"
                 fragment = RecordFragment.newInstance()
+
             }
 
             R.id.navigation_menu -> {
                 btn_map.visibility = View.INVISIBLE
+                toolbar.title="Menú"
                 fragment = MenuFragment.newInstance()
             }
         }

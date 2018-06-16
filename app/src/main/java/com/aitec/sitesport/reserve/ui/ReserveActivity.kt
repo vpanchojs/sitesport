@@ -228,7 +228,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     fun getTableTimeToday(day: Int): Dia? {
         //return enterprise.horario!!.dias.find {
-          //  it.nombre == day
+        //  it.nombre == day
         //}
         return null
     }

@@ -2,6 +2,7 @@ package com.aitec.sitesport.menu.ui
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -203,7 +204,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     override fun onClick(position: Int) {
         when (position) {
             0 -> {
-                showMessagge("Compartir")
+                showMessagge("Obteniendo aplicaciones")
                 BaseActivitys.buildDinamycLinkShareApp(null, object : onApiActionListener<String> {
                     override fun onSucces(response: String) {
                         val i = Intent(android.content.Intent.ACTION_SEND)
@@ -219,10 +220,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             }
 
             1 -> {
-                showMessagge("Terminos y Condiciones")
+                //showMessagge("Terminos y Condiciones")
+                openBrowser("https://www.google.com")
             }
             2 -> {
-                showMessagge("Ayuda")
+                //showMessagge("Ayuda")
+                openBrowser("https://www.google.com")
             }
             3 -> {
                 val intento1 = Intent(context, Workme::class.java)
@@ -235,6 +238,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
 
         }
+    }
+
+    fun openBrowser(url: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
     }
 
 
