@@ -1,8 +1,10 @@
 package com.aitec.sitesport.home.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.R.id.progressbar_home
 import com.aitec.sitesport.R.id.rv_entrepise_home
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
 import com.aitec.sitesport.home.HomePresenter
 import com.aitec.sitesport.home.adapter.HomeAdapter
@@ -28,6 +31,8 @@ import javax.inject.Inject
 
 
 class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
+
+    private val TAG = "HomeFragment"
     override fun updatePublicacion(publications: Publications) {
         var pu=findpublicacion(publications.id!!)
         if (pu!=null){
@@ -72,12 +77,17 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         setupInjection()
         presenter.Suscribe()
 
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.onSuscribe()
+        presenter.remove()
+
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_home2, container, false)

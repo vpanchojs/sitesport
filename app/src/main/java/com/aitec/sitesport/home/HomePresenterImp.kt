@@ -15,9 +15,14 @@ import org.greenrobot.eventbus.Subscribe
 
 
 class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var interactor: HomeInteractor) : HomePresenter {
+    override fun remove() {
+        interactor.remove()
+    }
+
     override fun getHome() {
         view.showProgresBar(true)
         interactor.getHome()
+
 
     }
 
@@ -29,6 +34,7 @@ class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var 
         eventBus.unregister(this)
 
     }
+
 
     @Subscribe
     override fun onEvents(events: HomeEvents){

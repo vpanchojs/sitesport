@@ -15,6 +15,7 @@ interface HomePresenter {
 
     fun getHome()
     fun Suscribe()
+    fun remove()
     fun onSuscribe()
     fun onEvents(events: HomeEvents)
 }

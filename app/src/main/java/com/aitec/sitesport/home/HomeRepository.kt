@@ -13,4 +13,5 @@ interface HomeRepository {
 
 
     fun getHome()
+    fun remove()
 }

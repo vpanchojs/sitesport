@@ -12,9 +12,14 @@ import com.aitec.sitesport.reserve.ReserveRepository
 
 
 class HomeInteractorImp (var repository: HomeRepository) : HomeInteractor {
+    override fun remove() {
+        repository.remove()
+    }
+
     override fun getHome() {
 
         repository.getHome()
+
     }
 
 
