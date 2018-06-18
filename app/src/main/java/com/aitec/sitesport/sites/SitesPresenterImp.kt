@@ -36,11 +36,12 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
         interactor.addFilterScore(add)
     }
 
-    override fun addFilterLocation(ubicacion: String, add: Boolean) {
+    override fun addFilterLocation(latitude: Double, longitude: Double, add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
-        interactor.addFilterLocation(ubicacion, add)
+        interactor.addFilterLocation(latitude,longitude, add)
     }
+
 
     @Subscribe
     fun onEventThread(event: SitesEvents) {

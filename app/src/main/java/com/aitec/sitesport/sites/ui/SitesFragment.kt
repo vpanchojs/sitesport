@@ -217,7 +217,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         visibleListSites(View.VISIBLE)
         ubicacion = "${mCurrentLocation.latitude},${mCurrentLocation.longitude}"
         //Log.e(TAG, "MI UBICACION ES $ubicacion")
-        presenter.addFilterLocation(ubicacion, true)
+        presenter.addFilterLocation(mCurrentLocation.latitude, mCurrentLocation.longitude, true)
     }
 
     interface onSitesFragmentListener {
