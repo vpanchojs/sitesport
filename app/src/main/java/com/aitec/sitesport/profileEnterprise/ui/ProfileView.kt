@@ -27,7 +27,7 @@ interface ProfileView {
 
     fun updateLike(like: Int)
     fun isQualified(qualify: Boolean)
-
+    fun reduceRating()
     fun getEnterprise() : Enterprise
     fun setEnterprise(enterprise: Enterprise)
 

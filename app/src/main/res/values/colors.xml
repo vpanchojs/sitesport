@@ -15,6 +15,7 @@
 
     <color name="colorAccentTransparent">#c83acce1</color>
     <color name="colorAccentDark">#146e7b</color>
+    <color name="colorAccentUltraDark">#09454e</color>
 
 
     <color name="icon_transparent">#64454f63</color>

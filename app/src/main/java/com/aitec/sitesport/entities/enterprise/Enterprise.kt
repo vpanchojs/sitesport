@@ -9,7 +9,6 @@ class Enterprise() : Parcelable {
     // OBJETO INICIAL
     lateinit var pk: String
     lateinit var nombres: String
-    lateinit var urldetalle: String
     var foto_perfil: String = ""
     var direccion: Address? = null
     var me_gusta: Boolean = false
@@ -36,7 +35,6 @@ class Enterprise() : Parcelable {
         pk = parcel.readString()
         nombres = parcel.readString()
         foto_perfil = parcel.readString()
-        direccion = parcel.readParcelable(Address::class.java.classLoader)
         me_gusta = parcel.readByte() != 0.toByte()
         puntuacion = parcel.readInt()
         distance = parcel.readFloat()
@@ -46,15 +44,12 @@ class Enterprise() : Parcelable {
         idMarker = parcel.readString()
         parcel.readList(horario, Dia::class.java.classLoader)
         parcel.readList(canchas, Cancha::class.java.classLoader)
-        parcel.readList(servicios, Servicio::class.java.classLoader)
-        parcel.readList(redesSociales, RedSocial::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
         parcel.writeString(nombres)
         parcel.writeString(foto_perfil)
-        parcel.writeParcelable(direccion, flags)
         parcel.writeByte(if (me_gusta) 1 else 0)
         parcel.writeInt(puntuacion)
         parcel.writeFloat(distance)
@@ -64,9 +59,6 @@ class Enterprise() : Parcelable {
         parcel.writeString(idMarker)
         parcel.writeList(horario)
         parcel.writeList(canchas)
-        parcel.writeList(servicios)
-        parcel.writeList(redesSociales)
-
     }
 
     override fun describeContents(): Int {

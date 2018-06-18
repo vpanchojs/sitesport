@@ -13,7 +13,6 @@ class Cancha() : Parcelable{
     var piso: String = ""
     var hora_intermedia: String = ""
     var fotos: ArrayList<String>? = arrayListOf()
-    var isAddPhotoProfile: Boolean = false
 
 
     constructor(parcel: Parcel) : this() {

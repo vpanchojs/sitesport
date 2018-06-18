@@ -1,5 +1,6 @@
 package com.aitec.sitesport.profileEnterprise
 
+import android.util.Log
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
@@ -112,7 +113,13 @@ class ProfilePresenterImpl(var profileView : ProfileView,
             }
 
             ProfileActivity.SECTION_UPDATE_LIKE -> {
-                profileView.updateLike((profileEvent.eventObject as Int))
+
+                if(profileEvent.eventType == ProfileEvent.SUCCESS)
+                    profileView.updateLike((profileEvent.eventObject as Int))
+                else {
+                    Log.e("LIKE", "ERROR AL ACTUALIZAR LIKE ")
+                    profileView.reduceRating()
+                }
             }
         }
 

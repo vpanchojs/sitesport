@@ -368,6 +368,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }.addOnSuccessListener {
             callback.onSucces(it)
         }.addOnFailureListener {
+            Log.e(TAG, "ERROR en el like")
             callback.onError(it.message)
         }
     }
@@ -403,6 +404,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }.addOnSuccessListener {
             callback.onSucces(it)
         }.addOnFailureListener {
+            Log.e(TAG, "ERROR en el like")
             callback.onError(it.message)
         }
     }

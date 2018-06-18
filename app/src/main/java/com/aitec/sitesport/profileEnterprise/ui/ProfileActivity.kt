@@ -23,6 +23,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
@@ -30,6 +31,7 @@ import com.aitec.sitesport.profileEnterprise.ui.dialog.ImageAdapter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
+import com.aitec.sitesport.reserve.ui.ReserveActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -144,18 +146,26 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun isQualified(qualify: Boolean) {
+        enterprise.isQualified = qualify
         cbRating.isChecked = qualify
-        cbRating.isEnabled = true
+        cbRating.isClickable = true
+        cbRating.isClickable = true
     }
 
     override fun updateLike(like: Int) {
         cbRating.text = like.toString()
+        enterprise.likes = like
         profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
         /*imgLike.setImageDrawable(
                 if(enterprise.likes > like) ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
                 else ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
         )
         this.enterprise.isQualified = !this.enterprise.isQualified*/
+    }
+
+    override fun reduceRating() {
+        cbRating.isChecked = enterprise.isQualified
+        cbRating.text = enterprise.likes.toString()
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -409,15 +419,26 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupCourtsSection()
         setupPhotosSection()
         setupLikes()
+        setupBtnReservation()
         snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("Ok") {}
+    }
+
+    private fun setupBtnReservation(){
+        btnReservation.setOnClickListener {
+            val intent = Intent(this, ReserveActivity::class.java)
+            intent.putExtra(ENTERPRISE, enterprise)
+            startActivity(intent)
+        }
     }
 
     private fun setupLikes(){
         cbRating.setOnClickListener {
             val checkBox: CheckBox = it as CheckBox
-            checkBox.isChecked = !checkBox.isChecked
-            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, checkBox.isChecked)
-            cbRating.isEnabled = false
+            cbRating.isChecked = checkBox.isChecked
+            if(cbRating.isChecked) cbRating.text = (enterprise.likes + 1).toString()
+            else cbRating.text = (enterprise.likes - 1).toString()
+            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, !cbRating.isChecked)
+            cbRating.isClickable = false
         }
     }
 
@@ -434,7 +455,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         ibtnInstagram.visibility = View.GONE
         ivRunLocation.visibility = View.GONE
 
-        cbRating.isEnabled = false
+        cbRating.isClickable = false
     }
 
 
