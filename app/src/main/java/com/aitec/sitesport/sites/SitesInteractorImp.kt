@@ -1,5 +1,7 @@
 package com.aitec.sitesport.sites
 
+import com.aitec.sitesport.util.Filtros
+
 class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
 
     companion object {
@@ -41,9 +43,15 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
     }
 
 
+    /*
     override fun addFilterLocation(ubicacion: String, add: Boolean) {
-        val parametros = HashMap<String, String>()
-        parametros.put(FILTER_LOCATION, ubicacion)
+        var filtros=Filtros()
+        filtros.cercanos=true
+        filtros.latitude=
+
+        val parametros = Filtros().toMap()
+
+        //parametros.put(FILTER_LOCATION, ubicacion)
 
         /*
         if (add) {
@@ -54,5 +62,23 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
         */
         repository.onGetSites(parametros)
     }
+    */
 
+    override fun addFilterLocation(latitude: Double, longitude: Double, add: Boolean) {
+        var filtros = Filtros()
+        filtros.cercanos = true
+        filtros.latitude = latitude
+        filtros.longitude = longitude
+
+        //parametros.put(FILTER_LOCATION, ubicacion)
+
+        /*
+        if (add) {
+            parametros.put(FILTER_LOCATION, ubicacion)
+        } else {
+            parametros.remove(FILTER_LOCATION)
+        }
+        */
+        repository.onGetSitesLocation(filtros.toMap())
+    }
 }

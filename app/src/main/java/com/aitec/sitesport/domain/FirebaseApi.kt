@@ -42,6 +42,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     var pulistener: ListenerRegistration? = null
     private var handlerSearchName: Handler? = null
     private var runnableSearchName: Runnable? = null
+    val gson = Gson()
 
     fun autenticationGoogle(idToken: String, user: User, callback: onApiActionListener<User>) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -411,7 +412,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
         var parametros = HashMap<String, String>()
         parametros.put("query", query)
-        val gson = Gson()
+
         handlerSearchName = Handler()
         runnableSearchName = Runnable {
             fuctions.getHttpsCallable("searchCentersName")
@@ -618,6 +619,36 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         if (pulistener != null) {
             pulistener!!.remove()
         }
+    }
+
+    fun getSitesLocation(parametros: Map<String, Any>, callback: onApiActionListener<List<Enterprise>>) {
+        fuctions.getHttpsCallable("FiltrosCentrosDeportivos")
+                .call(parametros)
+                .addOnSuccessListener {
+                    //val searchCentersName = SearchCentersName()
+
+                    Log.e(TAG, "data " + it.data.toString())
+
+                    /*
+                    val listSportCenter = ArrayList<Enterprise>()
+
+
+                    val data = it.data as ArrayList<HashMap<String, Any>>
+                    data.forEach { item ->
+                        val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
+                        listSportCenter.add(entrepise)
+                        Log.e(TAG, "error ${entrepise.nombres}")
+                    }
+                   // searchCentersName.results = listSportCenter
+                   // callback.onSucces(searchCentersName)
+                   */
+
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, "data error " + it.toString())
+
+                }
+
     }
 
     /*
