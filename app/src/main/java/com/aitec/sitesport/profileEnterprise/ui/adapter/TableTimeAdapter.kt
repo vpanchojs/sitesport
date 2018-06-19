@@ -1,8 +1,7 @@
-package com.aitec.sitesport.profileEnterprise.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.adapter
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<Tabl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_table_time, parent, false);
-        return TableTimeAdapter.ViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {

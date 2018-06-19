@@ -7,7 +7,8 @@ import com.aitec.sitesport.entities.enterprise.*
  */
 interface ProfileView {
 
-    fun showMsgInfo(msg: String)
+    fun showSnackBarInfo(msg: String)
+    fun showToastInfo(msg: String)
 
     fun showLoadingTableTimeSection()
     fun showLoadingCourtSection()
@@ -27,8 +28,8 @@ interface ProfileView {
 
     fun updateLike(like: Int)
     fun isQualified(qualify: Boolean)
-    fun reduceRating()
+    fun restoreRating()
     fun getEnterprise() : Enterprise
     fun setEnterprise(enterprise: Enterprise)
-
+    fun authenticated(uidUser: String?)
 }

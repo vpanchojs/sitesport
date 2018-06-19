@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Rate
+import com.aitec.sitesport.profileEnterprise.ui.adapter.RateCourtAdapter
 import kotlinx.android.synthetic.main.fragment_rate_court.view.*
 
 class RateCourtFragment : DialogFragment() {

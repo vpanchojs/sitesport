@@ -23,11 +23,10 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
-import com.aitec.sitesport.profileEnterprise.ui.dialog.ImageAdapter
+import com.aitec.sitesport.profileEnterprise.ui.adapter.ImageAdapter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
@@ -45,6 +44,13 @@ import javax.inject.Inject
 
 class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback{
 
+    override fun authenticated(uidUser: String?) {
+        //"sAcL7AsndlapxazBB5ZrHyCix782"
+        this.uidUser = uidUser
+        if(uidUser != null)
+            profilePresenter.getLike(uidUser, enterprise.pk)
+    }
+
     @Inject
     lateinit var profilePresenter: ProfilePresenter
     private var imageAdapter: ImageAdapter? = null
@@ -53,6 +59,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     private var courtAdapter: CourtAdapter? = null
     private var images: ArrayList<String> = arrayListOf()
     private lateinit var gMap: GoogleMap
+    private var uidUser: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +69,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         profilePresenter.register()
         enterprise.pk = intent.getStringExtra(ENTERPRISE)
         setupUI()
-        callSections()
+        //callSections()
     }
 
     private fun callSections(){
@@ -71,7 +78,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         profilePresenter.getTableTimeProfile(enterprise.pk)
         profilePresenter.getServicesProfile(enterprise.pk)
         profilePresenter.getContactsProfile(enterprise.pk)
-        profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
+        profilePresenter.isAuthenticated()
+        //profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
 
     // ======= ProfileView.kt implementation
@@ -149,23 +157,18 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         enterprise.isQualified = qualify
         cbRating.isChecked = qualify
         cbRating.isClickable = true
-        cbRating.isClickable = true
     }
 
     override fun updateLike(like: Int) {
         cbRating.text = like.toString()
         enterprise.likes = like
         profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
-        /*imgLike.setImageDrawable(
-                if(enterprise.likes > like) ContextCompat.getDrawable(this, R.drawable.ic_fire_off)
-                else ContextCompat.getDrawable(this, R.drawable.ic_fire_on)
-        )
-        this.enterprise.isQualified = !this.enterprise.isQualified*/
     }
 
-    override fun reduceRating() {
+    override fun restoreRating() {
         cbRating.isChecked = enterprise.isQualified
         cbRating.text = enterprise.likes.toString()
+        cbRating.isClickable = true
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -236,11 +239,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         return this.enterprise
     }
 
-    override fun showMsgInfo(msg: String) {
+    override fun showSnackBarInfo(msg: String) {
         if(snackBarInfo != null && !snackBarInfo!!.isShown) {
             snackBarInfo!!.setText(msg)
             snackBarInfo!!.show()
         }
+    }
+
+    override fun showToastInfo(msg: String) {
+        BaseActivitys.showToastMessage(this, msg, Toast.LENGTH_SHORT)
     }
 
     override fun hideLoadingTableTimeSection(msg: String?) {
@@ -420,12 +427,16 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupPhotosSection()
         setupLikes()
         setupBtnReservation()
-        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("Ok") {}
+        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("REINTENTAR") {
+            callSections()
+        }
+        //tvStateEnterprise.setText()
     }
 
     private fun setupBtnReservation(){
         btnReservation.setOnClickListener {
             val intent = Intent(this, ReserveActivity::class.java)
+            Log.e(ENTERPRISE, enterprise.canchas.toString())
             intent.putExtra(ENTERPRISE, enterprise)
             startActivity(intent)
         }
@@ -433,12 +444,17 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun setupLikes(){
         cbRating.setOnClickListener {
-            val checkBox: CheckBox = it as CheckBox
-            cbRating.isChecked = checkBox.isChecked
-            if(cbRating.isChecked) cbRating.text = (enterprise.likes + 1).toString()
-            else cbRating.text = (enterprise.likes - 1).toString()
-            profilePresenter.toggleLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk, !cbRating.isChecked)
-            cbRating.isClickable = false
+            if(uidUser != null) {
+                val checkBox: CheckBox = it as CheckBox
+                cbRating.isChecked = checkBox.isChecked
+                if (cbRating.isChecked) cbRating.text = (enterprise.likes + 1).toString()
+                else cbRating.text = (enterprise.likes - 1).toString()
+                profilePresenter.toggleLike(uidUser!!, enterprise.pk, !cbRating.isChecked)
+                cbRating.isClickable = false
+            }else{
+                cbRating.isChecked = !cbRating.isChecked
+                BaseActivitys.showToastMessage(this, "Debes iniciar sesión primero", Toast.LENGTH_SHORT)
+            }
         }
     }
 
@@ -534,6 +550,11 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        callSections()
+    }
+
     companion object {
         const val TAG = "ProfileActivity"
         //const val EMOTICON_HAPPY = 0x1F60A
@@ -548,6 +569,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         const val SECTION_BASIC = 4
         const val SECTION_INITIAL_LIKE = 5
         const val SECTION_UPDATE_LIKE = 6
+        const val AUTHENTICATION = 7
     }
 
 }

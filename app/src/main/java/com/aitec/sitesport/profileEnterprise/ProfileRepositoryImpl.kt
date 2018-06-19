@@ -16,6 +16,10 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
                             var eventBusInterface : EventBusInterface,
                             var sharePreferencesApi: SharePreferencesApi) : ProfileRepository{
 
+    override fun isAuthenticated() {
+        postEvent(ProfileEvent.SUCCESS, ProfileActivity.AUTHENTICATION, null, firebaseApi.isAuthenticated())
+    }
+
     override fun getTableTime(idEnterprise: String) {
         firebaseApi.getTableTimeProfile(idEnterprise, object : onApiActionListener<Enterprise>{
             override fun onSucces(response: Enterprise) {

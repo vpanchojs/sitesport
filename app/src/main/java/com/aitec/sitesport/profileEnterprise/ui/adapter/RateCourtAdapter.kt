@@ -1,9 +1,7 @@
-package com.aitec.sitesport.profileEnterprise.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.adapter
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,7 @@ class RateCourtAdapter (val context: Context, var listRatesCourt: List<Rate>) : 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_rate_court, parent, false);
-        return RateCourtAdapter.ViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {

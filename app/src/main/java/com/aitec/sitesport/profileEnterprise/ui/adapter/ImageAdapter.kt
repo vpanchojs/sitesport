@@ -1,4 +1,4 @@
-package com.aitec.sitesport.profileEnterprise.ui.dialog
+package com.aitec.sitesport.profileEnterprise.ui.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

@@ -22,7 +22,7 @@ class Cancha() : Parcelable{
         numero_jugadores = parcel.readString()
         piso = parcel.readString()
         hora_intermedia = parcel.readString()
-        fotos = parcel.createStringArrayList()
+        parcel.readStringList(fotos)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

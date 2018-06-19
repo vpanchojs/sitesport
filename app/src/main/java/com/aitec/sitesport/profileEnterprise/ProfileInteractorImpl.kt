@@ -5,6 +5,10 @@ package com.aitec.sitesport.profileEnterprise
  */
 class ProfileInteractorImpl(val profileRepository : ProfileRepository) : ProfileInteractor {
 
+    override fun isAuthenticated() {
+        profileRepository.isAuthenticated()
+    }
+
     override fun getTableTime(idEnterprise: String) {
         profileRepository.getTableTime(idEnterprise)
     }

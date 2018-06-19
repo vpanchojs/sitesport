@@ -241,6 +241,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }*/
 
+    fun isAuthenticated() : String?{
+        return mAuth.currentUser?.uid
+    }
+
     fun getTableTimeProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection("centro_deportivo").document(idEnterprise).collection("table_time")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())

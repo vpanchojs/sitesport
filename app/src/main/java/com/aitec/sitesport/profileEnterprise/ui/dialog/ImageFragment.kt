@@ -2,6 +2,7 @@ package com.aitec.sitesport.profileEnterprise.ui.dialog
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -36,11 +37,11 @@ class ImageFragment : Fragment() {
         if(url.isNotEmpty()) {
             GlideApp.with(this)
                     .load(URL(url).toString())
-                    .placeholder(resources.getDrawable(R.mipmap.ic_launcher))
+                    .placeholder(ContextCompat.getDrawable(activity!!, R.drawable.ic_bg_balon))
                     //.fitCenter()
                     .fitCenter()
                     //.override(600, 300)
-                    .error(resources.getDrawable(R.mipmap.ic_launcher))
+                    .error(ContextCompat.getDrawable(activity!!, R.drawable.ic_bg_balon))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView)
         }

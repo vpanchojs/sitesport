@@ -1,6 +1,5 @@
 package com.aitec.sitesport.profileEnterprise
 
-import android.util.Log
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
@@ -14,6 +13,10 @@ import org.greenrobot.eventbus.Subscribe
 class ProfilePresenterImpl(var profileView : ProfileView,
                            val profileInteractor : ProfileInteractor,
                            val eventBusInterface : EventBusInterface) : ProfilePresenter{
+
+    override fun isAuthenticated() {
+        profileInteractor.isAuthenticated()
+    }
 
     override fun register() {
         eventBusInterface.register(this)
@@ -58,7 +61,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
     private fun existConnection(event: ProfileEvent){
         if(!(event.eventObject as Enterprise).isOnline){
-            profileView.showMsgInfo(event.eventMsg!!)
+            profileView.showSnackBarInfo(event.eventMsg!!)
         }
     }
 
@@ -66,6 +69,10 @@ class ProfilePresenterImpl(var profileView : ProfileView,
     override fun onEventProfileThread(profileEvent: ProfileEvent) {
 
         when(profileEvent.sectionView){
+
+            ProfileActivity.AUTHENTICATION -> {
+                profileView.authenticated(profileEvent.eventObject as String)
+            }
 
             ProfileActivity.SECTION_BASIC -> {
                 val response = (profileEvent.eventObject as Enterprise)
@@ -91,7 +98,8 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
             ProfileActivity.SECTION_COURTS -> {
                 profileView.updateCourts((profileEvent.eventObject as Enterprise).canchas)
-                profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].fotos!!)
+                if((profileEvent.eventObject as Enterprise).canchas.isNotEmpty())
+                    profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].fotos!!)
                 profileView.hideLoadingCourtSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
             }
@@ -117,8 +125,8 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 if(profileEvent.eventType == ProfileEvent.SUCCESS)
                     profileView.updateLike((profileEvent.eventObject as Int))
                 else {
-                    Log.e("LIKE", "ERROR AL ACTUALIZAR LIKE ")
-                    profileView.reduceRating()
+                    profileView.showToastInfo("Problemas de conexión")
+                    profileView.restoreRating()
                 }
             }
         }

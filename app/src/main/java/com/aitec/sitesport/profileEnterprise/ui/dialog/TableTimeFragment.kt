@@ -10,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.enterprise.Dia
+import com.aitec.sitesport.profileEnterprise.ui.adapter.TableTimeAdapter
 import kotlinx.android.synthetic.main.fragment_table_time.view.*
+
 
 class TableTimeFragment : DialogFragment(){
 
@@ -24,27 +26,24 @@ class TableTimeFragment : DialogFragment(){
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
-        val view: View?
+        var view: View = activity!!.layoutInflater.inflate(R.layout.layout_info_textview, null)
+
         if(listTableTime.isNotEmpty()) {
             view = activity!!.layoutInflater.inflate(R.layout.fragment_table_time, null)
             builder.setView(view)
             val adapter = TableTimeAdapter(listTableTime)
             view.rvInfoService.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
             view.rvInfoService.adapter = adapter
-        }else {
-            view = activity!!.layoutInflater.inflate(R.layout.layout_info_textview, null)
-            builder.setView(view)
+            view.imgBackground.setColorFilter(
+                    ContextCompat.getColor(activity!!, R.color.icon_transparent),
+                    android.graphics.PorterDuff.Mode.MULTIPLY)
         }
+
+        builder.setView(view)
 
         view.ib_back.setOnClickListener {
             this.dismiss()
         }
-
-        view.imgBackground.setColorFilter(
-                ContextCompat.getColor(activity!!, R.color.icon_transparent),
-                android.graphics.PorterDuff.Mode.MULTIPLY)
-
-
 
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
