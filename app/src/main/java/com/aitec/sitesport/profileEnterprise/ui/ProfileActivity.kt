@@ -162,7 +162,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     override fun updateLike(like: Int) {
         cbRating.text = like.toString()
         enterprise.likes = like
-        profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
+        cbRating.isClickable = true
+        //profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
 
     override fun restoreRating() {

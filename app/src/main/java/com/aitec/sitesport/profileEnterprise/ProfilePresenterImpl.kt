@@ -121,7 +121,6 @@ class ProfilePresenterImpl(var profileView : ProfileView,
             }
 
             ProfileActivity.SECTION_UPDATE_LIKE -> {
-
                 if(profileEvent.eventType == ProfileEvent.SUCCESS)
                     profileView.updateLike((profileEvent.eventObject as Int))
                 else {
