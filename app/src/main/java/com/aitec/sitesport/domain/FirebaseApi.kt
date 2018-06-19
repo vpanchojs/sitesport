@@ -273,7 +273,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnSuccessListener {
                     val courtList = ArrayList<Cancha>()
                     it.forEach {
-                        courtList.add(it.toObject(Cancha::class.java))
+                        val c = it.toObject(Cancha::class.java)
+                        c.pk = it.id
+                        courtList.add(c)
                         Log.d(TAG, "Success => Canchas = " + it.toObject(Cancha::class.java).nombre)
                     }
                     val enterprise = Enterprise()

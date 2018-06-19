@@ -6,6 +6,7 @@ import com.aitec.sitesport.entities.Rate
 
 class Cancha() : Parcelable{
 
+    var pk: String = ""
     var nombre: String = ""
     var precio_dia: Float = 0f
     var precio_noche: Float = 0f
@@ -16,6 +17,7 @@ class Cancha() : Parcelable{
 
 
     constructor(parcel: Parcel) : this() {
+        pk = parcel.readString()
         nombre = parcel.readString()
         precio_dia = parcel.readFloat()
         precio_noche = parcel.readFloat()
@@ -26,6 +28,7 @@ class Cancha() : Parcelable{
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(pk)
         parcel.writeString(nombre)
         parcel.writeFloat(precio_dia)
         parcel.writeFloat(precio_noche)

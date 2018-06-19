@@ -52,6 +52,10 @@ class HomeAdapter (var data: ArrayList<Publications>?, var callback: onHomeAdapt
 
         holder!!.view.txtdescription.text = data!!.get(position).description
         holder!!.onNavigationProfile(position, callback)
+
+        holder.view.btn_home_share.setOnClickListener {
+
+        }
     }
 
 
