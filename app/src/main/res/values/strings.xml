@@ -19,7 +19,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="textShare">Te invito a descargar SiteSport para que busques y reserves canchas en tu localidad.</string>
+    <string name="textShareEnterprise">Mira este centro deportivo en SiteSport.</string>
+    <string name="textSharePublication">Mira esta publicación en SiteSport.</string>
+    <string name="textShareApp">Te invito a descargar SiteSport, en donde podrás buscar y reservar tu centro deportivo favorito.</string>
+
+
     <string name="title_activity_maps">Map</string>
     <string name="string_without_service">No disponible</string>
 
@@ -58,4 +62,5 @@
     <string name="ic_home">Home</string>
     <string name="default_notification_channel_id">firebase</string>
     <string name="main_message_picture_source">Obtener la foto desde</string>
+    <string name="title_activity_publication">PublicationActivity</string>
 </resources>

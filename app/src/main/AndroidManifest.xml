@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aitec.sitesport">
 
-
     <uses-feature
         android:name="android.hardware.Camera"
         android:required="false" />
@@ -29,13 +28,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -54,9 +51,7 @@
             android:name=".reserve.ui.ReserveActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".profileUser.ui.ProfileUserActivity"
             android:screenOrientation="portrait"
@@ -65,10 +60,7 @@
             android:name=".profileEnterprise.ui.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome"
@@ -91,7 +83,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -114,9 +105,7 @@
         </activity>
         <activity
             android:name=".work.Workme"
-            android:label="Trabaja con Nosotros">
-
-        </activity>
+            android:label="Trabaja con Nosotros" />
 
         <service android:name=".notifications.servicies.MyFirebaseMessagingService">
             <intent-filter>
@@ -133,6 +122,10 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
+        <activity
+            android:name=".publication.PublicationActivity"
+            android:label="@string/title_activity_publication"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

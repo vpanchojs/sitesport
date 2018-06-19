@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +11,17 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 
 import com.aitec.sitesport.R
-import com.aitec.sitesport.R.id.progressbar_home
-import com.aitec.sitesport.R.id.rv_entrepise_home
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
 import com.aitec.sitesport.home.HomePresenter
 import com.aitec.sitesport.home.adapter.HomeAdapter
 import com.aitec.sitesport.home.adapter.onHomeAdapterListener
+import com.aitec.sitesport.publication.PublicationActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.fragment_home2.*
 
 import kotlinx.android.synthetic.main.fragment_home2.view.*
-import kotlinx.android.synthetic.main.item_home.*
-import java.sql.RowId
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -65,7 +61,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
 
     private var publications: Publications? = null
-    private var data: ArrayList<Publications>? = ArrayList()
+    private var data: ArrayList<Publications> = ArrayList()
     private var adapterOptions: HomeAdapter? = null
 
     @Inject
@@ -188,10 +184,32 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     override fun navigatioProfile(position: Int) {
+        val i = Intent(activity!!, PublicationActivity::class.java)
+        i.putExtra(PublicationActivity.PUBLICATION, data[position].id)
+        startActivity(i)
     }
 
+    override fun sharePublication(pk: String) {
+        BaseActivitys.showToastMessage(activity!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
+        BaseActivitys.buildDinamycLinkShareApp(pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String>{
+            override fun onSucces(response: String) {
+                intentShared(response)
+            }
+            override fun onError(error: Any?) {
+                intentShared(null)
+            }
+        })
+    }
 
-
+    private fun intentShared(link: String?){
+        var auxLink = " ${resources.getString(R.string.url_play_store)}"
+        if(link != null) auxLink = " $link"
+        val i = Intent(android.content.Intent.ACTION_SEND)
+        i.type = "text/plain"
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
+        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textSharePublication) + auxLink)
+        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+    }
 }
     /*override fun onAttach(context: Context?) {
         super.onAttach(context)

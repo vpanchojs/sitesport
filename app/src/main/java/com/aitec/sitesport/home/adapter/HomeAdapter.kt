@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.aitec.sitesport.R
+import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.item_home.view.*
 
@@ -54,7 +57,7 @@ class HomeAdapter (var data: ArrayList<Publications>?, var callback: onHomeAdapt
         holder!!.onNavigationProfile(position, callback)
 
         holder.view.btn_home_share.setOnClickListener {
-
+            callback.sharePublication(data!!.get(position).id!!)
         }
     }
 
@@ -70,5 +73,6 @@ class HomeAdapter (var data: ArrayList<Publications>?, var callback: onHomeAdapt
 
 interface onHomeAdapterListener {
     fun navigatioProfile(position: Int)
+    fun sharePublication(pk: String)
 }
 

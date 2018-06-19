@@ -22,6 +22,9 @@ class BaseActivitys() {
     companion object {
         var progressDialog: ProgressDialog? = null
 
+        const val LINK_ENTERPRISE = 0
+        const val LINK_PUBLICATION = 1
+
         fun validateFieldEmail(context: Context, field: TextInputEditText): Boolean {
             if (Patterns.EMAIL_ADDRESS.matcher(field.text.toString()).matches()) {
                 field.setError(null)
@@ -106,10 +109,10 @@ class BaseActivitys() {
         }
 
 
-        fun buildDinamycLinkShareApp(pk: String?, callbacks: onApiActionListener<String>) {
+        fun buildDinamycLinkShareApp(pk: String?, type: Int?, callbacks: onApiActionListener<String>) {
             var link = "https://sitesport.aitecec.com"
-            if (pk != null) {
-                link = "https://sitesport.aitecec.com?idSportCenter=$pk"
+            if (pk != null && type != null) {
+                link = "https://sitesport.aitecec.com?id=$pk&type=$type"
             }
 
             FirebaseDynamicLinks.getInstance().createDynamicLink()

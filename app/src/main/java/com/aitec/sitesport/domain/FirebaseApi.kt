@@ -251,7 +251,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnSuccessListener {
                     val dayList = ArrayList<Dia>()
                     it.forEach {
-                        dayList.add(it.toObject(Dia::class.java))
+                        val d = it.toObject(Dia::class.java)
+                        d.pk = it.id
+                        dayList.add(d)
                         Log.d(TAG, "Success => Horario = " + it.toObject(Dia::class.java).nombre)
                     }
                     val enterprise = Enterprise()

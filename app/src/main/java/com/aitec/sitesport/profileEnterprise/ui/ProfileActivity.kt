@@ -508,7 +508,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun shareProfile(){
         BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, object : onApiActionListener<String>{
+        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, BaseActivitys.LINK_ENTERPRISE, object : onApiActionListener<String>{
             override fun onSucces(response: String) {
                 intentShared(response)
             }
@@ -524,7 +524,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         val i = Intent(android.content.Intent.ACTION_SEND)
         i.type = "text/plain"
         i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
-        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShare) + auxLink)
+        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShareEnterprise) + auxLink)
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 

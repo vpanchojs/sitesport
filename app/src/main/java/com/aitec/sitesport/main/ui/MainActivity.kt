@@ -32,8 +32,10 @@ import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
+import com.aitec.sitesport.publication.PublicationActivity
 import com.aitec.sitesport.record.RecordFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
+import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.welcome.WelcomeActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -131,11 +133,32 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener {
-                    if (it != null) {
-                        Log.e(TAG, "query param ${it.link.getQueryParameter("idSportCenter")}")
-                        var pkSportCenter = it.link.getQueryParameter("idSportCenter")
-                        if (pkSportCenter != null) {
-                            startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, pkSportCenter))
+                    if (it != null && it.link.getQueryParameter("type") != null) {
+
+                        when(it.link.getQueryParameter("type").toInt()){
+
+                            //compartir centro deportivo
+                            BaseActivitys.LINK_ENTERPRISE -> {
+                                startActivity(
+                                        Intent(this, ProfileActivity::class.java)
+                                                .putExtra(
+                                                        ProfileActivity.ENTERPRISE,
+                                                        it.link.getQueryParameter("id")
+                                                )
+                                )
+                            }
+
+                            //compartir publicación
+                            BaseActivitys.LINK_PUBLICATION -> {
+                                startActivity(
+                                        Intent(this, PublicationActivity::class.java)
+                                                .putExtra(
+                                                        PublicationActivity.PUBLICATION,
+                                                        it.link.getQueryParameter("id")
+                                                )
+                                )
+                            }
+
                         }
                     }
                 }

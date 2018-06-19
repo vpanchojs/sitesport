@@ -5,17 +5,20 @@ import android.os.Parcelable
 
 class Dia() : Parcelable {
 
+    var pk: String = ""
     var nombre: String = ""
     var hora_inicio: String = ""
     var hora_fin: String = ""
 
     constructor(parcel: Parcel) : this() {
+        pk = parcel.readString()
         nombre = parcel.readString()
         hora_inicio = parcel.readString()
         hora_fin = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(pk)
         parcel.writeString(nombre)
         parcel.writeString(hora_inicio)
         parcel.writeString(hora_fin)

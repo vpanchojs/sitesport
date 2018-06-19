@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -205,11 +206,11 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         when (position) {
             0 -> {
                 showMessagge("Obteniendo aplicaciones")
-                BaseActivitys.buildDinamycLinkShareApp(null, object : onApiActionListener<String> {
+                BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {
                     override fun onSucces(response: String) {
                         val i = Intent(android.content.Intent.ACTION_SEND)
                         i.type = "text/plain"
-                        i.putExtra(Intent.EXTRA_TEXT, "descarga " + response)
+                        i.putExtra(Intent.EXTRA_TEXT, "${getString(R.string.textShareApp)} $response")
                         startActivity(Intent.createChooser(i, "Compartir mediante..."))
                     }
 
