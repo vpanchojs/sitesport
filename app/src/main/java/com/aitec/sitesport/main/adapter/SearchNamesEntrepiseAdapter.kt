@@ -24,7 +24,7 @@ class SearchNamesEntrepiseAdapter(var data: ArrayList<Enterprise>, var callback:
 
     override fun onBindViewHolder(holder: SearchNamesEntrepiseAdapter.ViewHolder, position: Int) {
         var entrepise = data.get(position)
-        holder!!.view.tv_name_entrepise.text = entrepise.nombres
+        holder!!.view.tv_name_entrepise.text = entrepise.nombre
         holder!!.onNavigationProfile(entrepise, callback!!)
     }
 

@@ -466,7 +466,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         }
 
         var marker = mMap.addMarker(MarkerOptions()
-                .position(LatLng(entreprise.direccion!!.gPointParcelable.geoPoint.latitude, entreprise.direccion!!.gPointParcelable.geoPoint.longitude))
+                .position(LatLng(entreprise.address!!.latitud, entreprise.address!!.longitud))
                 .icon(icono))
 
         entreprise.idMarker = marker.id
@@ -527,7 +527,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                     markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
                 }
                 tv_title_bs.setText("A ${df.format(it.distance)} Km")
-                tv_subtitle_bs.setText(it.nombres)
+                tv_subtitle_bs.setText(it.nombre)
             }
         }
 

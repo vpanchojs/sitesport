@@ -8,9 +8,9 @@ class Enterprise() : Parcelable {
 
     // OBJETO INICIAL
     lateinit var pk: String
-    lateinit var nombres: String
+    lateinit var nombre: String
     var foto_perfil: String = ""
-    var direccion: Address? = null
+    var address: Address? = null
     var me_gusta: Boolean = false
     var puntuacion: Int = 0
     var distance: Float = 0f
@@ -33,7 +33,7 @@ class Enterprise() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
-        nombres = parcel.readString()
+        nombre = parcel.readString()
         foto_perfil = parcel.readString()
         me_gusta = parcel.readByte() != 0.toByte()
         puntuacion = parcel.readInt()
@@ -48,7 +48,7 @@ class Enterprise() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
-        parcel.writeString(nombres)
+        parcel.writeString(nombre)
         parcel.writeString(foto_perfil)
         parcel.writeByte(if (me_gusta) 1 else 0)
         parcel.writeInt(puntuacion)

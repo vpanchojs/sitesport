@@ -32,7 +32,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val PATH_LIKE = "like"
         const val PATH_COURT = "court"
         const val PATH_SOCIAL_NETWORK = "social_network"
-        const val PATH_SERVICIE = "servicie"
+        const val PATH_SERVICIE = "servicio"
         const val PATH_RESERVATION = "reservation"
         const val PATH_PUBLICATIONS = "publications"
 
@@ -158,7 +158,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun updateUser(user: User, listener: onApiActionListener<Unit>) {
 
         updateProfileData(user.names + " " + user.lastName, object : onApiActionListener<Unit> {
-            override fun onSucces(response: Unit) {
+            override fun onSucces(response: Unit){
                 db.collection(PATH_USER).document(mAuth.currentUser!!.uid).update(user.toMapPost())
                         .addOnSuccessListener {
 
@@ -213,7 +213,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     //S1lqtUnghcdcPwPRsRPr
     fun getBasicProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
-        db.collection("centro_deportivo").document(idEnterprise)
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     Log.e(TAG, it.id + "getBasicProfile() => " + it.data)
@@ -228,7 +228,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     /*fun getLikesProfile(pk: String, callback: onApiActionListener<Enterprise>){
-        db.collection("centro_deportivo").document(pk).collection("like")
+        db.collection(PATH_SPORT_CENTER).document(pk).collection("like")
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     it.size()
@@ -246,13 +246,14 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getTableTimeProfile(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
-        db.collection("centro_deportivo").document(idEnterprise).collection("table_time")
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_TABLE_TIME)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val dayList = ArrayList<Dia>()
                     it.forEach {
                         val d = it.toObject(Dia::class.java)
                         d.pk = it.id
+                        //dayList.add(d.numero, d)
                         dayList.add(d)
                         Log.d(TAG, "Success => Horario = " + it.toObject(Dia::class.java).nombre)
                     }
@@ -266,11 +267,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     Log.d(TAG, "Error => " + it.message)
                     callback.onError(it.message)
                 }
-
     }
 
     fun getCourts(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
-        db.collection("centro_deportivo").document(idEnterprise).collection("court")
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_COURT)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val courtList = ArrayList<Cancha>()
@@ -295,7 +295,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getServices(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
-        db.collection("centro_deportivo").document(idEnterprise).collection("service")
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_SERVICIE)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val serviceList = ArrayList<Servicio>()
@@ -320,7 +320,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getContacts(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
-        db.collection("centro_deportivo").document(idEnterprise).collection("social_network")
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_SOCIAL_NETWORK)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val redSocialList = ArrayList<RedSocial>()
@@ -340,9 +340,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>) {
-        db.collection("centro_deportivo")
+        db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
-                .collection("like").document(idUser)
+                .collection(PATH_LIKE).document(idUser)
                 .get()
                 .addOnSuccessListener {
                     callback.onSucces(it.exists())
@@ -350,10 +350,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun removeLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>) {
-        val ref = db.collection("centro_deportivo")
+        val ref = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
 
-        val refEnterprise = db.collection("centro_deportivo")
+        val refEnterprise = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
                 .collection("like")
                 .document(idUser)
@@ -383,17 +383,17 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun setLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Int>) {
-        val ref = db.collection("centro_deportivo")
+        val ref = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
 
-        val refEnterprise = db.collection("centro_deportivo")
+        val refEnterprise = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
-                .collection("like")
+                .collection(PATH_LIKE)
                 .document(idUser)
 
-        val refUser = db.collection("users")
+        val refUser = db.collection(PATH_USER)
                 .document(idUser)
-                .collection("like")
+                .collection(PATH_LIKE)
                 .document(idEnterprise)
 
         db.runTransaction { it ->
@@ -436,7 +436,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         data.forEach { item ->
                             val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
                             listSportCenter.add(entrepise)
-                            Log.e(TAG, "error ${entrepise.nombres}")
+                            Log.e(TAG, "error ${entrepise.nombre}")
                         }
                         searchCentersName.results = listSportCenter
                         listener.onSucces(searchCentersName)
@@ -460,7 +460,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getAllSites(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
-        db.collection("centro_deportivo").get()
+        db.collection(PATH_SPORT_CENTER).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
                     it.forEach {
@@ -488,7 +488,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     val query = it.data as ArrayList<HashMap<String, Any>>
                     query.forEach { item ->
                         var entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
-                        Log.e(TAG, "error ${entrepise.nombres}")
+                        Log.e(TAG, "error ${entrepise.nombre}")
                     }
 
                 }
@@ -499,7 +499,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getHome(callback: RealTimeListener<Publications>) {
-        pulistener = db.collection("publish").addSnapshotListener { querySnapshot, e ->
+        pulistener = db.collection(PATH_PUBLICATIONS).addSnapshotListener { querySnapshot, e ->
             if (e != null) {
                 Log.w(TAG, "listen:error", e)
                 callback.omError(e)
@@ -529,7 +529,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getSitesScore(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
-        db.collection("centro_deportivo").orderBy("likes", Query.Direction.DESCENDING).get()
+        db.collection(PATH_SPORT_CENTER).orderBy(PATH_LIKE, Query.Direction.DESCENDING).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
                     it.forEach {
@@ -647,7 +647,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     data.forEach { item ->
                         val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
                         listSportCenter.add(entrepise)
-                        Log.e(TAG, "error ${entrepise.nombres}")
+                        Log.e(TAG, "error ${entrepise.nombre}")
                     }
                    // searchCentersName.results = listSportCenter
                    // callback.onSucces(searchCentersName)

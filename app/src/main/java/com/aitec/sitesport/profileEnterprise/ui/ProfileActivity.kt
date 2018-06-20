@@ -44,11 +44,12 @@ import javax.inject.Inject
 
 class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback{
 
-    override fun authenticated(uidUser: String?) {
+    override fun authenticated(uidUser: Any?) {
         //"sAcL7AsndlapxazBB5ZrHyCix782"
-        this.uidUser = uidUser
-        if(uidUser != null)
+        if(uidUser != null) {
+            this.uidUser = uidUser as String
             profilePresenter.getLike(uidUser, enterprise.pk)
+        }
     }
 
     @Inject
@@ -85,7 +86,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     // ======= ProfileView.kt implementation
 
     override fun updateBasicProfile() {
-        collapse_toolbar_profile.title = enterprise.nombres
+        collapse_toolbar_profile.title = enterprise.nombre
         cbRating.text = enterprise.likes.toString()
         //updateImage(enterprise.foto_perfil)
         setMapView()
@@ -182,8 +183,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun setMapView(){
-        tvLocation.text = enterprise.direccion!!.calles
-        val latLng = LatLng(enterprise.direccion!!.gPointParcelable.geoPoint.latitude, enterprise.direccion!!.gPointParcelable.geoPoint.longitude)
+        tvLocation.text = enterprise.address!!.calles
+        //val latLng = LatLng(enterprise.address!!.gPointParcelable.geoPoint.latitude, enterprise.address!!.gPointParcelable.geoPoint.longitude)
+        val latLng = LatLng(enterprise.address!!.latitud, enterprise.address!!.longitud)
         val cameraPosition = CameraPosition.Builder()
                 .target(latLng)
                 .zoom(15F)
@@ -380,23 +382,30 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun openFacebook(url: String) {
         try {
-            val subUrl = url.substring(0, url.length - 1)
-            Log.e("FB", subUrl)
-            val username = subUrl.substring(subUrl.lastIndexOf("/") + 1)
+            //val subUrl = url.substring(0, url.length - 1)
+            val username = url.substring(url.lastIndexOf("/") + 1)
             packageManager.getPackageInfo("com.url.katana", 0)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/$username")))
         } catch (e: Exception) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            try{
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            }catch (e: Exception) {
+                BaseActivitys.showToastMessage(this, "Ha ocurrido un problema al abrir Facebook", Toast.LENGTH_SHORT)
+            }
         }
     }
 
     private fun openInstagram(url: String){
         try {
-            val subUrl = url.substring(0, url.length - 1)
-            val username = subUrl.substring(subUrl.lastIndexOf("/") + 1)
+            //val subUrl = url.substring(0, url.length - 1)
+            val username = url.substring(url.lastIndexOf("/") + 1)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username")))
         } catch (e: Exception) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            try{
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            }catch (e: Exception) {
+                BaseActivitys.showToastMessage(this, "Ha ocurrido un problema al abrir Instagram", Toast.LENGTH_SHORT)
+            }
         }
     }
 
@@ -412,7 +421,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             sendIntent.`package` = "com.whatsapp"
             startActivity(sendIntent)
         } catch (e: Exception) {
-            BaseActivitys.showToastMessage(this, "No se encontró whatsapp instalado.", Toast.LENGTH_SHORT)
+            BaseActivitys.showToastMessage(this, "Ha ocurrido un problema al abrir Whatsapp", Toast.LENGTH_SHORT)
         }
     }
 

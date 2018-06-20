@@ -19,7 +19,7 @@ interface RetrofitServicie {
 
     @Headers("Content-Type: application/json")
     @GET(PATH_SEARCH_NAME_CENTER_SPORT)
-    fun searchNameCenterSport(@Query("nombres") nombres: String, @Query("page") page: Int): Call<SearchCentersName>
+    fun searchNameCenterSport(@Query("nombre") nombres: String, @Query("page") page: Int): Call<SearchCentersName>
 
     @Headers("Content-Type: application/json")
     @GET()

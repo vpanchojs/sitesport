@@ -6,20 +6,15 @@ import com.google.firebase.firestore.GeoPoint
 
 class Address() : Parcelable {
 
-    /*
-				pais : ""
-				proincia : ""
-				ciudad : ""
-				gpoint
-				reference : ""
-     */
-
     lateinit var referencia: String
     lateinit var provincia: String
     lateinit var ciudad: String
     lateinit var pais: String
     var calles: String = ""
-    var gPointParcelable : ParcelableGeoPoint = ParcelableGeoPoint(GeoPoint(-4.034063, -79.202306))
+    var latitud: Double = 0.0
+    var longitud: Double = 0.0
+
+    //var gPointParcelable : ParcelableGeoPoint = ParcelableGeoPoint(GeoPoint(-4.034063, -79.202306))
 
 
     constructor(parcel: Parcel) : this() {
@@ -28,7 +23,10 @@ class Address() : Parcelable {
         ciudad = parcel.readString()
         pais = parcel.readString()
         calles = parcel.readString()
-        gPointParcelable = parcel.readParcelable(ParcelableGeoPoint::class.java.classLoader)
+        latitud = parcel.readDouble()
+        longitud = parcel.readDouble()
+
+        //gPointParcelable = parcel.readParcelable(ParcelableGeoPoint::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -37,7 +35,10 @@ class Address() : Parcelable {
         parcel.writeString(ciudad)
         parcel.writeString(pais)
         parcel.writeString(calles)
-        parcel.writeParcelable(gPointParcelable, flags)
+        parcel.writeDouble(latitud)
+        parcel.writeDouble(longitud)
+
+        //parcel.writeParcelable(gPointParcelable, flags)
     }
 
     override fun describeContents(): Int {

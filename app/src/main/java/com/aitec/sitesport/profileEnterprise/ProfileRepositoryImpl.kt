@@ -91,7 +91,8 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
                 if(!response.isOnline) msg = MSG_ERROR_CONNECTION
-                postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_BASIC, msg, response)            }
+                postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_BASIC, msg, response)
+            }
 
             override fun onError(error: Any?) {
                 postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_BASIC, error.toString(), null)

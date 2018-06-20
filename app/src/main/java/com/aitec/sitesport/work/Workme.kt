@@ -233,7 +233,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
                     mCurrentLocation = location
                     if (::mMap.isInitialized) {
                         animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
-                        Log.e("direccion", mCurrentLocation.toString())
+                        Log.e("address", mCurrentLocation.toString())
                         stopLocationUpdates()
                     }
 

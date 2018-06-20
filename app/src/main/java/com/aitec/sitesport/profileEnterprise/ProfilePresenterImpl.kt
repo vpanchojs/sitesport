@@ -71,18 +71,18 @@ class ProfilePresenterImpl(var profileView : ProfileView,
         when(profileEvent.sectionView){
 
             ProfileActivity.AUTHENTICATION -> {
-                profileView.authenticated(profileEvent.eventObject as String)
+                profileView.authenticated(profileEvent.eventObject)
             }
 
             ProfileActivity.SECTION_BASIC -> {
                 val response = (profileEvent.eventObject as Enterprise)
                 val e = profileView.getEnterprise()
-                e.nombres = response.nombres
+                e.nombre = response.nombre
                 e.descripcion = response.descripcion
                 e.foto_perfil = response.foto_perfil
                 e.telefono = response.telefono
                 e.likes = response.likes
-                e.direccion = response.direccion
+                e.address = response.address
                 profileView.setEnterprise(e)
                 profileView.updateBasicProfile()
                 existConnection(profileEvent)
@@ -124,7 +124,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
                 if(profileEvent.eventType == ProfileEvent.SUCCESS)
                     profileView.updateLike((profileEvent.eventObject as Int))
                 else {
-                    profileView.showToastInfo("Problemas de conexión")
+                    profileView.showToastInfo(profileEvent.eventMsg!!)
                     profileView.restoreRating()
                 }
             }

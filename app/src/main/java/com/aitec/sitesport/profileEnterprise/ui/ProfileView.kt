@@ -31,5 +31,5 @@ interface ProfileView {
     fun restoreRating()
     fun getEnterprise() : Enterprise
     fun setEnterprise(enterprise: Enterprise)
-    fun authenticated(uidUser: String?)
+    fun authenticated(uidUser: Any?)
 }
