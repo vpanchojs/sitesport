@@ -85,46 +85,88 @@
             app:layout_constraintTop_toBottomOf="@+id/clOut">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_price"
+                android:id="@+id/clPriceDay"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
+                app:layout_constraintEnd_toStartOf="@+id/cl_price"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <ImageButton
-                    android:id="@+id/ivRatesCourt"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/imgPriceDay"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:clickable="false"
+                    android:layout_marginTop="4dp"
+                    android:background="@null"
                     android:tint="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_money" />
+                    app:srcCompat="@drawable/ic_sun" />
 
                 <TextView
-                    android:id="@+id/tvPrice"
+                    android:id="@+id/tvPriceDay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:text="$20 - $ 23"
+                    android:layout_marginTop="4dp"
+                    android:text="$20:00"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/dimen_text_image_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ivRatesCourt" />
+                    app:layout_constraintTop_toBottomOf="@+id/imgPriceDay" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_price"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cl_num_gamers"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/clPriceDay"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <ImageButton
+                    android:id="@+id/imgPriceNight"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@null"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_moon" />
+
+                <TextView
+                    android:id="@+id/tvPriceNight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="$20:00"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/dimen_text_image_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgPriceNight" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -132,20 +174,23 @@
                 android:id="@+id/cl_num_gamers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cl_floor"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/cl_price"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/iv_players"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@null"
                     android:tint="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -156,13 +201,11 @@
                     android:id="@+id/tvNumPlayers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="5 vs 5"
+                    android:layout_marginTop="4dp"
+                    android:text="vs"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/dimen_text_image_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -174,21 +217,22 @@
                 android:id="@+id/cl_floor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/cl_num_gamers"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/iv_floor"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@null"
                     android:tint="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -199,20 +243,17 @@
                     android:id="@+id/tvFloor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Sintetico"
+                    android:layout_marginTop="4dp"
+                    android:text="piso"
                     android:textAlignment="center"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/dimen_text_image_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_floor" />
 
             </android.support.constraint.ConstraintLayout>
-
 
         </android.support.constraint.ConstraintLayout>
 
@@ -287,19 +328,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_calendar" />
 
-        <ProgressBar
-            android:id="@+id/progressbar_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_load_reservation"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressbar_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mesagge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="Cargando Reservas"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressbar_items" />
+
+        </android.support.constraint.ConstraintLayout>
+
 
         <Button
             android:id="@+id/btn_reload"

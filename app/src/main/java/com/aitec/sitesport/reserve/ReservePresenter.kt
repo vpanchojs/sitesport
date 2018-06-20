@@ -8,7 +8,7 @@ interface ReservePresenter {
 
     fun onUnSubscribe()
 
-    fun getItemsReserved()
+    fun getItemsReserved(fecha: Long, pkEntrepise: String, pkCancha: String)
 
     fun addItemReserve(item: ItemReservation)
 
