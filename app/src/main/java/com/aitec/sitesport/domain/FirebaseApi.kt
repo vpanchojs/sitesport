@@ -7,6 +7,7 @@ import android.util.Log
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.entities.enterprise.*
@@ -241,7 +242,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }*/
 
-    fun isAuthenticated() : String?{
+    fun isAuthenticated(): String? {
         return mAuth.currentUser?.uid
     }
 
@@ -657,6 +658,18 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnFailureListener {
                     Log.e(TAG, "data error " + it.toString())
 
+                }
+
+    }
+
+    fun getItemReserved(fecha: String, idEnterprise: String, pkCancha: String, callback: onApiActionListener<List<Reservation>>) {
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_COURT).whereEqualTo("cancha.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
+                .addOnSuccessListener {
+                    Log.e(TAG, "item reserva succes")
+                    callback.onSucces(ArrayList<Reservation>())
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, "item reserva error" + it.toString())
                 }
 
     }

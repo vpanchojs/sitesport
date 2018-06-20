@@ -4,7 +4,7 @@ import com.aitec.sitesport.entities.ItemReservation
 
 interface ReserveInteractor {
 
-    fun getItemsReserved()
+    fun getItemsReserved(fecha: Long, pk: String, pkCancha: String)
 
     fun addItemsReserve(item: ItemReservation)
 

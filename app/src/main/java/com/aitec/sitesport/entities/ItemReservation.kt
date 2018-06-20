@@ -3,11 +3,12 @@ package com.aitec.sitesport.entities
 import android.os.Parcel
 import android.os.Parcelable
 
-class ItemReservation(var start: String, var end: String, var state: Boolean) : Parcelable {
+class ItemReservation(var start: String, var end: String, var state: Boolean, var select: Boolean) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
+            parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte()) {
     }
 
@@ -15,6 +16,7 @@ class ItemReservation(var start: String, var end: String, var state: Boolean) : 
         parcel.writeString(start)
         parcel.writeString(end)
         parcel.writeByte(if (state) 1 else 0)
+        parcel.writeByte(if (select) 1 else 0)
     }
 
     override fun describeContents(): Int {

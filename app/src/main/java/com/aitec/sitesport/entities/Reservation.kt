@@ -2,6 +2,7 @@ package com.aitec.sitesport.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.aitec.sitesport.entities.enterprise.Cancha
 
 class Reservation() : Parcelable {
 
@@ -13,6 +14,16 @@ class Reservation() : Parcelable {
     var type: Int = 0
     var isConsumed: Boolean = false
     var head: String = ""
+
+/*Nuevas variables*/
+
+    var fecha_reserva: String = ""
+    var hora_reserva: String = ""
+    var estado: String = ""
+    var observaciones = ""
+    var cliente: User? = null
+    var cancha: Cancha? = null
+
 
     constructor(parcel: Parcel) : this() {
         site = parcel.readString()

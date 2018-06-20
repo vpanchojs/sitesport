@@ -18,34 +18,57 @@
         android:background="@drawable/bg_header_bs">
 
         <TextView
-            android:id="@+id/tv_title_bs"
+            android:id="@+id/tv_num_hours"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Precio Total"
+            android:layout_marginStart="24dp"
+            android:text="Número de Horas"
             android:textColor="@color/white_suave"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
-            app:layout_constraintTop_toTopOf="@+id/tv_subtitle_bs" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_bs2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:text="Ninguna"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_num_hours"
+            app:layout_constraintStart_toStartOf="@+id/tv_num_hours"
+            app:layout_constraintTop_toBottomOf="@+id/tv_num_hours" />
+
+        <TextView
+            android:id="@+id/tv_title_bs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
+            android:text="Precio Total"
+            android:textColor="@color/white_suave"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
+            app:layout_constraintStart_toEndOf="@+id/tv_num_hours"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_subtitle_bs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="$ 150"
+            android:layout_marginTop="3dp"
+            android:text="$ 0.00"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_reserve_1"
-            app:layout_constraintEnd_toStartOf="@+id/btn_reserve_1"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_bs"
-            app:layout_constraintTop_toTopOf="@+id/btn_reserve_1" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title_bs"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_bs"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_bs" />
 
         <ImageView
             android:id="@+id/iv_icon_open"
@@ -53,9 +76,10 @@
             android:layout_height="24dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_bs"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_open_top" />
 
         <ProgressBar
@@ -67,21 +91,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title_bs" />
-
-        <Button
-            android:id="@+id/btn_reserve_1"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_buttom_buttom_sheet"
-            android:text="Reservar"
-            android:textColor="@drawable/txt_color_dialog"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
@@ -218,8 +227,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:visibility="invisible"
             android:background="#dfdfdf"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -263,8 +272,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:visibility="invisible"
             android:background="#dfdfdf"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

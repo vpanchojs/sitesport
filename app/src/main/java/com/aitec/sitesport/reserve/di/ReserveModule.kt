@@ -1,6 +1,6 @@
 package com.aitec.sitesport.reserve.di
 
-import com.aitec.sitesport.domain.SharePreferencesApi
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.reserve.*
 import com.aitec.sitesport.reserve.ui.ReserveView
@@ -31,8 +31,8 @@ class ReserveModule(var view: ReserveView) {
 
     @Provides
     @Singleton
-    fun providesReserveRepository(eventBus: EventBusInterface, sharePreferencesApi: SharePreferencesApi): ReserveRepository {
-        return ReserveRepositoryImp(eventBus, sharePreferencesApi)
+    fun providesReserveRepository(eventBus: EventBusInterface, firebaseApi: FirebaseApi): ReserveRepository {
+        return ReserveRepositoryImp(eventBus, firebaseApi)
     }
 }
 
