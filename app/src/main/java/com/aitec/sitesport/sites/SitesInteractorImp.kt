@@ -39,6 +39,7 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
             parametros.remove(FILTER_SCORE)
         }
         */
+
         repository.onGetSites(parametros)
     }
 
