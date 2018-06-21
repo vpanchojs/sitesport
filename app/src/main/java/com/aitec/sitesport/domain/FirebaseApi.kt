@@ -35,7 +35,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val PATH_SOCIAL_NETWORK = "red_social"
         const val PATH_SERVICIE = "servicio"
         const val PATH_RESERVATION = "reservacion"
-        const val PATH_PUBLICATIONS = "publicaciones"
+        const val PATH_PUBLICATIONS = "publicacion"
+        const val PATH_SEARCH_CENTER_SPORT_BY_NAME = "buscar_centro_deportivo_por_nombre"
+        const val PATH_FILTER_OPEN_CENTER_SPORT = "filtro_abierto_centro_deportivo"
 
     }
 
@@ -426,11 +428,13 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
         handlerSearchName = Handler()
         runnableSearchName = Runnable {
-            fuctions.getHttpsCallable("searchCentersName")
+            fuctions.getHttpsCallable(PATH_SEARCH_CENTER_SPORT_BY_NAME)
                     .call(parametros)
                     .addOnSuccessListener {
                         val searchCentersName = SearchCentersName()
                         val listSportCenter = ArrayList<Enterprise>()
+
+                        Log.e("search", it.data.toString())
 
 
                         var data = it.data as ArrayList<HashMap<String, Any>>
@@ -440,7 +444,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                             Log.e(TAG, "error ${entrepise.nombre}")
                         }
                         searchCentersName.results = listSportCenter
+
                         listener.onSucces(searchCentersName)
+
                     }
                     .addOnFailureListener {
                         Log.e(TAG, "error $it")
@@ -674,65 +680,32 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    /*
-    fun onSetRaiting(raiting: Raiting, update: Boolean, oldRaiting: Double) {
-
-        raiting.nameUser = getNameUser()
-        raiting.me = true
-
-        var newAvgRating: Double = 0.0
-        /*Referencia al cuestionrio a calificar */
-        var questionaireRef = db.collection(QUESTIONNAIRE_PATH).document(raiting.idQuestionaire)
-
-        var ratingsRef: DocumentReference
-
-        /*Referencia al nodo de calificaciones*/
-        //if (raiting.idRaiting.isNullOrBlank()) {
-        ratingsRef = questionaireRef.collection(RATING_PATH).document(getUid())
-        //} else {
-        //ratingsRef = questionaireRef.collection(RATING_PATH).document(raiting.idRaiting)
-        //}
-
-
-        db.runTransaction {
-            var questionnaire = it.get(questionaireRef).toObject(Questionaire::class.java)
-
-
-            // Compute new number of ratings
-            val newNumRatings = if (update) questionnaire!!.numAssessment else questionnaire!!.numAssessment + 1
-
-            var aux = questionnaire!!.assessment
-            if (update) {
-                aux = questionnaire!!.assessment - oldRaiting
-            }
-
-            // Compute new average rating
-            val oldRatingTotal = aux * questionnaire.numAssessment
-            newAvgRating = (oldRatingTotal + raiting.value) / newNumRatings
-
-            // Set new info
-            questionnaire.numAssessment = newNumRatings
-            questionnaire.assessment = newAvgRating
-
-            raiting.idRaiting = questionaireRef.id
-
-            // actualizamos el cuestionnario
-            it.update(questionaireRef, questionnaire.toMapRating())
-
-            //creamos la calificacion
-            it.set(ratingsRef, raiting.toMap())
-
-        }
+    fun getSitesOpen(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
+        fuctions.getHttpsCallable(PATH_FILTER_OPEN_CENTER_SPORT)
+                .call(parametros)
                 .addOnSuccessListener {
-                    Log.e("R", "todo bien" + newAvgRating)
-                    callback.onSuccess(raiting)
+                    val searchCentersName = SearchCentersName()
+                    val listSportCenter = ArrayList<Enterprise>()
+
+                    Log.e("open", it.data.toString())
+
+                    /*
+                    var data = it.data as ArrayList<HashMap<String, Any>>
+                    data.forEach { item ->
+                        val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
+                        listSportCenter.add(entrepise)
+                        Log.e(TAG, "error ${entrepise.nombre}")
+                    }
+                    searchCentersName.results = listSportCenter
+                    */
+
+                    //callback.onSucces(searchCentersName)
+
                 }
                 .addOnFailureListener {
-                    Log.e("R", it.toString())
-                    callback.onError(it.message)
+                    Log.e(TAG, "error $it")
+                    //callback.onError(it.message)
                 }
     }
-    */
-
 
 }

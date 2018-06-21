@@ -26,7 +26,7 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
             parametros.remove(FILTER_OPEN)
         }
         */
-        repository.onGetSites(parametros)
+        repository.onGetSitesOpen(parametros)
     }
 
     override fun addFilterScore(add: Boolean) {

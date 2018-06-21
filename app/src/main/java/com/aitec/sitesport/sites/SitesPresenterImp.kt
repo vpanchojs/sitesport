@@ -49,7 +49,14 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
         when (event.type) {
             SitesEvents.ON_GET_SITES_SUCCESS -> {
                 view.showFilters(View.VISIBLE)
-                view.setResultsSearchs(event.any as List<Enterprise>)
+
+                var enterprises = event.any as List<Enterprise>
+
+                if (enterprises.size > 0) {
+                    view.setResultsSearchs(event.any as List<Enterprise>)
+                } else {
+
+                }
                 view.showButtonReload(View.GONE)
             }
 

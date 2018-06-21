@@ -51,6 +51,15 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
 
     override fun onGetSitesOpen(parametros: HashMap<String, String>) {
 
+        firebaseApi.getSitesOpen(parametros, object : onApiActionListener<List<Enterprise>> {
+            override fun onSucces(response: List<Enterprise>) {
+                postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
+            }
+
+            override fun onError(error: Any?) {
+                postEvent(SitesEvents.ON_GET_SITES_ERROR, error!!)
+            }
+        })
     }
 
     override fun onGetSitesLocation(parametros: Map<String, Any>) {
