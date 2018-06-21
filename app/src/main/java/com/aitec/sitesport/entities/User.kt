@@ -1,20 +1,13 @@
 package com.aitec.sitesport.entities
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import java.util.*
 
-@Entity(tableName = "user")
 class User() : Parcelable {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
     var pk: String? = null
     var names: String? = null
-    @ColumnInfo(name = "last_name")
     var lastName: String = ""
     var photo: String = ""
     var phone: String = ""
@@ -22,7 +15,6 @@ class User() : Parcelable {
     var dni: String? = ""
 
     constructor(parcel: Parcel) : this() {
-        id = parcel.readLong()
         pk = parcel.readString()
         names = parcel.readString()
         lastName = parcel.readString()
@@ -56,7 +48,6 @@ class User() : Parcelable {
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id)
         parcel.writeString(pk)
         parcel.writeString(names)
         parcel.writeString(lastName)

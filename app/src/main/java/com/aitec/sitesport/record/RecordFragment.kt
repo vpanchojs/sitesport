@@ -3,16 +3,13 @@ package com.aitec.sitesport.record
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import kotlinx.android.synthetic.main.fragment_record.*
-import kotlinx.android.synthetic.main.fragment_record.view.*
 
 
 class RecordFragment : Fragment() {
@@ -22,7 +19,7 @@ class RecordFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        for(i in 0..3){
+        for (i in 0..3) {
             val r = Reservation()
             r.isConsumed = false
             r.court = "Cancha " + i
@@ -32,7 +29,7 @@ class RecordFragment : Fragment() {
             reservationsList.add(r)
         }
 
-        for(i in 4..8){
+        for (i in 4..8) {
             val r = Reservation()
             r.isConsumed = true
             r.court = "Cancha " + i

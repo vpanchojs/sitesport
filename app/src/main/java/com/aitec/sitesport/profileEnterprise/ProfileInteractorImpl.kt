@@ -3,7 +3,7 @@ package com.aitec.sitesport.profileEnterprise
 /**
  * Created by Yavac on 16/3/2018.
  */
-class ProfileInteractorImpl(val profileRepository : ProfileRepository) : ProfileInteractor {
+class ProfileInteractorImpl(val profileRepository: ProfileRepository) : ProfileInteractor {
 
     override fun isAuthenticated() {
         profileRepository.isAuthenticated()
@@ -26,7 +26,7 @@ class ProfileInteractorImpl(val profileRepository : ProfileRepository) : Profile
     }
 
 
-    override fun getBasicProfile(idEnterprise : String) {
+    override fun getBasicProfile(idEnterprise: String) {
         profileRepository.getBasicProfile(idEnterprise)
     }
 
@@ -37,7 +37,6 @@ class ProfileInteractorImpl(val profileRepository : ProfileRepository) : Profile
     override fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean) {
         profileRepository.toggleLike(idUser, idEnterprise, isQualified)
     }
-
 
 
 }

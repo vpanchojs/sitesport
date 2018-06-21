@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
-
 import com.aitec.sitesport.R
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publications
@@ -18,11 +17,9 @@ import com.aitec.sitesport.home.adapter.HomeAdapter
 import com.aitec.sitesport.home.adapter.onHomeAdapterListener
 import com.aitec.sitesport.publication.PublicationActivity
 import com.aitec.sitesport.util.BaseActivitys
-import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.fragment_home2.*
-
 import kotlinx.android.synthetic.main.fragment_home2.view.*
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 
@@ -30,12 +27,12 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     private val TAG = "HomeFragment"
     override fun updatePublicacion(publications: Publications) {
-        var pu=findpublicacion(publications.id!!)
-        if (pu!=null){
-            pu.title=publications.title
-            pu.fecha=publications.fecha
-            pu.imageIcon= publications.imageIcon
-            pu.description=publications.description
+        val pu = findpublicacion(publications.id!!)
+        if (pu != null) {
+            pu.title = publications.title
+            pu.fecha = publications.fecha
+            pu.imageIcon = publications.imageIcon
+            pu.description = publications.description
 
             adapterOptions!!.notifyDataSetChanged()
         }
@@ -46,8 +43,8 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     }
 
-    fun findpublicacion(id: String):Publications?{
-        return data!!.find { p->
+    fun findpublicacion(id: String): Publications? {
+        return data.find { p ->
             id.equals(p.id)
         }
     }
@@ -55,7 +52,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     override fun addPublicacion(publicacion: Publications) {
 
-        data!!.add(publicacion)
+        data.add(publicacion)
         adapterOptions!!.notifyDataSetChanged()
     }
 
@@ -72,7 +69,6 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         super.onCreate(savedInstanceState)
         setupInjection()
         presenter.Suscribe()
-
 
 
     }
@@ -191,42 +187,41 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     override fun sharePublication(pk: String) {
         BaseActivitys.showToastMessage(activity!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String>{
+        BaseActivitys.buildDinamycLinkShareApp(pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }
+
             override fun onError(error: Any?) {
                 intentShared(null)
             }
         })
     }
 
-    private fun intentShared(link: String?){
+    private fun intentShared(link: String?) {
         var auxLink = " ${resources.getString(R.string.url_play_store)}"
-        if(link != null) auxLink = " $link"
+        if (link != null) auxLink = " $link"
         val i = Intent(android.content.Intent.ACTION_SEND)
         i.type = "text/plain"
-        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
         i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textSharePublication) + auxLink)
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 }
-    /*override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is onHomeFragmentListener) {
-            callback = context
-        } else {
-            throw RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener")
-        }
+/*override fun onAttach(context: Context?) {
+    super.onAttach(context)
+    if (context is onHomeFragmentListener) {
+        callback = context
+    } else {
+        throw RuntimeException(context.toString()
+                + " must implement OnFragmentInteractionListener")
     }
+}
 
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
-    }*/
-
-
+override fun onDetach() {
+    super.onDetach()
+    callback = null
+}*/
 
 
 // Required empty public constructor

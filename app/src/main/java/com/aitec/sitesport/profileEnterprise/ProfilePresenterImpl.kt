@@ -10,9 +10,9 @@ import org.greenrobot.eventbus.Subscribe
 /**
  * Created by Yavac on 16/3/2018.
  */
-class ProfilePresenterImpl(var profileView : ProfileView,
-                           val profileInteractor : ProfileInteractor,
-                           val eventBusInterface : EventBusInterface) : ProfilePresenter{
+class ProfilePresenterImpl(var profileView: ProfileView,
+                           val profileInteractor: ProfileInteractor,
+                           val eventBusInterface: EventBusInterface) : ProfilePresenter {
 
     override fun isAuthenticated() {
         profileInteractor.isAuthenticated()
@@ -59,8 +59,8 @@ class ProfilePresenterImpl(var profileView : ProfileView,
         profileInteractor.toggleLike(idUser, idEnterprise, isQualified)
     }
 
-    private fun existConnection(event: ProfileEvent){
-        if(!(event.eventObject as Enterprise).isOnline){
+    private fun existConnection(event: ProfileEvent) {
+        if (!(event.eventObject as Enterprise).isOnline) {
             profileView.showSnackBarInfo(event.eventMsg!!)
         }
     }
@@ -68,7 +68,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
     @Subscribe
     override fun onEventProfileThread(profileEvent: ProfileEvent) {
 
-        when(profileEvent.sectionView){
+        when (profileEvent.sectionView) {
 
             ProfileActivity.AUTHENTICATION -> {
                 profileView.authenticated(profileEvent.eventObject)
@@ -98,7 +98,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
 
             ProfileActivity.SECTION_COURTS -> {
                 profileView.updateCourts((profileEvent.eventObject as Enterprise).canchas)
-                if((profileEvent.eventObject as Enterprise).canchas.isNotEmpty())
+                if ((profileEvent.eventObject as Enterprise).canchas.isNotEmpty())
                     profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].fotos!!)
                 profileView.hideLoadingCourtSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
@@ -121,7 +121,7 @@ class ProfilePresenterImpl(var profileView : ProfileView,
             }
 
             ProfileActivity.SECTION_UPDATE_LIKE -> {
-                if(profileEvent.eventType == ProfileEvent.SUCCESS)
+                if (profileEvent.eventType == ProfileEvent.SUCCESS)
                     profileView.updateLike((profileEvent.eventObject as Int))
                 else {
                     profileView.showToastInfo(profileEvent.eventMsg!!)

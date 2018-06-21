@@ -39,7 +39,7 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
     override fun addFilterLocation(latitude: Double, longitude: Double, add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
-        interactor.addFilterLocation(latitude,longitude, add)
+        interactor.addFilterLocation(latitude, longitude, add)
     }
 
 

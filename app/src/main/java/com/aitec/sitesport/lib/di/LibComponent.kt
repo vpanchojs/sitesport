@@ -5,7 +5,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf( LibModule::class, MyAplicationModule::class))
+@Component(modules = arrayOf(LibModule::class, MyAplicationModule::class))
 interface LibComponent {
 
 }

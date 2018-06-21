@@ -25,10 +25,10 @@ class ProfileUserPresenterImp(var eventBus: EventBusInterface, var view: Profile
         interactor.getInfoUser()
     }
 
-    override fun updateInfoUser(names: String,lastnames:String, dni: String, phone: String, photo: String) {
+    override fun updateInfoUser(names: String, lastnames: String, dni: String, phone: String, photo: String) {
         view.showProgresBar(View.VISIBLE)
         view.showButtonUpdate(View.GONE)
-        interactor.updateInfoUser(names, lastnames,dni, phone, photo)
+        interactor.updateInfoUser(names, lastnames, dni, phone, photo)
     }
 
     override fun updatePhotoUser(photo: String) {

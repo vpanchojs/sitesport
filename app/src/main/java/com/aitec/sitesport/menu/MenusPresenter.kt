@@ -24,7 +24,7 @@ interface MenusPresenter {
 
     fun onEventMenuThread(event: MenusEvents)
 
-    fun tokenFacebook(token: String,name: String?, lastname: String?, email: String?, photoUrl: Uri?)
+    fun tokenFacebook(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?)
 
     fun tokenGoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?)
 

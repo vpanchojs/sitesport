@@ -15,7 +15,7 @@ class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adap
 
         val inflater = LayoutInflater.from(parent.context)
 
-        when(viewType){
+        when (viewType) {
             Reservation.HEAD -> {
                 val view = inflater.inflate(R.layout.item_rv_record_reservation_head, parent, false) as ViewGroup
                 return HeadViewHolder(view)
@@ -26,7 +26,7 @@ class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adap
                 return ReservationViewHolder(view)
             }
 
-            else ->{
+            else -> {
                 val view = inflater.inflate(R.layout.item_rv_record_reservation_head, parent, false) as ViewGroup
                 return HeadViewHolder(view)
             }
@@ -44,13 +44,13 @@ class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adap
         val reservation = reservationsList[position]
 
 
-        if(reservation.type == Reservation.RESERVATION){
+        if (reservation.type == Reservation.RESERVATION) {
             val h = holder as ReservationViewHolder
             h.view.tvSite.text = reservation.site
             h.view.tvCourt.text = reservation.court
             h.view.tvReservationDate.text = reservation.reservationDate
             h.view.tvGameDate.text = reservation.gameDate
-        }else if(reservation.type == Reservation.HEAD){
+        } else if (reservation.type == Reservation.HEAD) {
             val h = holder as HeadViewHolder
             h.view.tvHead.text = reservation.head
         }
@@ -61,7 +61,7 @@ class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adap
         return reservationsList[position].type
     }
 
-    fun getItem(index: Int) : Reservation{
+    fun getItem(index: Int): Reservation {
         return reservationsList[index]
     }
 

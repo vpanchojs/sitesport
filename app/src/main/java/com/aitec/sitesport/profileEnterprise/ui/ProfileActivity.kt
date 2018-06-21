@@ -2,31 +2,32 @@ package com.aitec.sitesport.profileEnterprise.ui
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.aitec.sitesport.R
-import android.view.View
-import kotlinx.android.synthetic.main.activity_profile_enterprise.*
-import kotlinx.android.synthetic.main.content_profile_enterprise.*
-import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.Toast
 import com.aitec.sitesport.MyApplication
+import com.aitec.sitesport.R
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.enterprise.*
+import com.aitec.sitesport.entities.enterprise.Cancha
+import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.entities.enterprise.RedSocial
+import com.aitec.sitesport.entities.enterprise.Servicio
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
-import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
 import com.aitec.sitesport.profileEnterprise.ui.adapter.ImageAdapter
+import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
 import com.aitec.sitesport.profileEnterprise.ui.dialog.TableTimeFragment
 import com.aitec.sitesport.reserve.adapter.CourtAdapter
 import com.aitec.sitesport.reserve.adapter.OnClickListenerCourt
@@ -38,15 +39,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_profile_enterprise.*
+import kotlinx.android.synthetic.main.content_profile_enterprise.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import javax.inject.Inject
 
 
-class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback{
+class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback {
 
     override fun authenticated(uidUser: Any?) {
         //"sAcL7AsndlapxazBB5ZrHyCix782"
-        if(uidUser != null) {
+        if (uidUser != null) {
             this.uidUser = uidUser as String
             profilePresenter.getLike(uidUser, enterprise.pk)
         }
@@ -73,7 +76,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         //callSections()
     }
 
-    private fun callSections(){
+    private fun callSections() {
         profilePresenter.getBasicProfile(enterprise.pk)
         profilePresenter.getCourtsProfile(enterprise.pk)
         profilePresenter.getTableTimeProfile(enterprise.pk)
@@ -95,7 +98,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     override fun updateImages(imageList: ArrayList<String>) {
         images.clear()
         images.add(enterprise.foto_perfil)
-        for(url in imageList){
+        for (url in imageList) {
             images.add(url)
         }
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
@@ -132,7 +135,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateCourts(courtList: List<Cancha>) {
         enterprise.canchas.clear()
-        for(court in courtList){
+        for (court in courtList) {
             enterprise.canchas.add(court)
         }
         rvCourts.adapter!!.notifyDataSetChanged()
@@ -140,7 +143,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateServices(serviceList: List<Servicio>) {
         enterprise.servicios.clear()
-        for(service in serviceList){
+        for (service in serviceList) {
             enterprise.servicios.add(service)
             setServices(service)
         }
@@ -148,7 +151,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateContacts(contactList: List<RedSocial>) {
         enterprise.redesSociales.clear()
-        for(networkSocial in contactList){
+        for (networkSocial in contactList) {
             enterprise.redesSociales.add(networkSocial)
             setNetworkSocial(networkSocial)
         }
@@ -174,7 +177,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun onMapReady(map: GoogleMap?) {
-        if(map == null) return
+        if (map == null) return
         gMap = map
         gMap.uiSettings.isScrollGesturesEnabled = false
         gMap.uiSettings.isZoomGesturesEnabled = false
@@ -182,7 +185,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         gMap.uiSettings.isMapToolbarEnabled = false
     }
 
-    private fun setMapView(){
+    private fun setMapView() {
         tvLocation.text = enterprise.address!!.calles
         //val latLng = LatLng(enterprise.address!!.gPointParcelable.geoPoint.latitude, enterprise.address!!.gPointParcelable.geoPoint.longitude)
         val latLng = LatLng(enterprise.address!!.latitud, enterprise.address!!.longitud)
@@ -191,7 +194,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
                 .zoom(15F)
                 .build()
         gMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(cameraPosition))
-        val icon = BitmapDescriptorFactory.fromResource(if(enterprise.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
+        val icon = BitmapDescriptorFactory.fromResource(if (enterprise.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
         gMap.addMarker(MarkerOptions()
                 .position(latLng)
                 .icon(icon)).showInfoWindow()
@@ -205,7 +208,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             mapIntent.`package` = "com.google.android.apps.maps"
             if (mapIntent.resolveActivity(packageManager) != null) {
                 startActivity(mapIntent)
-            }else
+            } else
                 BaseActivitys.showToastMessage(this, "No se encontró Google Maps", Toast.LENGTH_SHORT)
         }
         ivRunLocation.visibility = View.VISIBLE
@@ -216,8 +219,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         super.onDestroy()
     }
 
-    private fun setVectorCompatibility(){
-        if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
+    private fun setVectorCompatibility() {
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
@@ -243,7 +246,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun showSnackBarInfo(msg: String) {
-        if(snackBarInfo != null && !snackBarInfo!!.isShown) {
+        if (snackBarInfo != null && !snackBarInfo!!.isShown) {
             snackBarInfo!!.setText(msg)
             snackBarInfo!!.show()
         }
@@ -285,7 +288,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         showLoading(clContacts, loadingContacts)
     }
 
-    private fun showLoading(sectionView: View, loadingView: View){
+    private fun showLoading(sectionView: View, loadingView: View) {
         sectionView.visibility = View.INVISIBLE
         //loadingView.tvLoading.visibility = View.GONE
         loadingView.pbLoading.visibility = View.VISIBLE
@@ -293,7 +296,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
 
-    private fun hideLoading(sectionView: View, loadingView: View, msg: String?){
+    private fun hideLoading(sectionView: View, loadingView: View, msg: String?) {
         loadingView.visibility = View.GONE
         sectionView.visibility = View.VISIBLE
     }
@@ -303,7 +306,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         var imageView = ImageView(this)
         var idIcon = R.drawable.ic_court
 
-        when(service.nombre.toLowerCase()){
+        when (service.nombre.toLowerCase()) {
             "wifi" -> {
                 imageView = ibtnWiFi
                 idIcon = R.drawable.ic_wifi
@@ -335,7 +338,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setDataFragmentServices(service.nombre, service.descripcion, idIcon, imageView)
     }
 
-    private fun setDataFragmentServices(title: String, info: String, idIcon: Int, imgButton: ImageView){
+    private fun setDataFragmentServices(title: String, info: String, idIcon: Int, imgButton: ImageView) {
         imgButton.setOnClickListener {
             val defaultServicesFragment = DefaultServicesFragment.newInstance(title, info, idIcon)
             defaultServicesFragment.show(supportFragmentManager, "DefaultServicesFragment")
@@ -346,7 +349,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
         var imageView = ImageView(this)
 
-        when(networkSocial.nombre.toLowerCase()){
+        when (networkSocial.nombre.toLowerCase()) {
             "phone" -> {
                 imageView = ibtnPhone
                 imageView.setOnClickListener {
@@ -387,23 +390,23 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             packageManager.getPackageInfo("com.url.katana", 0)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/$username")))
         } catch (e: Exception) {
-            try{
+            try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 BaseActivitys.showToastMessage(this, "Ha ocurrido un problema al abrir Facebook", Toast.LENGTH_SHORT)
             }
         }
     }
 
-    private fun openInstagram(url: String){
+    private fun openInstagram(url: String) {
         try {
             //val subUrl = url.substring(0, url.length - 1)
             val username = url.substring(url.lastIndexOf("/") + 1)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username")))
         } catch (e: Exception) {
-            try{
+            try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 BaseActivitys.showToastMessage(this, "Ha ocurrido un problema al abrir Instagram", Toast.LENGTH_SHORT)
             }
         }
@@ -428,7 +431,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     // ========= setup GUI
 
-    private fun setupUI(){
+    private fun setupUI() {
         setupToolBar()
         stateInitialView()
         setupMap()
@@ -443,7 +446,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         //tvStateEnterprise.setText()
     }
 
-    private fun setupBtnReservation(){
+    private fun setupBtnReservation() {
         btnReservation.setOnClickListener {
             val intent = Intent(this, ReserveActivity::class.java)
             Log.e(ENTERPRISE, enterprise.canchas.toString())
@@ -452,23 +455,23 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         }
     }
 
-    private fun setupLikes(){
+    private fun setupLikes() {
         cbRating.setOnClickListener {
-            if(uidUser != null) {
+            if (uidUser != null) {
                 val checkBox: CheckBox = it as CheckBox
                 cbRating.isChecked = checkBox.isChecked
                 if (cbRating.isChecked) cbRating.text = (enterprise.likes + 1).toString()
                 else cbRating.text = (enterprise.likes - 1).toString()
                 profilePresenter.toggleLike(uidUser!!, enterprise.pk, !cbRating.isChecked)
                 cbRating.isClickable = false
-            }else{
+            } else {
                 cbRating.isChecked = !cbRating.isChecked
                 BaseActivitys.showToastMessage(this, "Debes iniciar sesión primero", Toast.LENGTH_SHORT)
             }
         }
     }
 
-    private fun stateInitialView(){
+    private fun stateInitialView() {
         ibtnBar.visibility = View.GONE
         ibtnWiFi.visibility = View.GONE
         ibtnEstacionamiento.visibility = View.GONE
@@ -491,7 +494,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         mapFragment.getMapAsync(this)
     }
 
-    private fun setupToolBar(){
+    private fun setupToolBar() {
         setSupportActionBar(toolbar_profile)
         if (supportActionBar != null) {
             supportActionBar!!.title = ""
@@ -515,33 +518,34 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun shareProfile(){
+    private fun shareProfile() {
         BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, BaseActivitys.LINK_ENTERPRISE, object : onApiActionListener<String>{
+        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, BaseActivitys.LINK_ENTERPRISE, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }
+
             override fun onError(error: Any?) {
                 intentShared(null)
             }
         })
     }
 
-    private fun intentShared(link: String?){
+    private fun intentShared(link: String?) {
         var auxLink = " ${resources.getString(R.string.url_play_store)}"
-        if(link != null) auxLink = " $link"
+        if (link != null) auxLink = " $link"
         val i = Intent(android.content.Intent.ACTION_SEND)
         i.type = "text/plain"
-        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name  )
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
         i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShareEnterprise) + auxLink)
         startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
     @SuppressLint("MissingPermission")
     private fun callPhone() {
-        if(enterprise.telefono.isNotEmpty()) {
+        if (enterprise.telefono.isNotEmpty()) {
             startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:" + enterprise.telefono)))
-        }else{
+        } else {
             BaseActivitys.showToastMessage(this, "Teléfono no disponible", Toast.LENGTH_SHORT)
         }
     }

@@ -7,10 +7,6 @@ import com.aitec.sitesport.home.events.HomeEvents
  */
 
 
-
-
-
-
 interface HomePresenter {
 
     fun getHome()

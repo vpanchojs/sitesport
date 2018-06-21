@@ -20,7 +20,7 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
     override fun getItemsReserved(fecha: Long, pkEntrepise: String, pkCancha: String) {
         view.showProgresItemsReserve(View.VISIBLE)
         view.showContainerItemsReserve(View.INVISIBLE)
-        interactor.getItemsReserved(fecha, pkEntrepise,pkCancha)
+        interactor.getItemsReserved(fecha, pkEntrepise, pkCancha)
     }
 
     override fun addItemReserve(item: ItemReservation) {

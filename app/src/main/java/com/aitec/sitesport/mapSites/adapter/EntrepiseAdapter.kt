@@ -17,7 +17,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     val df = DecimalFormat("0.00")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise_map, parent, false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entrepise_map, parent, false);
         return ViewHolder(view);
     }
 
@@ -26,11 +26,11 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var entrepise = data.get(position)
-        holder!!.view.tv_name_entrepise.text = entrepise.nombre
-        holder!!.view.tv_distance.text = df.format(entrepise.distance) + " Km"
-        holder!!.addMarker(entrepise, callback)
-        holder!!.onNavigationProfile(entrepise, callback)
+        val entrepise = data.get(position)
+        holder.view.tv_name_entrepise.text = entrepise.nombre
+        holder.view.tv_distance.text = df.format(entrepise.distance) + " Km"
+        holder.addMarker(entrepise, callback)
+        holder.onNavigationProfile(entrepise, callback)
     }
 
 

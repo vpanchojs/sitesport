@@ -1,14 +1,14 @@
 package com.aitec.sitesport.util
 
 import com.google.firebase.firestore.Exclude
-import java.util.HashMap
+import java.util.*
 
 class Filtros {
     var puntuaciones = false
-    var abiertos=true
-    var cercanos=false
-    var latitude=0.0
-    var longitude=0.0
+    var abiertos = true
+    var cercanos = false
+    var latitude = 0.0
+    var longitude = 0.0
 
 
     @Exclude

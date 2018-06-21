@@ -6,13 +6,13 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 13/3/2018.
  */
-class TableTimeDay(var lunes : String,
-                   var martes : String,
-                   var miercoles : String,
-                   var jueves : String,
-                   var vieres : String,
-                   var sabado : String,
-                   var domingo : String) : Parcelable{
+class TableTimeDay(var lunes: String,
+                   var martes: String,
+                   var miercoles: String,
+                   var jueves: String,
+                   var vieres: String,
+                   var sabado: String,
+                   var domingo: String) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),

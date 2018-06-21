@@ -1,6 +1,9 @@
 package com.aitec.sitesport.profileEnterprise.ui
 
-import com.aitec.sitesport.entities.enterprise.*
+import com.aitec.sitesport.entities.enterprise.Cancha
+import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.aitec.sitesport.entities.enterprise.RedSocial
+import com.aitec.sitesport.entities.enterprise.Servicio
 
 /**
  * Created by Yavac on 12/3/2018.
@@ -29,7 +32,7 @@ interface ProfileView {
     fun updateLike(like: Int)
     fun isQualified(qualify: Boolean)
     fun restoreRating()
-    fun getEnterprise() : Enterprise
+    fun getEnterprise(): Enterprise
     fun setEnterprise(enterprise: Enterprise)
     fun authenticated(uidUser: Any?)
 }

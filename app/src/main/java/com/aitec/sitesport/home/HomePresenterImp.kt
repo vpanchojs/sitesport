@@ -12,8 +12,6 @@ import org.greenrobot.eventbus.Subscribe
  */
 
 
-
-
 class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var interactor: HomeInteractor) : HomePresenter {
     override fun remove() {
         interactor.remove()
@@ -37,28 +35,28 @@ class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var 
 
 
     @Subscribe
-    override fun onEvents(events: HomeEvents){
+    override fun onEvents(events: HomeEvents) {
 
         view.showProgresBar(false)
-        when (events.type ){
+        when (events.type) {
 
-            HomeEvents.ON_ADD_PUBLISH->{
-                Log.e("llega","")
+            HomeEvents.ON_ADD_PUBLISH -> {
+                Log.e("llega", "")
                 view.addPublicacion(events.any as Publications)
 
             }
-            HomeEvents.ON_UPDATE_PUBLISH->{
+            HomeEvents.ON_UPDATE_PUBLISH -> {
 
-                Log.e("update","")
+                Log.e("update", "")
                 view.updatePublicacion(events.any as Publications)
             }
-            HomeEvents.ON_REMOVE_PUBLISH->{
+            HomeEvents.ON_REMOVE_PUBLISH -> {
 
-                Log.e("remove","")
+                Log.e("remove", "")
                 view.removePublicacion(events.any as Publications)
             }
 
-            HomeEvents.ON_ERROR_PUBLISH->{
+            HomeEvents.ON_ERROR_PUBLISH -> {
                 view.showMessagge(events.any.toString())
 
             }

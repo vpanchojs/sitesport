@@ -26,7 +26,7 @@ class ProfileUserModule(var view: ProfileUserView) {
     @Provides
     @Singleton
     fun providesProfileUserInteractor(eventBus: EventBusInterface, repository: ProfileUserRepository): ProfileUserInteractor {
-        return ProfileUserInteractorImp(eventBus,repository)
+        return ProfileUserInteractorImp(eventBus, repository)
     }
 
     @Provides

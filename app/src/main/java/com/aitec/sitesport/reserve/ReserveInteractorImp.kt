@@ -1,6 +1,5 @@
 package com.aitec.sitesport.reserve
 
-import android.util.Log
 import com.aitec.sitesport.entities.ItemReservation
 import com.aitec.sitesport.lib.base.EventBusInterface
 import java.text.SimpleDateFormat

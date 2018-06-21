@@ -4,8 +4,6 @@ import com.aitec.sitesport.MyAplicationModule
 import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.home.ui.HomeFragment
 import com.aitec.sitesport.lib.di.LibModule
-import com.aitec.sitesport.menu.di.MenusModule
-import com.aitec.sitesport.sites.domain.di.SitesModule
 import dagger.Component
 import javax.inject.Singleton
 

@@ -22,8 +22,8 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        context = parent!!.context
-        var view = LayoutInflater.from(parent!!.context).inflate(R.layout.item_entrepise, parent, false);
+        context = parent.context
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entrepise, parent, false);
         return ViewHolder(view);
     }
 
@@ -32,19 +32,19 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var entrepise = data.get(position)
-        holder!!.view.tv_name_entrepise.text = entrepise.nombre
+        val entrepise = data.get(position)
+        holder.view.tv_name_entrepise.text = entrepise.nombre
 
         GlideApp.with(context)
                 .load(entrepise.foto_perfil.trim())
                 .placeholder(R.drawable.ic_sites)
                 .centerCrop()
                 .error(R.drawable.ic_error_outline_black_24dp)
-                .into(holder!!.view.iv_entrepise)
+                .into(holder.view.iv_entrepise)
 
-        holder!!.view.tv_address.text = entrepise.address?.referencia
+        holder.view.tv_address.text = entrepise.address?.referencia
 
-        holder!!.view.tv_raiting.text = entrepise.likes.toString()
+        holder.view.tv_raiting.text = entrepise.likes.toString()
 
 
         if (entrepise.distance > 0) {
@@ -61,7 +61,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
             holder.view.iv_open.visibility = View.GONE
         }
 
-        holder!!.onNavigationProfile(entrepise, callback)
+        holder.onNavigationProfile(entrepise, callback)
 
     }
 

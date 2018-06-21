@@ -5,10 +5,6 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 interface SitesView {
 
 
-
-
-
-
     fun showMessagge(message: Any)
     fun setResultsSearchs(listUser: List<Enterprise>)
     fun showProgresBar(show: Boolean)

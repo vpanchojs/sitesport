@@ -6,7 +6,7 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 22/3/2018.
  */
-class Hora() : Parcelable{
+class Hora() : Parcelable {
 
     var inicio: String = ""
     var fin: String = ""

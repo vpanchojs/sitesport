@@ -2,11 +2,9 @@ package com.aitec.sitesport.record
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
 import android.graphics.drawable.Drawable
+import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.opengl.ETC1.getWidth
-
 
 
 class ItemDecorator(private val dividerView: Drawable) : RecyclerView.ItemDecoration() {

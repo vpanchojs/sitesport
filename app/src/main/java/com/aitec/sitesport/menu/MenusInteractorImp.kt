@@ -24,7 +24,7 @@ class MenusInteractorImp(var repository: MenusRepository, eventBus: EventBusInte
         user.lastName = lastname!!
         user.names = name
         user.email = email!!
-        repository.enviartoken(token,user)
+        repository.enviartoken(token, user)
     }
 
     override fun onSingOut() {

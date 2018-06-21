@@ -8,14 +8,13 @@ import com.aitec.sitesport.entities.Publications
 interface HomeView {
 
 
-
     fun showMessagge(message: Any)
     fun setResultsSearchs(listNotices: List<Publications>)
     fun showProgresBar(show: Boolean)
     fun clearSearchResults()
     fun clearListNotices()
     fun setDataPublications(publications: List<Publications>)
-    fun addPublicacion (publicacion : Publications)
+    fun addPublicacion(publicacion: Publications)
     fun updatePublicacion(publications: Publications)
     fun removePublicacion(publications: Publications)
 

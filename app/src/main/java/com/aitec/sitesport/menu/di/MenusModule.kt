@@ -1,9 +1,7 @@
 package com.aitec.sitesport.menu.di
 
 import com.aitec.sitesport.domain.FirebaseApi
-import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
-import com.aitec.sitesport.domain.SqliteRoomApi
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.*
 import com.aitec.sitesport.menu.ui.MenusView
@@ -27,14 +25,14 @@ class MenusModule(var view: MenusView) {
 
     @Provides
     @Singleton
-    fun providesMenusInteractor(repository: MenusRepository,eventBus: EventBusInterface): MenusInteractor {
-        return MenusInteractorImp(repository,eventBus)
+    fun providesMenusInteractor(repository: MenusRepository, eventBus: EventBusInterface): MenusInteractor {
+        return MenusInteractorImp(repository, eventBus)
     }
 
     @Provides
     @Singleton
-    fun providesMenusRepository(eventBus: EventBusInterface, sharePreferencesApi: SharePreferencesApi, retrofitApi: RetrofitApi, sqliteRoomApi: SqliteRoomApi, firebaseApi: FirebaseApi): MenusRepository {
-        return MenusRepositoryImp(eventBus, sharePreferencesApi, retrofitApi, sqliteRoomApi,firebaseApi)
+    fun providesMenusRepository(eventBus: EventBusInterface, sharePreferencesApi: SharePreferencesApi, firebaseApi: FirebaseApi): MenusRepository {
+        return MenusRepositoryImp(eventBus, sharePreferencesApi, firebaseApi)
     }
 }
 

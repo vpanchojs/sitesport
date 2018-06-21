@@ -5,10 +5,6 @@ package com.aitec.sitesport.home
  */
 
 
-
-
-
-
 interface HomeInteractor {
     fun getHome()
     fun remove()

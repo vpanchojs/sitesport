@@ -527,7 +527,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                     markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
                 }
                 tv_title_bs.setText("A ${df.format(it.distance)} Km")
-                tv_subtitle_bs.setText(it.nombre)
+                tv_subtitle_price_total.setText(it.nombre)
             }
         }
 
@@ -545,11 +545,11 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
     override fun setInfoHeaderBottomSheet(title: Any, subtitle: Any) {
         tv_title_bs.setText(title.toString())
-        tv_subtitle_bs.setText(subtitle.toString())
+        tv_subtitle_price_total.setText(subtitle.toString())
     }
 
     override fun noneResultCenterVisible(s: Any) {
-        tv_subtitle_bs.setText(s.toString())
+        tv_subtitle_price_total.setText(s.toString())
     }
 
     override fun noneResultSearchsName(message: Any, show: Boolean) {
@@ -572,7 +572,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         entrepiseResultsSearchVisible.clear()
         mMap.clear()
         entrepiseResultsSearchVisible.addAll(entrepriseList)
-        tv_subtitle_bs.setText(entrepriseList.size.toString() + " encontrados")
+        tv_subtitle_price_total.setText(entrepriseList.size.toString() + " encontrados")
         entrepiseAdapter.notifyDataSetChanged()
     }
 

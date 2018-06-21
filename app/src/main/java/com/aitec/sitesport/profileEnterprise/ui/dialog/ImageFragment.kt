@@ -3,7 +3,6 @@ package com.aitec.sitesport.profileEnterprise.ui.dialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,13 +27,12 @@ class ImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadImage(url!!,imgProfile)
+        loadImage(url!!, imgProfile)
     }
 
 
-
-    private fun loadImage(url: String, imageView: ImageView){
-        if(url.isNotEmpty()) {
+    private fun loadImage(url: String, imageView: ImageView) {
+        if (url.isNotEmpty()) {
             GlideApp.with(this)
                     .load(URL(url).toString())
                     .placeholder(ContextCompat.getDrawable(activity!!, R.drawable.ic_bg_balon))

@@ -9,7 +9,7 @@ class Dia() : Parcelable {
     var nombre: String = ""
     var hora_inicio: String = ""
     var hora_fin: String = ""
-    var numero : Int = -1
+    var numero: Int = -1
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()

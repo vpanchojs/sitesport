@@ -1,7 +1,7 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nsvEnterprise"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nsvEnterprise"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -10,8 +10,7 @@
     tools:context=".profileEnterprise.ui.ProfileActivity"
     tools:showIn="@layout/activity_profile_enterprise">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -83,10 +82,10 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"
-                android:visibility="visible">
+                app:layout_constraintTop_toBottomOf="@+id/textView14">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -411,8 +410,8 @@
 
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:id="@+id/mapViewProfile"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginBottom="50dp"
@@ -441,10 +440,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorBgTextViewInfo"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
                     android:text="No disponible"
                     android:textColor="#fff"
                     android:textSize="15sp"

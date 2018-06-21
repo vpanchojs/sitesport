@@ -21,7 +21,7 @@
     <color name="icon_transparent">#64454f63</color>
     <color name="colorBgTextViewInfo">#c878849e</color>
     <color name="white">#FFFFFF</color>
-    
+
     <color name="colorNormalIButton">#353A50</color>
     <color name="colorPressIButton">#1f222e</color>
     <color name="colorDisableIButton">#b6b6b6</color>
@@ -42,10 +42,6 @@
     <color name="colorDividerProfile">#4b2a2e43</color>
 
     <color name="colorIconsServicesDefault">#322a2e43</color>
-
-
-
-
 
 
 </resources>

@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.content_reserve.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, ReserveView, ItemReservationAdapter.onItemListener {
@@ -42,21 +43,44 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
 
     override fun check(itemReservation: ItemReservation, position: Int) {
-        tv_subtitle_bs2.text = getNumItemsChecked().toString()
+        val items = itemsChecked()
+        val valuesPrice = calculatePrice(items)
+        setResumenReservation(valuesPrice.first, items.size, valuesPrice.second)
     }
 
-    fun getNumItemsChecked(): Int {
+    fun itemsChecked(): List<ItemReservation> {
         return items.filter {
             it.select == true
-        }.size
+        }
     }
 
-    override fun unCheck(itemReservation: ItemReservation, position: Int) {
-        if (getNumItemsChecked() > 0) {
-            tv_subtitle_bs2.text = getNumItemsChecked().toString()
-        } else {
-            tv_subtitle_bs2.text = "Ninguno"
+    fun calculatePrice(items: List<ItemReservation>): Pair<Double, String> {
+        var price = 0.0
+        var horas = ""
+        items.forEach {
+            price += it.price
+            horas += "${it.start} a ${it.end}, "
         }
+
+        return Pair<Double, String>(price, horas)
+    }
+
+
+    override fun unCheck(itemReservation: ItemReservation, position: Int) {
+        val items = itemsChecked()
+        val valuesPrice = calculatePrice(items)
+        setResumenReservation(valuesPrice.first, items.size, valuesPrice.second)
+    }
+
+    fun setResumenReservation(price: Double, numHoras: Int, horario: String) {
+        tv_subtitle_num_horas.text = numHoras.toString()
+        tv_subtitle_price_total.text = "$ ${price}"
+
+        //tv_date_value.text
+        tv_price_value.text = "$ ${price}"
+        tv_time_value.text = horario
+
+
     }
 
 
@@ -73,17 +97,20 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     val items = ArrayList<ItemReservation>()
     var adapterTableTime = ItemReservationAdapter(items, this)
 
-    var pkCourt = ""
+    lateinit var court: Cancha
 
     @Inject
     lateinit var presenter: ReservePresenter
 
-    override fun onCheckedCourt(court: Cancha) {
-        pkCourt = court.pk
+    override fun onCheckedCourt(cancha: Cancha) {
+        court = cancha
         tvNumPlayers.text = court.numero_jugadores
         tvFloor.text = court.piso
         tvPriceDay.text = "$ ${court.precio_dia}"
         tvPriceNight.text = "$ ${court.precio_noche}"
+
+        tv_court_value.text = court.nombre
+
         presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
         setTableTime(getTableTimeToday(getNameToday()))
     }
@@ -104,15 +131,15 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
             }
             R.id.ib_day_next -> {
                 addOrRemoveDaysCalendar(+1)
-                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, pkCourt)
+                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
                 setTableTime(getTableTimeToday(getNameToday()))
-              //  Log.e("dia", getNameToday())
+                //  Log.e("dia", getNameToday())
 
             }
 
             R.id.ib_day_back -> {
                 addOrRemoveDaysCalendar(-1)
-                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, pkCourt)
+                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
                 setTableTime(getTableTimeToday(getNameToday()))
             }
             R.id.cl_header_bs -> {
@@ -133,7 +160,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
         enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
-        setupToolbar(enterprise.nombres)
+        setupToolbar(enterprise.nombre)
         //Log.e("canchas", enterprise.canchas.toString())
         setupRecyclerViewClourt(enterprise.canchas)
         setupTodayDate(c)
@@ -150,6 +177,8 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         Log.e("FECHA", c.timeInMillis.toString())
         val formateador = SimpleDateFormat("dd 'de' MMMM", Locale("ES"))
         btn_calendar.text = formateador.format(c.time)
+
+        tv_date_value.text = formateador.format(c.time)
     }
 
     private fun setupToolbar(nameEntrepise: String) {
@@ -190,7 +219,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         fromDatePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             updateCalendar(year, monthOfYear, dayOfMonth)
             setupTodayDate(c)
-            presenter.getItemsReserved(c.timeInMillis, enterprise.pk, pkCourt)
+            presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
             //Log.e("picker", "fecha obtenida")
 
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
@@ -233,12 +262,27 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         items.clear()
         val arrayHoraInicio = day!!.hora_inicio.split(":")
         val arrayHoraFin = day.hora_fin.split(":")
+        val arrayHoraIntermedia = court.hora_intermedia.split(":")
 
         val inicio = arrayHoraInicio[0].toInt()
         val fin = arrayHoraFin[0].toInt()
+        val intermedia = arrayHoraIntermedia[0].toInt()
+
+
 
         for (i in inicio..fin - 1) {
-            items.add(ItemReservation("$i:00", "${i + 1}:00", false, false))
+            var price = 0.0
+
+            if (i + 1 <= intermedia) {
+                price = court.precio_dia.toDouble()
+
+            } else {
+                price = court.precio_noche.toDouble()
+
+            }
+
+            items.add(ItemReservation("$i:00", "${i + 1}:00", false, false, price))
+
         }
         adapterTableTime.notifyDataSetChanged()
     }

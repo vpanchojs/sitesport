@@ -1,7 +1,6 @@
 package com.aitec.sitesport.mapSites
 
 import com.aitec.sitesport.domain.FirebaseApi
-import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.lib.base.EventBusInterface

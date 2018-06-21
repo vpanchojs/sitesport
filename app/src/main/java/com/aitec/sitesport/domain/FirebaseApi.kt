@@ -159,7 +159,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun updateUser(user: User, listener: onApiActionListener<Unit>) {
 
         updateProfileData(user.names + " " + user.lastName, object : onApiActionListener<Unit> {
-            override fun onSucces(response: Unit){
+            override fun onSucces(response: Unit) {
                 db.collection(PATH_USER).document(mAuth.currentUser!!.uid).update(user.toMapPost())
                         .addOnSuccessListener {
 

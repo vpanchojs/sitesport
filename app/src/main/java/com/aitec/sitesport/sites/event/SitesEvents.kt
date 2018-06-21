@@ -5,9 +5,6 @@ package com.aitec.sitesport.sites.event
  */
 
 
-
-
-
 class SitesEvents(var type: Int, var any: Any) {
 
     companion object {

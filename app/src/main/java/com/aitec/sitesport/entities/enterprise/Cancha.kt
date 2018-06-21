@@ -2,9 +2,8 @@ package com.aitec.sitesport.entities.enterprise
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.aitec.sitesport.entities.Rate
 
-class Cancha() : Parcelable{
+class Cancha() : Parcelable {
 
     var pk: String = ""
     var nombre: String = ""

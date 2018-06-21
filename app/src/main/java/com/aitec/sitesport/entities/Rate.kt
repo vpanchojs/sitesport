@@ -3,7 +3,7 @@ package com.aitec.sitesport.entities
 import android.os.Parcel
 import android.os.Parcelable
 
-class Rate() : Parcelable{
+class Rate() : Parcelable {
 
     var nameDay: Int = 0
     var priceDay: String = ""

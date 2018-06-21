@@ -12,7 +12,6 @@ import javax.inject.Singleton
  */
 
 
-
 @Singleton
 @Component(modules = arrayOf(LibModule::class, SitesModule::class, MyAplicationModule::class, DomainModule::class))
 interface SitesComponent {

@@ -80,24 +80,24 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
 
             R.id.navigation_home -> {
                 btn_map.visibility = View.INVISIBLE
-                toolbar.title="Inicio"
+                toolbar.title = "Inicio"
                 fragment = HomeFragment.newInstance()
             }
             R.id.navigation_site -> {
                 btn_map.visibility = View.VISIBLE
-                toolbar.title="Sitios Deportivos"
+                toolbar.title = "Sitios Deportivos"
                 fragment = SitesFragment.newInstance()
             }
             R.id.navigation_my_reserve -> {
                 btn_map.visibility = View.INVISIBLE
-                toolbar.title="Mis Reservas"
+                toolbar.title = "Mis Reservas"
                 fragment = RecordFragment.newInstance()
 
             }
 
             R.id.navigation_menu -> {
                 btn_map.visibility = View.INVISIBLE
-                toolbar.title="Menú"
+                toolbar.title = "Menú"
                 fragment = MenuFragment.newInstance()
             }
         }
@@ -135,9 +135,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 .addOnSuccessListener {
                     if (it != null && it.link.getQueryParameter("type") != null) {
 
-                        when(it.link.getQueryParameter("type").toInt()){
+                        when (it.link.getQueryParameter("type").toInt()) {
 
-                            //compartir centro deportivo
+                        //compartir centro deportivo
                             BaseActivitys.LINK_ENTERPRISE -> {
                                 startActivity(
                                         Intent(this, ProfileActivity::class.java)
@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                                 )
                             }
 
-                            //compartir publicación
+                        //compartir publicación
                             BaseActivitys.LINK_PUBLICATION -> {
                                 startActivity(
                                         Intent(this, PublicationActivity::class.java)

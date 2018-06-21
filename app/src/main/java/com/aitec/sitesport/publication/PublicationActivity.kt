@@ -7,8 +7,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.aitec.sitesport.R
 import com.aitec.sitesport.util.BaseActivitys
-import kotlinx.android.synthetic.main.activity_profile_enterprise.*
-
 import kotlinx.android.synthetic.main.activity_publication.*
 
 class PublicationActivity : AppCompatActivity() {
@@ -26,7 +24,7 @@ class PublicationActivity : AppCompatActivity() {
         BaseActivitys.showToastMessage(this, intent.getStringExtra(PublicationActivity.PUBLICATION), Toast.LENGTH_SHORT)
     }
 
-    private fun setupToolBar(){
+    private fun setupToolBar() {
         setSupportActionBar(toolbarPublication)
         if (supportActionBar != null) {
             //supportActionBar!!.title = ""

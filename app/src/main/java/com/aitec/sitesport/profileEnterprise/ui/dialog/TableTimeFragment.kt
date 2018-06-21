@@ -14,7 +14,7 @@ import com.aitec.sitesport.profileEnterprise.ui.adapter.TableTimeAdapter
 import kotlinx.android.synthetic.main.fragment_table_time.view.*
 
 
-class TableTimeFragment : DialogFragment(){
+class TableTimeFragment : DialogFragment() {
 
     var listTableTime: List<Dia> = arrayListOf()
 
@@ -28,7 +28,7 @@ class TableTimeFragment : DialogFragment(){
         val builder = AlertDialog.Builder(activity!!)
         var view: View = activity!!.layoutInflater.inflate(R.layout.layout_info_textview, null)
 
-        if(listTableTime.isNotEmpty()) {
+        if (listTableTime.isNotEmpty()) {
             view = activity!!.layoutInflater.inflate(R.layout.fragment_table_time, null)
             builder.setView(view)
             val adapter = TableTimeAdapter(listTableTime)

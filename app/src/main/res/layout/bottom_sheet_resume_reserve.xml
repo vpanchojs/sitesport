@@ -26,12 +26,12 @@
             android:text="Número de Horas"
             android:textColor="@color/white_suave"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_price_total"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_subtitle_bs2"
+            android:id="@+id/tv_subtitle_num_horas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -53,12 +53,12 @@
             android:text="Precio Total"
             android:textColor="@color/white_suave"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_price_total"
             app:layout_constraintStart_toEndOf="@+id/tv_num_hours"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_subtitle_bs"
+            android:id="@+id/tv_subtitle_price_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -88,7 +88,7 @@
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_bs"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_price_total"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title_bs" />
 
@@ -281,7 +281,7 @@
 
 
         <TextView
-            android:id="@+id/tv_view_value"
+            android:id="@+id/tv_price_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -309,7 +309,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_view_value" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_price_value" />
 
         <ProgressBar
             android:id="@id/progressbar"
@@ -321,7 +321,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_view_value" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_price_value" />
 
     </android.support.constraint.ConstraintLayout>
 

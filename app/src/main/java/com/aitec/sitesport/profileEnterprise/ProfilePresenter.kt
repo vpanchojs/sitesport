@@ -1,6 +1,5 @@
 package com.aitec.sitesport.profileEnterprise
 
-import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
 
 /**
@@ -9,11 +8,11 @@ import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
 interface ProfilePresenter {
     fun register()
     fun unregister()
-    fun getBasicProfile(idEnterprise : String)
-    fun getTableTimeProfile(idEnterprise : String)
-    fun getCourtsProfile(idEnterprise : String)
-    fun getServicesProfile(idEnterprise : String)
-    fun getContactsProfile(idEnterprise : String)
+    fun getBasicProfile(idEnterprise: String)
+    fun getTableTimeProfile(idEnterprise: String)
+    fun getCourtsProfile(idEnterprise: String)
+    fun getServicesProfile(idEnterprise: String)
+    fun getContactsProfile(idEnterprise: String)
     fun getLike(idUser: String, idEnterprise: String)
     fun toggleLike(idUser: String, idEnterprise: String, isQualified: Boolean)
     fun isAuthenticated()

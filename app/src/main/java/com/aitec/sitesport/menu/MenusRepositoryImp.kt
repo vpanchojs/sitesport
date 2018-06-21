@@ -1,16 +1,14 @@
 package com.aitec.sitesport.menu
 
 import com.aitec.sitesport.domain.FirebaseApi
-import com.aitec.sitesport.domain.RetrofitApi
 import com.aitec.sitesport.domain.SharePreferencesApi
-import com.aitec.sitesport.domain.SqliteRoomApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Cuenta
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.menu.events.MenusEvents
 
-class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var retrofitApi: RetrofitApi, var sqliteRoomApi: SqliteRoomApi, var firebaseApi: FirebaseApi) : MenusRepository {
+class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var firebaseApi: FirebaseApi) : MenusRepository {
 
     override fun subscribeAuth() {
         firebaseApi.suscribeAuth(object : onApiActionListener<User> {
@@ -29,7 +27,7 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
     }
 
     override fun enviartokengoogle(idToken: String, user: User) {
-        firebaseApi.autenticationGoogle(idToken,user, object : onApiActionListener<User> {
+        firebaseApi.autenticationGoogle(idToken, user, object : onApiActionListener<User> {
             override fun onSucces(response: User) {
                 sharePreferencesApi.sesion(true, Cuenta.GOOGLE)
                 postEvent(MenusEvents.ON__SIGIN_SUCCES_GOOGLE, response)
@@ -43,7 +41,7 @@ class MenusRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesAp
     }
 
     override fun enviartoken(token: String, user: User) {
-        firebaseApi.autenticationFacebook(token,user, object : onApiActionListener<User> {
+        firebaseApi.autenticationFacebook(token, user, object : onApiActionListener<User> {
             override fun onSucces(response: User) {
                 sharePreferencesApi.sesion(true, Cuenta.FACEBOOK)
                 postEvent(MenusEvents.ON_SIGIN_SUCCESS_FACEBOOK, response)

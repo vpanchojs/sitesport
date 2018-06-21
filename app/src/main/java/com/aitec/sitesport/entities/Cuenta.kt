@@ -6,9 +6,6 @@ package com.aitec.sitesport.entities
 class Cuenta {
 
 
-
-
-
     var token: String? = null
     var user: User? = null
 

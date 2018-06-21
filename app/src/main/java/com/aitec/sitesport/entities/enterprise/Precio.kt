@@ -6,10 +6,10 @@ import android.os.Parcelable
 /**
  * Created by Yavac on 22/3/2018.
  */
-class Precio() : Parcelable{
+class Precio() : Parcelable {
     var noche: String = ""
     var dia: String = ""
-    var nombre : String = ""
+    var nombre: String = ""
 
     constructor(parcel: Parcel) : this() {
         noche = parcel.readString()

@@ -9,7 +9,7 @@ import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Rate
 import kotlinx.android.synthetic.main.item_rv_rate_court.view.*
 
-class RateCourtAdapter (val context: Context, var listRatesCourt: List<Rate>) : RecyclerView.Adapter<RateCourtAdapter.ViewHolder>(){
+class RateCourtAdapter(val context: Context, var listRatesCourt: List<Rate>) : RecyclerView.Adapter<RateCourtAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,7 +26,7 @@ class RateCourtAdapter (val context: Context, var listRatesCourt: List<Rate>) : 
 
         var day = ""
 
-        when(rateCourt.nameDay){
+        when (rateCourt.nameDay) {
             0 -> day = "Lunes"
             1 -> day = "Martes"
             2 -> day = "Miércoles"

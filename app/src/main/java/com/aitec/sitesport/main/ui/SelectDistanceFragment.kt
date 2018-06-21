@@ -8,7 +8,6 @@ import android.support.design.widget.TextInputEditText
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import com.aitec.sitesport.R
 import kotlinx.android.synthetic.main.fragmente_select_distance.view.*
@@ -26,7 +25,7 @@ class SelectDistanceFragment : DialogFragment(), DialogInterface.OnShowListener 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
-        var view = activity!!.layoutInflater.inflate(R.layout.fragmente_select_distance, null)
+        val view = activity!!.layoutInflater.inflate(R.layout.fragmente_select_distance, null)
         builder.setView(view)
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
