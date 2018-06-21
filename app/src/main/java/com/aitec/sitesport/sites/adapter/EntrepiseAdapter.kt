@@ -44,7 +44,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
 
         holder.view.tv_address.text = entrepise.direccion?.referencia
 
-        holder.view.tv_raiting.text = entrepise.likes.toString()
+        holder.view.tv_raiting.text = entrepise.me_gustas.toString()
 
 
         if (entrepise.distancia > 0) {

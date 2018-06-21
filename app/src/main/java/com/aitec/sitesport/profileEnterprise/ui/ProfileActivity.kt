@@ -90,7 +90,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateBasicProfile() {
         collapse_toolbar_profile.title = enterprise.nombre
-        cbRating.text = enterprise.likes.toString()
+        cbRating.text = enterprise.me_gustas.toString()
         //updateImage(enterprise.foto_perfil)
         setMapView()
     }
@@ -166,14 +166,14 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateLike(like: Int) {
         cbRating.text = like.toString()
-        enterprise.likes = like
+        enterprise.me_gustas = like
         cbRating.isClickable = true
         //profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
 
     override fun restoreRating() {
         cbRating.isChecked = enterprise.isQualified
-        cbRating.text = enterprise.likes.toString()
+        cbRating.text = enterprise.me_gustas.toString()
         cbRating.isClickable = true
     }
 
@@ -461,8 +461,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             if (uidUser != null) {
                 val checkBox: CheckBox = it as CheckBox
                 cbRating.isChecked = checkBox.isChecked
-                if (cbRating.isChecked) cbRating.text = (enterprise.likes + 1).toString()
-                else cbRating.text = (enterprise.likes - 1).toString()
+                if (cbRating.isChecked) cbRating.text = (enterprise.me_gustas + 1).toString()
+                else cbRating.text = (enterprise.me_gustas - 1).toString()
                 profilePresenter.toggleLike(uidUser!!, enterprise.pk, !cbRating.isChecked)
                 cbRating.isClickable = false
             } else {

@@ -366,7 +366,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
         db.runTransaction { it ->
             val e = it.get(ref).toObject(Enterprise::class.java)!!
-            val likes = e.likes - 1
+            val likes = e.me_gustas - 1
 
             val hashMapLikes = HashMap<String, Any>()
             hashMapLikes["likes"] = likes
@@ -399,7 +399,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
         db.runTransaction { it ->
             val e = it.get(ref).toObject(Enterprise::class.java)!!
-            val likes = e.likes + 1
+            val likes = e.me_gustas + 1
 
             val hashMapLikes = HashMap<String, Any>()
             hashMapLikes["likes"] = likes

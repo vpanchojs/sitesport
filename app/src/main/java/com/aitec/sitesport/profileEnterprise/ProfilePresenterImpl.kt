@@ -81,7 +81,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
                 e.descripcion = response.descripcion
                 e.foto_perfil = response.foto_perfil
                 e.telefono = response.telefono
-                e.likes = response.likes
+                e.me_gustas = response.me_gustas
                 e.direccion = response.direccion
                 profileView.setEnterprise(e)
                 profileView.updateBasicProfile()
