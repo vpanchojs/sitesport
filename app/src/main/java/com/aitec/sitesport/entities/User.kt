@@ -7,54 +7,56 @@ import java.util.*
 
 class User() : Parcelable {
     var pk: String? = null
-    var names: String? = null
-    var lastName: String = ""
-    var photo: String = ""
-    var phone: String = ""
-    var email: String = ""
-    var dni: String? = ""
+    var nombre: String? = null
+    var apellido: String = ""
+    var foto: String = ""
+    var telefono: String = ""
+    var correo_electronico: String = ""
+    var cedula: String = ""
+    var valido = false
+    var numero_reservaciones: Int = 0
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
-        names = parcel.readString()
-        lastName = parcel.readString()
-        photo = parcel.readString()
-        phone = parcel.readString()
-        email = parcel.readString()
-        dni = parcel.readString()
+        nombre = parcel.readString()
+        apellido = parcel.readString()
+        foto = parcel.readString()
+        telefono = parcel.readString()
+        correo_electronico = parcel.readString()
+        cedula = parcel.readString()
     }
 
 
     @Exclude
     fun toMapPost(): Map<String, Any> {
         val result = HashMap<String, Any>()
-        result["names"] = names!!
-        result["lastName"] = lastName
-        result["photo"] = photo!!
-        result["dni"] = dni!!
-        result["phone"] = phone!!
+        result["nombre"] = nombre!!
+        result["apellido"] = apellido
+        result["foto"] = foto
+        result["cedula"] = cedula
+        result["telefono"] = telefono
         return result
     }
 
     @Exclude
     fun toMapPostSave(): Map<String, Any> {
         val result = HashMap<String, Any>()
-        result["names"] = names!!
-        result["lastName"] = lastName
-        result["photo"] = photo!!
-        result["email"] = email!!
+        result["nombre"] = nombre!!
+        result["apellido"] = apellido
+        result["foto"] = foto
+        result["correo_electronico"] = correo_electronico
         return result
     }
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(pk)
-        parcel.writeString(names)
-        parcel.writeString(lastName)
-        parcel.writeString(photo)
-        parcel.writeString(phone)
-        parcel.writeString(email)
-        parcel.writeString(dni)
+        parcel.writeString(nombre)
+        parcel.writeString(apellido)
+        parcel.writeString(foto)
+        parcel.writeString(telefono)
+        parcel.writeString(correo_electronico)
+        parcel.writeString(cedula)
     }
 
     override fun describeContents(): Int {

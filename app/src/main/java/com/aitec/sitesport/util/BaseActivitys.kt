@@ -18,7 +18,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
  */
 class BaseActivitys() {
 
-    /*Metodo para validar el email*/
+    /*Metodo para validar el correo_electronico*/
     companion object {
         var progressDialog: ProgressDialog? = null
 

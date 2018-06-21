@@ -350,7 +350,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         var imageView = ImageView(this)
 
         when (networkSocial.nombre.toLowerCase()) {
-            "phone" -> {
+            "telefono" -> {
                 imageView = ibtnPhone
                 imageView.setOnClickListener {
                     callPhone()

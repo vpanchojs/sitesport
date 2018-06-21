@@ -11,19 +11,19 @@ class MenusInteractorImp(var repository: MenusRepository, eventBus: EventBusInte
 
     override fun enviartokengoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         val user = User()
-        user.photo = photoUrl.toString()
-        user.lastName = lastname!!
-        user.names = name!!
-        user.email = email!!
+        user.foto = photoUrl.toString()
+        user.apellido = lastname!!
+        user.nombre = name!!
+        user.correo_electronico = email!!
         repository.enviartokengoogle(idToken, user)
     }
 
     override fun enviartoken(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         val user = User()
-        user.photo = photoUrl.toString()
-        user.lastName = lastname!!
-        user.names = name
-        user.email = email!!
+        user.foto = photoUrl.toString()
+        user.apellido = lastname!!
+        user.nombre = name
+        user.correo_electronico = email!!
         repository.enviartoken(token, user)
     }
 

@@ -66,8 +66,8 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
                 *
                 * */
                 var siteportUser = User()
-                siteportUser.names = "SiteSport"
-                siteportUser.email = "soporte@aitecec.com"
+                siteportUser.nombre = "SiteSport"
+                siteportUser.correo_electronico = "soporte@aitecec.com"
                 view.setDataProfile(siteportUser)
 
             }

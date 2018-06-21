@@ -62,10 +62,10 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
 
     private fun setDataProfile(user: User) {
         this.user = user
-        tie_names.setText(user.names.toString())
-        tie_email.setText(user.email)
+        tie_names.setText(user.nombre.toString())
+        tie_email.setText(user.correo_electronico)
         GlideApp.with(this)
-                .load(user.photo)
+                .load(user.foto)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)
@@ -114,7 +114,7 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
                         tie_lastnames.text.toString(),
                         tie_dni.text.toString(),
                         tie_phone.text.toString(),
-                        user.photo.toString()
+                        user.foto.toString()
                 )
             }
             R.id.fab_get_photo -> {
@@ -293,13 +293,13 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
 
     override fun setInfoUser(user: User) {
         this.user = user
-        tie_names.setText(user.names)
-        tie_lastnames.setText(user.lastName)
-        tie_email.setText(user.email)
-        tie_dni.setText(user.dni)
-        tie_phone.setText(user.phone)
+        tie_names.setText(user.nombre)
+        tie_lastnames.setText(user.apellido)
+        tie_email.setText(user.correo_electronico)
+        tie_dni.setText(user.cedula)
+        tie_phone.setText(user.telefono)
         GlideApp.with(this)
-                .load(user.photo)
+                .load(user.foto)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)

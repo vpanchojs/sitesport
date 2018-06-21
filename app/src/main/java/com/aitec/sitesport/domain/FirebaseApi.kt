@@ -26,16 +26,16 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     companion object {
         const val TAG = "FirebaseApi"
-        const val PATH_USER = "users"
-        const val STORAGE_USER_PHOTO_PATH = "user-photos"
-        const val PATH_SPORT_CENTER = "sport_center"
-        const val PATH_TABLE_TIME = "table_time"
-        const val PATH_LIKE = "like"
-        const val PATH_COURT = "court"
-        const val PATH_SOCIAL_NETWORK = "social_network"
+        const val PATH_USER = "usuario"
+        const val STORAGE_USER_PHOTO_PATH = "usuario_photos"
+        const val PATH_SPORT_CENTER = "centro_deportivo"
+        const val PATH_TABLE_TIME = "horario"
+        const val PATH_LIKE = "me_gusta"
+        const val PATH_COURT = "cancha"
+        const val PATH_SOCIAL_NETWORK = "red_social"
         const val PATH_SERVICIE = "servicio"
-        const val PATH_RESERVATION = "reservation"
-        const val PATH_PUBLICATIONS = "publications"
+        const val PATH_RESERVATION = "reservacion"
+        const val PATH_PUBLICATIONS = "publicaciones"
 
     }
 
@@ -53,10 +53,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     /*
                     val user = User()
                     user.pk = it.user.uid
-                    user.names = it.user.displayName
-                    user.email = it.user.email
+                    user.nombre = it.user.displayName
+                    user.correo_electronico = it.user.correo_electronico
 
-                    user.photo = it.user.photoUrl.toString()
+                    user.foto = it.user.photoUrl.toString()
                     */
                     if (it.additionalUserInfo.isNewUser) {
                         user.pk = it.user.uid
@@ -87,11 +87,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     /*
                     val user = User()
                     user.pk = it.user.uid
-                    user.names = it.user.displayName
-                    user.email = it.user.email
-                    user.photo = it.user.photoUrl.toString()
+                    user.nombre = it.user.displayName
+                    user.correo_electronico = it.user.correo_electronico
+                    user.foto = it.user.photoUrl.toString()
                     */
-                    user.email = it.user.email!!
+                    user.correo_electronico = it.user.email!!
 
                     if (it.additionalUserInfo.isNewUser) {
                         user.pk = it.user.uid
@@ -138,9 +138,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 Log.e(TAG, "EL display" + mAuth.currentUser!!.displayName.toString())
                 val user = User()
                 user.pk = userAuth.uid
-                user.names = userAuth.displayName
-                user.email = userAuth.email!!
-                user.photo = userAuth.photoUrl.toString()
+                user.nombre = userAuth.displayName
+                user.correo_electronico = userAuth.email!!
+                user.foto = userAuth.photoUrl.toString()
                 callback.onSucces(user)
             } else {
                 callback.onError(Unit)
@@ -158,7 +158,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun updateUser(user: User, listener: onApiActionListener<Unit>) {
 
-        updateProfileData(user.names + " " + user.lastName, object : onApiActionListener<Unit> {
+        updateProfileData(user.nombre + " " + user.apellido, object : onApiActionListener<Unit> {
             override fun onSucces(response: Unit) {
                 db.collection(PATH_USER).document(mAuth.currentUser!!.uid).update(user.toMapPost())
                         .addOnSuccessListener {
@@ -568,11 +568,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                                 val profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri).build()
 
-                                db.collection(PATH_USER).document(getUid()).update("photo", uri.toString()).addOnSuccessListener {
+                                db.collection(PATH_USER).document(getUid()).update("foto", uri.toString()).addOnSuccessListener {
 
                                     mAuth.currentUser!!.updateProfile(profileUpdate)
                                             .addOnSuccessListener {
-                                                Log.e(TAG, "Se actualizo la photo")
+                                                Log.e(TAG, "Se actualizo la foto")
                                                 //callback.onSucces(uri.toString())
                                             }
                                             .addOnFailureListener {
@@ -613,7 +613,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
                 mAuth.currentUser!!.updateProfile(profileUpdate)
                         .addOnSuccessListener {
-                            Log.e(TAG, "Se actualizo la photo")
+                            Log.e(TAG, "Se actualizo la foto")
                             callback.onSuccess()
                         }
                         .addOnFailureListener {

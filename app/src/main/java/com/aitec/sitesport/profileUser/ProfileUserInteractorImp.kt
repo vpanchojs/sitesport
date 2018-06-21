@@ -29,11 +29,11 @@ class ProfileUserInteractorImp(var eventBus: EventBusInterface, var repository: 
 
         if (correct) {
             var user = User()
-            user.dni = dni
-            user.names = names
-            user.lastName = lastnames
-            user.phone = phone
-            user.photo = photo
+            user.cedula = dni
+            user.nombre = names
+            user.apellido = lastnames
+            user.telefono = phone
+            user.foto = photo
             repository.updateInfoUser(user)
         }
 

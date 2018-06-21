@@ -261,7 +261,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             R.id.btn_sigin_facebook -> {
                 //showMessagge("Estamos Trabajando en ello")
 
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "correo_electronico"))
 
             }
         }
@@ -269,10 +269,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     override fun setDataProfile(user: User) {
         this.user = user
-        tv_name_user.text = "${user.names} ${user.lastName}"
-        tv_email.text = user.email
+        tv_name_user.text = "${user.nombre} ${user.apellido}"
+        tv_email.text = user.correo_electronico
         GlideApp.with(context!!)
-                .load(user.photo)
+                .load(user.foto)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)
