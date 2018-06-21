@@ -319,7 +319,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     }
 
     fun getTableTimeToday(day: String?): Dia? {
-        return enterprise.horario.find {
+        return enterprise.horarios.find {
             it.pk.toLowerCase() == day
         }
     }

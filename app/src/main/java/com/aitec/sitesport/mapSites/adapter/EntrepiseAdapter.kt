@@ -28,7 +28,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entrepise = data.get(position)
         holder.view.tv_name_entrepise.text = entrepise.nombre
-        holder.view.tv_distance.text = df.format(entrepise.distance) + " Km"
+        holder.view.tv_distance.text = df.format(entrepise.distancia) + " Km"
         holder.addMarker(entrepise, callback)
         holder.onNavigationProfile(entrepise, callback)
     }

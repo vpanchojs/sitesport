@@ -82,7 +82,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage)
         } else {
             val address = addresses[0]
-            // Fetch the address lines using getAddressLine,
+            // Fetch the direccion lines using getAddressLine,
             // join them, and send them to the thread.
             val addressFragments = with(address) {
                 (0..maxAddressLineIndex).map { getAddressLine(it) }
@@ -93,7 +93,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
             tie_address.setText(address.getAddressLine(0))
         }
 
-        // Handle case where no address was found.
+        // Handle case where no direccion was found.
 
 
     }
@@ -233,7 +233,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
                     mCurrentLocation = location
                     if (::mMap.isInitialized) {
                         animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
-                        Log.e("address", mCurrentLocation.toString())
+                        Log.e("direccion", mCurrentLocation.toString())
                         stopLocationUpdates()
                     }
 

@@ -577,7 +577,6 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Cerrado"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/dimen_text_image_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/btnShowTableTime"

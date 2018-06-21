@@ -82,7 +82,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
                 e.foto_perfil = response.foto_perfil
                 e.telefono = response.telefono
                 e.likes = response.likes
-                e.address = response.address
+                e.direccion = response.direccion
                 profileView.setEnterprise(e)
                 profileView.updateBasicProfile()
                 existConnection(profileEvent)
@@ -90,7 +90,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
 
             ProfileActivity.SECTION_TABLE_TIME -> {
                 val e = profileView.getEnterprise()
-                e.horario = (profileEvent.eventObject as Enterprise).horario
+                e.horarios = (profileEvent.eventObject as Enterprise).horarios
                 profileView.setEnterprise(e)
                 profileView.hideLoadingTableTimeSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
@@ -111,7 +111,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
             }
 
             ProfileActivity.SECTION_CONTACTS -> {
-                profileView.updateContacts((profileEvent.eventObject as Enterprise).redesSociales)
+                profileView.updateContacts((profileEvent.eventObject as Enterprise).redes_social)
                 profileView.hideLoadingContactsSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
             }

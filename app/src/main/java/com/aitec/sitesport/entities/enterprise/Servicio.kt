@@ -7,6 +7,7 @@ class Servicio() : Parcelable {
 
     var nombre: String = ""
     var descripcion: String = ""
+    var activado: Boolean = false
 
     constructor(parcel: Parcel) : this() {
         nombre = parcel.readString()

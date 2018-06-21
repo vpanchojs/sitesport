@@ -254,12 +254,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     it.forEach {
                         val d = it.toObject(Dia::class.java)
                         d.pk = it.id
-                        //dayList.add(d.numero, d)
+                        //dayList.add(d.indice, d)
                         dayList.add(d)
                         Log.d(TAG, "Success => Horario = " + it.toObject(Dia::class.java).nombre)
                     }
                     val enterprise = Enterprise()
-                    enterprise.horario = dayList
+                    enterprise.horarios = dayList
 
                     if (it.metadata.isFromCache) enterprise.isOnline = false
                     callback.onSucces(enterprise)
@@ -330,7 +330,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         Log.d(TAG, "Success => RedSocial = " + it.toObject(RedSocial::class.java).nombre)
                     }
                     val enterprise = Enterprise()
-                    enterprise.redesSociales = redSocialList
+                    enterprise.redes_social = redSocialList
                     if (it.metadata.isFromCache) enterprise.isOnline = false
                     callback.onSucces(enterprise)
                 }
@@ -663,7 +663,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getItemReserved(fecha: String, idEnterprise: String, pkCancha: String, callback: onApiActionListener<List<Reservation>>) {
-        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_COURT).whereEqualTo("cancha.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_COURT).whereEqualTo("canchas.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
                 .addOnSuccessListener {
                     Log.e(TAG, "item reserva succes")
                     callback.onSucces(ArrayList<Reservation>())

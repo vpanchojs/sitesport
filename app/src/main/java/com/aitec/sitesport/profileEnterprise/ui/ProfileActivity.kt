@@ -112,9 +112,10 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun setupTableTimeSection() {
         clTableTime.setOnClickListener {
-            val tableTImeFragment = TableTimeFragment.newInstance(enterprise.horario)
+            val tableTImeFragment = TableTimeFragment.newInstance(enterprise.horarios)
             tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
         }
+        tvStateEnterprise
     }
 
     private fun setupCourtsSection() {
@@ -150,9 +151,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun updateContacts(contactList: List<RedSocial>) {
-        enterprise.redesSociales.clear()
+        enterprise.redes_social.clear()
         for (networkSocial in contactList) {
-            enterprise.redesSociales.add(networkSocial)
+            enterprise.redes_social.add(networkSocial)
             setNetworkSocial(networkSocial)
         }
     }
@@ -186,9 +187,9 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun setMapView() {
-        tvLocation.text = enterprise.address!!.calles
-        //val latLng = LatLng(enterprise.address!!.gPointParcelable.geoPoint.latitude, enterprise.address!!.gPointParcelable.geoPoint.longitude)
-        val latLng = LatLng(enterprise.address!!.latitud, enterprise.address!!.longitud)
+        tvLocation.text = enterprise.direccion!!.calles
+        //val latLng = LatLng(enterprise.direccion!!.gPointParcelable.geoPoint.latitude, enterprise.direccion!!.gPointParcelable.geoPoint.longitude)
+        val latLng = LatLng(enterprise.direccion!!.latitud, enterprise.direccion!!.longitud)
         val cameraPosition = CameraPosition.Builder()
                 .target(latLng)
                 .zoom(15F)

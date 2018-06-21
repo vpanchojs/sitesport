@@ -10,8 +10,8 @@ class Cancha() : Parcelable {
     var precio_dia: Float = 0f
     var precio_noche: Float = 0f
     var numero_jugadores: String = ""
-    var piso: String = ""
     var hora_intermedia: String = ""
+    var piso: String = ""
     var fotos: ArrayList<String>? = arrayListOf()
 
 

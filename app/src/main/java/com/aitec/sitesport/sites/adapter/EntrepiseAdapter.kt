@@ -42,13 +42,13 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(holder.view.iv_entrepise)
 
-        holder.view.tv_address.text = entrepise.address?.referencia
+        holder.view.tv_address.text = entrepise.direccion?.referencia
 
         holder.view.tv_raiting.text = entrepise.likes.toString()
 
 
-        if (entrepise.distance > 0) {
-            holder.view.tv_distance.text = "${df.format(entrepise.distance)} km"
+        if (entrepise.distancia > 0) {
+            holder.view.tv_distance.text = "${df.format(entrepise.distancia)} km"
             holder.view.tv_distance.visibility = View.VISIBLE
         } else {
             holder.view.tv_distance.visibility = View.GONE

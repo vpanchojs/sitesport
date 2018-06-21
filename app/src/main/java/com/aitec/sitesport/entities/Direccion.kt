@@ -3,7 +3,7 @@ package com.aitec.sitesport.entities
 import android.os.Parcel
 import android.os.Parcelable
 
-class Address() : Parcelable {
+class Direccion() : Parcelable {
 
     lateinit var referencia: String
     lateinit var provincia: String
@@ -44,12 +44,12 @@ class Address() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Address> {
-        override fun createFromParcel(parcel: Parcel): Address {
-            return Address(parcel)
+    companion object CREATOR : Parcelable.Creator<Direccion> {
+        override fun createFromParcel(parcel: Parcel): Direccion {
+            return Direccion(parcel)
         }
 
-        override fun newArray(size: Int): Array<Address?> {
+        override fun newArray(size: Int): Array<Direccion?> {
             return arrayOfNulls(size)
         }
     }

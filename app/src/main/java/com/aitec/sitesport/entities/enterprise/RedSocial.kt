@@ -10,6 +10,7 @@ class RedSocial() : Parcelable {
 
     var url: String = ""
     var nombre: String = ""
+    var activado: Boolean = false
 
     constructor(parcel: Parcel) : this() {
         url = parcel.readString()

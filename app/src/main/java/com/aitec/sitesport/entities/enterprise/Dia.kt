@@ -9,14 +9,14 @@ class Dia() : Parcelable {
     var nombre: String = ""
     var hora_inicio: String = ""
     var hora_fin: String = ""
-    var numero: Int = -1
+    var indice: Int = -1
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         nombre = parcel.readString()
         hora_inicio = parcel.readString()
         hora_fin = parcel.readString()
-        numero = parcel.readInt()
+        indice = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -24,7 +24,7 @@ class Dia() : Parcelable {
         parcel.writeString(nombre)
         parcel.writeString(hora_inicio)
         parcel.writeString(hora_fin)
-        parcel.writeInt(numero)
+        parcel.writeInt(indice)
     }
 
     override fun describeContents(): Int {
