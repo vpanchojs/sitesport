@@ -28,8 +28,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val TAG = "FirebaseApi"
         const val PATH_USER = "usuario"
         const val STORAGE_USER_PHOTO_PATH = "usuario_photos"
+
         const val PATH_SPORT_CENTER = "centro_deportivo"
+
         const val PATH_TABLE_TIME = "horario"
+
         const val PATH_LIKE = "me_gusta"
         const val PATH_COURT = "cancha"
         const val PATH_SOCIAL_NETWORK = "red_social"
