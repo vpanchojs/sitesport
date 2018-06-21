@@ -90,14 +90,6 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         cb_distance.isChecked = isCheck
         rg_filters.setOnCheckedChangeListener(this)
 
-        /*
-        cb_distance.setOnCheckedChangeListener(null)
-        cb_distance.isChecked = isCheck
-        cb_distance.setOnCheckedChangeListener(this)
-
-        showProgresBar(false)
-        visibleListSites(View.VISIBLE)
-        */
     }
 
 
