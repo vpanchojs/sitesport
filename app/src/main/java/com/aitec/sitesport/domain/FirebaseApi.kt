@@ -30,7 +30,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val STORAGE_USER_PHOTO_PATH = "usuario_photos"
         const val PATH_SPORT_CENTER = "centro_deportivo"
         const val PATH_TABLE_TIME = "horario"
-        const val PATH_LIKE = "me_gusta"
+        const val PATH_LIKES = "me_gustas"
+        const val PATH_DATE_LIKES = "fecha_me_gusta"
         const val PATH_COURT = "cancha"
         const val PATH_SOCIAL_NETWORK = "red_social"
         const val PATH_SERVICIE = "servicio"
@@ -343,10 +344,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun getLike(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>) {
+    fun getLikes(idUser: String, idEnterprise: String, callback: onApiActionListener<Boolean>) {
         db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
-                .collection(PATH_LIKE).document(idUser)
+                .collection(PATH_LIKES).document(idUser)
                 .get()
                 .addOnSuccessListener {
                     callback.onSucces(it.exists())
@@ -359,12 +360,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
         val refEnterprise = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
-                .collection("like")
+                .collection(PATH_LIKES)
                 .document(idUser)
 
-        val refUser = db.collection("users")
+        val refUser = db.collection(PATH_USER)
                 .document(idUser)
-                .collection("like")
+                .collection(PATH_LIKES)
                 .document(idEnterprise)
 
         db.runTransaction { it ->
@@ -372,7 +373,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             val likes = e.me_gustas - 1
 
             val hashMapLikes = HashMap<String, Any>()
-            hashMapLikes["likes"] = likes
+            hashMapLikes[PATH_LIKES] = likes
             it.update(ref, hashMapLikes)
 
             it.delete(refEnterprise)
@@ -392,12 +393,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
         val refEnterprise = db.collection(PATH_SPORT_CENTER)
                 .document(idEnterprise)
-                .collection(PATH_LIKE)
+                .collection(PATH_LIKES)
                 .document(idUser)
 
         val refUser = db.collection(PATH_USER)
                 .document(idUser)
-                .collection(PATH_LIKE)
+                .collection(PATH_LIKES)
                 .document(idEnterprise)
 
         db.runTransaction { it ->
@@ -405,11 +406,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             val likes = e.me_gustas + 1
 
             val hashMapLikes = HashMap<String, Any>()
-            hashMapLikes["likes"] = likes
+            hashMapLikes[PATH_LIKES] = likes
             it.update(ref, hashMapLikes)
 
             val hashMapDate = HashMap<String, Any>()
-            hashMapDate["fecha_like"] = FieldValue.serverTimestamp()
+            hashMapDate[PATH_DATE_LIKES] = FieldValue.serverTimestamp()
 
             it.set(refEnterprise, hashMapDate)
             it.set(refUser, hashMapDate)
@@ -537,7 +538,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getSitesScore(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
-        db.collection(PATH_SPORT_CENTER).orderBy(PATH_LIKE, Query.Direction.DESCENDING).get()
+        db.collection(PATH_SPORT_CENTER).orderBy(PATH_LIKES, Query.Direction.DESCENDING).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
                     it.forEach {

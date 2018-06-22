@@ -35,4 +35,5 @@ interface ProfileView {
     fun getEnterprise(): Enterprise
     fun setEnterprise(enterprise: Enterprise)
     fun authenticated(uidUser: Any?)
+    fun isOpen(isOpen: Boolean)
 }

@@ -563,6 +563,7 @@
                 android:id="@+id/scrollVContacts"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -573,7 +574,6 @@
                     android:id="@+id/clContacts"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginBottom="6dp"
                     android:visibility="visible">
 
                     <ImageView
@@ -646,6 +646,7 @@
                 android:id="@+id/scrollVServices"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
                 android:visibility="visible"
@@ -657,7 +658,6 @@
                     android:id="@+id/clServices"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginBottom="6dp"
                     android:visibility="visible">
 
                     <ImageView

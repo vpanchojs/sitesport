@@ -8,6 +8,7 @@ import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
+import com.aitec.sitesport.util.BaseActivitys
 
 
 /**
@@ -31,6 +32,14 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
                 if(response.horarios.isEmpty()) msg = "Horario no disponible"
                 else{
                     response.horarios = response.horarios.sortedBy { selector(it) }
+
+                    val hashMapDayHour: HashMap<String, Int> = BaseActivitys.getCurrentDayHour()
+                    val day: Dia? = response.horarios.find {it.indice == hashMapDayHour["day"]}
+                    if(day != null)
+                        response.abierto = hashMapDayHour["hour"]!!.toInt() >= day.hora_inicio
+                                && hashMapDayHour["hour"]!!.toInt() <= day.hora_fin
+                    else
+                        response.abierto = false
                 }
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_TABLE_TIME, msg, response)
@@ -110,7 +119,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
     }
 
     override fun getLike(idUser: String, idEnterprise: String) {
-        firebaseApi.getLike(idUser, idEnterprise, object : onApiActionListener<Boolean> {
+        firebaseApi.getLikes(idUser, idEnterprise, object : onApiActionListener<Boolean> {
             override fun onSucces(response: Boolean) {
                 val msg: String? = null
                 //if(!response.isOnline) msg = MSG_ERROR_CONNECTION

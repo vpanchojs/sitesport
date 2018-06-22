@@ -12,6 +12,8 @@ import android.widget.Toast
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Created by victor on 25/1/18.
@@ -135,6 +137,26 @@ class BaseActivitys() {
                         callbacks.onError(it.toString())
                     }
 
+        }
+
+        fun getCurrentDayHour() : HashMap<String, Int>{
+            val calendar = Calendar.getInstance(Locale.getDefault())
+            var day = calendar.get(Calendar.DAY_OF_WEEK)
+
+            when(day){
+                Calendar.MONDAY -> day = 0
+                Calendar.TUESDAY -> day = 1
+                Calendar.WEDNESDAY -> day = 2
+                Calendar.THURSDAY -> day = 3
+                Calendar.FRIDAY -> day = 4
+                Calendar.SATURDAY -> day = 5
+                Calendar.SUNDAY -> day = 6
+            }
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val customDate = hashMapOf<String, Int>()
+            customDate["day"] = day
+            customDate["hour"] = hour
+            return customDate
         }
 
 

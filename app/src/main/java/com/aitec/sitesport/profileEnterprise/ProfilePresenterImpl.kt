@@ -91,7 +91,9 @@ class ProfilePresenterImpl(var profileView: ProfileView,
             ProfileActivity.SECTION_TABLE_TIME -> {
                 val e = profileView.getEnterprise()
                 e.horarios = (profileEvent.eventObject as Enterprise).horarios
+                e.abierto = (profileEvent.eventObject as Enterprise).abierto
                 profileView.setEnterprise(e)
+                profileView.isOpen(e.abierto)
                 profileView.hideLoadingTableTimeSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
             }

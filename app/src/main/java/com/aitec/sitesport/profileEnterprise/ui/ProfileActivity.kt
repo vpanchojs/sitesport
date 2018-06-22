@@ -21,10 +21,7 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.enterprise.Cancha
-import com.aitec.sitesport.entities.enterprise.Enterprise
-import com.aitec.sitesport.entities.enterprise.RedSocial
-import com.aitec.sitesport.entities.enterprise.Servicio
+import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profileEnterprise.Constants
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
 import com.aitec.sitesport.profileEnterprise.ui.adapter.ImageAdapter
@@ -48,17 +45,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 
 class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, com.google.android.gms.maps.OnMapReadyCallback {
-
-    override fun authenticated(uidUser: Any?) {
-        //"sAcL7AsndlapxazBB5ZrHyCix782"
-        if (uidUser != null) {
-            this.uidUser = uidUser as String
-            profilePresenter.getLike(uidUser, enterprise.pk)
-        }
-    }
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
@@ -88,10 +78,17 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         profilePresenter.getServicesProfile(enterprise.pk)
         profilePresenter.getContactsProfile(enterprise.pk)
         profilePresenter.isAuthenticated()
-        //profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
+        //profilePresenter.getLikes("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
 
     // ======= ProfileView.kt implementation
+
+    override fun authenticated(uidUser: Any?) {
+        if (uidUser != null) {
+            this.uidUser = uidUser as String
+            profilePresenter.getLike(uidUser, enterprise.pk)
+        }
+    }
 
     override fun updateBasicProfile() {
         collapse_toolbar_profile.title = enterprise.nombre
@@ -109,19 +106,15 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
     }
 
-    /*private fun updateImage(url: String){
-        if(images.size > 0) return
-        images.add(url)
-        viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
-    }*/
-
     private fun setupTableTimeSection() {
         clTableTime.setOnClickListener {
             val tableTImeFragment = TableTimeFragment.newInstance(enterprise.horarios)
             tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
         }
-        tvStateEnterprise
-        //setStateEnterprise()
+    }
+
+    override fun isOpen(isOpen: Boolean) {
+        tvStateEnterprise.text = if(isOpen) getString(R.string.string_open) else getString(R.string.string_closed)
     }
 
     private fun setupCourtsSection() {
@@ -174,7 +167,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         cbRating.text = like.toString()
         enterprise.me_gustas = like
         cbRating.isClickable = true
-        //profilePresenter.getLike("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
+        //profilePresenter.getLikes("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
 
     override fun restoreRating() {
@@ -194,18 +187,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun setMapView() {
         tvLocation.text = enterprise.direccion!!.calles
-        //val latLng = LatLng(enterprise.direccion!!.gPointParcelable.geoPoint.latitude, enterprise.direccion!!.gPointParcelable.geoPoint.longitude)
         val latLng = LatLng(enterprise.direccion!!.latitud, enterprise.direccion!!.longitud)
-        val cameraPosition = CameraPosition.Builder()
-                .target(latLng)
-                .zoom(15F)
-                .build()
-        gMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(cameraPosition))
-        val icon = BitmapDescriptorFactory.fromResource(if (enterprise.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
-        gMap.addMarker(MarkerOptions()
-                .position(latLng)
-                .icon(icon)).showInfoWindow()
-
+        updateMarkerMapView(latLng)
         ivRunLocation.setOnClickListener {
             val gmmIntentUri =
                     Uri.parse("google.navigation:q=" +
@@ -219,6 +202,19 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
                 BaseActivitys.showToastMessage(this, "No se encontró Google Maps", Toast.LENGTH_SHORT)
         }
         ivRunLocation.visibility = View.VISIBLE
+    }
+
+    private fun updateMarkerMapView(latLng: LatLng){
+        val cameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(15F)
+                .build()
+        gMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(cameraPosition))
+        val icon = BitmapDescriptorFactory.fromResource(if(enterprise.abierto) R.drawable.ic_futbol_open else R.drawable.ic_futbol_close)
+        gMap.clear()
+        gMap.addMarker(MarkerOptions()
+                .position(latLng)
+                .icon(icon)).showInfoWindow()
     }
 
     override fun onDestroy() {
