@@ -10,7 +10,7 @@ class Cancha() : Parcelable {
     var precio_dia: Float = 0f
     var precio_noche: Float = 0f
     var numero_jugadores: String = ""
-    var hora_intermedia: String = ""
+    var hora_intermedia: Int = 0
     var piso: String = ""
     var fotos: ArrayList<String>? = arrayListOf()
 
@@ -22,7 +22,7 @@ class Cancha() : Parcelable {
         precio_noche = parcel.readFloat()
         numero_jugadores = parcel.readString()
         piso = parcel.readString()
-        hora_intermedia = parcel.readString()
+        hora_intermedia = parcel.readInt()
         parcel.readList(fotos, String::class.java.classLoader)
     }
 
@@ -33,7 +33,7 @@ class Cancha() : Parcelable {
         parcel.writeFloat(precio_noche)
         parcel.writeString(numero_jugadores)
         parcel.writeString(piso)
-        parcel.writeString(hora_intermedia)
+        parcel.writeInt(hora_intermedia)
         parcel.writeList(fotos)
     }
 

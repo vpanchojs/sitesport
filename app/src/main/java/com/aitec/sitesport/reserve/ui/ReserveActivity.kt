@@ -260,17 +260,17 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     private fun setTableTime(day: Dia?) {
         items.clear()
-        val arrayHoraInicio = day!!.hora_inicio.split(":")
-        val arrayHoraFin = day.hora_fin.split(":")
-        val arrayHoraIntermedia = court.hora_intermedia.split(":")
+        //val arrayHoraInicio = day!!.hora_inicio.split(":")
+        //val arrayHoraFin = day.hora_fin.split(":")
+        //val arrayHoraIntermedia = court.hora_intermedia.split(":")
 
-        val inicio = arrayHoraInicio[0].toInt()
-        val fin = arrayHoraFin[0].toInt()
-        val intermedia = arrayHoraIntermedia[0].toInt()
+        //val inicio = arrayHoraInicio[0].toInt()
+        //val fin = arrayHoraFin[0].toInt()
+        //val intermedia = arrayHoraIntermedia[0].toInt()
 
 
 
-        for (i in inicio..fin - 1) {
+        /*for (i in inicio..fin - 1) {
             var price = 0.0
 
             if (i + 1 <= intermedia) {
@@ -283,7 +283,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
             items.add(ItemReservation("$i:00", "${i + 1}:00", false, false, price))
 
-        }
+        }*/
         adapterTableTime.notifyDataSetChanged()
     }
 

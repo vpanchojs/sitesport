@@ -3,6 +3,7 @@ package com.aitec.sitesport.profileEnterprise
 import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.enterprise.Dia
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
@@ -16,6 +17,9 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
                             var eventBusInterface: EventBusInterface,
                             var sharePreferencesApi: SharePreferencesApi) : ProfileRepository {
 
+    fun selector(d: Dia): Int = d.indice
+
+
     override fun isAuthenticated() {
         postEvent(ProfileEvent.SUCCESS, ProfileActivity.AUTHENTICATION, null, firebaseApi.isAuthenticated())
     }
@@ -24,6 +28,10 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getTableTimeProfile(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
+                if(response.horarios.isEmpty()) msg = "Horario no disponible"
+                else{
+                    response.horarios = response.horarios.sortedBy { selector(it) }
+                }
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_TABLE_TIME, msg, response)
             }
@@ -39,6 +47,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getCourts(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
+                if(response.canchas.isEmpty()) msg = "Canchas no disponibles"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_COURTS, msg, response)
             }
@@ -54,6 +63,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getServices(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
+                if(response.servicios.isEmpty()) msg = "Servicios no disponibles"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_SERVICES, msg, response)
             }
@@ -69,6 +79,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getContacts(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
+                if(response.redes_social.isEmpty()) msg = "Contáctos no disponibles"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_CONTACTS, msg, response)
             }

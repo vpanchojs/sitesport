@@ -24,8 +24,8 @@ class TableTimeAdapter(var tableTimeList: List<Dia>) : RecyclerView.Adapter<Tabl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tableTime = tableTimeList.get(position)
         holder.view.tvDia.text = tableTime.nombre
-        holder.view.tvHourStart.text = "Desde ${tableTime.hora_inicio}"
-        holder.view.tvHourEnd.text = "Hasta ${tableTime.hora_fin}"
+        holder.view.tvHourStart.text = "Desde ${tableTime.hora_inicio}:00"
+        holder.view.tvHourEnd.text = "Hasta ${tableTime.hora_fin}:00"
     }
 
 

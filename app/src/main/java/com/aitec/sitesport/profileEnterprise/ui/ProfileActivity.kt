@@ -25,6 +25,7 @@ import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.entities.enterprise.RedSocial
 import com.aitec.sitesport.entities.enterprise.Servicio
+import com.aitec.sitesport.profileEnterprise.Constants
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
 import com.aitec.sitesport.profileEnterprise.ui.adapter.ImageAdapter
 import com.aitec.sitesport.profileEnterprise.ui.dialog.DefaultServicesFragment
@@ -42,6 +43,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_profile_enterprise.*
 import kotlinx.android.synthetic.main.content_profile_enterprise.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 
@@ -116,6 +121,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
         }
         tvStateEnterprise
+        //setStateEnterprise()
     }
 
     private fun setupCourtsSection() {
@@ -291,15 +297,23 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun showLoading(sectionView: View, loadingView: View) {
         sectionView.visibility = View.INVISIBLE
-        //loadingView.tvLoading.visibility = View.GONE
+        loadingView.tvLoading.visibility = View.GONE
         loadingView.pbLoading.visibility = View.VISIBLE
         loadingView.visibility = View.VISIBLE
     }
 
 
     private fun hideLoading(sectionView: View, loadingView: View, msg: String?) {
-        loadingView.visibility = View.GONE
-        sectionView.visibility = View.VISIBLE
+        if(msg != null) {
+            loadingView.visibility = View.GONE
+            sectionView.visibility = View.VISIBLE
+        }else{
+            loadingView.pbLoading.visibility = View.GONE
+            loadingView.tvLoading.text = msg
+            loadingView.tvLoading.visibility = View.VISIBLE
+            loadingView.visibility = View.VISIBLE
+            sectionView.visibility = View.INVISIBLE
+        }
     }
 
     private fun setServices(service: Servicio) {
@@ -308,34 +322,39 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         var idIcon = R.drawable.ic_court
 
         when (service.nombre.toLowerCase()) {
-            "wifi" -> {
+            Constants.wifi -> {
                 imageView = ibtnWiFi
                 idIcon = R.drawable.ic_wifi
             }
 
-            "bar" -> {
+            Constants.bar -> {
                 imageView = ibtnBar
                 idIcon = R.drawable.ic_bar
             }
 
-            "estacionamiento" -> {
+            Constants.parqueadero -> {
                 imageView = ibtnEstacionamiento
                 idIcon = R.drawable.ic_parked_car
             }
 
-            "ducha" -> {
+            Constants.duchas -> {
                 imageView = ibtnDuchas
                 idIcon = R.drawable.ic_shower
             }
 
-            "casillero" -> {
+            Constants.casilleros -> {
                 imageView = ibtnCasilleros
                 idIcon = R.drawable.ic_lockers
+            }
+
+            Constants.otros -> {
+                imageView = ibtnOthers
+                idIcon = R.drawable.ic_more
             }
         }
 
         imageView.visibility = View.VISIBLE
-        imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
+        //imageView.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), android.graphics.PorterDuff.Mode.SRC_IN)
         setDataFragmentServices(service.nombre, service.descripcion, idIcon, imageView)
     }
 
@@ -351,28 +370,28 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         var imageView = ImageView(this)
 
         when (networkSocial.nombre.toLowerCase()) {
-            "telefono" -> {
+            Constants.telefono -> {
                 imageView = ibtnPhone
                 imageView.setOnClickListener {
                     callPhone()
                 }
             }
 
-            "facebook" -> {
+            Constants.facebook -> {
                 imageView = ibtnFacebook
                 imageView.setOnClickListener {
                     openFacebook(networkSocial.url)
                 }
             }
 
-            "instagram" -> {
+            Constants.instagram -> {
                 imageView = ibtnInstagram
                 imageView.setOnClickListener {
                     openInstagram(networkSocial.url)
                 }
             }
 
-            "whatsapp" -> {
+            Constants.whatsapp -> {
                 imageView = ibtnWhatsapp
                 imageView.setOnClickListener {
                     openWhatsApp(networkSocial.url)
@@ -444,7 +463,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("REINTENTAR") {
             callSections()
         }
-        //tvStateEnterprise.setText()
     }
 
     private fun setupBtnReservation() {
@@ -478,6 +496,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         ibtnEstacionamiento.visibility = View.GONE
         ibtnDuchas.visibility = View.GONE
         ibtnCasilleros.visibility = View.GONE
+        ibtnOthers.visibility = View.GONE
 
         ibtnPhone.visibility = View.GONE
         ibtnWhatsapp.visibility = View.GONE

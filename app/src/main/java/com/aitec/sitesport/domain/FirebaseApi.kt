@@ -28,11 +28,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val TAG = "FirebaseApi"
         const val PATH_USER = "usuario"
         const val STORAGE_USER_PHOTO_PATH = "usuario_photos"
-
         const val PATH_SPORT_CENTER = "centro_deportivo"
-
         const val PATH_TABLE_TIME = "horario"
-
         const val PATH_LIKE = "me_gusta"
         const val PATH_COURT = "cancha"
         const val PATH_SOCIAL_NETWORK = "red_social"
@@ -255,11 +252,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_TABLE_TIME)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
-                    val dayList = ArrayList<Dia>()
+                    val dayList: ArrayList<Dia> = arrayListOf()
+
                     it.forEach {
                         val d = it.toObject(Dia::class.java)
                         d.pk = it.id
-                        //dayList.add(d.indice, d)
                         dayList.add(d)
                         Log.d(TAG, "Success => Horario = " + it.toObject(Dia::class.java).nombre)
                     }
@@ -302,6 +299,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun getServices(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_SERVICIE)
+                .whereEqualTo("activado", true)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val serviceList = ArrayList<Servicio>()
@@ -309,7 +307,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         serviceList.add(it.toObject(Servicio::class.java))
                         Log.d(TAG, "Success => Servicios = " + it.toObject(Servicio::class.java).nombre)
                         Log.d(TAG, "Success => Servicios = " + it.toObject(Servicio::class.java))
-
                     }
                     val enterprise = Enterprise()
                     enterprise.servicios = serviceList
@@ -327,6 +324,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun getContacts(idEnterprise: String, callback: onApiActionListener<Enterprise>) {
         db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_SOCIAL_NETWORK)
+                .whereEqualTo("activado", true)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
                     val redSocialList = ArrayList<RedSocial>()

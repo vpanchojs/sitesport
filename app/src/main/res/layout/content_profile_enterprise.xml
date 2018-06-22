@@ -307,7 +307,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clServices" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollVServices" />
 
             <View
                 android:id="@+id/textView11"
@@ -361,7 +361,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clContacts" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollVContacts" />
 
             <View
                 android:id="@+id/textView18"
@@ -465,88 +465,6 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/clServices"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12">
-
-                <ImageView
-                    android:id="@+id/ibtnBar"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnWiFi"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/ic_bar" />
-
-                <ImageView
-                    android:id="@+id/ibtnWiFi"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnEstacionamiento"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnBar"
-                    app:srcCompat="@drawable/ic_wifi" />
-
-                <ImageView
-                    android:id="@+id/ibtnEstacionamiento"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnDuchas"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnWiFi"
-                    app:srcCompat="@drawable/ic_parked_car" />
-
-                <ImageView
-                    android:id="@+id/ibtnDuchas"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnCasilleros"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnEstacionamiento"
-                    app:srcCompat="@drawable/ic_shower" />
-
-                <ImageView
-                    android:id="@+id/ibtnCasilleros"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnDuchas"
-                    app:srcCompat="@drawable/ic_lockers" />
-
-
-            </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/clTableTime"
@@ -627,77 +545,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/clContacts"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_btn_profile"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11">
-
-                <ImageView
-                    android:id="@+id/ibtnPhone"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnWhatsapp"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/clContacts"
-                    app:srcCompat="@drawable/ic_phone" />
-
-                <ImageView
-                    android:id="@+id/ibtnWhatsapp"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnFacebook"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnPhone"
-                    app:layout_constraintTop_toTopOf="@+id/clContacts"
-                    app:srcCompat="@drawable/ic_whastapp" />
-
-                <ImageView
-                    android:id="@+id/ibtnFacebook"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
-                    app:layout_constraintEnd_toStartOf="@+id/ibtnInstagram"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnWhatsapp"
-                    app:layout_constraintTop_toTopOf="@+id/clContacts"
-                    app:srcCompat="@drawable/ic_facebook" />
-
-                <ImageView
-                    android:id="@+id/ibtnInstagram"
-                    android:layout_width="@dimen/size_btn_profile"
-                    android:layout_height="@dimen/size_btn_profile"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/bg_profile_no_buttons"
-                    android:padding="@dimen/dimen_padding_btn_profile"
-                    android:tint="@color/colorAccent"
-                    app:layout_constraintBottom_toBottomOf="@+id/clContacts"
-                    app:layout_constraintStart_toEndOf="@+id/ibtnFacebook"
-                    app:layout_constraintTop_toTopOf="@+id/clContacts"
-                    app:srcCompat="@drawable/ic_instagram" />
-
-            </android.support.constraint.ConstraintLayout>
-
             <include
                 android:id="@+id/loadingContacts"
                 layout="@layout/layout_loading"
@@ -711,6 +558,194 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <HorizontalScrollView
+                android:id="@+id/scrollVContacts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/clContacts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/ibtnPhone"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnWhatsapp"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/clContacts"
+                        app:srcCompat="@drawable/ic_phone" />
+
+                    <ImageView
+                        android:id="@+id/ibtnWhatsapp"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnFacebook"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnPhone"
+                        app:layout_constraintTop_toTopOf="@+id/clContacts"
+                        app:srcCompat="@drawable/ic_whastapp" />
+
+                    <ImageView
+                        android:id="@+id/ibtnFacebook"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnInstagram"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnWhatsapp"
+                        app:layout_constraintTop_toTopOf="@+id/clContacts"
+                        app:srcCompat="@drawable/ic_facebook" />
+
+                    <ImageView
+                        android:id="@+id/ibtnInstagram"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="@+id/clContacts"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnFacebook"
+                        app:layout_constraintTop_toTopOf="@+id/clContacts"
+                        app:srcCompat="@drawable/ic_instagram" />
+
+                </android.support.constraint.ConstraintLayout>
+
+
+
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/scrollVServices"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/clServices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_btn_profile"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/ibtnBar"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnWiFi"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/ic_bar" />
+
+                    <ImageView
+                        android:id="@+id/ibtnWiFi"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnEstacionamiento"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnBar"
+                        app:srcCompat="@drawable/ic_wifi" />
+
+                    <ImageView
+                        android:id="@+id/ibtnEstacionamiento"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnDuchas"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnWiFi"
+                        app:srcCompat="@drawable/ic_parked_car" />
+
+                    <ImageView
+                        android:id="@+id/ibtnDuchas"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toStartOf="@+id/ibtnCasilleros"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnEstacionamiento"
+                        app:srcCompat="@drawable/ic_shower" />
+
+                    <ImageView
+                        android:id="@+id/ibtnCasilleros"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnDuchas"
+                        app:srcCompat="@drawable/ic_lockers" />
+
+                    <ImageView
+                        android:id="@+id/ibtnOthers"
+                        android:layout_width="@dimen/size_btn_profile"
+                        android:layout_height="@dimen/size_btn_profile"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/bg_profile_no_buttons"
+                        android:padding="@dimen/dimen_padding_btn_profile"
+                        android:tint="@color/colorAccent"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ibtnCasilleros"
+                        app:srcCompat="@drawable/ic_more" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </HorizontalScrollView>
 
         </android.support.constraint.ConstraintLayout>
 
