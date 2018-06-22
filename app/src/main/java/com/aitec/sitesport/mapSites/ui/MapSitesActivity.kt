@@ -568,7 +568,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     override fun setResultsSearchs(entrepriseList: List<Enterprise>) {
-        Log.e(TAG, "id" + entrepriseList.get(0).pk)
+        Log.e(TAG, "pk" + entrepriseList.get(0).pk)
         entrepiseResultsSearchVisible.clear()
         mMap.clear()
         entrepiseResultsSearchVisible.addAll(entrepriseList)

@@ -19,7 +19,7 @@ class DefaultServicesFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = arguments!!.getString("title")
+        title = arguments!!.getString("titulo")
         info = arguments!!.getString("info")
         idIcon = arguments!!.getInt("idIcon")
     }
@@ -49,7 +49,7 @@ class DefaultServicesFragment : DialogFragment() {
     companion object {
         fun newInstance(title: String, info: String, idIcon: Int): DefaultServicesFragment {
             val bundle = Bundle()
-            bundle.putString("title", title)
+            bundle.putString("titulo", title)
             bundle.putString("info", info)
             bundle.putInt("idIcon", idIcon)
             val fragment = DefaultServicesFragment()

@@ -33,7 +33,7 @@ import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import com.aitec.sitesport.publication.PublicationActivity
-import com.aitec.sitesport.record.RecordFragment
+import com.aitec.sitesport.reservationHistory.ReservationHistoryFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.welcome.WelcomeActivity
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
             R.id.navigation_my_reserve -> {
                 btn_map.visibility = View.INVISIBLE
                 toolbar.title = "Mis Reservas"
-                fragment = RecordFragment.newInstance()
+                fragment = ReservationHistoryFragment.newInstance()
 
             }
 
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                                         Intent(this, ProfileActivity::class.java)
                                                 .putExtra(
                                                         ProfileActivity.ENTERPRISE,
-                                                        it.link.getQueryParameter("id")
+                                                        it.link.getQueryParameter("pk")
                                                 )
                                 )
                             }
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                                         Intent(this, PublicationActivity::class.java)
                                                 .putExtra(
                                                         PublicationActivity.PUBLICATION,
-                                                        it.link.getQueryParameter("id")
+                                                        it.link.getQueryParameter("pk")
                                                 )
                                 )
                             }

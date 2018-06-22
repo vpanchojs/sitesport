@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".record.RecordFragment">
+    tools:context=".reservationHistory.ReservationHistoryFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             app:srcCompat="@drawable/ic_balon_futbol" />
 
         <!--<android.support.v7.widget.RecyclerView
-            android:id="@+id/rvRecordReservation"
+            android:pk="@+pk/rvRecordReservation"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

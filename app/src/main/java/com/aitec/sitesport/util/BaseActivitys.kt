@@ -114,7 +114,7 @@ class BaseActivitys() {
         fun buildDinamycLinkShareApp(pk: String?, type: Int?, callbacks: onApiActionListener<String>) {
             var link = "https://sitesport.aitecec.com"
             if (pk != null && type != null) {
-                link = "https://sitesport.aitecec.com?id=$pk&type=$type"
+                link = "https://sitesport.aitecec.com?pk=$pk&type=$type"
             }
 
             FirebaseDynamicLinks.getInstance().createDynamicLink()

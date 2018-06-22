@@ -13,6 +13,6 @@
         android:fitsSystemWindows="true"
         android:scaleType="centerCrop"
         app:layout_collapseMode="parallax"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/ic_bg_balon" />
 
 </FrameLayout>

@@ -4,10 +4,10 @@
     tools:context="com.yavac.chanchs.ScrollingActivity">
 
     <!--<item
-        android:id="@+id/action_like"
+        android:pk="@+pk/action_like"
         android:orderInCategory="100"
         android:icon="@drawable/ic_fire_off"
-        android:title="@string/action_settings"
+        android:titulo="@string/action_settings"
         app:showAsAction="ifRoom" />-->
 
     <item

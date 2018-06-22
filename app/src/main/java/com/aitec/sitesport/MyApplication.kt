@@ -30,6 +30,10 @@ import com.aitec.sitesport.profileUser.di.DaggerProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserModule
 import com.aitec.sitesport.profileUser.ui.ProfileUserView
+import com.aitec.sitesport.reservationHistory.di.DaggerReservationHistoryComponent
+import com.aitec.sitesport.reservationHistory.di.ReservationHistoryComponent
+import com.aitec.sitesport.reservationHistory.di.ReservationHistoryModule
+import com.aitec.sitesport.reservationHistory.ui.ReservationHistoryView
 import com.aitec.sitesport.reserve.di.DaggerReserveComponent
 import com.aitec.sitesport.reserve.di.ReserveComponent
 import com.aitec.sitesport.reserve.di.ReserveModule
@@ -137,6 +141,17 @@ class MyApplication : MultiDexApplication() {
                 .homeModule(HomeModule(view))
                 .build()
     }
+
+    fun getReservationHistoryComponent(view: ReservationHistoryView): ReservationHistoryComponent {
+        return DaggerReservationHistoryComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .reservationHistoryModule(ReservationHistoryModule(view))
+                .build()
+    }
+
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.aitec.sitesport.record
+package com.aitec.sitesport.reservationHistory
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,15 +6,37 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
+import com.aitec.sitesport.reservationHistory.ui.ReservationHistoryView
 import kotlinx.android.synthetic.main.fragment_record.*
+import javax.inject.Inject
 
 
-class RecordFragment : Fragment() {
-
+class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
+    @Inject
+    lateinit var presenter: ReservationHistoryPresenter
     var reservationsList: MutableList<Reservation> = mutableListOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupInjection()
+        presenter.register()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.unregister()
+    }
+
+    private fun setupInjection() {
+        val app: MyApplication = activity!!.application as MyApplication
+        val reservationHistoryComponent = app.getReservationHistoryComponent(this)
+        reservationHistoryComponent.inject(this)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -71,7 +93,7 @@ class RecordFragment : Fragment() {
             }
         }
 
-        val adapter = AdapterRecord(orderReservationsToView)
+        val adapter = AdapterReservationHistory(orderReservationsToView)
         view.rvRecordReservation.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
         view.rvRecordReservation.adapter = adapter
 
@@ -87,8 +109,8 @@ class RecordFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): RecordFragment {
-            val fragment = RecordFragment()
+        fun newInstance(): ReservationHistoryFragment {
+            val fragment = ReservationHistoryFragment()
             val args = Bundle()
             fragment.arguments = args
             return fragment

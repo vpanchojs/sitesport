@@ -60,8 +60,8 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     /*
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
 
-        when (p0!!.id) {
-            R.id.cb_distance -> {
+        when (p0!!.pk) {
+            R.pk.cb_distance -> {
                 if (p1) {
                     callback!!.getMyLocation()
                     showProgresBar(true)
@@ -70,10 +70,10 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
                     presenter.addFilterLocation("", false)
                 }
             }
-            R.id.cb_open -> {
+            R.pk.cb_open -> {
                 presenter.addFilterOpen(p1)
             }
-            R.id.cb_score -> {
+            R.pk.cb_score -> {
                 presenter.addFilterScore(p1)
             }
         }

@@ -1,0 +1,4 @@
+package com.aitec.sitesport.reservationHistory
+
+class ReservationHistoryInteractorImpl(reservationHistoryRepository: ReservationHistoryRepository) :  ReservationHistoryInteractor{
+}

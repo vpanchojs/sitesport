@@ -1,4 +1,4 @@
-package com.aitec.sitesport.record
+package com.aitec.sitesport.reservationHistory
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.aitec.sitesport.entities.Reservation
 import kotlinx.android.synthetic.main.item_rv_record_reservation.view.*
 import kotlinx.android.synthetic.main.item_rv_record_reservation_head.view.*
 
-class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterReservationHistory(var reservationsList: List<Reservation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -33,7 +33,7 @@ class AdapterRecord(var reservationsList: List<Reservation>) : RecyclerView.Adap
         }
 
         //val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_record_reservation, parent, false);
-        //return AdapterRecord.ViewHolder(view)
+        //return AdapterReservationHistory.ViewHolder(view)
     }
 
     override fun getItemCount(): Int {

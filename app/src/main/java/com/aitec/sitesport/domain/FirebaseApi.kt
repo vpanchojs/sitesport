@@ -517,17 +517,17 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 when (it.getType()) {
                     DocumentChange.Type.ADDED -> {
                         var pu = it.document.toObject(Publications::class.java)
-                        pu.id = it.document.id
+                        pu.pk = it.document.id
                         callback.addDocument(pu)
                     }
                     DocumentChange.Type.MODIFIED -> {
                         var pu = it.document.toObject(Publications::class.java)
-                        pu.id = it.document.id
+                        pu.pk = it.document.id
                         callback.updateDocument(pu)
                     }
                     DocumentChange.Type.REMOVED -> {
                         var pu = it.document.toObject(Publications::class.java)
-                        pu.id = it.document.id
+                        pu.pk = it.document.id
                         callback.removeDocument(pu)
                     }
                 }

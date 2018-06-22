@@ -27,7 +27,7 @@ class PublicationActivity : AppCompatActivity() {
     private fun setupToolBar() {
         setSupportActionBar(toolbarPublication)
         if (supportActionBar != null) {
-            //supportActionBar!!.title = ""
+            //supportActionBar!!.titulo = ""
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }

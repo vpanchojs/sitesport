@@ -1,4 +1,4 @@
-package com.aitec.sitesport.record
+package com.aitec.sitesport.reservationHistory
 
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -20,7 +20,7 @@ class ItemDecorator(private val dividerView: Drawable) : RecyclerView.ItemDecora
         val dividerRight = parent.width - parent.paddingRight
 
         /*for (i in 0 until childCount - 1) {
-            val reservation = (parent.adapter as AdapterRecord).getItem(i)
+            val reservation = (parent.adapter as AdapterReservationHistory).getItem(i)
 
         }*/
 

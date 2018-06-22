@@ -27,12 +27,12 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     private val TAG = "HomeFragment"
     override fun updatePublicacion(publications: Publications) {
-        val pu = findpublicacion(publications.id!!)
+        val pu = findpublicacion(publications.pk!!)
         if (pu != null) {
-            pu.title = publications.title
+            pu.titulo = publications.titulo
             pu.fecha = publications.fecha
-            pu.imageIcon = publications.imageIcon
-            pu.description = publications.description
+            pu.icon = publications.icon
+            pu.descripcion = publications.descripcion
 
             adapterOptions!!.notifyDataSetChanged()
         }
@@ -45,7 +45,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     fun findpublicacion(id: String): Publications? {
         return data.find { p ->
-            id.equals(p.id)
+            id.equals(p.pk)
         }
     }
 
@@ -123,24 +123,24 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         /*this.publications = publications
 
         GlideApp.with(context!!)
-                .load(publications.photo)
+                .load(publications.foto)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)
                 .into(civ_center)
 
 
-        txttitle.text = publications.title
+        txttitle.text = publications.titulo
         txtfecha.text=publications.fecha
 
         GlideApp.with(context!!)
-                .load(publications.imageIcon)
+                .load(publications.icon)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
                 .error(R.mipmap.ic_launcher)
                 .into(img_imagen)
 
-        txtdescription.text = publications.description*/
+        txtdescription.text = publications.descripcion*/
 
     }
 
@@ -181,7 +181,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     override fun navigatioProfile(position: Int) {
         val i = Intent(activity!!, PublicationActivity::class.java)
-        i.putExtra(PublicationActivity.PUBLICATION, data[position].id)
+        i.putExtra(PublicationActivity.PUBLICATION, data[position].pk)
         startActivity(i)
     }
 

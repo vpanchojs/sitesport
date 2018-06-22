@@ -31,27 +31,27 @@ class HomeAdapter(var data: ArrayList<Publications>?, var callback: onHomeAdapte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         GlideApp.with(context)
-                .load(data!!.get(position).photo)
+                .load(data!!.get(position).foto)
                 .placeholder(R.drawable.ic_sites)
                 .centerCrop()
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(holder.view.img_imagen)
 
-        holder.view.txttitle.text = data!!.get(position).title
+        holder.view.txttitle.text = data!!.get(position).titulo
         holder.view.txtfecha.text = data!!.get(position).fecha
 
         GlideApp.with(context)
-                .load(data!!.get(position).imageIcon)
+                .load(data!!.get(position).icon)
                 .placeholder(R.drawable.ic_sites)
                 .centerCrop()
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(holder.view.civ_center)
 
-        holder.view.txtdescription.text = data!!.get(position).description
+        holder.view.txtdescription.text = data!!.get(position).descripcion
         holder.onNavigationProfile(position, callback)
 
         holder.view.btn_home_share.setOnClickListener {
-            callback.sharePublication(data!!.get(position).id!!)
+            callback.sharePublication(data!!.get(position).pk!!)
         }
     }
 
