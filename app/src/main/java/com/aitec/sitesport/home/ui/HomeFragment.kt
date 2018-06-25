@@ -69,8 +69,6 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         super.onCreate(savedInstanceState)
         setupInjection()
         presenter.Suscribe()
-
-
     }
 
     override fun onDestroyView() {
