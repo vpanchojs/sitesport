@@ -8,4 +8,5 @@ interface MapSitesRepository {
     fun stopSearchName()
     fun onGetCenterSportVisible(latSouth: Double, latNorth: Double, lonWest: Double, lonEast: Double, latMe: Double, lngMe: Double)
     fun stopSearchVisibility()
+    fun onGetAllCenterSport()
 }

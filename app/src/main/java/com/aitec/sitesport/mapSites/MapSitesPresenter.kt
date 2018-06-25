@@ -21,5 +21,6 @@ interface MapSitesPresenter {
 
     fun onEventmapSitesThread(event: MapSitesEvents)
 
+    fun onGetAllCenterSport()
 
 }

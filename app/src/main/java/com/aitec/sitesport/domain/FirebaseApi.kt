@@ -39,6 +39,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         const val PATH_PUBLICATIONS = "publicacion"
         const val PATH_SEARCH_CENTER_SPORT_BY_NAME = "buscar_centro_deportivo_por_nombre"
         const val PATH_FILTER_OPEN_CENTER_SPORT = "filtro_abierto_centro_deportivo"
+        const val PATH_FILTER_DISTANCE_CENTER_SPORT = "filtro_cercanos_centro_deportivo"
 
     }
 
@@ -468,7 +469,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }
     }
 
-    fun getAllSites(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
+    fun getAllSites(callback: onApiActionListener<List<Enterprise>>) {
         db.collection(PATH_SPORT_CENTER).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
@@ -483,28 +484,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnFailureListener {
                     callback.onError(it.message)
                 }
-
-        /*
-        val gson = Gson()
-        parametros.put("query", "ti")
-        Log.e(TAG, "llegue")
-        */
-        //db.collection(CENTER_SPORT_PATH).orderBy("numero_likes", Query.Direction.DESCENDING)
-        /*
-        fuctions.getHttpsCallable("helloWorld")
-                .call(parametros)
-                .addOnSuccessListener {
-                    val query = it.data as ArrayList<HashMap<String, Any>>
-                    query.forEach { item ->
-                        var entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
-                        Log.e(TAG, "error ${entrepise.nombre}")
-                    }
-
-                }
-                .addOnFailureListener {
-                    Log.e(TAG, "error $it")
-                }
-                */
     }
 
     fun getHome(callback: RealTimeListener<Publications>) {
@@ -641,14 +620,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getSitesLocation(parametros: Map<String, Any>, callback: onApiActionListener<List<Enterprise>>) {
-        fuctions.getHttpsCallable("FiltrosCentrosDeportivos")
+        fuctions.getHttpsCallable(PATH_FILTER_DISTANCE_CENTER_SPORT)
                 .call(parametros)
                 .addOnSuccessListener {
-                    //val searchCentersName = SearchCentersName()
 
                     Log.e(TAG, "data " + it.data.toString())
 
-                    /*
                     val listSportCenter = ArrayList<Enterprise>()
 
 
@@ -658,13 +635,17 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         listSportCenter.add(entrepise)
                         Log.e(TAG, "error ${entrepise.nombre}")
                     }
-                   // searchCentersName.results = listSportCenter
-                   // callback.onSucces(searchCentersName)
-                   */
+
+                    listSportCenter.sortBy {
+                        it.distancia
+                    }
+                    callback.onSucces(listSportCenter)
+
 
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "data error " + it.toString())
+                    callback.onError(it.message)
 
                 }
 
@@ -686,27 +667,23 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         fuctions.getHttpsCallable(PATH_FILTER_OPEN_CENTER_SPORT)
                 .call(parametros)
                 .addOnSuccessListener {
-                    val searchCentersName = SearchCentersName()
                     val listSportCenter = ArrayList<Enterprise>()
 
                     Log.e("open", it.data.toString())
 
-                    /*
                     var data = it.data as ArrayList<HashMap<String, Any>>
                     data.forEach { item ->
                         val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
                         listSportCenter.add(entrepise)
-                        Log.e(TAG, "error ${entrepise.nombre}")
+                        Log.e(TAG, "nombre ${entrepise.nombre}")
                     }
-                    searchCentersName.results = listSportCenter
-                    */
 
-                    //callback.onSucces(searchCentersName)
+                    callback.onSucces(listSportCenter)
 
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "error $it")
-                    //callback.onError(it.message)
+                    callback.onError(it.message)
                 }
     }
 

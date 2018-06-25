@@ -3,6 +3,7 @@ package com.aitec.sitesport.mapSites
 import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.SearchCentersName
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.mapSites.events.MapSitesEvents
 
@@ -52,4 +53,17 @@ class MapSitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fi
         var event = MapSitesEvents(type, any)
         eventBus.post(event)
     }
+
+    override fun onGetAllCenterSport() {
+        firebaseApi.getAllSites(object : onApiActionListener<List<Enterprise>> {
+            override fun onSucces(response: List<Enterprise>) {
+                postEvent(MapSitesEvents.ON_RESULTS_SEARCHS_SUCCESS, response)
+            }
+
+            override fun onError(error: Any?) {
+                postEvent(MapSitesEvents.ON_RESULTS_SEARCHS_ERROR, error!!)
+            }
+        })
+    }
+
 }

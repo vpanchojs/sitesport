@@ -27,4 +27,8 @@ class MapSitesInteractorImp(var repository: MapSitesRepository) : MapSitesIntera
     override fun stopSearchVisibility() {
         repository.stopSearchVisibility()
     }
+
+    override fun onGetAllCenterSport() {
+        repository.onGetAllCenterSport()
+    }
 }

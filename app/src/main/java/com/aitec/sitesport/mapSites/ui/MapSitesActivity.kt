@@ -56,6 +56,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
         mMap.setOnCameraIdleListener(this)
         mMap.setOnMarkerClickListener(this)
+
+        presenter.onGetAllCenterSport()
     }
 
     private val TAG = MapSitesActivity::class.java.simpleName
@@ -78,7 +80,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
     var entrepiseResultsSearchName = ArrayList<Enterprise>()
 
-    lateinit var entrepiseSelect: Enterprise
+    var entrepiseSelect: Enterprise? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -111,7 +113,6 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         setupReciclerView()
         setupReciclerView()
         setupEvents()
-
     }
 
 
@@ -166,7 +167,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         sv_search.setOnQueryTextListener(this)
         sv_search.setOnQueryTextFocusChangeListener(this)
         cl_header_bs.setOnClickListener(this)
-        btn_profile_entrepise.setOnClickListener(this)
+        iv_icon_open.setOnClickListener(this)
+
+        //btn_profile_entrepise.setOnClickListener(this)
     }
 
     fun setupMap(savedInstanceState: Bundle?) {
@@ -208,7 +211,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     private fun createLocationCallback() {
+
         locationCallback = object : LocationCallback() {
+
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
@@ -218,10 +223,38 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                         animateCamera(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude), 16.0)
                         showProgresBarResultsMapVisible(false)
                         stopLocationUpdates()
+                        //Calcular la distancia
+                        calculateDistanceToCenterSport(mCurrentLocation);
                     }
                 }
             }
         }
+    }
+
+    private fun calculateDistanceToCenterSport(mCurrentLocation: Location?) {
+        entrepiseResultsSearchVisible.forEach {
+            it.distancia = getDistanceToPoints(it.direccion!!.latitud, it.direccion!!.longitud, mCurrentLocation!!.latitude, mCurrentLocation.longitude).toFloat()
+        }
+        entrepiseResultsSearchVisible.sortBy {
+            it.distancia
+        }
+        entrepiseAdapter.notifyDataSetChanged()
+    }
+
+    fun getDistanceToPoints(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371 // km
+        val dLat = toRad(lat1 - lat2)
+        val dLon = toRad(lon1 - lon2)
+
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return R * c
+    }
+
+    fun toRad(num: Double): Double {
+        return num * Math.PI / 180
     }
 
     @SuppressLint("RestrictedApi")
@@ -231,31 +264,6 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
             fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
-
-/*
-        val client: SettingsClient = LocationServices.getSettingsClient(this)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-        task.addOnSuccessListener { locationSettingsResponse ->
-            Log.e("aa", locationSettingsResponse.toString())
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-
-                    exception.startResolutionForResult(this@mapSitesActivity,
-                            REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
-        */
     }
 
     @SuppressLint("MissingPermission")
@@ -401,13 +409,16 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
             R.id.btn_distance -> {
 
             }
-            R.id.btn_profile_entrepise -> {
-                navigatioProfile(entrepiseSelect)
+
+            R.id.cl_header_bs -> {
+                if (entrepiseSelect != null) {
+                    navigatioProfile(entrepiseSelect!!)
+                }
             }
             R.id.btn_my_location -> {
                 permission()
             }
-            R.id.cl_header_bs -> {
+            R.id.iv_icon_open -> {
                 when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -451,7 +462,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     override fun navigatioProfile(entrepise: Enterprise) {
-        startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise))
+        startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise.pk))
     }
 
 
@@ -482,15 +493,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
-    /*
-    override fun onCameraIdle() {
-        presenter.stopSearchVisibility()
-        var bounds = mapboxMap.projection.visibleRegion.latLngBounds
-        Log.e("coordenadas", "lat" + bounds.center.latitude + "lng" + bounds.center.longitude)
-        presenter.onGetCenterSportVisible(bounds.latSouth, bounds.latNorth, bounds.lonWest, bounds.lonEast, bounds.center.latitude, bounds.center.longitude)
 
-    }
-    */
     override fun onCameraIdle() {
         presenter.stopSearchVisibility()
         var bounds = mMap.projection.visibleRegion.latLngBounds
@@ -498,14 +501,16 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         Log.e("coordenadas", "bounds" + bounds.toString())
         Log.e("coordenadas", "visible" + visible.toString())
         Log.e("coordenadas", "center" + bounds.center.toString())
+        //mapbox
         // presenter.onGetCenterSportVisible(bounds.southwest.latitude, bounds.northeast.latitude, bounds.southwest.longitude, bounds.southwest.longitude, bounds.center.latitude, bounds.center.longitude)
-        presenter.onGetCenterSportVisible(visible.nearLeft.latitude, visible.farRight.latitude, visible.farLeft.longitude, visible.farRight.longitude, bounds.center.latitude, bounds.center.longitude)
+        //gmaps
+        // presenter.onGetCenterSportVisible(visible.nearLeft.latitude, visible.farRight.latitude, visible.farLeft.longitude, visible.farRight.longitude, bounds.center.latitude, bounds.center.longitude)
     }
 
 
     override fun onMarkerClick(marker: Marker): Boolean {
         if (markerSelect != null) {
-            if (entrepiseSelect.abierto) {
+            if (entrepiseSelect!!.abierto) {
                 markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open))
             } else {
                 markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close))
@@ -513,8 +518,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         }
 
         val df = DecimalFormat("0.00")
-        btn_profile_entrepise.visibility = VISIBLE
-        //animateMarker(marker, mapboxMap.cameraPosition.target)
+        //  btn_profile_entrepise.visibility = VISIBLE
 
         entrepiseResultsSearchVisible.forEach {
             if (it.idMarker == marker.id) {
@@ -526,8 +530,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 } else {
                     markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
                 }
-                tv_title_bs.setText("A ${df.format(it.distancia)} Km")
-                tv_subtitle_price_total.setText(it.nombre)
+                //tv_subtitle_price_total.setText("A ${df.format(it.distancia)} Km")
+                tv_title_bs.setText(it.nombre)
+                tv_subtitle_price_total.setText(it.direccion!!.calles)
             }
         }
 
@@ -602,7 +607,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     override fun hideButtonProfileEntrepise() {
-        btn_profile_entrepise.visibility = GONE
+        //btn_profile_entrepise.visibility = GONE
     }
 
 

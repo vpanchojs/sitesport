@@ -29,6 +29,7 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
         val entrepise = data.get(position)
         holder.view.tv_name_entrepise.text = entrepise.nombre
         holder.view.tv_distance.text = df.format(entrepise.distancia) + " Km"
+        holder.view.tv_address.text = entrepise.direccion!!.calles
         holder.addMarker(entrepise, callback)
         holder.onNavigationProfile(entrepise, callback)
     }

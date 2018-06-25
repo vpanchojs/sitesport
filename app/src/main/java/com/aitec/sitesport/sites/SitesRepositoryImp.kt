@@ -9,7 +9,7 @@ import com.aitec.sitesport.sites.event.SitesEvents
 class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: FirebaseApi) : SitesRepository {
 
     override fun onGetSites() {
-        firebaseApi.getAllSites(HashMap(), object : onApiActionListener<List<Enterprise>> {
+        firebaseApi.getAllSites( object : onApiActionListener<List<Enterprise>> {
             override fun onSucces(response: List<Enterprise>) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
             }
@@ -21,7 +21,7 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
     }
 
     override fun onGetSites(parametros: HashMap<String, String>) {
-        firebaseApi.getAllSites(parametros, object : onApiActionListener<List<Enterprise>> {
+        firebaseApi.getAllSites(object : onApiActionListener<List<Enterprise>> {
             override fun onSucces(response: List<Enterprise>) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
             }
@@ -65,11 +65,11 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
     override fun onGetSitesLocation(parametros: Map<String, Any>) {
         firebaseApi.getSitesLocation(parametros, object : onApiActionListener<List<Enterprise>> {
             override fun onSucces(response: List<Enterprise>) {
-
+                postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
             }
 
             override fun onError(error: Any?) {
-
+                postEvent(SitesEvents.ON_GET_SITES_ERROR, error!!)
             }
         })
     }

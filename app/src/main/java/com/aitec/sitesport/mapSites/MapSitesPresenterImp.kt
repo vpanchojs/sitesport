@@ -44,6 +44,10 @@ class MapSitesPresenterImp(var eventBus: EventBusInterface, var view: MapSitesVi
         interactor.stopSearchVisibility()
     }
 
+    override fun onGetAllCenterSport() {
+        interactor.onGetAllCenterSport()
+    }
+
     @Subscribe
     override fun onEventmapSitesThread(event: MapSitesEvents) {
         view.showProgresBar(false)

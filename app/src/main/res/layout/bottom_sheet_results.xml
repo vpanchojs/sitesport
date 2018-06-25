@@ -15,19 +15,20 @@
         android:id="@+id/cl_header_bs"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@drawable/bg_header_bs">
+        android:background="@drawable/bg_header_bs"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/tv_title_bs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Bienvenido"
-            android:textColor="@color/white_suave"
-
-            android:textSize="12sp"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/progressbar"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,23 +37,29 @@
             android:id="@+id/tv_subtitle_price_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="3dp"
             android:text="Deslice el mapa para buscar"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white_suave"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_title_bs"
             app:layout_constraintStart_toEndOf="@+id/iv_icon_open"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_bs" />
 
         <ImageView
             android:id="@+id/iv_icon_open"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_price_total"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_bs"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_open_top" />
 
         <ProgressBar
@@ -64,22 +71,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_price_total"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title_bs" />
-
-        <Button
-            android:id="@+id/btn_profile_entrepise"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_buttom_buttom_sheet"
-            android:text="Perfil"
-            android:textColor="@drawable/txt_color_dialog"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
     </android.support.constraint.ConstraintLayout>
 
