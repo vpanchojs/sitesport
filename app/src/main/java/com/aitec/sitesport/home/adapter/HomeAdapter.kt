@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
-import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.item_home.view.*
 
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_home.view.*
  */
 
 
-class HomeAdapter(var data: ArrayList<Publications>?, var callback: onHomeAdapterListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapterListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

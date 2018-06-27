@@ -6,14 +6,13 @@ package com.aitec.sitesport.home
 
 
 class HomeInteractorImp(var repository: HomeRepository) : HomeInteractor {
+
     override fun remove() {
         repository.remove()
     }
 
     override fun getHome() {
-
         repository.getHome()
-
     }
 
 

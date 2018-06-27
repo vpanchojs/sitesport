@@ -8,6 +8,5 @@ interface RealTimeListener<T> {
     fun removeDocument(response: T)
     fun updateDocument(response: T)
     fun omError(error: Any)
-
-
+    fun emptyNode(msg : Any)
 }

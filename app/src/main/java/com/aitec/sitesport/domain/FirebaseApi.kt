@@ -6,7 +6,7 @@ import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.User
@@ -486,30 +486,36 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun getHome(callback: RealTimeListener<Publications>) {
+    fun getHome(callback: RealTimeListener<Publication>) {
         pulistener = db.collection(PATH_PUBLICATIONS).addSnapshotListener { querySnapshot, e ->
             if (e != null) {
-                Log.w(TAG, "listen:error", e)
+                Log.e(TAG, "listen:error", e)
                 callback.omError(e)
             }
-            querySnapshot!!.documentChanges.forEach {
-                when (it.getType()) {
-                    DocumentChange.Type.ADDED -> {
-                        var pu = it.document.toObject(Publications::class.java)
-                        pu.pk = it.document.id
-                        callback.addDocument(pu)
-                    }
-                    DocumentChange.Type.MODIFIED -> {
-                        var pu = it.document.toObject(Publications::class.java)
-                        pu.pk = it.document.id
-                        callback.updateDocument(pu)
-                    }
-                    DocumentChange.Type.REMOVED -> {
-                        var pu = it.document.toObject(Publications::class.java)
-                        pu.pk = it.document.id
-                        callback.removeDocument(pu)
+
+            if(querySnapshot!!.documentChanges.isNotEmpty()){
+
+                querySnapshot.documentChanges.forEach {
+                    when (it.getType()) {
+                        DocumentChange.Type.ADDED -> {
+                            val pu = it.document.toObject(Publication::class.java)
+                            pu.pk = it.document.id
+                            callback.addDocument(pu)
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val pu = it.document.toObject(Publication::class.java)
+                            pu.pk = it.document.id
+                            callback.updateDocument(pu)
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            val pu = it.document.toObject(Publication::class.java)
+                            pu.pk = it.document.id
+                            callback.removeDocument(pu)
+                        }
                     }
                 }
+            }else{
+                callback.emptyNode("No hay publicaciones")
             }
 
         }

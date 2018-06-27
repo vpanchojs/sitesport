@@ -1,22 +1,17 @@
 package com.aitec.sitesport.home.ui
 
-import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.entities.Publication
 
 /**
  * Created by Jhony on 28 may 2018.
  */
 interface HomeView {
 
-
-    fun showMessagge(message: Any)
-    fun setResultsSearchs(listNotices: List<Publications>)
-    fun showProgresBar(show: Boolean)
-    fun clearSearchResults()
-    fun clearListNotices()
-    fun setDataPublications(publications: List<Publications>)
-    fun addPublicacion(publicacion: Publications)
-    fun updatePublicacion(publications: Publications)
-    fun removePublicacion(publications: Publications)
-
+    fun showMessage(message: Any)
+    fun showProgressBar(show: Boolean)
+    fun addPublication(publication: Publication)
+    fun updatePublication(publication: Publication)
+    fun removePublication(publication: Publication)
+    fun showInfo(msg: String?)
 
 }

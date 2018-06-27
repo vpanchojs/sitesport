@@ -28,13 +28,13 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         when (p0!!.checkedRadioButtonId) {
             R.id.cb_distance -> {
                 callback!!.getMyLocation()
-                //showProgresBar(true)
+                //showProgressBar(true)
                 //visibleListSites(View.INVISIBLE)
 
                 /*
                 if (p1) {
                     callback!!.getMyLocation()
-                    showProgresBar(true)
+                    showProgressBar(true)
                     visibleListSites(View.INVISIBLE)
                 } else {
                     presenter.addFilterLocation("", false)
@@ -64,7 +64,7 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
             R.pk.cb_distance -> {
                 if (p1) {
                     callback!!.getMyLocation()
-                    showProgresBar(true)
+                    showProgressBar(true)
                     visibleListSites(View.INVISIBLE)
                 } else {
                     presenter.addFilterLocation("", false)

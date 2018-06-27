@@ -12,7 +12,7 @@ class HomeEvents(var type: Int, var any: Any?) {
         val ON_UPDATE_PUBLISH = 1
         val ON_REMOVE_PUBLISH = 2
         val ON_ERROR_PUBLISH = 3
-
+        val EMPTY = 4
     }
 
 }

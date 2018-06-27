@@ -3,7 +3,7 @@ package com.aitec.sitesport.home
 import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.SharePreferencesApi
 import com.aitec.sitesport.domain.listeners.RealTimeListener
-import com.aitec.sitesport.entities.Publications
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.home.events.HomeEvents
 import com.aitec.sitesport.lib.base.EventBusInterface
 
@@ -15,16 +15,21 @@ import com.aitec.sitesport.lib.base.EventBusInterface
 class HomeRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi: SharePreferencesApi, var firebaseApi: FirebaseApi) : HomeRepository {
 
     override fun getHome() {
-        firebaseApi.getHome(object : RealTimeListener<Publications> {
-            override fun addDocument(response: Publications) {
+        firebaseApi.getHome(object : RealTimeListener<Publication> {
+
+            override fun emptyNode(msg: Any) {
+                postEvent(HomeEvents.EMPTY, msg)
+            }
+
+            override fun addDocument(response: Publication) {
                 postEvent(HomeEvents.ON_ADD_PUBLISH, response)
             }
 
-            override fun removeDocument(response: Publications) {
+            override fun removeDocument(response: Publication) {
                 postEvent(HomeEvents.ON_REMOVE_PUBLISH, response)
             }
 
-            override fun updateDocument(response: Publications) {
+            override fun updateDocument(response: Publication) {
                 postEvent(HomeEvents.ON_UPDATE_PUBLISH, response)
             }
 
@@ -32,7 +37,7 @@ class HomeRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi
                 postEvent(HomeEvents.ON_ERROR_PUBLISH, error)
             }
 
-            /*override fun onSucces(response: Publications) {
+            /*override fun onSucces(response: Publication) {
                 postEvent(HomeEvents.ON_GET_HOME,response)
             }
 
@@ -50,7 +55,7 @@ class HomeRepositoryImp(var eventBus: EventBusInterface, var sharePreferencesApi
     }
 
     private fun postEvent(type: Int, any: Any) {
-        var event = HomeEvents(type, any)
+        val event = HomeEvents(type, any)
         eventBus.post(event)
     }
 }

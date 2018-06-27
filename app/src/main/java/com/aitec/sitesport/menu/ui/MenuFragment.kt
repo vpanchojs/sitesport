@@ -90,7 +90,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         try {
             val account = result.getResult(ApiException::class.java)
             Log.e(TAG, "signInResult:succes idtoken= ${account.givenName}")
-            // showMessagge("Session Correctamente")
+            // showMessage("Session Correctamente")
             presenter.tokenGoogle(account.idToken!!, account.givenName, account.familyName, account.email, account.photoUrl)
         } catch (e: Exception) {
             showMessagge("Error al autenticarse en google")
@@ -220,17 +220,17 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             }
 
             1 -> {
-                //showMessagge("Terminos y Condiciones")
+                //showMessage("Terminos y Condiciones")
                 openBrowser("https://www.google.com")
             }
             2 -> {
-                //showMessagge("Ayuda")
+                //showMessage("Ayuda")
                 openBrowser("https://www.google.com")
             }
             3 -> {
                 val intento1 = Intent(context, Workme::class.java)
                 startActivity(intento1)
-                //showMessagge("Contactenos")
+                //showMessage("Contactenos")
             }
             4 -> {
                 presenter.onSingOut()
@@ -256,10 +256,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
                 val intent = mGoogleSignInClient!!.signInIntent
                 startActivityForResult(intent, SIGN_IN_CODE)
-                //showMessagge("Estamos Trabajando en ello")
+                //showMessage("Estamos Trabajando en ello")
             }
             R.id.btn_sigin_facebook -> {
-                //showMessagge("Estamos Trabajando en ello")
+                //showMessage("Estamos Trabajando en ello")
 
                 LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "correo_electronico"))
 

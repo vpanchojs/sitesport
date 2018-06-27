@@ -16,11 +16,6 @@ class PublicationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_publication)
         setupToolBar()
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         BaseActivitys.showToastMessage(this, intent.getStringExtra(PublicationActivity.PUBLICATION), Toast.LENGTH_SHORT)
     }
 
