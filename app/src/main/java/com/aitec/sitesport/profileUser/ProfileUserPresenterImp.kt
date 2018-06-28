@@ -33,7 +33,7 @@ class ProfileUserPresenterImp(var eventBus: EventBusInterface, var view: Profile
 
     override fun updatePhotoUser(photo: String) {
         interactor.updatePhotoUser(photo)
-        view.showMessagge("Actualizando foto de perfil")
+        view.showMessagge("Subiendo foto de perfil")
     }
 
     @Subscribe

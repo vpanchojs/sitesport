@@ -139,17 +139,17 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             "ERROR_EMAIL_ALREADY_IN_USE" -> {
                 return "El email proporcionado ya se encuentra registrado"
             }
-            "ERROR_USER_DISABLED"->{
-                return  "Usuario desactivado"
+            "ERROR_USER_DISABLED" -> {
+                return "Usuario desactivado"
             }
-            "ERROR_USER_NOT_FOUND"->{
-                return  "Usuario no encontrado"
+            "ERROR_USER_NOT_FOUND" -> {
+                return "Usuario no encontrado"
             }
-            "ERROR_USER_TOKEN_EXPIRED"->{
-                return  "Token del usuario caducado"
+            "ERROR_USER_TOKEN_EXPIRED" -> {
+                return "Token del usuario caducado"
             }
-            "ERROR_INVALID_USER_TOKEN"->{
-                return  "Token del usuario invalido"
+            "ERROR_INVALID_USER_TOKEN" -> {
+                return "Token del usuario invalido"
             }
             else -> {
                 return "Posible problema de conexion, intentelo nuevamente"
@@ -578,46 +578,29 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun updatePhoto(photo: String, callback: onApiActionListener<String>) {
 
         val bmp = BitmapFactory.decodeFile(photo)
-
         val bos = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 20, bos)
-
         val data = bos.toByteArray()
 
 
         storage.child(STORAGE_USER_PHOTO_PATH).child(mAuth.currentUser!!.uid).putBytes(data)
-                .addOnFailureListener {
-                    callback.onError(it.message)
-                }
+                .addOnFailureListener { callback.onError(it.message) }
                 .addOnSuccessListener {
-                    it.storage.downloadUrl
-                            .addOnSuccessListener { uri ->
+                    it.storage.downloadUrl.addOnSuccessListener { uri ->
 
-                                val profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
-                                        .setPhotoUri(uri).build()
+                        db.collection(PATH_USER).document(getUid()).update("foto", uri.toString()).addOnSuccessListener {
 
-                                db.collection(PATH_USER).document(getUid()).update("foto", uri.toString()).addOnSuccessListener {
+                            val profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
+                                    .setPhotoUri(uri).build()
 
-                                    mAuth.currentUser!!.updateProfile(profileUpdate)
-                                            .addOnSuccessListener {
-                                                Log.e(TAG, "Se actualizo la foto")
-                                                //callback.onSucces(uri.toString())
-                                            }
-                                            .addOnFailureListener {
-                                                Log.e(TAG, it.toString())
-                                                //callback.onError(it.message)
-                                            }
-                                    callback.onSucces(uri.toString())
+                            mAuth.currentUser!!.updateProfile(profileUpdate)
+                                    .addOnSuccessListener { Log.e(TAG, "Se actualizo la foto") }
+                                    .addOnFailureListener { Log.e(TAG, it.toString()) }
+                            callback.onSucces(uri.toString())
 
-                                }.addOnFailureListener {
+                        }.addOnFailureListener { callback.onError(it.message) }
 
-                                    callback.onError(it.message)
-                                }
-                            }
-                            .addOnFailureListener {
-
-                                callback.onError(it.message)
-                            }
+                    }.addOnFailureListener { callback.onError(it.message) }
 
                 }
     }

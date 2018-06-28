@@ -55,7 +55,6 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         setupInject()
         setupEventsElements()
         setupValidationInputs()
-        // setDataProfile(intent.extras.getParcelable(USER))
         presenter.onSubscribe()
         presenter.getInfoUser()
     }
@@ -114,7 +113,7 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
                         tie_lastnames.text.toString(),
                         tie_dni.text.toString(),
                         tie_phone.text.toString(),
-                        user.foto.toString()
+                        user.foto
                 )
             }
             R.id.fab_get_photo -> {
@@ -259,8 +258,9 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
                 when (permissions[0]) {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE ->
                         if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                            getPhoto()
                         else
-                            Toast.makeText(this, "Permisos necesarios para funcionamiento mostrar el mapa ", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Permisos necesarios para tomar fotos ", Toast.LENGTH_LONG).show()
                 }
             }
         }
