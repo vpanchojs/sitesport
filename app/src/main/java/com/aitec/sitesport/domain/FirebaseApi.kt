@@ -11,10 +11,7 @@ import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.entities.enterprise.*
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
@@ -78,8 +75,13 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, it.toString())
-                    callback.onError(it.message + "")
+                    if (it is FirebaseAuthException) {
+                        it.errorCode
+                        Log.e(TAG, it.errorCode)
+                        callback.onError(getMessageErrorFirebaseAuth(it.errorCode))
+                    } else {
+                        callback.onError("Posible problema de conexion, intentelo nuevamente")
+                    }
                 }
     }
 
@@ -115,9 +117,44 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
                 }.addOnFailureListener {
-                    Log.e(TAG, it.toString())
-                    callback.onError(it.message + "")
+                    if (it is FirebaseAuthException) {
+                        it.errorCode
+                        Log.e(TAG, it.errorCode)
+                        callback.onError(getMessageErrorFirebaseAuth(it.errorCode))
+                    } else {
+                        callback.onError("Posible problema de conexion, intentelo nuevamente")
+                    }
+
                 }
+    }
+
+    private fun getMessageErrorFirebaseAuth(errorCode: String): String {
+        when (errorCode) {
+            "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> {
+                return "Ya existe una cuenta con sus credenciales"
+            }
+            "ERROR_CREDENTIAL_ALREADY_IN_USE" -> {
+                return "Las credenciales proporcionados ya estan registradas"
+            }
+            "ERROR_EMAIL_ALREADY_IN_USE" -> {
+                return "El email proporcionado ya se encuentra registrado"
+            }
+            "ERROR_USER_DISABLED"->{
+                return  "Usuario desactivado"
+            }
+            "ERROR_USER_NOT_FOUND"->{
+                return  "Usuario no encontrado"
+            }
+            "ERROR_USER_TOKEN_EXPIRED"->{
+                return  "Token del usuario caducado"
+            }
+            "ERROR_INVALID_USER_TOKEN"->{
+                return  "Token del usuario invalido"
+            }
+            else -> {
+                return "Posible problema de conexion, intentelo nuevamente"
+            }
+        }
     }
 
 
@@ -469,7 +506,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }
     }
 
-    fun getAllSites(callback: onApiActionListener<List<Enterprise>>) {
+    fun getAllSites(callback: onApiActionListener<Pair<List<Enterprise>, Boolean>>) {
         db.collection(PATH_SPORT_CENTER).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
@@ -478,11 +515,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         e.pk = it.id
                         enterprises.add(e)
                     }
-
-                    callback.onSucces(enterprises)
+                    callback.onSucces(Pair(enterprises, it.metadata.isFromCache))
                 }
                 .addOnFailureListener {
-                    callback.onError(it.message)
+                    callback.onError("Posible problema de conexion intentelo nuevamente")
                 }
     }
 
@@ -493,7 +529,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 callback.omError(e)
             }
 
-            if(querySnapshot!!.documentChanges.isNotEmpty()){
+            if (querySnapshot!!.documentChanges.isNotEmpty()) {
 
                 querySnapshot.documentChanges.forEach {
                     when (it.getType()) {
@@ -514,7 +550,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         }
                     }
                 }
-            }else{
+            } else {
                 callback.emptyNode("No hay publicaciones")
             }
 
@@ -522,7 +558,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     }
 
-    fun getSitesScore(parametros: HashMap<String, String>, callback: onApiActionListener<List<Enterprise>>) {
+    fun getSitesScore(callback: onApiActionListener<Pair<List<Enterprise>, Boolean>>) {
         db.collection(PATH_SPORT_CENTER).orderBy(PATH_LIKES, Query.Direction.DESCENDING).get()
                 .addOnSuccessListener {
                     val enterprises = ArrayList<Enterprise>()
@@ -531,8 +567,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                         e.pk = it.id
                         enterprises.add(e)
                     }
-
-                    callback.onSucces(enterprises)
+                    callback.onSucces(Pair(enterprises, it.metadata.isFromCache))
                 }
                 .addOnFailureListener {
                     callback.onError(it.message)
@@ -585,38 +620,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                             }
 
                 }
-        /*
-        .addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot> {
-
-
-
-            override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
-                val downloadUrl = taskSnapshot.downloadUrl
-                /*db.collection(USERS_PATH).document(mAuth.currentUser!!.uid).update("url_photo", downloadUrl!!.toString())
-                        .addOnSuccessListener {
-                            Log.e(TAG, "foto actualizada")
-                            callback.onSuccess(null)
-                        }.addOnFailureListener {
-                            Log.e(TAG, "error actualizando")
-                            callback.onError(it.toString())
-                        }*/
-
-                var profileUpdate: UserProfileChangeRequest = UserProfileChangeRequest.Builder()
-                        .setPhotoUri(downloadUrl).build()
-
-                mAuth.currentUser!!.updateProfile(profileUpdate)
-                        .addOnSuccessListener {
-                            Log.e(TAG, "Se actualizo la foto")
-                            callback.onSuccess()
-                        }
-                        .addOnFailureListener {
-                            Log.e(TAG, it.toString())
-                            callback.onError(it.message)
-                        }
-            }
-        })
-        */
-
     }
 
     fun removelistener() {
@@ -651,7 +654,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "data error " + it.toString())
-                    callback.onError(it.message)
+                    callback.onError("Problemas de conexion")
 
                 }
 
@@ -689,7 +692,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "error $it")
-                    callback.onError(it.message)
+                    callback.onError("Problemas de conexion")
                 }
     }
 

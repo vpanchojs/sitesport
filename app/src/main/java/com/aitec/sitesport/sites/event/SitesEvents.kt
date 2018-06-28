@@ -11,6 +11,7 @@ class SitesEvents(var type: Int, var any: Any) {
 
         val ON_GET_SITES_SUCCESS = 0
         val ON_GET_SITES_ERROR = 1
+        val ON_GET_SITES_SUCCESS_FILTER = 2
 
     }
 }

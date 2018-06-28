@@ -12,6 +12,7 @@ import android.os.Looper
 import android.support.annotation.NonNull
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -66,9 +67,10 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
     private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
 
-    //private var markerSelect: Marker? = null
 
     private var markerSelect: Marker? = null
+
+    private var markerMyLocation: Marker? = null
 
     lateinit var mMap: GoogleMap
 
@@ -168,6 +170,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         sv_search.setOnQueryTextFocusChangeListener(this)
         cl_header_bs.setOnClickListener(this)
         iv_icon_open.setOnClickListener(this)
+        btn_reload.setOnClickListener(this)
 
         //btn_profile_entrepise.setOnClickListener(this)
     }
@@ -224,7 +227,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                         showProgresBarResultsMapVisible(false)
                         stopLocationUpdates()
                         //Calcular la distancia
-                        calculateDistanceToCenterSport(mCurrentLocation);
+                        calculateDistanceToCenterSport(mCurrentLocation)
+                        addMarkerMyLocation()
                     }
                 }
             }
@@ -235,9 +239,11 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         entrepiseResultsSearchVisible.forEach {
             it.distancia = getDistanceToPoints(it.direccion!!.latitud, it.direccion!!.longitud, mCurrentLocation!!.latitude, mCurrentLocation.longitude).toFloat()
         }
+
         entrepiseResultsSearchVisible.sortBy {
             it.distancia
         }
+
         entrepiseAdapter.notifyDataSetChanged()
     }
 
@@ -269,7 +275,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         showProgresBarResultsMapVisible(true)
-        setInfoHeaderBottomSheet("Sitios Deportivos", "Obteniendo su ubicación")
+        //setInfoHeaderBottomSheet("Sitios Deportivos", "Obteniendo su ubicación")
+        showMessagge("Obteniendo su ubicación")
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
                 .addOnSuccessListener(this) {
                     Log.e(TAG, "All location settings are satisfied.")
@@ -403,7 +410,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     /*Eventos Click*/
     override fun onClick(p0: View?) {
         when (p0!!.id) {
-            R.id.btn_sport -> {
+            R.id.btn_reload -> {
+                presenter.onGetAllCenterSport()
 
             }
             R.id.btn_distance -> {
@@ -466,6 +474,18 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
 
+    fun addMarkerMyLocation() {
+        if (markerMyLocation != null) {
+            markerMyLocation!!.position = LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude)
+
+        } else {
+            markerMyLocation = mMap.addMarker(MarkerOptions()
+                    .position(LatLng(mCurrentLocation.latitude, mCurrentLocation.longitude))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_location)))
+        }
+    }
+
+
     override fun addMarker(entreprise: Enterprise) {
 
         var icono: BitmapDescriptor
@@ -509,6 +529,9 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
 
 
     override fun onMarkerClick(marker: Marker): Boolean {
+        Log.e(TAG, "CLICK EN EL MARKET " + marker.id)
+
+
         if (markerSelect != null) {
             if (entrepiseSelect!!.abierto) {
                 markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open))
@@ -517,25 +540,29 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
             }
         }
 
+
         val df = DecimalFormat("0.00")
         //  btn_profile_entrepise.visibility = VISIBLE
 
-        entrepiseResultsSearchVisible.forEach {
-            if (it.idMarker == marker.id) {
-                entrepiseSelect = it
-                markerSelect = marker
 
-                if (it.abierto) {
-                    markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open_select))
-                } else {
-                    markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
-                }
-                //tv_subtitle_price_total.setText("A ${df.format(it.distancia)} Km")
-                tv_title_bs.setText(it.nombre)
-                tv_subtitle_price_total.setText(it.direccion!!.calles)
-            }
+        val entreprise = entrepiseResultsSearchVisible.find {
+            it.idMarker.equals(marker.id)
         }
 
+
+        if (entreprise != null) {
+            entrepiseSelect = entreprise
+            markerSelect = marker
+
+            if (entreprise.abierto) {
+                markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_open_select))
+            } else {
+                markerSelect!!.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_futbol_close_select))
+            }
+            //tv_subtitle_price_total.setText("A ${df.format(it.distancia)} Km")
+            tv_title_bs.setText(entreprise.nombre)
+            tv_subtitle_price_total.setText(entreprise.direccion!!.calles)
+        }
         return true
     }
 
@@ -573,11 +600,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     override fun setResultsSearchs(entrepriseList: List<Enterprise>) {
-        Log.e(TAG, "pk" + entrepriseList.get(0).pk)
-        entrepiseResultsSearchVisible.clear()
-        mMap.clear()
         entrepiseResultsSearchVisible.addAll(entrepriseList)
-        tv_subtitle_price_total.setText(entrepriseList.size.toString() + " encontrados")
         entrepiseAdapter.notifyDataSetChanged()
     }
 
@@ -597,6 +620,7 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
     }
 
     override fun clearSearchResultsVisible() {
+        mMap.clear()
         entrepiseResultsSearchVisible.clear()
         entrepiseAdapter.notifyDataSetChanged()
 
@@ -610,5 +634,14 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
         //btn_profile_entrepise.visibility = GONE
     }
 
+    override fun showSnackBar(menssage: String) {
+        Snackbar.make(cc, menssage, Snackbar.LENGTH_INDEFINITE).setAction("Reintentar") {
+            presenter.onGetAllCenterSport()
+        }.show()
+    }
 
+
+    override fun showButtonReload(visible: Int) {
+        btn_reload.visibility = visible
+    }
 }

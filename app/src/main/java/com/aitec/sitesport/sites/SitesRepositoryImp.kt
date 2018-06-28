@@ -9,8 +9,8 @@ import com.aitec.sitesport.sites.event.SitesEvents
 class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: FirebaseApi) : SitesRepository {
 
     override fun onGetSites() {
-        firebaseApi.getAllSites( object : onApiActionListener<List<Enterprise>> {
-            override fun onSucces(response: List<Enterprise>) {
+        firebaseApi.getAllSites(object : onApiActionListener<Pair<List<Enterprise>, Boolean>> {
+            override fun onSucces(response: Pair<List<Enterprise>, Boolean>) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
             }
 
@@ -21,9 +21,10 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
     }
 
     override fun onGetSites(parametros: HashMap<String, String>) {
-        firebaseApi.getAllSites(object : onApiActionListener<List<Enterprise>> {
-            override fun onSucces(response: List<Enterprise>) {
+        firebaseApi.getAllSites(object : onApiActionListener<Pair<List<Enterprise>, Boolean>> {
+            override fun onSucces(response: Pair<List<Enterprise>, Boolean>) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
+
             }
 
             override fun onError(error: Any?) {
@@ -33,13 +34,13 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
     }
 
     private fun postEvent(type: Int, any: Any) {
-        var event = SitesEvents(type, any)
+        val event = SitesEvents(type, any)
         eventBus.post(event)
     }
 
     override fun onGetSitesScore(parametros: HashMap<String, String>) {
-        firebaseApi.getSitesScore(parametros, object : onApiActionListener<List<Enterprise>> {
-            override fun onSucces(response: List<Enterprise>) {
+        firebaseApi.getSitesScore(object : onApiActionListener<Pair<List<Enterprise>, Boolean>> {
+            override fun onSucces(response: Pair<List<Enterprise>, Boolean>) {
                 postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
             }
 
@@ -53,7 +54,7 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
 
         firebaseApi.getSitesOpen(parametros, object : onApiActionListener<List<Enterprise>> {
             override fun onSucces(response: List<Enterprise>) {
-                postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
+                postEvent(SitesEvents.ON_GET_SITES_SUCCESS_FILTER, response)
             }
 
             override fun onError(error: Any?) {
@@ -65,7 +66,7 @@ class SitesRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fireb
     override fun onGetSitesLocation(parametros: Map<String, Any>) {
         firebaseApi.getSitesLocation(parametros, object : onApiActionListener<List<Enterprise>> {
             override fun onSucces(response: List<Enterprise>) {
-                postEvent(SitesEvents.ON_GET_SITES_SUCCESS, response)
+                postEvent(SitesEvents.ON_GET_SITES_SUCCESS_FILTER, response)
             }
 
             override fun onError(error: Any?) {

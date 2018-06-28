@@ -28,6 +28,7 @@ class Enterprise() : Parcelable {
     var idMarker: String = ""
     var isOnline: Boolean = true
     var isQualified = false
+    var viewType: Int = 0
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
@@ -60,6 +61,8 @@ class Enterprise() : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<Enterprise> {
+        const val TYPE_ENTREPISE = 0
+        const val TYPE_SPACE = 1
 
         override fun createFromParcel(parcel: Parcel): Enterprise {
             return Enterprise(parcel)

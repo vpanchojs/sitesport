@@ -12,7 +12,6 @@
         android:fitsSystemWindows="true"
         tools:context="com.aitec.sitesport.mapsSites.ui.MapsActivity">
 
-
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
@@ -25,21 +24,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".MapsActivity" />
 
-        <!--
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:pk="@+pk/mapView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:mapbox_cameraTargetLat="-4.008100"
-            app:mapbox_cameraTargetLng="-79.21083"
-            app:mapbox_cameraZoom="12"
-            app:mapbox_styleUrl="mapbox://styles/mapbox/streets-v10" />
-            -->
-
         <ImageView
             android:id="@+id/civ_user"
             android:layout_width="50dp"
@@ -50,6 +34,7 @@
             android:layout_marginTop="8dp"
             android:elevation="1dp"
             android:tint="@color/colorPrimary"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

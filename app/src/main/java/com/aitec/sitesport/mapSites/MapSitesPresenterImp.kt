@@ -1,5 +1,6 @@
 package com.aitec.sitesport.mapSites
 
+import android.view.View
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
@@ -48,22 +49,39 @@ class MapSitesPresenterImp(var eventBus: EventBusInterface, var view: MapSitesVi
         interactor.onGetAllCenterSport()
     }
 
+
+    fun setSites(sites: List<Enterprise>) {
+        view.clearSearchResultsVisible()
+
+        if (sites.isNotEmpty()) {
+            view.setResultsSearchs(sites)
+            view.showNoneResulstEntrepiseVisible(false)
+
+        } else {
+            view.showNoneResulstEntrepiseVisible(true)
+        }
+
+    }
+
     @Subscribe
     override fun onEventmapSitesThread(event: MapSitesEvents) {
         view.showProgresBar(false)
         view.showProgresBarResultsMapVisible(false)
         when (event.type) {
             MapSitesEvents.ON_RESULTS_SEARCHS_SUCCESS -> {
-                var entrepriseList = event.any as List<Enterprise>
-                if (entrepriseList.size > 0) {
-                    view.clearSearchResultsVisible()
-                    view.setResultsSearchs(entrepriseList)
-                    view.showNoneResulstEntrepiseVisible(false)
+
+                val data = event.any as Pair<List<Enterprise>, Boolean>
+
+                if (data.second) {
+                    view.setInfoHeaderBottomSheet("Problemas de conexión", "Sitios almacenados en tu dispositivo")
+                    view.showButtonReload(View.VISIBLE)
                 } else {
-                    view.setInfoHeaderBottomSheet("Sitios Deportivos", "Sin Resultados")
-                    view.clearSearchResultsVisible()
-                    view.showNoneResulstEntrepiseVisible(true)
+                    view.setInfoHeaderBottomSheet("Sitios Deportivos", " ${data.first.size} encontrados")
+                    view.showButtonReload(View.GONE)
                 }
+
+                setSites(data.first)
+
             }
             MapSitesEvents.ON_RESULTS_SEARCHS_ERROR -> {
                 view.showMessagge(event.any as String)

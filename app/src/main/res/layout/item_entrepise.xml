@@ -7,6 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
+    android:id="@+id/cl_item_center_sport"
     android:foreground="?android:attr/selectableItemBackground">
 
 
@@ -23,6 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="180dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

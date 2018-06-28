@@ -23,45 +23,69 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entrepise, parent, false);
-        return ViewHolder(view);
+
+        when (viewType) {
+        //Enterprise
+            Enterprise.TYPE_ENTREPISE -> {
+                return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_entrepise, parent, false))
+            }
+        //Space
+            Enterprise.TYPE_SPACE -> {
+                return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_space, parent, false))
+            }
+            else -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_entrepise, parent, false))
+        }
+
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return data.get(position).viewType
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entrepise = data.get(position)
-        holder.view.tv_name_entrepise.text = entrepise.nombre
 
-        GlideApp.with(context)
-                .load(entrepise.foto_perfil.trim())
-                .placeholder(R.drawable.ic_sites)
-                .centerCrop()
-                .error(R.drawable.ic_error_outline_black_24dp)
-                .into(holder.view.iv_entrepise)
+        when (entrepise.viewType) {
+            Enterprise.TYPE_ENTREPISE -> {
+                holder.view.tv_name_entrepise.text = entrepise.nombre
 
-        holder.view.tv_address.text = entrepise.direccion?.referencia
+                GlideApp.with(context)
+                        .load(entrepise.foto_perfil.trim())
+                        .placeholder(R.drawable.ic_sites)
+                        .centerCrop()
+                        .error(R.drawable.ic_error_outline_black_24dp)
+                        .into(holder.view.iv_entrepise)
 
-        holder.view.tv_raiting.text = entrepise.me_gustas.toString()
+                holder.view.tv_address.text = entrepise.direccion?.referencia
+
+                holder.view.tv_raiting.text = entrepise.me_gustas.toString()
 
 
-        if (entrepise.distancia > 0) {
-            holder.view.tv_distance.text = "${df.format(entrepise.distancia)} km"
-            holder.view.tv_distance.visibility = View.VISIBLE
-        } else {
-            holder.view.tv_distance.visibility = View.GONE
+                if (entrepise.distancia > 0) {
+                    holder.view.tv_distance.text = "${df.format(entrepise.distancia)} km"
+                    holder.view.tv_distance.visibility = View.VISIBLE
+                } else {
+                    holder.view.tv_distance.visibility = View.GONE
+                }
+
+
+                if (entrepise.abierto) {
+                    holder.view.iv_open.visibility = View.VISIBLE
+                } else {
+                    holder.view.iv_open.visibility = View.GONE
+                }
+
+                holder.onNavigationProfile(entrepise, callback)
+            }
+            Enterprise.TYPE_SPACE -> {
+
+            }
         }
 
-
-        if (entrepise.abierto) {
-            holder.view.iv_open.visibility = View.VISIBLE
-        } else {
-            holder.view.iv_open.visibility = View.GONE
-        }
-
-        holder.onNavigationProfile(entrepise, callback)
 
     }
 

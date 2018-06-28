@@ -27,18 +27,21 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
     override fun addFilterOpen(add: Boolean) {
         view.showProgresBar(true)
         view.clearListSites()
+        view.showFilters(View.GONE)
         interactor.addFilterOpen(add)
     }
 
     override fun addFilterScore(add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
+        view.showFilters(View.GONE)
         interactor.addFilterScore(add)
     }
 
     override fun addFilterLocation(latitude: Double, longitude: Double, add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
+        view.showFilters(View.GONE)
         interactor.addFilterLocation(latitude, longitude, add)
     }
 
@@ -48,6 +51,24 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
         view.showProgresBar(false)
         when (event.type) {
             SitesEvents.ON_GET_SITES_SUCCESS -> {
+                view.showFilters(View.VISIBLE)
+
+                val data = event.any as Pair<List<Enterprise>, Boolean>
+
+                if (data.second) {
+                    view.showButtonReload(View.VISIBLE)
+
+                } else {
+                    if (data.first.size > 0) {
+                        view.setResultsSearchs(data.first)
+                        view.showButtonReload(View.GONE)
+                    }
+                }
+
+            }
+
+            SitesEvents.ON_GET_SITES_SUCCESS_FILTER -> {
+
                 view.showFilters(View.VISIBLE)
 
                 var enterprises = event.any as List<Enterprise>

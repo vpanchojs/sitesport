@@ -123,6 +123,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         rv_results_searchs.layoutManager = LinearLayoutManager(this)
         rv_results_searchs.adapter = searchResultsAdapter
         navigation.selectedItemId = R.id.navigation_site
+
+
         btn_map.setOnClickListener {
             //permission()
             startActivity(Intent(this, MapSitesActivity::class.java))
@@ -165,6 +167,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 .addOnFailureListener {
 
                 }
+
     }
 
     override fun onResume() {

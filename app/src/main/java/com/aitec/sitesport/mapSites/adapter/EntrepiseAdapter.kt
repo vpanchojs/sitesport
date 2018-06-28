@@ -28,9 +28,19 @@ class EntrepiseAdapter(var data: ArrayList<Enterprise>, var callback: onEntrepis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entrepise = data.get(position)
         holder.view.tv_name_entrepise.text = entrepise.nombre
-        holder.view.tv_distance.text = df.format(entrepise.distancia) + " Km"
+
+
+        if (entrepise.distancia > 0.0) {
+            holder.view.tv_distance.text = df.format(entrepise.distancia) + " Km"
+        }else{
+            holder.view.tv_distance.text = ""
+        }
+
         holder.view.tv_address.text = entrepise.direccion!!.calles
-        holder.addMarker(entrepise, callback)
+        if (entrepise.idMarker.isBlank()) {
+            holder.addMarker(entrepise, callback)
+        }
+
         holder.onNavigationProfile(entrepise, callback)
     }
 

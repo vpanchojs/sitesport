@@ -13,12 +13,14 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
     override fun tokenGoogle(idToken: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         view.showProgress(View.VISIBLE)
         view.visibleLogin(View.INVISIBLE)
+        view.showMessagge("Iniciando sesión con google")
         interactor.enviartokengoogle(idToken, name, lastname, email, photoUrl)
     }
 
     override fun tokenFacebook(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
         view.showProgress(View.VISIBLE)
         view.visibleLogin(View.INVISIBLE)
+        view.showMessagge("Iniciando sesión con facebook")
         interactor.enviartoken(token, name, lastname, email, photoUrl)
     }
 

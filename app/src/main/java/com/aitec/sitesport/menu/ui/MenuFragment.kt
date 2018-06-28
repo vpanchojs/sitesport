@@ -186,7 +186,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     override fun showMessagge(message: Any?) {
-        BaseActivitys.showToastMessage(context!!, message!!, Toast.LENGTH_SHORT)
+        BaseActivitys.showToastMessage(context!!, message!!, Toast.LENGTH_LONG)
     }
 
     override fun navigationToProfile() {
@@ -261,7 +261,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             R.id.btn_sigin_facebook -> {
                 //showMessage("Estamos Trabajando en ello")
 
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "correo_electronico"))
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
 
             }
         }

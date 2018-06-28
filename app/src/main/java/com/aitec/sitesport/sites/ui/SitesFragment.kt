@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -23,8 +24,10 @@ import kotlinx.android.synthetic.main.fragment_sites.*
 import java.util.*
 import javax.inject.Inject
 
+
 class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntrepiseAdapterListener, SitesView, RadioGroup.OnCheckedChangeListener {
     override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
+
         when (p0!!.checkedRadioButtonId) {
             R.id.cb_distance -> {
                 callback!!.getMyLocation()
@@ -47,11 +50,14 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
                 Log.e(TAG, "open $")
             }
             R.id.cb_score -> {
+
                 presenter.addFilterScore(true)
                 Log.e(TAG, "puntaje $p1")
             }
         }
+
     }
+
 
     var ubicacion: String = ""
 
@@ -97,6 +103,9 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         when (p0!!.id) {
             R.id.btn_reload -> {
                 presenter.onGetSites()
+                rg_filters.setOnCheckedChangeListener(null)
+                rg_filters.clearCheck()
+                rg_filters.setOnCheckedChangeListener(this)
             }
         }
     }
@@ -139,9 +148,6 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     }
 
     private fun setupEvents() {
-        //cb_distance.setOnCheckedChangeListener(this)
-        //cb_open.setOnCheckedChangeListener(this)
-        //cb_score.setOnCheckedChangeListener(this)
         rg_filters.setOnCheckedChangeListener(this)
         btn_reload.setOnClickListener(this)
 
@@ -184,7 +190,14 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     override fun setResultsSearchs(listEnterprise: List<Enterprise>) {
         data!!.clear()
         data!!.addAll(listEnterprise)
+        data!!.add(getEnterpriseEmpty())
         adapter!!.notifyDataSetChanged()
+    }
+
+    fun getEnterpriseEmpty(): Enterprise {
+        val enterprise = Enterprise()
+        enterprise.viewType = Enterprise.TYPE_SPACE
+        return enterprise
     }
 
     override fun showProgresBar(show: Boolean) {
@@ -229,4 +242,11 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
     override fun showFilters(visible: Int) {
         cl_chips.visibility = visible
     }
+
+    override fun showSnackBar(message: String) {
+        Snackbar.make(cl_sites, message, Snackbar.LENGTH_INDEFINITE).setAction("Reintentar") {
+            presenter.onGetSites()
+        }
+    }
+
 }

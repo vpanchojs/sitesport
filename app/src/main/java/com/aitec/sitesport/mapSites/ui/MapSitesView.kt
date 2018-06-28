@@ -18,5 +18,7 @@ interface MapSitesView {
     fun setInfoHeaderBottomSheet(title: Any, subtitle: Any)
     fun showNoneResulstEntrepiseVisible(show: Boolean)
     fun hideButtonProfileEntrepise()
+    fun showSnackBar(menssage: String)
+    fun showButtonReload(visible: Int)
 
 }
