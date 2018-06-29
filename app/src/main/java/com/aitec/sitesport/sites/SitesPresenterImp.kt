@@ -20,28 +20,28 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
     override fun onGetSites() {
         view.showProgresBar(true)
         view.showButtonReload(View.GONE)
-        view.showFilters(View.GONE)
+        view.enableFilters(false)
         interactor.onGetSites()
     }
 
     override fun addFilterOpen(add: Boolean) {
         view.showProgresBar(true)
         view.clearListSites()
-        view.showFilters(View.GONE)
+        view.enableFilters(false)
         interactor.addFilterOpen(add)
     }
 
     override fun addFilterScore(add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
-        view.showFilters(View.GONE)
+        view.enableFilters(false)
         interactor.addFilterScore(add)
     }
 
     override fun addFilterLocation(latitude: Double, longitude: Double, add: Boolean) {
         view.clearListSites()
         view.showProgresBar(true)
-        view.showFilters(View.GONE)
+        view.enableFilters(false)
         interactor.addFilterLocation(latitude, longitude, add)
     }
 
@@ -51,7 +51,7 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
         view.showProgresBar(false)
         when (event.type) {
             SitesEvents.ON_GET_SITES_SUCCESS -> {
-                view.showFilters(View.VISIBLE)
+                view.enableFilters(true)
 
                 val data = event.any as Pair<List<Enterprise>, Boolean>
 
@@ -69,7 +69,7 @@ class SitesPresenterImp(var eventBus: EventBusInterface, var view: SitesView, va
 
             SitesEvents.ON_GET_SITES_SUCCESS_FILTER -> {
 
-                view.showFilters(View.VISIBLE)
+                view.enableFilters(true)
 
                 var enterprises = event.any as List<Enterprise>
 

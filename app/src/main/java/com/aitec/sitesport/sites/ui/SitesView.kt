@@ -11,6 +11,6 @@ interface SitesView {
     fun clearSearchResults()
     fun clearListSites()
     fun showButtonReload(visible: Int)
-    fun showFilters(visible: Int)
+    fun enableFilters(enable: Boolean)
     fun showSnackBar(message: String)
 }

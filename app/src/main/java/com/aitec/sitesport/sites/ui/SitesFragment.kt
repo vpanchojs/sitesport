@@ -239,8 +239,10 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
         btn_reload.visibility = visible
     }
 
-    override fun showFilters(visible: Int) {
-        cl_chips.visibility = visible
+    override fun enableFilters(enable: Boolean) {
+        cb_distance.isEnabled = enable
+        cb_open.isEnabled = enable
+        cb_score.isEnabled = enable
     }
 
     override fun showSnackBar(message: String) {

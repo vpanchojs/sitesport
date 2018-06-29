@@ -227,7 +227,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -255,7 +255,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -279,7 +279,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
 
     }
@@ -304,7 +304,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
 
     }
@@ -326,7 +326,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -337,6 +337,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .get()
                 .addOnSuccessListener {
                     callback.onSucces(it.exists())
+                }
+                .addOnFailureListener {
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -369,7 +372,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             callback.onSucces(it)
         }.addOnFailureListener {
             Log.e(TAG, "ERROR en el like")
-            callback.onError(it.message)
+            callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
         }
     }
 
@@ -405,7 +408,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             callback.onSucces(it)
         }.addOnFailureListener {
             Log.e(TAG, "ERROR en el like")
-            callback.onError(it.message)
+            callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
         }
     }
 
@@ -421,7 +424,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -454,7 +457,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }
                     .addOnFailureListener {
                         Log.e(TAG, "error $it")
-                        listener.onError(it.message)
+                        listener.onError("Posible problema de conexión")
                     }
         }
         val LAG = 1000
@@ -482,7 +485,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onSucces(Pair(enterprises, it.metadata.isFromCache))
                 }
                 .addOnFailureListener {
-                    callback.onError("Posible problema de conexion intentelo nuevamente")
+                    callback.onError("Posible problema de conexion, intentelo nuevamente")
                 }
     }
 
@@ -534,7 +537,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onSucces(Pair(enterprises, it.metadata.isFromCache))
                 }
                 .addOnFailureListener {
-                    callback.onError(it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
 
     }
@@ -564,9 +567,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                                     .addOnFailureListener { Log.e(TAG, it.toString()) }
                             callback.onSucces(uri.toString())
 
-                        }.addOnFailureListener { callback.onError(it.message) }
+                        }.addOnFailureListener { callback.onError(ManagerExcepcionFirebase.getMessageErrorStorage(it)) }
 
-                    }.addOnFailureListener { callback.onError(it.message) }
+                    }.addOnFailureListener { callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it)) }
 
                 }
     }
@@ -617,6 +620,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "item reserva error" + it.toString())
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
 
     }
