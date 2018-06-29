@@ -11,7 +11,10 @@ import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.SearchCentersName
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.entities.enterprise.*
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
@@ -75,13 +78,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }
                 }
                 .addOnFailureListener {
-                    if (it is FirebaseAuthException) {
-                        it.errorCode
-                        Log.e(TAG, it.errorCode)
-                        callback.onError(getMessageErrorFirebaseAuth(it.errorCode))
-                    } else {
-                        callback.onError("Posible problema de conexion, intentelo nuevamente")
-                    }
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseAuth(it))
                 }
     }
 
@@ -117,44 +114,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
                 }.addOnFailureListener {
-                    if (it is FirebaseAuthException) {
-                        it.errorCode
-                        Log.e(TAG, it.errorCode)
-                        callback.onError(getMessageErrorFirebaseAuth(it.errorCode))
-                    } else {
-                        callback.onError("Posible problema de conexion, intentelo nuevamente")
-                    }
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseAuth(it))
 
                 }
-    }
-
-    private fun getMessageErrorFirebaseAuth(errorCode: String): String {
-        when (errorCode) {
-            "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> {
-                return "Ya existe una cuenta con sus credenciales"
-            }
-            "ERROR_CREDENTIAL_ALREADY_IN_USE" -> {
-                return "Las credenciales proporcionados ya estan registradas"
-            }
-            "ERROR_EMAIL_ALREADY_IN_USE" -> {
-                return "El email proporcionado ya se encuentra registrado"
-            }
-            "ERROR_USER_DISABLED" -> {
-                return "Usuario desactivado"
-            }
-            "ERROR_USER_NOT_FOUND" -> {
-                return "Usuario no encontrado"
-            }
-            "ERROR_USER_TOKEN_EXPIRED" -> {
-                return "Token del usuario caducado"
-            }
-            "ERROR_INVALID_USER_TOKEN" -> {
-                return "Token del usuario invalido"
-            }
-            else -> {
-                return "Posible problema de conexion, intentelo nuevamente"
-            }
-        }
     }
 
 
@@ -162,7 +124,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         db.collection(PATH_USER).document(user.pk!!).set(user.toMapPostSave()).addOnSuccessListener {
             callback.onSucces(Unit)
         }.addOnFailureListener {
-            callback.onError(it.message)
+            callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
         }
     }
 
@@ -207,8 +169,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                             listener.onSucces(Unit)
 
                         }.addOnFailureListener {
-
-                            listener.onError(it.message)
+                            listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                         }
             }
 
@@ -232,7 +193,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "error" + it)
-                    listener.onError(it.toString())
+                    listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 
@@ -247,7 +208,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     listener.onSucces(it)
                 }
                 .addOnFailureListener {
-                    listener.onError(it.message)
+                    listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
 
     }
@@ -268,20 +229,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onError(it.message)
                 }
     }
-
-    /*fun getLikesProfile(pk: String, callback: onApiActionListener<Enterprise>){
-        db.collection(PATH_SPORT_CENTER).document(pk).collection("like")
-                .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
-                .addOnSuccessListener {
-                    it.size()
-                    Log.e(TAG, "Likes ")
-                    //callback.onSucces(e)
-                }
-                .addOnFailureListener {
-                    Log.d(TAG, "Error => " + it.message)
-                    callback.onError(it.message)
-                }
-    }*/
 
     fun isAuthenticated(): String? {
         return mAuth.currentUser?.uid
@@ -584,7 +531,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
         storage.child(STORAGE_USER_PHOTO_PATH).child(mAuth.currentUser!!.uid).putBytes(data)
-                .addOnFailureListener { callback.onError(it.message) }
+                .addOnFailureListener {
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorStorage(it))
+                }
                 .addOnSuccessListener {
                     it.storage.downloadUrl.addOnSuccessListener { uri ->
 
@@ -604,6 +553,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
                 }
     }
+
 
     fun removelistener() {
         if (pulistener != null) {
@@ -636,8 +586,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, "data error " + it.toString())
-                    callback.onError("Problemas de conexion")
+                    callback.onError("Posible problema de conexión, intentelo nuevamente")
 
                 }
 
@@ -674,8 +623,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, "error $it")
-                    callback.onError("Problemas de conexion")
+                    callback.onError("Posible problema de conexión, intentelo nuevamente")
+
                 }
     }
 
