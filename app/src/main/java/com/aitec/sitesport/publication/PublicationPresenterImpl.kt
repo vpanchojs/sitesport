@@ -18,28 +18,22 @@ class PublicationPresenterImpl(val publicationView: PublicationView,
     }
 
     override fun callPublication(pk: String) {
-        publicationView.showPbLoading()
+        publicationView.showLoading()
         publicationInteractor.callPublication(pk)
     }
 
     @Subscribe
     override fun onEventPublicationThread(event: PublicationEvent) {
 
-        publicationView.hidePbLoading()
+        publicationView.hideLoading(event.eventMsg)
 
         when (event.eventType) {
 
             PublicationEvent.SUCCESS -> {
-                val p = event.eventObject as Publication
-                if (!p.isOnline) {
-                    publicationView.showSnackBar(event.eventMsg!!)
-                }
-                publicationView.setPublication(p)
+                publicationView.setPublication(event.eventObject as Publication)
             }
 
-            PublicationEvent.ERROR -> {
-                publicationView.showSnackBar(event.eventMsg!!)
-            }
+            PublicationEvent.ERROR -> { }
 
         }
     }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -249,9 +250,11 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     override fun showSnackBarInfo(msg: String) {
-        if (snackBarInfo != null && !snackBarInfo!!.isShown) {
+        if (snackBarInfo != null) {
             snackBarInfo!!.setText(msg)
-            snackBarInfo!!.show()
+            Handler().postDelayed({
+                snackBarInfo!!.show()
+            }, 600)
         }
     }
 
@@ -456,7 +459,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupPhotosSection()
         setupLikes()
         setupBtnReservation()
-        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("REINTENTAR") {
+        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_LONG).setAction("REINTENTAR") {
             callSections()
         }
     }
@@ -481,7 +484,11 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
                 cbRating.isClickable = false
             } else {
                 cbRating.isChecked = !cbRating.isChecked
-                BaseActivitys.showToastMessage(this, "Debes iniciar sesión primero", Toast.LENGTH_SHORT)
+                /*Snackbar.make(clMainScreen, "Debes iniciar sesión primero", Snackbar.LENGTH_LONG)
+                        .setAction("INICIAR SESIÓN") {
+
+                }*/
+                BaseActivitys.showToastMessage(this, "Debes inciar sesión primero", Toast.LENGTH_SHORT)
             }
         }
     }

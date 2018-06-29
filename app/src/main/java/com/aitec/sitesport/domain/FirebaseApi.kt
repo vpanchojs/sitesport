@@ -222,7 +222,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     Log.e(TAG, it.id + "getBasicProfile() => " + it.data)
                     val e = it.toObject(Enterprise::class.java)!!
                     e.pk = it.id
-                    if (it.metadata.isFromCache) e.isOnline = false
+                    if (it.metadata.isFromCache) {
+                        e.isOnline = false
+                    }
                     callback.onSucces(e)
                 }
                 .addOnFailureListener {

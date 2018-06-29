@@ -2,7 +2,6 @@ package com.aitec.sitesport.publication.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +26,6 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
     private var publication: Publication = Publication()
     private var imageAdapter: ImageAdapter? = null
     private var images: ArrayList<String> = arrayListOf()
-    private var snackBarInfo: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,24 +49,25 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
         updateView()
     }
 
-    override fun showPbLoading() {
+    // setup view
+
+    override fun showLoading() {
+        tvInfo.visibility = View.GONE
+        btnReload.visibility = View.GONE
         pbLoading.visibility = View.VISIBLE
+        clLoader.visibility = View.VISIBLE
     }
 
-    override fun hidePbLoading() {
-        pbLoading.visibility = View.GONE
-    }
-
-    override fun showSnackBar(msg: String) {
-        if (snackBarInfo != null && !snackBarInfo!!.isShown) {
-            snackBarInfo!!.setText(msg)
-            snackBarInfo!!.show()
+    override fun hideLoading(msg: Any?) {
+        if(msg != null){
+            pbLoading.visibility = View.GONE
+            tvInfo.text = msg.toString()
+            tvInfo.visibility = View.VISIBLE
+            btnReload.visibility = View.VISIBLE
+        }else{
+            clLoader.visibility = View.GONE
         }
     }
-
-
-
-    // setup view
 
     private fun updateView(){
         updateSectionPhoto()
@@ -90,13 +89,14 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
     private fun setupUI(){
         setupToolBar()
         setupPhotosSection()
-        snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_INDEFINITE).setAction("REINTENTAR") {
+
+        btnReload.setOnClickListener {
             callPublication()
         }
     }
 
     private fun callPublication(){
-        publicationPresenter.callPublication(publication.pk!!)
+        publicationPresenter.callPublication(publication.pk)
     }
 
     private fun setupPhotosSection() {

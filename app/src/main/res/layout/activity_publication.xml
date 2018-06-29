@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ProgressBar
                 android:id="@+id/pbLoading"
@@ -104,7 +104,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<TextView
+            <TextView
                 android:id="@+id/tvInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -122,15 +122,18 @@
             <Button
                 android:id="@+id/btnReload"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_buttom_buttom_sheet"
-                android:text="Recargar"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/bg_buttom_dialog"
+                android:textColor="@drawable/txt_color_dialog"
+                android:text="Reintentar"
                 app:layout_constraintEnd_toEndOf="@+id/tvInfo"
                 app:layout_constraintStart_toStartOf="@+id/tvInfo"
-                app:layout_constraintTop_toBottomOf="@+id/tvInfo" />-->
+                app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
 
         </android.support.constraint.ConstraintLayout>
 

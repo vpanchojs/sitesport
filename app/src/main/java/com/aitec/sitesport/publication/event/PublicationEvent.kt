@@ -1,6 +1,6 @@
 package com.aitec.sitesport.publication.event
 
-class PublicationEvent(var eventType: Int, var eventMsg: String?, var eventObject: Any?) {
+class PublicationEvent(var eventType: Int, var eventMsg: Any?, var eventObject: Any?) {
 
     companion object {
         const val SUCCESS = 1

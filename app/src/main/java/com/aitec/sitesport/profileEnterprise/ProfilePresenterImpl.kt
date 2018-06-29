@@ -1,5 +1,6 @@
 package com.aitec.sitesport.profileEnterprise
 
+import android.util.Log
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.profileEnterprise.event.ProfileEvent
@@ -61,6 +62,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
 
     private fun existConnection(event: ProfileEvent) {
         if (!(event.eventObject as Enterprise).isOnline) {
+            Log.e("CONNECTION", "no hay conexion")
             profileView.showSnackBarInfo(event.eventMsg!!)
         }
     }

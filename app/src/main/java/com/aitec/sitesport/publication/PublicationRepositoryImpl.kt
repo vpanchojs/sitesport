@@ -26,7 +26,7 @@ class PublicationRepositoryImpl(val firebaseApi: FirebaseApi,
     }
 
     private fun postEvent(type: Int, any: Any?, eventObject: Any?) {
-        val event = PublicationEvent(type, any.toString(), eventObject)
+        val event = PublicationEvent(type, any, eventObject)
         eventBusInterface.post(event)
     }
 

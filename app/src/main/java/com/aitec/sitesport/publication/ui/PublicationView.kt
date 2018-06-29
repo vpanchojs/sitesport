@@ -4,9 +4,8 @@ import com.aitec.sitesport.entities.Publication
 
 interface PublicationView {
 
-    fun showPbLoading()
-    fun hidePbLoading()
-    fun showSnackBar(msg: String)
+    fun showLoading()
+    fun hideLoading(msg: Any?)
     fun setPublication(p: Publication)
 
 }
