@@ -170,7 +170,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
     }
 
     companion object {
-        const val MSG_ERROR_CONNECTION = "Problemas de conexión"
+        const val MSG_ERROR_CONNECTION = "Trabajando sin conexión"
     }
 
 }
