@@ -15,7 +15,7 @@ import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.home.HomePresenter
 import com.aitec.sitesport.home.adapter.HomeAdapter
 import com.aitec.sitesport.home.adapter.onHomeAdapterListener
-import com.aitec.sitesport.publication.PublicationActivity
+import com.aitec.sitesport.publication.ui.PublicationActivity
 import com.aitec.sitesport.util.BaseActivitys
 import kotlinx.android.synthetic.main.fragment_publications.*
 import kotlinx.android.synthetic.main.fragment_publications.view.*

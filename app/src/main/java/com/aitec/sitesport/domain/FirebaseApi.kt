@@ -57,7 +57,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     /*
                     val user = User()
                     user.pk = it.user.uid
-                    user.nombre = it.user.displayName
+                    user.nombre_centro_deportivo = it.user.displayName
                     user.correo_electronico = it.user.correo_electronico
 
                     user.foto = it.user.photoUrl.toString()
@@ -90,7 +90,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     /*
                     val user = User()
                     user.pk = it.user.uid
-                    user.nombre = it.user.displayName
+                    user.nombre_centro_deportivo = it.user.displayName
                     user.correo_electronico = it.user.correo_electronico
                     user.foto = it.user.photoUrl.toString()
                     */
@@ -222,6 +222,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     Log.e(TAG, it.id + "getBasicProfile() => " + it.data)
                     val e = it.toObject(Enterprise::class.java)!!
                     e.pk = it.id
+                    if (it.metadata.isFromCache) e.isOnline = false
                     callback.onSucces(e)
                 }
                 .addOnFailureListener {
@@ -408,6 +409,22 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         }
     }
 
+    fun getPublication(pkPublication: String, callback: onApiActionListener<Publication>) {
+        db.collection(PATH_PUBLICATIONS).document(pkPublication)
+                .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
+                .addOnSuccessListener {
+                    Log.e(TAG, it.id + "getPublication() => " + it.data)
+                    val p = it.toObject(Publication::class.java)!!
+                    p.pk = it.id
+                    if (it.metadata.isFromCache) p.isOnline = false
+                    callback.onSucces(p)
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "Error => " + it.message)
+                    callback.onError(it.message)
+                }
+    }
+
 
     fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
         var parametros = HashMap<String, String>()
@@ -479,7 +496,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
             if (querySnapshot!!.documentChanges.isNotEmpty()) {
 
                 querySnapshot.documentChanges.forEach {
-                    when (it.getType()) {
+                    when (it.type) {
                         DocumentChange.Type.ADDED -> {
                             val pu = it.document.toObject(Publication::class.java)
                             pu.pk = it.document.id
@@ -616,7 +633,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     data.forEach { item ->
                         val entrepise = gson.fromJson(gson.toJson(item), Enterprise::class.java)
                         listSportCenter.add(entrepise)
-                        Log.e(TAG, "nombre ${entrepise.nombre}")
+                        Log.e(TAG, "nombre_centro_deportivo ${entrepise.nombre}")
                     }
 
                     callback.onSucces(listSportCenter)

@@ -30,6 +30,10 @@ import com.aitec.sitesport.profileUser.di.DaggerProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserComponent
 import com.aitec.sitesport.profileUser.di.ProfileUserModule
 import com.aitec.sitesport.profileUser.ui.ProfileUserView
+import com.aitec.sitesport.publication.di.DaggerPublicationComponent
+import com.aitec.sitesport.publication.di.PublicationComponent
+import com.aitec.sitesport.publication.di.PublicationModule
+import com.aitec.sitesport.publication.ui.PublicationView
 import com.aitec.sitesport.reservationHistory.di.DaggerReservationHistoryComponent
 import com.aitec.sitesport.reservationHistory.di.ReservationHistoryComponent
 import com.aitec.sitesport.reservationHistory.di.ReservationHistoryModule
@@ -151,7 +155,14 @@ class MyApplication : MultiDexApplication() {
                 .build()
     }
 
-
+    fun getPublicationComponent(view: PublicationView): PublicationComponent {
+        return DaggerPublicationComponent
+                .builder()
+                .domainModule(domainModule)
+                .libModule(LibModule())
+                .publicationModule(PublicationModule(view))
+                .build()
+    }
 
 
 }

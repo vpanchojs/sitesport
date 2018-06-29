@@ -300,16 +300,16 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
 
     private fun hideLoading(sectionView: View, loadingView: View, msg: String?) {
-        if(msg != null) {
+        //if(msg == null) {
             loadingView.visibility = View.GONE
             sectionView.visibility = View.VISIBLE
-        }else{
+        /*}else{
             loadingView.pbLoading.visibility = View.GONE
             loadingView.tvLoading.text = msg
             loadingView.tvLoading.visibility = View.VISIBLE
             loadingView.visibility = View.VISIBLE
             sectionView.visibility = View.INVISIBLE
-        }
+        }*/
     }
 
     private fun setServices(service: Servicio) {

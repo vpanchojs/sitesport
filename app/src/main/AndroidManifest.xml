@@ -123,9 +123,9 @@
             android:value="@string/default_notification_channel_id" />
 
         <activity
-            android:name=".publication.PublicationActivity"
+            android:name=".publication.ui.PublicationActivity"
             android:label="@string/title_activity_publication"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

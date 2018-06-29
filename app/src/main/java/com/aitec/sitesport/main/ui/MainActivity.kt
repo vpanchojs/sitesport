@@ -32,7 +32,7 @@ import com.aitec.sitesport.main.adapter.SearchNamesEntrepiseAdapter
 import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
-import com.aitec.sitesport.publication.PublicationActivity
+import com.aitec.sitesport.publication.ui.PublicationActivity
 import com.aitec.sitesport.reservationHistory.ReservationHistoryFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.aitec.sitesport.util.BaseActivitys

@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clMainScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context="com.aitec.sitesport.profileEnterprise.ui.ProfileActivity">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cordinator_layout_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
-        tools:context="com.aitec.sitesport.profileEnterprise.ui.ProfileActivity">
+        android:background="#fff">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar_layout_profile"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
+            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -30,7 +32,7 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginBottom="28dp"
-                app:expandedTitleMarginEnd="118dp"
+                app:expandedTitleMarginEnd="90dp"
                 app:expandedTitleMarginStart="18dp"
                 app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -92,7 +94,6 @@
 
                     </android.support.constraint.ConstraintLayout>
 
-
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.v7.widget.Toolbar
@@ -130,59 +131,6 @@
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
-
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/clLoader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/pbLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.499"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnReload"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_buttom_buttom_sheet"
-            android:text="Recargar"
-            app:layout_constraintEnd_toEndOf="@+id/tvInfo"
-            app:layout_constraintStart_toStartOf="@+id/tvInfo"
-            app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
-
-    </android.support.constraint.ConstraintLayout>
-
 
 </android.support.constraint.ConstraintLayout>
 

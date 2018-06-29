@@ -25,11 +25,25 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         postEvent(ProfileEvent.SUCCESS, ProfileActivity.AUTHENTICATION, null, firebaseApi.isAuthenticated())
     }
 
+    override fun getBasicProfile(idEnterprise: String) {
+        firebaseApi.getBasicProfile(idEnterprise, object : onApiActionListener<Enterprise> {
+            override fun onSucces(response: Enterprise) {
+                var msg: String? = null
+                if (!response.isOnline) msg = MSG_ERROR_CONNECTION
+                postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_BASIC, msg, response)
+            }
+
+            override fun onError(error: Any?) {
+                postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_BASIC, error.toString(), null)
+            }
+        })
+    }
+
     override fun getTableTime(idEnterprise: String) {
         firebaseApi.getTableTimeProfile(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
-                if(response.horarios.isEmpty()) msg = "Horario no disponible"
+                if(response.horarios.isEmpty()) msg = "Horario no agregado"
                 else{
                     response.horarios = response.horarios.sortedBy { selector(it) }
 
@@ -56,7 +70,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getCourts(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
-                if(response.canchas.isEmpty()) msg = "Canchas no disponibles"
+                if(response.canchas.isEmpty()) msg = "Canchas no agregadas"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_COURTS, msg, response)
             }
@@ -72,7 +86,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getServices(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
-                if(response.servicios.isEmpty()) msg = "Servicios no disponibles"
+                if(response.servicios.isEmpty()) msg = "Servicios no agregados"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_SERVICES, msg, response)
             }
@@ -88,7 +102,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         firebaseApi.getContacts(idEnterprise, object : onApiActionListener<Enterprise> {
             override fun onSucces(response: Enterprise) {
                 var msg: String? = null
-                if(response.redes_social.isEmpty()) msg = "Contáctos no disponibles"
+                if(response.redes_social.isEmpty()) msg = "Contáctos no agregados"
                 if (!response.isOnline) msg = MSG_ERROR_CONNECTION
                 postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_CONTACTS, msg, response)
             }
@@ -102,20 +116,6 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
 
 
     override fun stopRequests() {
-    }
-
-    override fun getBasicProfile(idEnterprise: String) {
-        firebaseApi.getBasicProfile(idEnterprise, object : onApiActionListener<Enterprise> {
-            override fun onSucces(response: Enterprise) {
-                var msg: String? = null
-                if (!response.isOnline) msg = MSG_ERROR_CONNECTION
-                postEvent(ProfileEvent.SUCCESS, ProfileActivity.SECTION_BASIC, msg, response)
-            }
-
-            override fun onError(error: Any?) {
-                postEvent(ProfileEvent.ERROR, ProfileActivity.SECTION_BASIC, error.toString(), null)
-            }
-        })
     }
 
     override fun getLike(idUser: String, idEnterprise: String) {
@@ -170,7 +170,7 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
     }
 
     companion object {
-        const val MSG_ERROR_CONNECTION = "Sin conexión a internet."
+        const val MSG_ERROR_CONNECTION = "Problemas de conexión"
     }
 
 }

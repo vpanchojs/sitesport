@@ -38,8 +38,11 @@
     <color name="colorDotDisable">#5affffff</color>
 
 
-    <color name="colorTextProfile">@color/colorPrimary</color>
+    <color name="colorTextTitle">@color/colorPrimary</color>
+    <color name="colorTextSubTitle">#b42a2e43</color>
     <color name="colorDividerProfile">#4b2a2e43</color>
+
+
 
     <color name="colorIconsServicesDefault">#322a2e43</color>
 

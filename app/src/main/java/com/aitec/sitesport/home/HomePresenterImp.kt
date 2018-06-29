@@ -41,18 +41,12 @@ class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var 
         when (events.type) {
 
             HomeEvents.ON_ADD_PUBLISH -> {
-                Log.e("llega", "")
                 view.addPublication(events.any as Publication)
-
             }
             HomeEvents.ON_UPDATE_PUBLISH -> {
-
-                Log.e("update", "")
                 view.updatePublication(events.any as Publication)
             }
             HomeEvents.ON_REMOVE_PUBLISH -> {
-
-                Log.e("remove", "")
                 view.removePublication(events.any as Publication)
             }
 
