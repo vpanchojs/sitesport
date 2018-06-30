@@ -12,6 +12,7 @@
         android:fitsSystemWindows="true"
         tools:context="com.aitec.sitesport.mapsSites.ui.MapsActivity">
 
+
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"

@@ -53,7 +53,8 @@ class MapSitesActivity : AppCompatActivity(), EntrepiseAdapter.onEntrepiseAdapte
                 .zoom(14F)
                 .build()
 
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        //mMap.animateCamera()
 
         mMap.setOnCameraIdleListener(this)
         mMap.setOnMarkerClickListener(this)
