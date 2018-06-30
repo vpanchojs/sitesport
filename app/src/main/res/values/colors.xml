@@ -24,7 +24,7 @@
 
     <color name="colorNormalIButton">#353A50</color>
     <color name="colorPressIButton">#1f222e</color>
-    <color name="colorDisableIButton">#b6b6b6</color>
+    <color name="colorDisableIButton">#d6d6d6</color>
 
     <color name="colorNormalNoIButton">#f4f4f4</color>
     <color name="colorPressNoIButton">#e6e6e6</color>
