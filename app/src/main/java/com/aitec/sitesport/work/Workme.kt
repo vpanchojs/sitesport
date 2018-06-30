@@ -43,7 +43,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
                 .zoom(17F)
                 .build()
 
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
         mMap.setOnCameraIdleListener(this)
     }
