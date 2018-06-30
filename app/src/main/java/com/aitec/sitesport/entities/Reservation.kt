@@ -18,7 +18,8 @@ class Reservation() : Parcelable {
 /*Nuevas variables*/
 
     var fecha_reserva: String = ""
-    var hora_reserva: String = ""
+    var hora_reserva: Int = 0
+    var horas_juego: Int = 0
     var estado: String = ""
     var observaciones = ""
     var cliente: User? = null

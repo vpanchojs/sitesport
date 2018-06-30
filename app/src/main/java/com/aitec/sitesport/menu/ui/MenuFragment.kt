@@ -21,6 +21,7 @@ import com.aitec.sitesport.menu.adapter.OptionsAdapter
 import com.aitec.sitesport.menu.adapter.onOptionsAdapterListener
 import com.aitec.sitesport.profileUser.ui.ProfileUserActivity
 import com.aitec.sitesport.util.BaseActivitys
+import com.aitec.sitesport.util.EnumMenu
 import com.aitec.sitesport.util.GlideApp
 import com.aitec.sitesport.util.OptionMenu
 import com.aitec.sitesport.work.Workme
@@ -66,11 +67,11 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     private fun setupMenuOptions() {
-        data!!.add(OptionMenu(R.drawable.ic_share, getString(R.string.menu_option_share_app)))
-        data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions)))
-        data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help)))
-        data!!.add(OptionMenu(R.drawable.ic_email_black_24dp, getString(R.string.menu_option_contact)))
-        data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout)))
+        data!!.add(OptionMenu(R.drawable.ic_share, getString(R.string.menu_option_share_app), EnumMenu.SHARE_APP.code))
+        //data!!.add(OptionMenu(R.drawable.ic_termins_conditions, getString(R.string.menu_option_termins_and_conditions), EnumMenu.TERMS_AND_CONDITIONS.code))
+        //data!!.add(OptionMenu(R.drawable.ic_help, getString(R.string.menu_option_help), EnumMenu.HELP.code))
+        data!!.add(OptionMenu(R.drawable.ic_email_black_24dp, getString(R.string.menu_option_contact), EnumMenu.CONTACT_ME.code))
+        data!!.add(OptionMenu(R.drawable.ic_exit, getString(R.string.menu_option_signout), EnumMenu.CLOSE_SESSION.code))
 
 
         adapterOptions = OptionsAdapter(data!!, this)
@@ -203,7 +204,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     override fun onClick(position: Int) {
         when (position) {
-            0 -> {
+            EnumMenu.SHARE_APP.code -> {
                 showMessagge("Obteniendo aplicaciones")
                 BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {
                     override fun onSucces(response: String) {
@@ -219,20 +220,20 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 })
             }
 
-            1 -> {
+            EnumMenu.TERMS_AND_CONDITIONS.code -> {
                 //showMessage("Terminos y Condiciones")
                 openBrowser("https://www.google.com")
             }
-            2 -> {
+            EnumMenu.HELP.code -> {
                 //showMessage("Ayuda")
                 openBrowser("https://www.google.com")
             }
-            3 -> {
+            EnumMenu.CONTACT_ME.code -> {
                 val intento1 = Intent(context, Workme::class.java)
                 startActivity(intento1)
                 //showMessage("Contactenos")
             }
-            4 -> {
+            EnumMenu.CLOSE_SESSION.code -> {
                 presenter.onSingOut()
             }
 

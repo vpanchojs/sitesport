@@ -60,7 +60,7 @@
     <string name="address_found">Direccion encontrada</string>
     <string name="campo_lleno">Este campo no debe estar vacio</string>
     <string name="menu_option_share_app">Compartir aplicación</string>
-    <string name="ic_home">Home</string>
+    <string name="ic_home">Inicio</string>
     <string name="default_notification_channel_id">firebase</string>
     <string name="main_message_picture_source">Obtener la foto desde</string>
     <string name="title_activity_publication">PublicationActivity</string>

@@ -22,15 +22,15 @@ class OptionsAdapter(var data: ArrayList<OptionMenu>?, var callback: onOptionsAd
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.tv_name_option.text = data!!.get(position).name
         holder.view.iv_option.setImageResource(data!!.get(position).icon)
-        holder.onClickItemListener(position, callback)
+        holder.onClickItemListener(data!!.get(position).code, callback)
     }
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun onClickItemListener(position: Int, callback: onOptionsAdapterListener) {
-            view.setOnClickListener({
+            view.setOnClickListener {
                 callback.onClick(position)
-            })
+            }
         }
     }
 }

@@ -66,7 +66,7 @@ class WelcomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
                     return PlaceholderFragment.newInstance("Visualiza", "Información relevante sobre el sitio deportivo de tu preferencia", R.drawable.ic_visibility_black_24dp)
                 }
                 2 -> {
-                    return PlaceholderFragment.newInstance("Reserva", "En el centro deportivo de preferencia mediante pagos electrónicos (PROXIMAMENTE).", R.drawable.ic_credit_card_black_24dp)
+                    return PlaceholderFragment.newInstance("Reserva", "En el centro deportivo de preferencia (PROXIMAMENTE).", R.drawable.ic_credit_card_black_24dp)
                 }
                 else -> {
                     return PlaceholderFragment.newInstance("Encuentra", "Sitios deportivos mediante filtros para una buesqueda eficiente", R.drawable.ic_map_black_24dp)

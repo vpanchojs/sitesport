@@ -615,9 +615,14 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getItemReserved(fecha: String, idEnterprise: String, pkCancha: String, callback: onApiActionListener<List<Reservation>>) {
-        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_COURT).whereEqualTo("canchas.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
+        db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_RESERVATION).whereEqualTo("canchas.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
                 .addOnSuccessListener {
                     Log.e(TAG, "item reserva succes")
+
+                    it.documents.forEach {
+
+                    }
+
                     callback.onSucces(ArrayList<Reservation>())
                 }
                 .addOnFailureListener {

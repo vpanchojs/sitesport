@@ -187,7 +187,7 @@ class Workme : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleLi
 
     fun enviar() {
 
-        val CC = "soporte@aitecec.com"
+        val CC = "sitesport.soporte@gmail.com"
         val TO = arrayOf<String>(CC.toString())
         val email = Intent(android.content.Intent.ACTION_SEND)
         email.setType("text/html")

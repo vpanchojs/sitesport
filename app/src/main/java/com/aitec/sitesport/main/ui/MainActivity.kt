@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         searchResultsAdapter = SearchNamesEntrepiseAdapter(searchrResultList, this)
         rv_results_searchs.layoutManager = LinearLayoutManager(this)
         rv_results_searchs.adapter = searchResultsAdapter
-        navigation.selectedItemId = R.id.navigation_site
+        navigation.selectedItemId = R.id.navigation_home
 
 
         btn_map.setOnClickListener {
