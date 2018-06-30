@@ -128,7 +128,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     @SuppressLint("SetTextI18n")
     override fun onCheckedCourt(court: Cancha) {
         tvNumPlayers.text = court.numero_jugadores
-        tvFloor.text = court.piso
+        tvFloor.text = court.piso.toLowerCase()
         tvPriceDay.text = "$${court.precio_dia}"
         tvPriceNight.text = "$${court.precio_noche}"
         updateImages(court.fotos!!)
