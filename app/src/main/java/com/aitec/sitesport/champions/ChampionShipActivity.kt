@@ -1,25 +1,40 @@
 package com.aitec.sitesport.champions
 
+import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.view.*
 import com.aitec.sitesport.R
+import com.aitec.sitesport.champions.adapter.SportAdapter
+import com.aitec.sitesport.entities.Sport
+import com.aitec.sitesport.entities.enterprise.Cancha
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.view.*
 
-class ChampionShipActivity : AppCompatActivity() {
+class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport, View.OnClickListener, SelectTeamFragment.OnSelectTeamListener {
+
+
+    override fun onTeamSelect(team: String) {
+
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0!!.id) {
+            R.id.btn_team -> {
+                val selectTeamFragment = SelectTeamFragment.newInstance(arrayOf("Todos", "5 B", "7 C "))
+                selectTeamFragment.show(supportFragmentManager, "SelectTeam")
+            }
+        }
+
+    }
+
+    override fun onSelectSport(sport: Sport) {
+
+    }
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -46,6 +61,24 @@ class ChampionShipActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
+        setupRecyclerViewClourt(ArrayList<Cancha>())
+        setupEvent()
+    }
+
+
+    fun setupEvent() {
+        btn_team.setOnClickListener(this)
+    }
+
+    private fun setupRecyclerViewClourt(courts: List<Cancha>) {
+        //  Log.e("canchas", courts.toString())
+        val sporst = ArrayList<Sport>()
+        sporst.add(Sport(nombre = "Baloncesto", juega = true))
+        sporst.add(Sport(nombre = "Indor", juega = true))
+        sporst.add(Sport(nombre = "Ecuavoley", juega = true))
+        val adapter = SportAdapter(sporst, this)
+        rv_sport.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_sport.adapter = adapter
     }
 
 
