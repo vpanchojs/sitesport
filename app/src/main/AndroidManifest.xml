@@ -28,11 +28,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -126,6 +122,16 @@
             android:name=".publication.ui.PublicationActivity"
             android:label="@string/title_activity_publication"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".champions.ChampionShipActivity"
+            android:label="@string/title_activity_champion_ship"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

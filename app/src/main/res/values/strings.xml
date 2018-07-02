@@ -6,8 +6,8 @@
     <string name="none_results">Sin resultados</string>
     <string name="accessTokenMapBox">pk.eyJ1IjoidnBhbmNob2pzIiwiYSI6ImNqN2gzdXdrbzFkejEyeG82Z2IyaDcxazUifQ.LMqRVTqNyzGOtED90lMtZA</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_1">Cronograma</string>
+    <string name="tab_text_2">Tabla de Posiciones</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_menu">Menú</string>
@@ -155,5 +155,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_champion_ship">ChampionShipActivity</string>
 
 </resources>
