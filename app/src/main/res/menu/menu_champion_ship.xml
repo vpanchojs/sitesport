@@ -2,9 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aitec.sitesport.champions.ChampionShipActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_go_location"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/action_go_location"
+        android:icon="@drawable/ic_run_man"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="100"
+        android:title="@string/action_shared"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom" />
+
 </menu>
