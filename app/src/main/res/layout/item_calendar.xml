@@ -2,7 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tv_date"
@@ -12,6 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="12 de junio"
+        android:gravity="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_time"
         app:layout_constraintHorizontal_bias="0.5"
@@ -27,6 +30,7 @@
         android:layout_marginTop="8dp"
         android:text="8:00 am"
         android:textSize="12sp"
+        android:gravity="center"
         app:layout_constraintEnd_toStartOf="@+id/tv_genero"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_date"
@@ -39,6 +43,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="Masculino"
+        android:gravity="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -89,12 +94,14 @@
         android:id="@+id/tv_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Finalizo"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_team1" />
