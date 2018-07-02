@@ -110,7 +110,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     private fun setupTableTimeSection() {
         clTableTime.setOnClickListener {
             val tableTImeFragment = TableTimeFragment.newInstance(enterprise.horarios)
-            tableTImeFragment.show(supportFragmentManager, "TableTimeFragment")
+            tableTImeFragment.show(supportFragmentManager, "CalendarFragment")
         }
     }
 

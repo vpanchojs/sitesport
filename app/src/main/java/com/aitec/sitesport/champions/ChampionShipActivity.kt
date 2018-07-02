@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.aitec.sitesport.R
+import com.aitec.sitesport.champions.adapter.CalendarAdapter
 import com.aitec.sitesport.champions.adapter.SportAdapter
+import com.aitec.sitesport.entities.ItemCalendar
 import com.aitec.sitesport.entities.Sport
+import com.aitec.sitesport.entities.Team
 import com.aitec.sitesport.entities.enterprise.Cancha
 import kotlinx.android.synthetic.main.activity_champion_ship.*
-import kotlinx.android.synthetic.main.fragment_champion_ship.view.*
+import kotlinx.android.synthetic.main.fragment_champion_ship.*
 
 class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport, View.OnClickListener, SelectTeamFragment.OnSelectTeamListener {
 
@@ -110,8 +113,8 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
 
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
+            // Return a CalendarFragment (defined as a static inner class below).
+            return CalendarFragment.newInstance(position + 1)
         }
 
         override fun getCount(): Int {
@@ -123,28 +126,34 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     /**
      * A placeholder fragment containing a simple view.
      */
-    class PlaceholderFragment : Fragment() {
+    class CalendarFragment : Fragment() {
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_champion_ship, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
             return rootView
         }
 
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            var items = ArrayList<ItemCalendar>()
+            items.add(ItemCalendar(fecha = "12 de junio", hora = "8 am", genero = "Masculino", estado = "SIN JUGAR", equipo_1 = Team(), equipo_2 = Team()))
+            items.add(ItemCalendar(fecha = "12 de junio", hora = "8 am", genero = "Masculino", estado = "SIN JUGAR", equipo_1 = Team(), equipo_2 = Team()))
+            setupRecyclerViewTableTime(items)
+        }
+
+        private fun setupRecyclerViewTableTime(items: List<ItemCalendar>) {
+            val adapter = CalendarAdapter(items)
+            rv_calendar.layoutManager = LinearLayoutManager(context)
+            rv_calendar.adapter = adapter
+        }
+
         companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
+
             private val ARG_SECTION_NUMBER = "section_number"
 
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
+            fun newInstance(sectionNumber: Int): CalendarFragment {
+                val fragment = CalendarFragment()
                 val args = Bundle()
                 args.putInt(ARG_SECTION_NUMBER, sectionNumber)
                 fragment.arguments = args
