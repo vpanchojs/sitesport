@@ -9,7 +9,7 @@
 
     <item android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/colorNormalNoIButton" />
+            <solid android:color="@color/colorBlackTransparent" />
             <corners android:radius="12dp" />
         </shape>
     </item>
