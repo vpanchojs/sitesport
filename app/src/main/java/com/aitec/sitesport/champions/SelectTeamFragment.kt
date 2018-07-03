@@ -38,6 +38,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         nump!!.minValue = 0
         nump!!.maxValue = teams.size - 1
         nump!!.value = value
+        nump!!.isClickable = false
         builder.setView(view)
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)

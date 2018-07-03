@@ -126,10 +126,12 @@
         <activity
             android:name=".champions.ChampionShipActivity"
             android:label="@string/title_activity_champion_ship"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".team.TeamActivity"
             android:label="@string/title_activity_team"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

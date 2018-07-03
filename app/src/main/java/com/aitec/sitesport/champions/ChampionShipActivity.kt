@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.fragment_champion_ship.*
 class ChampionShipActivity : AppCompatActivity(),
         SportAdapter.onSelectItemSport,
         View.OnClickListener,
-        SelectTeamFragment.OnSelectTeamListener{
+        SelectTeamFragment.OnSelectTeamListener {
 
     private var firebaseApi: FirebaseApi? = null
     private var teamsList = ArrayList<Team>()
@@ -126,12 +126,18 @@ class ChampionShipActivity : AppCompatActivity(),
     }
 
     private fun getTeams() {
+        btn_team.isEnabled = false
+        tv_message_sport.text = "Obteniendo lista de equipos"
+
         firebaseApi!!.getTeams(object : onApiActionListener<List<Team>> {
             override fun onSucces(response: List<Team>) {
                 response.forEach {
                     array.add(it.nombre)
                 }
                 teamsList.addAll(response)
+                btn_team.isEnabled = true
+                tv_message_sport.text = "Seleccione un equipo para cargar los deportes"
+
             }
 
             override fun onError(error: Any?) {
@@ -262,9 +268,15 @@ class ChampionShipActivity : AppCompatActivity(),
     class CalendarFragment : Fragment(), onCalendarAdapterListener {
 
         override fun navigatioTeam(team: Team) {
-            val i = Intent(activity!!, TeamActivity::class.java)
-            i.putExtra("team", team)
-            startActivity(i)
+
+            if (!team.pk.equals("")) {
+                val i = Intent(activity!!, TeamActivity::class.java)
+                i.putExtra("team", team)
+                startActivity(i)
+            } else {
+                Toast.makeText(context, "No tenemos información sobre ese equipo", Toast.LENGTH_LONG).show()
+            }
+
         }
 
         private var firebaseApi: FirebaseApi? = null
@@ -286,11 +298,13 @@ class ChampionShipActivity : AppCompatActivity(),
         }
 
         private fun getEncuentros() {
+            progressbar.visibility = View.VISIBLE
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
                     itemCalentarList.add(response)
                     data.add(response)
                     adapterCalendar.notifyDataSetChanged()
+                    progressbar.visibility = View.GONE
                 }
 
                 override fun removeDocument(response: ItemCalendar) {

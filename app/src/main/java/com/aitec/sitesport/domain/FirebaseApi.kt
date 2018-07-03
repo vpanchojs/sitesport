@@ -430,6 +430,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getTeam(pkTeam: String, callback: onApiActionListener<Team>) {
+        Log.e("id", pkTeam)
         db.collection(PATH_TEAMS).document(pkTeam)
                 .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
                 .addOnSuccessListener {
@@ -439,7 +440,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     callback.onSucces(p)
                 }
                 .addOnFailureListener {
-                    Log.d(TAG, "Error => " + it.message)
+                    // Log.d(TAG, "Error => " + it.message)
                     callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
