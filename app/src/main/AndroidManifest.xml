@@ -28,6 +28,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -104,7 +111,9 @@
             android:name=".work.Workme"
             android:label="Trabaja con Nosotros" />
 
-        <service android:name=".notifications.servicies.MyFirebaseMessagingService">
+        <service
+            android:name=".notifications.servicies.MyFirebaseMessagingService"
+            android:permission="">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -127,12 +136,12 @@
             android:name=".champions.ChampionShipActivity"
             android:label="@string/title_activity_champion_ship"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".team.TeamActivity"
             android:label="@string/title_activity_team"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
