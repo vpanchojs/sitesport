@@ -25,6 +25,8 @@ import android.view.View
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.champions.ChampionShipActivity
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.home.ui.HomeFragment
 import com.aitec.sitesport.main.MainPresenter
@@ -153,9 +155,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                         //compartir publicación
                             BaseActivitys.LINK_PUBLICATION -> {
                                 startActivity(
-                                        Intent(this, PublicationActivity::class.java)
+                                        Intent(this, ChampionShipActivity::class.java)
                                                 .putExtra(
-                                                        PublicationActivity.PUBLICATION,
+                                                        Publication.PUBLICATION,
                                                         it.link.getQueryParameter("pk")
                                                 )
                                 )

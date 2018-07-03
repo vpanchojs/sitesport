@@ -32,7 +32,7 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
         setContentView(R.layout.activity_publication)
         setupInjection()
         publicationPresenter.register()
-        publication.pk = intent.getStringExtra(PUBLICATION)
+        publication.pk = intent.getStringExtra(Publication.PUBLICATION)
         setupUI()
         callPublication()
     }
@@ -158,7 +158,4 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
         publicationComponent.inject(this)
     }
 
-    companion object {
-        const val PUBLICATION = "publication"
-    }
 }

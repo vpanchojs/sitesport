@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_bg_balon"
                 android:src="@drawable/rusia"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:layout_gravity="center"
                 app:layout_collapseMode="parallax"
                 android:contentDescription="@null" />
@@ -39,6 +39,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="parallax"
                 app:title="@string/app_name"
+                android:background="@color/colorBlackTransparent"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -75,53 +76,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/clOut"
+
+        <Button
+            android:id="@+id/btn_team"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:visibility="visible"
+            android:background="@drawable/bg_profile_no_buttons"
+            android:text="Todos"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_sport"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread">
-
-            <Button
-                android:id="@+id/btn_team"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/bg_profile_no_buttons"
-                android:text="Todos"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="@+id/rv_sport" />
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_sport"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/clOut"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/clOut"
-            app:layout_constraintTop_toTopOf="@+id/clOut" />
+            app:layout_constraintStart_toEndOf="@+id/btn_team"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"
@@ -130,11 +109,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clOut" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_team" />
     </android.support.constraint.ConstraintLayout>
 
 

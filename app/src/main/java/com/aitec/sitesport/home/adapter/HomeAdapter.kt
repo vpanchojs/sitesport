@@ -51,7 +51,7 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
         holder.onNavigationProfile(position, callback)
 
         holder.view.btn_home_share.setOnClickListener {
-            callback.sharePublication(data!!.get(position).pk!!)
+            callback.sharePublication(data!!.get(position))
         }
     }
 
@@ -67,6 +67,6 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
 
 interface onHomeAdapterListener {
     fun navigatioProfile(position: Int)
-    fun sharePublication(pk: String)
+    fun sharePublication(publication: Publication)
 }
 

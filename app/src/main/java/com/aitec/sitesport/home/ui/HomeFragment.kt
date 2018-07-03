@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
+import com.aitec.sitesport.champions.ChampionShipActivity
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.home.HomePresenter
@@ -68,7 +69,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     override fun updatePublication(publication: Publication) {
-        val pu = findPublication(publication.pk!!)
+        val pu = findPublication(publication.pk)
         if (pu != null) {
             pu.titulo = publication.titulo
             pu.fecha = publication.fecha
@@ -94,14 +95,22 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     override fun navigatioProfile(position: Int) {
-        val i = Intent(activity!!, PublicationActivity::class.java)
-        i.putExtra(PublicationActivity.PUBLICATION, data[position].pk)
+        var i: Intent? = null
+        when(data[position].type){
+            Publication.EVENT ->{
+                i = Intent(activity!!, ChampionShipActivity::class.java)
+            }
+            Publication.PROMO ->{
+                i = Intent(activity!!, PublicationActivity::class.java)
+            }
+        }
+        i!!.putExtra(Publication.PUBLICATION, data[position].pk)
         startActivity(i)
     }
 
-    override fun sharePublication(pk: String) {
+    override fun sharePublication(publication: Publication) {
         BaseActivitys.showToastMessage(activity!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
+        BaseActivitys.buildDinamycLinkShareApp(publication.pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }

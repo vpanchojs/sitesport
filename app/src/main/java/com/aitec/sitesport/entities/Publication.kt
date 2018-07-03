@@ -15,6 +15,7 @@ class Publication() : Parcelable{
     var titulo: String = ""
     var fecha: String = ""
     var descripcion: String = ""
+    var type: Int = EVENT
     var isOnline: Boolean = true
 
     constructor(parcel: Parcel) : this() {
@@ -26,6 +27,7 @@ class Publication() : Parcelable{
         titulo = parcel.readString()
         fecha = parcel.readString()
         descripcion = parcel.readString()
+        type = parcel.readInt()
         isOnline = parcel.readByte() != 0.toByte()
     }
 
@@ -38,6 +40,7 @@ class Publication() : Parcelable{
         parcel.writeString(titulo)
         parcel.writeString(fecha)
         parcel.writeString(descripcion)
+        parcel.writeInt(type)
         parcel.writeByte(if (isOnline) 1 else 0)
     }
 
@@ -53,6 +56,11 @@ class Publication() : Parcelable{
         override fun newArray(size: Int): Array<Publication?> {
             return arrayOfNulls(size)
         }
+
+        const val EVENT = 0
+        const val PROMO = 1
+        const val PUBLICATION = "publication"
+
     }
 
 
