@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_bg_balon"
-                android:src="@drawable/rusia"
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"
                 app:layout_collapseMode="parallax"
