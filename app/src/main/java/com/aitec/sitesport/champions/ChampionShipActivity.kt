@@ -78,6 +78,14 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         }
     }
 
+    private fun setupToolBar() {
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.title = ""
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+    }
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
@@ -85,7 +93,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_champion_ship)
 
-        setSupportActionBar(toolbar)
+        setupToolBar()
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -168,6 +176,9 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
             }
             R.id.action_share -> {
                 sharePublication()
+            }
+            R.id.action_go_location -> {
+                goLocationMap()
             }
         }
         return super.onOptionsItemSelected(item)
