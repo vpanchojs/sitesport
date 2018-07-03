@@ -6,10 +6,7 @@ import android.os.Handler
 import android.util.Log
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
-import com.aitec.sitesport.entities.Publication
-import com.aitec.sitesport.entities.Reservation
-import com.aitec.sitesport.entities.SearchCentersName
-import com.aitec.sitesport.entities.User
+import com.aitec.sitesport.entities.*
 import com.aitec.sitesport.entities.enterprise.*
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +24,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     companion object {
         const val TAG = "FirebaseApi"
         const val PATH_USER = "usuario"
+        const val PATH_TEAMS = "equipo"
+        const val PATH_ENCUENTROS = "encuentros"
         const val STORAGE_USER_PHOTO_PATH = "usuario_photos"
         const val PATH_SPORT_CENTER = "centro_deportivo"
         const val PATH_TABLE_TIME = "horario"
@@ -653,6 +652,60 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnFailureListener {
                     callback.onError("Posible problema de conexión, intentelo nuevamente")
 
+                }
+    }
+
+    fun getEncuentros(callback: RealTimeListener<ItemCalendar>) {
+
+        db.collection(PATH_ENCUENTROS).addSnapshotListener { querySnapshot, e ->
+            if (e != null) {
+                Log.e(TAG, "listen:error", e)
+                callback.omError(e)
+            }
+
+            if (querySnapshot!!.documentChanges.isNotEmpty()) {
+
+                querySnapshot.documentChanges.forEach {
+                    when (it.type) {
+                        DocumentChange.Type.ADDED -> {
+                            val item = it.document.toObject(ItemCalendar::class.java)
+                            item.pk = it.document.id
+                            callback.addDocument(item)
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val item = it.document.toObject(ItemCalendar::class.java)
+                            item.pk = it.document.id
+                            callback.updateDocument(item)
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            val item = it.document.toObject(ItemCalendar::class.java)
+                            item.pk = it.document.id
+                            callback.removeDocument(item)
+                        }
+                    }
+                }
+            } else {
+                callback.emptyNode("No hay publicaciones")
+            }
+
+        }
+    }
+
+    fun getTeams(callback: onApiActionListener<List<Team>>) {
+
+        db.collection(PATH_TEAMS).get()
+                .addOnSuccessListener {
+                    val teams = ArrayList<Team>()
+                    it.forEach {
+                        val team = it.toObject(Team::class.java)
+                        team.pk = it.id
+                        teams.add(team)
+                    }
+                    callback.onSucces(teams)
+
+                }
+                .addOnFailureListener {
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                 }
     }
 

@@ -13,14 +13,27 @@ class CalendarAdapter(var itemCalendar: List<ItemCalendar>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemCalendar.get(position)
         holder.view.tv_date.text = item.fecha
-        holder.view.tv_time.text = item.hora
+        holder.view.tv_time.text = "${item.hora}:00"
         holder.view.tv_genero.text = item.genero
-        holder.view.tv_state.text = item.estado
-        holder.view.btn_team1.text = item.equipo_1.nombre
-        holder.view.btn_team2.text = item.equipo_2.nombre
 
-        if (item.estado.equals("finalizado")) {
-            holder.view.tv_result.text = "${item.equipo_1.marcador} - ${item.equipo_2.marcador}"
+        when (item.estado) {
+            ItemCalendar.JUGANDO -> {
+                holder.view.tv_state.text = "JUGANDO"
+            }
+            ItemCalendar.FINALIZO -> {
+                holder.view.tv_state.text = "FINALIZO"
+            }
+            ItemCalendar.SIN_JUGAR -> {
+                holder.view.tv_state.text = "PENDIENTE"
+            }
+        }
+
+
+        holder.view.btn_team1.text = item.equipo1.nombre
+        holder.view.btn_team2.text = item.equipo2.nombre
+
+        if (item.estado == ItemCalendar.FINALIZO) {
+            holder.view.tv_result.text = "${item.equipo1.marcador} - ${item.equipo2.marcador}"
         } else {
             holder.view.tv_result.text = "VS"
         }

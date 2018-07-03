@@ -18,12 +18,12 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
     private var nump: NumberPicker? = null
     private var callback: OnSelectTeamListener? = null
 
-    var array = arrayOf("Todos", "4B")
+    lateinit var teams: ArrayList<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        array = arguments!!.getStringArray(PARAM_TEAMS)
+        teams = arguments!!.getStringArrayList(PARAM_TEAMS)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -32,9 +32,9 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         btn_select = view.btn_select
         ib_close = view.ib_back
         nump = view.np
-        nump!!.displayedValues = array
+        nump!!.displayedValues = teams.toTypedArray()
         nump!!.minValue = 0
-        nump!!.maxValue = array.size - 1
+        nump!!.maxValue = teams.size - 1
 
         builder.setView(view)
         val dialog = builder.create()
@@ -75,10 +75,10 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
 
     companion object {
         const val PARAM_TEAMS = "TEAM"
-        fun newInstance(array: Array<String>): SelectTeamFragment {
+        fun newInstance(array: ArrayList<String>): SelectTeamFragment {
             var fragment = SelectTeamFragment()
             val args = Bundle()
-            args.putStringArray(PARAM_TEAMS, array)
+            args.putStringArrayList(PARAM_TEAMS, array)
             fragment.arguments = args
             return fragment
         }
