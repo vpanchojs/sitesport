@@ -19,11 +19,13 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
     private var callback: OnSelectTeamListener? = null
 
     lateinit var teams: ArrayList<String>
+    var value = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         teams = arguments!!.getStringArrayList(PARAM_TEAMS)
+        value = arguments!!.getInt(PARAM_VALUE)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -35,7 +37,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         nump!!.displayedValues = teams.toTypedArray()
         nump!!.minValue = 0
         nump!!.maxValue = teams.size - 1
-
+        nump!!.value = value
         builder.setView(view)
         val dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
@@ -49,7 +51,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         val dialogo = getDialog() as AlertDialog
         if (dialogo != null) {
             btn_select!!.setOnClickListener {
-                callback!!.onTeamSelect(nump!!.displayedValues[nump!!.value])
+                callback!!.onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
                 dismiss()
             }
             ib_close!!.setOnClickListener {
@@ -75,17 +77,19 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
 
     companion object {
         const val PARAM_TEAMS = "TEAM"
-        fun newInstance(array: ArrayList<String>): SelectTeamFragment {
+        const val PARAM_VALUE = "VALUE"
+        fun newInstance(array: ArrayList<String>, value: Int): SelectTeamFragment {
             var fragment = SelectTeamFragment()
             val args = Bundle()
             args.putStringArrayList(PARAM_TEAMS, array)
+            args.putInt(PARAM_VALUE, value)
             fragment.arguments = args
             return fragment
         }
     }
 
     interface OnSelectTeamListener {
-        fun onTeamSelect(team: String)
+        fun onTeamSelect(team: String, value: Int)
     }
 
 

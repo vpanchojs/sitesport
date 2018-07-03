@@ -81,12 +81,12 @@
             android:layout_width="wrap_content"
             android:layout_height="33dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_profile_no_buttons"
-            android:text="Todos"
+            android:text="Equipo"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/rv_sport"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/rv_sport" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -97,6 +97,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_team"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_team"
             app:layout_constraintTop_toTopOf="parent" />

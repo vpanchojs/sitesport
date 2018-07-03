@@ -33,11 +33,13 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     var array = arrayListOf<String>()
 
     var teamSelect: Team? = null
+    var value: Int = 0
 
 
-    override fun onTeamSelect(team: String) {
+    override fun onTeamSelect(team: String, valu: Int) {
         Log.e("TEAMSELEC", "team: $team")
         btn_team.text = team
+        value = valu
 
         teamSelect = teamsList.find {
             it.nombre.equals(team)
@@ -51,7 +53,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_team -> {
-                val selectTeamFragment = SelectTeamFragment.newInstance(array)
+                val selectTeamFragment = SelectTeamFragment.newInstance(array, value)
                 selectTeamFragment.show(supportFragmentManager, "SelectTeam")
             }
         }
