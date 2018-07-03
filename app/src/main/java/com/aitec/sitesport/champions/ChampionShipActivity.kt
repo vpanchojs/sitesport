@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -163,7 +162,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         adapterSport.notifyDataSetChanged()
     }
 
-    private fun loadImage(){
+    private fun loadImage() {
         GlideApp.with(this)
                 .load(publication.foto)
                 .placeholder(R.drawable.ic_bg_balon)
@@ -180,7 +179,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -194,7 +193,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         return super.onOptionsItemSelected(item)
     }
 
-    private fun goLocationMap(){
+    private fun goLocationMap() {
         val gmmIntentUri =
                 Uri.parse("google.navigation:q=" +
                         -4.010622 + "," +
@@ -289,12 +288,17 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
                 }
 
                 override fun updateDocument(response: ItemCalendar) {
+                    Log.e(TAG, "${response.estado}")
                     val item = getItemCalenter(response.pk)
                     if (item != null) {
+                        Log.e(TAG, "se actualizo")
                         item.estado = response.estado
                         item.equipo2 = response.equipo2
                         item.equipo1 = response.equipo1
                     }
+
+                    adapterCalendar.notifyDataSetChanged()
+
                 }
 
                 override fun omError(error: Any) {
@@ -310,7 +314,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
 
         fun getItemCalenter(pk: String): ItemCalendar? {
             return itemCalentarList.find {
-                it.equals(pk)
+                it.pk.equals(pk)
             }
         }
 
