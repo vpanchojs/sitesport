@@ -26,20 +26,20 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_bg_balon"
-                android:scaleType="centerCrop"
                 android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                android:contentDescription="@null" />
+                app:srcCompat="@drawable/ic_bg_balon" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="parallax"
-                app:title="@string/app_name"
                 android:background="@color/colorBlackTransparent"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:layout_collapseMode="parallax"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title="@string/app_name" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -47,8 +47,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorHeight="4dp"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            app:tabIndicatorHeight="4dp">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="33dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/bg_profile_no_buttons"
             android:text="Equipo"
             android:textSize="14sp"
@@ -114,6 +114,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_team" />
+
+        <TextView
+            android:id="@+id/tv_message_sport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Seleccione un equipo para cargar los deportes"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_team"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_team"
+            app:layout_constraintTop_toTopOf="@+id/btn_team" />
     </android.support.constraint.ConstraintLayout>
 
 

@@ -37,6 +37,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
 
 
     override fun onTeamSelect(team: String, valu: Int) {
+        tv_message_sport.visibility = View.GONE
         Log.e("TEAMSELEC", "team: $team")
         btn_team.text = team
         value = valu
