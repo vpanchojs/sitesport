@@ -158,5 +158,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_champion_ship">ChampionShipActivity</string>
+    <string name="title_activity_team">TeamActivity</string>
 
 </resources>

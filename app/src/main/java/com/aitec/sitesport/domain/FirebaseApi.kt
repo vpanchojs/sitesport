@@ -429,6 +429,21 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
+    fun getTeam(pkTeam: String, callback: onApiActionListener<Team>) {
+        db.collection(PATH_TEAMS).document(pkTeam)
+                .get()//.addOnCompleteListener(object : OnCompleteListener<QuerySnapshot>())
+                .addOnSuccessListener {
+                    Log.e(TAG, it.id + "getTeam() => " + it.data)
+                    val p = it.toObject(Team::class.java)!!
+                    p.pk = it.id
+                    callback.onSucces(p)
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "Error => " + it.message)
+                    callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
+                }
+    }
+
 
     fun getSearchName(query: String, listener: onApiActionListener<SearchCentersName>) {
         var parametros = HashMap<String, String>()

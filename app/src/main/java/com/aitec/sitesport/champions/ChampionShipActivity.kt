@@ -16,6 +16,7 @@ import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.champions.adapter.CalendarAdapter
 import com.aitec.sitesport.champions.adapter.SportAdapter
+import com.aitec.sitesport.champions.adapter.onCalendarAdapterListener
 import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
@@ -23,12 +24,16 @@ import com.aitec.sitesport.entities.ItemCalendar
 import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.entities.Sport
 import com.aitec.sitesport.entities.Team
+import com.aitec.sitesport.team.TeamActivity
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.*
 
-class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport, View.OnClickListener, SelectTeamFragment.OnSelectTeamListener {
+class ChampionShipActivity : AppCompatActivity(),
+        SportAdapter.onSelectItemSport,
+        View.OnClickListener,
+        SelectTeamFragment.OnSelectTeamListener{
 
     private var firebaseApi: FirebaseApi? = null
     private var teamsList = ArrayList<Team>()
@@ -254,7 +259,13 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     /**
      * A placeholder fragment containing a simple view.
      */
-    class CalendarFragment : Fragment() {
+    class CalendarFragment : Fragment(), onCalendarAdapterListener {
+
+        override fun navigatioTeam(team: Team) {
+            val i = Intent(activity!!, TeamActivity::class.java)
+            i.putExtra("team", team)
+            startActivity(i)
+        }
 
         private var firebaseApi: FirebaseApi? = null
         var itemCalentarList = ArrayList<ItemCalendar>()
@@ -277,7 +288,6 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         private fun getEncuentros() {
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
-                    Log.e("encuentros", "res ${response.fecha}")
                     itemCalentarList.add(response)
                     data.add(response)
                     adapterCalendar.notifyDataSetChanged()
@@ -343,7 +353,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         }
 
         private fun setupRecyclerViewTableTime() {
-            adapterCalendar = CalendarAdapter(data)
+            adapterCalendar = CalendarAdapter(data, this)
             rv_calendar.layoutManager = LinearLayoutManager(context)
             rv_calendar.adapter = adapterCalendar
         }

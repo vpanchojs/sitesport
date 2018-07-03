@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.ItemCalendar
+import com.aitec.sitesport.entities.Team
 import kotlinx.android.synthetic.main.item_calendar.view.*
 
-class CalendarAdapter(var itemCalendar: List<ItemCalendar>) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+class CalendarAdapter(var itemCalendar: List<ItemCalendar>, var callback: onCalendarAdapterListener) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemCalendar.get(position)
@@ -39,11 +40,11 @@ class CalendarAdapter(var itemCalendar: List<ItemCalendar>) : RecyclerView.Adapt
         }
 
         holder.view.btn_team1.setOnClickListener {
-
+            callback.navigatioTeam(item.equipo1)
         }
 
         holder.view.btn_team2.setOnClickListener {
-
+            callback.navigatioTeam(item.equipo2)
         }
     }
 
@@ -60,4 +61,8 @@ class CalendarAdapter(var itemCalendar: List<ItemCalendar>) : RecyclerView.Adapt
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
     }
+}
+
+interface onCalendarAdapterListener {
+    fun navigatioTeam(team: Team)
 }
