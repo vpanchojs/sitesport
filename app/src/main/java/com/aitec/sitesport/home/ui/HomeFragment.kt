@@ -11,13 +11,16 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.champions.ChampionShipActivity
+import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.home.HomePresenter
 import com.aitec.sitesport.home.adapter.HomeAdapter
 import com.aitec.sitesport.home.adapter.onHomeAdapterListener
+import com.aitec.sitesport.main.ui.MainActivity
 import com.aitec.sitesport.publication.ui.PublicationActivity
 import com.aitec.sitesport.util.BaseActivitys
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_publications.*
 import kotlinx.android.synthetic.main.fragment_publications.view.*
 import java.util.*
@@ -41,6 +44,12 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     lateinit var myApplication: MyApplication
     private var data: ArrayList<Publication> = arrayListOf()
     private var adapterPublications: HomeAdapter? = null
+
+
+    // CAMBIAR ESTO A FUTURO ===========================================
+    val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    // ==============================
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,17 +104,21 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     override fun navigatioProfile(position: Int) {
-        var i: Intent? = null
-        when(data[position].type){
-            Publication.EVENT ->{
-                i = Intent(activity!!, ChampionShipActivity::class.java)
+        if(mAuth.currentUser != null) {
+            var i: Intent? = null
+            when (data[position].type) {
+                Publication.EVENT -> {
+                    i = Intent(activity!!, ChampionShipActivity::class.java)
+                }
+                Publication.PROMO -> {
+                    i = Intent(activity!!, PublicationActivity::class.java)
+                }
             }
-            Publication.PROMO ->{
-                i = Intent(activity!!, PublicationActivity::class.java)
-            }
+            i!!.putExtra(Publication.PUBLICATION, data[position].pk)
+            startActivity(i)
+        }else{
+            (activity!! as MainActivity).goLogin()
         }
-        i!!.putExtra(Publication.PUBLICATION, data[position].pk)
-        startActivity(i)
     }
 
     override fun sharePublication(publication: Publication) {

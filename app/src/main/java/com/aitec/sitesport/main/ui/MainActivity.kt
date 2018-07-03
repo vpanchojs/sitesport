@@ -108,6 +108,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         true
     }
 
+    fun goLogin(){
+        BaseActivitys.showToastMessage(this, "Debes iniciar sesión primero", Toast.LENGTH_SHORT)
+        navigation.selectedItemId = R.id.navigation_menu
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

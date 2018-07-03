@@ -42,9 +42,9 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
 
         GlideApp.with(context)
                 .load(data!!.get(position).icon)
-                .placeholder(R.drawable.ic_bg_balon)
+                .placeholder(R.mipmap.ic_launcher_round)
                 .centerCrop()
-                .error(R.drawable.ic_bg_balon)
+                .error(R.mipmap.ic_launcher_round)
                 .into(holder.view.civ_center)
 
         holder.view.txtdescription.text = data!!.get(position).titulo

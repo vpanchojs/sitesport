@@ -1,14 +1,18 @@
 package com.aitec.sitesport.champions
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.champions.adapter.CalendarAdapter
@@ -17,8 +21,11 @@ import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.listeners.RealTimeListener
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.ItemCalendar
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.entities.Sport
 import com.aitec.sitesport.entities.Team
+import com.aitec.sitesport.util.BaseActivitys
+import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.*
 
@@ -35,6 +42,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     var teamSelect: Team? = null
     var value: Int = 0
 
+    private var publication: Publication = Publication()
 
     override fun onTeamSelect(team: String, valu: Int) {
         tv_message_sport.visibility = View.GONE
@@ -137,6 +145,15 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         adapterSport.notifyDataSetChanged()
     }
 
+    private fun loadImage(){
+        GlideApp.with(this)
+                .load(publication.foto)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .centerCrop()
+                .error(R.mipmap.ic_launcher_round)
+                .into(imgToolbar)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -145,16 +162,51 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
+        when(item.itemId){
+            android.R.id.home -> {
+                onBackPressed()
+            }
+            R.id.action_share -> {
+                sharePublication()
+            }
         }
-
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun goLocationMap(){
+        val gmmIntentUri =
+                Uri.parse("google.navigation:q=" +
+                        -4.010622 + "," +
+                        -79.2005194)
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.`package` = "com.google.android.apps.maps"
+        if (mapIntent.resolveActivity(packageManager) != null) {
+            startActivity(mapIntent)
+        } else
+            BaseActivitys.showToastMessage(this, "No se encontró Google Maps", Toast.LENGTH_SHORT)
+    }
+
+    private fun sharePublication() {
+        BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
+        BaseActivitys.buildDinamycLinkShareApp(publication.pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
+            override fun onSucces(response: String) {
+                intentShared(response)
+            }
+
+            override fun onError(error: Any?) {
+                intentShared(null)
+            }
+        })
+    }
+
+    private fun intentShared(link: String?) {
+        var auxLink = " ${resources.getString(R.string.url_play_store)}"
+        if (link != null) auxLink = " $link"
+        val i = Intent(Intent.ACTION_SEND)
+        i.type = "text/plain"
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
+        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShareChampionship) + auxLink)
+        startActivity(Intent.createChooser(i, "Compartir mediante..."))
     }
 
 
@@ -297,4 +349,9 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
             }
         }
     }
+
+    companion object {
+        const val TAG = "ChampionShipActivity"
+    }
 }
+
