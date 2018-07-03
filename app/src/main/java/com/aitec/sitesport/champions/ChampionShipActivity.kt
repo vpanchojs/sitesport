@@ -283,8 +283,7 @@ class ChampionShipActivity : AppCompatActivity(),
         var itemCalentarList = ArrayList<ItemCalendar>()
         lateinit var adapterCalendar: CalendarAdapter
 
-        var data = ArrayList<ItemCalendar>()
-
+        var data = ArrayList<Any>()
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -301,6 +300,7 @@ class ChampionShipActivity : AppCompatActivity(),
             progressbar.visibility = View.VISIBLE
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
+                    data.add("3 Julio")
                     itemCalentarList.add(response)
                     data.add(response)
                     adapterCalendar.notifyDataSetChanged()

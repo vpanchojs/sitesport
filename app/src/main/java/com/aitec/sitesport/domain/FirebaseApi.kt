@@ -673,7 +673,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun getEncuentros(callback: RealTimeListener<ItemCalendar>) {
 
-        db.collection(PATH_ENCUENTROS).addSnapshotListener { querySnapshot, e ->
+        db.collection(PATH_ENCUENTROS).whereEqualTo("listo" , true).addSnapshotListener { querySnapshot, e ->
             if (e != null) {
                 Log.e(TAG, "listen:error", e)
                 callback.omError(e)
