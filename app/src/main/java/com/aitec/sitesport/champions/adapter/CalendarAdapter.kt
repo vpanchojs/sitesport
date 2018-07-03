@@ -37,6 +37,14 @@ class CalendarAdapter(var itemCalendar: List<ItemCalendar>) : RecyclerView.Adapt
         } else {
             holder.view.tv_result.text = "VS"
         }
+
+        holder.view.btn_team1.setOnClickListener {
+
+        }
+
+        holder.view.btn_team2.setOnClickListener {
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarAdapter.ViewHolder {

@@ -97,7 +97,7 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-
+        publication.pk = intent.getStringExtra(Publication.PUBLICATION)
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
 
@@ -108,7 +108,17 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
         setupEvent()
         setupInjection()
         getTeams()
+        firebaseApi!!.getPublication(publication.pk, object : onApiActionListener<Publication> {
+            override fun onError(error: Any?) {}
 
+            override fun onSucces(response: Publication) {
+                response.pk = publication.pk
+                publication = response
+                loadImage()
+                toolbar.title = publication.titulo
+            }
+
+        })
     }
 
     private fun getTeams() {
@@ -156,9 +166,9 @@ class ChampionShipActivity : AppCompatActivity(), SportAdapter.onSelectItemSport
     private fun loadImage(){
         GlideApp.with(this)
                 .load(publication.foto)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.drawable.ic_bg_balon)
                 .centerCrop()
-                .error(R.mipmap.ic_launcher_round)
+                .error(R.drawable.ic_bg_balon)
                 .into(imgToolbar)
     }
 
