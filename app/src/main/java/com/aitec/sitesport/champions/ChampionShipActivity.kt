@@ -310,7 +310,7 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
         private fun orderDate() {
-            fun selector(item: ItemCalendar): Int = item.date.day
+            fun selector(item: ItemCalendar): Long = item.date.time
             val orderDateList = ArrayList(data.sortedBy { selector(it as ItemCalendar) })
             data.clear()
             data.addAll(orderDateList)
