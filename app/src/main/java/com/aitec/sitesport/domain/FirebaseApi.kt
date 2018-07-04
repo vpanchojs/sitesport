@@ -85,7 +85,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         val credential = FacebookAuthProvider.getCredential(accesToken);
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener {
-                    Log.e(TAG, "BIEN" + it.user.providers)
                     /*
                     val user = User()
                     user.pk = it.user.uid
@@ -93,7 +92,9 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     user.correo_electronico = it.user.correo_electronico
                     user.foto = it.user.photoUrl.toString()
                     */
-                    user.correo_electronico = it.user.email!!
+
+
+                    user.correo_electronico = if (it.user.email != null) it.user.email!! else " "
 
                     if (it.additionalUserInfo.isNewUser) {
                         user.pk = it.user.uid
@@ -141,7 +142,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 val user = User()
                 user.pk = userAuth.uid
                 user.nombre = userAuth.displayName
-                user.correo_electronico = userAuth.email!!
+                user.correo_electronico = if (userAuth.email != null) userAuth.email!! else "Problemas su correo electrónico"
                 user.foto = userAuth.photoUrl.toString()
                 callback.onSucces(user)
             } else {

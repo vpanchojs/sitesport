@@ -133,11 +133,9 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
 
-                Log.e(TAG, "TOKEN FA ${loginResult.recentlyGrantedPermissions}")
-
                 val profile = Profile.getCurrentProfile()
 
-                if (profile.firstName != null && profile.lastName != null) {
+                if (profile != null) {
                     presenter.tokenFacebook(loginResult.accessToken.token, profile.firstName, profile.lastName, "", profile.getProfilePictureUri(200, 200))
                 } else {
                     showMessagge("Tenemos problemas al obtener su información de Facebook, intentelo nuevamente")

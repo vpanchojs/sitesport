@@ -265,7 +265,18 @@ class ChampionShipActivity : AppCompatActivity(),
     /**
      * A placeholder fragment containing a simple view.
      */
-    class CalendarFragment : Fragment(), onCalendarAdapterListener {
+    class CalendarFragment : Fragment(), onCalendarAdapterListener, View.OnClickListener {
+
+        override fun onClick(p0: View?) {
+            when (p0!!.id) {
+
+                R.id.cl_date -> {
+                    //val selectTeamFragment = SelectDateFragment.newInstance(array, value)
+                    //selectTeamFragment.show(childFragmentManager, "SelectDate")
+                    getDateAvaliable()
+                }
+            }
+        }
 
         override fun navigatioTeam(team: Team) {
 
@@ -283,7 +294,7 @@ class ChampionShipActivity : AppCompatActivity(),
         var itemCalentarList = ArrayList<ItemCalendar>()
         lateinit var adapterCalendar: CalendarAdapter
 
-        var data = ArrayList<Any>()
+        var data = ArrayList<ItemCalendar>()
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -296,11 +307,28 @@ class ChampionShipActivity : AppCompatActivity(),
 
         }
 
+
+        fun getDateAvaliable() {
+            val dates = arrayListOf<String>()
+            itemCalentarList.forEach {
+
+                val date = dates.find { d ->
+                    d.equals(it.fecha)
+                }
+
+                if (date == null) {
+                    dates.add(it.fecha)
+                }
+            }
+
+            Log.e("fechas disponibles", "existen ${dates.size}")
+
+        }
+
         private fun getEncuentros() {
             progressbar.visibility = View.VISIBLE
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
-                    data.add("3 Julio")
                     itemCalentarList.add(response)
                     data.add(response)
                     adapterCalendar.notifyDataSetChanged()
@@ -359,9 +387,13 @@ class ChampionShipActivity : AppCompatActivity(),
             return rootView
         }
 
+        fun setupEvent() {
+            cl_date.setOnClickListener(this)
+        }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+            setupEvent()
             setupRecyclerViewTableTime()
             getEncuentros()
         }
