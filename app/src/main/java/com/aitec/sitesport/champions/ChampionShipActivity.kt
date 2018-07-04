@@ -273,6 +273,10 @@ class ChampionShipActivity : AppCompatActivity() {
 
         }
 
+
+
+
+
         private var firebaseApi: FirebaseApi? = null
         var itemCalentarList = ArrayList<ItemCalendar>()
         lateinit var adapterCalendar: CalendarAdapter
