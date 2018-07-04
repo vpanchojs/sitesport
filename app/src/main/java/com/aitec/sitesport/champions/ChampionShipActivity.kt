@@ -308,13 +308,20 @@ class ChampionShipActivity : AppCompatActivity() {
 
         }
 
+        private fun orderDate(){
+            fun selector(item: ItemCalendar): Int = item.date.day
+            val orderDateList = ArrayList(data.sortedBy { selector(it as ItemCalendar ) })
+            data.clear()
+            data.addAll(orderDateList)
+            adapterCalendar.notifyDataSetChanged()
+        }
+
         private fun getEncuentros() {
             progressbar.visibility = View.VISIBLE
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
                     itemCalentarList.add(response)
-                    data.add(response)
-                    adapterCalendar.notifyDataSetChanged()
+                    orderDate()
                     progressbar.visibility = View.GONE
                 }
 
