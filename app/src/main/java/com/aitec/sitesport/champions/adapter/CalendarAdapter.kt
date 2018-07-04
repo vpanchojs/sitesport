@@ -8,7 +8,6 @@ import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.ItemCalendar
 import com.aitec.sitesport.entities.Team
 import kotlinx.android.synthetic.main.item_calendar.view.*
-import kotlinx.android.synthetic.main.item_calendar_date.view.*
 
 class CalendarAdapter(var itemCalendar: List<ItemCalendar>, var callback: onCalendarAdapterListener) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 

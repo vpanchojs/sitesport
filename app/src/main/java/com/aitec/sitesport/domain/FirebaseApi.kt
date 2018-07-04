@@ -1,5 +1,6 @@
 package com.aitec.sitesport.domain
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
@@ -17,6 +18,8 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import java.io.ByteArrayOutputStream
+import io.grpc.Deadline.after
+import java.text.SimpleDateFormat
 
 
 class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
@@ -672,9 +675,10 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun getEncuentros(callback: RealTimeListener<ItemCalendar>) {
 
-        db.collection(PATH_ENCUENTROS).whereEqualTo("listo" , true).addSnapshotListener { querySnapshot, e ->
+        db.collection(PATH_ENCUENTROS).addSnapshotListener { querySnapshot, e ->
             if (e != null) {
                 Log.e(TAG, "listen:error", e)
                 callback.omError(e)
@@ -686,6 +690,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     when (it.type) {
                         DocumentChange.Type.ADDED -> {
                             val item = it.document.toObject(ItemCalendar::class.java)
+                            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                            item.date = sdf.parse("${item.fecha} ${item.hora}:00:00")
                             item.pk = it.document.id
                             callback.addDocument(item)
                         }
