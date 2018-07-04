@@ -30,57 +30,12 @@ import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.*
 
-class ChampionShipActivity : AppCompatActivity(),
-        SportAdapter.onSelectItemSport,
-        View.OnClickListener,
-        SelectTeamFragment.OnSelectTeamListener {
+class ChampionShipActivity : AppCompatActivity() {
 
     private var firebaseApi: FirebaseApi? = null
-    private var teamsList = ArrayList<Team>()
-    lateinit var adapterSport: SportAdapter
-
-    private var sportList = ArrayList<Sport>()
-
-    var array = arrayListOf<String>()
-
-    var teamSelect: Team? = null
-    var value: Int = 0
 
     private var publication: Publication = Publication()
 
-    override fun onTeamSelect(team: String, valu: Int) {
-        tv_message_sport.visibility = View.GONE
-        Log.e("TEAMSELEC", "team: $team")
-        btn_team.text = team
-        value = valu
-
-        teamSelect = teamsList.find {
-            it.nombre.equals(team)
-        }
-        Log.e("select", "ee ${teamSelect!!.deportes!!.size}")
-
-        updateSports(teamSelect!!.deportes)
-    }
-
-
-    override fun onClick(p0: View?) {
-        when (p0!!.id) {
-            R.id.btn_team -> {
-                val selectTeamFragment = SelectTeamFragment.newInstance(array, value)
-                selectTeamFragment.show(supportFragmentManager, "SelectTeam")
-            }
-        }
-
-    }
-
-    override fun onSelectSport(sport: Sport) {
-        Log.e("SPORT", sport.nombre)
-        supportFragmentManager.fragments.forEach {
-            if (it is CalendarFragment) {
-                it.setFilterEncuentros(teamSelect!!, sport)
-            }
-        }
-    }
 
     private fun setupToolBar() {
         setSupportActionBar(toolbar)
@@ -108,10 +63,7 @@ class ChampionShipActivity : AppCompatActivity(),
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        setupRecyclerViewClourt()
-        setupEvent()
         setupInjection()
-        getTeams()
         firebaseApi!!.getPublication(publication.pk, object : onApiActionListener<Publication> {
             override fun onError(error: Any?) {}
 
@@ -125,53 +77,12 @@ class ChampionShipActivity : AppCompatActivity(),
         })
     }
 
-    private fun getTeams() {
-        btn_team.isEnabled = false
-        tv_message_sport.text = "Obteniendo lista de equipos"
-
-        firebaseApi!!.getTeams(object : onApiActionListener<List<Team>> {
-            override fun onSucces(response: List<Team>) {
-                response.forEach {
-                    array.add(it.nombre)
-                }
-                teamsList.addAll(response)
-                btn_team.isEnabled = true
-                tv_message_sport.text = "Seleccione un equipo para cargar los deportes"
-
-            }
-
-            override fun onError(error: Any?) {
-
-            }
-        })
-    }
-
 
     private fun setupInjection() {
         val application = getApplication() as MyApplication
         firebaseApi = application.domainModule!!.providesFirebaseApi()
     }
 
-
-    fun setupEvent() {
-        btn_team.setOnClickListener(this)
-    }
-
-    private fun setupRecyclerViewClourt() {
-        //val sporst = ArrayList<Sport>()
-        //sporst.add(Sport(nombre = "Baloncesto", grupo = ""))
-        //sporst.add(Sport(nombre = "Indor", grupo = ""))
-        //sporst.add(Sport(nombre = "Ecuavoley", grupo = ""))
-        adapterSport = SportAdapter(sportList, this)
-        rv_sport.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_sport.adapter = adapterSport
-    }
-
-    fun updateSports(sports: List<Sport>?) {
-        sportList.clear()
-        sportList.addAll(sports!!)
-        adapterSport.notifyDataSetChanged()
-    }
 
     private fun loadImage() {
         GlideApp.with(this)
@@ -262,10 +173,78 @@ class ChampionShipActivity : AppCompatActivity(),
         }
     }
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
-    class CalendarFragment : Fragment(), onCalendarAdapterListener, View.OnClickListener {
+    class CalendarFragment : Fragment(), onCalendarAdapterListener, SportAdapter.onSelectItemSport,
+            View.OnClickListener {
+
+
+        private var teamsList = ArrayList<Team>()
+        lateinit var adapterSport: SportAdapter
+
+        private var sportList = ArrayList<Sport>()
+
+        var array = arrayListOf<String>()
+
+        var teamSelect: Team? = null
+        var value: Int = 0
+
+
+        override fun onSelectSport(sport: Sport) {
+            Log.e("SPORT", sport.nombre)
+            setFilterEncuentros(teamSelect!!, sport)
+        }
+
+        fun onTeamSelect(team: String, valu: Int) {
+            tv_message_sport.visibility = View.GONE
+            Log.e("TEAMSELEC", "team: $team")
+            btn_team.text = team
+            value = valu
+
+            teamSelect = teamsList.find {
+                it.nombre.equals(team)
+            }
+            Log.e("select", "ee ${teamSelect!!.deportes!!.size}")
+
+            updateSports(teamSelect!!.deportes)
+        }
+
+
+        private fun getTeams() {
+            //btn_team.isEnabled = false
+            tv_message_sport.text = "Obteniendo lista de equipos"
+
+            firebaseApi!!.getTeams(object : onApiActionListener<List<Team>> {
+                override fun onSucces(response: List<Team>) {
+                    response.forEach {
+                        array.add(it.nombre)
+                    }
+                    teamsList.addAll(response)
+                    // btn_team.isEnabled = true
+                    tv_message_sport.text = "Seleccione un equipo para cargar los deportes"
+
+                }
+
+                override fun onError(error: Any?) {
+
+                }
+            })
+        }
+
+
+        private fun setupRecyclerViewClourt() {
+            adapterSport = SportAdapter(sportList, this)
+            rv_sport.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_sport.adapter = adapterSport
+        }
+
+        fun updateSports(sports: List<Sport>?) {
+            sportList.clear()
+            sportList.addAll(sports!!)
+            adapterSport.notifyDataSetChanged()
+        }
 
         override fun onClick(p0: View?) {
             when (p0!!.id) {
@@ -274,6 +253,10 @@ class ChampionShipActivity : AppCompatActivity(),
                     //val selectTeamFragment = SelectDateFragment.newInstance(array, value)
                     //selectTeamFragment.show(childFragmentManager, "SelectDate")
                     getDateAvaliable()
+                }
+                R.id.btn_team -> {
+                    val selectTeamFragment = SelectTeamFragment.newInstance(array, value)
+                    selectTeamFragment.show(childFragmentManager, "SelectTeam")
                 }
             }
         }
@@ -384,17 +367,22 @@ class ChampionShipActivity : AppCompatActivity(),
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_champion_ship, container, false)
+
             return rootView
         }
 
+
         fun setupEvent() {
             cl_date.setOnClickListener(this)
+            btn_team.setOnClickListener(this)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+            setupRecyclerViewClourt()
             setupEvent()
             setupRecyclerViewTableTime()
+            getTeams()
             getEncuentros()
         }
 

@@ -1,7 +1,6 @@
 package com.aitec.sitesport.champions
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -16,7 +15,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
     private var btn_select: Button? = null
     private var ib_close: ImageButton? = null
     private var nump: NumberPicker? = null
-    private var callback: OnSelectTeamListener? = null
+    //private var callback: OnSelectTeamListener? = null
 
     lateinit var teams: ArrayList<String>
     var value = 0
@@ -52,7 +51,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         val dialogo = getDialog() as AlertDialog
         if (dialogo != null) {
             btn_select!!.setOnClickListener {
-                callback!!.onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
+                (parentFragment as ChampionShipActivity.CalendarFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
                 dismiss()
             }
             ib_close!!.setOnClickListener {
@@ -61,6 +60,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         }
     }
 
+    /*
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnSelectTeamListener) {
@@ -76,6 +76,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         callback = null;
     }
 
+*/
     companion object {
         const val PARAM_TEAMS = "TEAM"
         const val PARAM_VALUE = "VALUE"
@@ -89,9 +90,11 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         }
     }
 
+    /*
     interface OnSelectTeamListener {
         fun onTeamSelect(team: String, value: Int)
     }
+    */
 
 
 }
