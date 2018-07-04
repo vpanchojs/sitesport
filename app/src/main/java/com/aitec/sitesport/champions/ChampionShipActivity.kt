@@ -213,7 +213,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
 
         private fun getTeams() {
-            //btn_team.isEnabled = false
+            btn_team.isEnabled = false
             tv_message_sport.text = "Obteniendo lista de equipos"
 
             firebaseApi!!.getTeams(object : onApiActionListener<List<Team>> {
@@ -222,7 +222,7 @@ class ChampionShipActivity : AppCompatActivity() {
                         array.add(it.nombre)
                     }
                     teamsList.addAll(response)
-                    // btn_team.isEnabled = true
+                    btn_team.isEnabled = true
                     tv_message_sport.text = "Seleccione un equipo para cargar los deportes"
 
                 }
@@ -274,9 +274,6 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
 
-
-
-
         private var firebaseApi: FirebaseApi? = null
         var itemCalentarList = ArrayList<ItemCalendar>()
         lateinit var adapterCalendar: CalendarAdapter
@@ -312,9 +309,9 @@ class ChampionShipActivity : AppCompatActivity() {
 
         }
 
-        private fun orderDate(){
+        private fun orderDate() {
             fun selector(item: ItemCalendar): Int = item.date.day
-            val orderDateList = ArrayList(data.sortedBy { selector(it as ItemCalendar ) })
+            val orderDateList = ArrayList(data.sortedBy { selector(it as ItemCalendar) })
             data.clear()
             data.addAll(orderDateList)
             adapterCalendar.notifyDataSetChanged()
@@ -326,6 +323,8 @@ class ChampionShipActivity : AppCompatActivity() {
                 override fun addDocument(response: ItemCalendar) {
                     itemCalentarList.add(response)
                     orderDate()
+                    data.add(response)
+                    adapterCalendar.notifyDataSetChanged()
                     progressbar.visibility = View.GONE
                 }
 
@@ -357,6 +356,7 @@ class ChampionShipActivity : AppCompatActivity() {
                 }
             })
         }
+
 
         fun getItemCalenter(pk: String): ItemCalendar? {
             return itemCalentarList.find {
