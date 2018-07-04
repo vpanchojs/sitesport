@@ -409,6 +409,7 @@ class ChampionShipActivity : AppCompatActivity() {
             data.clear()
             data.addAll(items)
             adapterCalendar.notifyDataSetChanged()
+            orderDate()
             if (items.size <= 0) {
                 tv_message.visibility = View.VISIBLE
             } else {
