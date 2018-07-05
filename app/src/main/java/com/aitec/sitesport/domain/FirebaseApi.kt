@@ -18,8 +18,8 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import java.io.ByteArrayOutputStream
-import io.grpc.Deadline.after
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
@@ -693,6 +693,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                             val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
                             item.date = sdf.parse("${item.fecha} ${item.hora}:00:00")
                             item.pk = it.document.id
+                            item.fecha = SimpleDateFormat("EEE dd 'de' MMMM", Locale("ES")).format(SimpleDateFormat("dd/MM/yyyy").parse(item.fecha))
                             callback.addDocument(item)
                         }
                         DocumentChange.Type.MODIFIED -> {

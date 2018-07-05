@@ -29,6 +29,8 @@ import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChampionShipActivity : AppCompatActivity() {
 
@@ -189,19 +191,28 @@ class ChampionShipActivity : AppCompatActivity() {
         var array = arrayListOf<String>()
 
         var teamSelect: Team? = null
-        var value: Int = 0
+        var sportSelect: Sport? = null
+        var dateSelect: String? = null
+        var valueTeam: Int = 0
+        var valueDate: Int = 0
 
 
         override fun onSelectSport(sport: Sport) {
             Log.e("SPORT", sport.nombre)
-            setFilterEncuentros(teamSelect!!, sport)
+            sportSelect = sport
+
+            if (dateSelect == null) {
+                setFilterEncuentros(teamSelect!!, sport)
+            } else {
+                setFilterEncuentros(teamSelect!!, sport, dateSelect)
+            }
         }
 
         fun onTeamSelect(team: String, valu: Int) {
             tv_message_sport.visibility = View.GONE
             Log.e("TEAMSELEC", "team: $team")
             btn_team.text = team
-            value = valu
+            valueTeam = valu
 
             teamSelect = teamsList.find {
                 it.nombre.equals(team)
@@ -250,12 +261,18 @@ class ChampionShipActivity : AppCompatActivity() {
             when (p0!!.id) {
 
                 R.id.cl_date -> {
-                    //val selectTeamFragment = SelectDateFragment.newInstance(array, value)
-                    //selectTeamFragment.show(childFragmentManager, "SelectDate")
-                    getDateAvaliable()
+                    val dataAvaliable = getDateAvaliable()
+                    if (dataAvaliable.size > 0) {
+                        val selectDateFragment = SelectDateFragment.newInstance(dataAvaliable, valueDate)
+                        selectDateFragment.show(childFragmentManager, "SelectDate")
+                        getDateAvaliable()
+                    } else {
+                        Toast.makeText(context, "Obteniendo fechas, intentelo nuevamente", Toast.LENGTH_LONG).show()
+                    }
+
                 }
                 R.id.btn_team -> {
-                    val selectTeamFragment = SelectTeamFragment.newInstance(array, value)
+                    val selectTeamFragment = SelectTeamFragment.newInstance(array, valueTeam)
                     selectTeamFragment.show(childFragmentManager, "SelectTeam")
                 }
             }
@@ -292,8 +309,9 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
 
-        fun getDateAvaliable() {
+        fun getDateAvaliable(): ArrayList<String> {
             val dates = arrayListOf<String>()
+            val dateDate = arrayListOf<Date>()
             itemCalentarList.forEach {
 
                 val date = dates.find { d ->
@@ -302,11 +320,19 @@ class ChampionShipActivity : AppCompatActivity() {
 
                 if (date == null) {
                     dates.add(it.fecha)
+                    dateDate.add(it.date)
                 }
             }
 
-            Log.e("fechas disponibles", "existen ${dates.size}")
+            dateDate.sort()
+            dates.clear()
 
+            dateDate.forEach {
+                Log.e("dia", it.toString())
+                dates.add(SimpleDateFormat("EEE dd 'de' MMMM", Locale("ES")).format(it))
+            }
+
+            return dates
         }
 
         private fun orderDate() {
@@ -415,6 +441,40 @@ class ChampionShipActivity : AppCompatActivity() {
             } else {
                 tv_message.visibility = View.GONE
             }
+        }
+
+        fun onDateSelect(date: String, value: Int) {
+            dateSelect = date
+            tv_date_select.text = date
+            valueDate = value
+
+            //Log.e("select", "ee ${teamSelect!!.deportes!!.size}")
+            if ((teamSelect != null) and (sportSelect != null)) {
+                setFilterEncuentros(teamSelect!!, sportSelect!!, date)
+            } else {
+                setFilterEncuentros(date)
+            }
+
+
+        }
+
+        private fun setFilterEncuentros(date: String) {
+            val list = itemCalentarList.filter {
+                it.fecha.equals(date)
+            }
+
+            Log.e("frag", list.size.toString())
+            updateAdapter(list as ArrayList<ItemCalendar>)
+        }
+
+        fun setFilterEncuentros(team: Team, sport: Sport, date: String?) {
+            val list = itemCalentarList.filter {
+                (it.fecha.equals(date)) and (it.equipo1.nombre.toLowerCase().equals(team.nombre.toLowerCase()) or it.equipo2.nombre.toLowerCase().equals(team.nombre.toLowerCase())) and (it.deporte.toLowerCase().equals(sport.nombre.toLowerCase()))
+            }
+
+            Log.e("frag", list.size.toString())
+            updateAdapter(list as ArrayList<ItemCalendar>)
+
         }
 
         companion object {

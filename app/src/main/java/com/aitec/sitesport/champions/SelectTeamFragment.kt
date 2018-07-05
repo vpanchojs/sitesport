@@ -25,6 +25,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         super.onCreate(savedInstanceState)
         teams = arguments!!.getStringArrayList(PARAM_TEAMS)
         value = arguments!!.getInt(PARAM_VALUE)
+        teams.sort()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -92,7 +93,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
 
     /*
     interface OnSelectTeamListener {
-        fun onTeamSelect(team: String, value: Int)
+        fun onTeamSelect(team: String, valueTeam: Int)
     }
     */
 

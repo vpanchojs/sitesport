@@ -70,14 +70,14 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_filter">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_date_select"
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="12 de junio del 2018"
+            android:text="Seleccione una fecha"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ic_date"
