@@ -10,8 +10,8 @@ android {
         applicationId "com.aitec.sitesport"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 11
-        versionName "0.7.4"
+        versionCode 12
+        versionName "0.7.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

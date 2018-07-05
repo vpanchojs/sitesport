@@ -201,7 +201,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getUid(): String {
-        return mAuth.currentUser!!.uid
+        return if (mAuth.currentUser != null) mAuth.currentUser!!.uid else ""
     }
 
     fun getInfoUser(listener: onApiActionListener<DocumentSnapshot>) {
@@ -740,7 +740,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         group.teams.add(crearEquipo(0, 0, 0, "9A", "HnKOSs6c4oeCeDoTMlEN"))
         group.teams.add(crearEquipo(0, 0, 0, "9C", "fhPFzF6YUHNggx38ab4e"))
         group.teams.add(crearEquipo(0, 0, 0, "2A", "WoVvsALzw9zRmBv3X67l"))
-       // group.teams.add(crearEquipo(0, 0, 0, "2B", "F104ihwPtyOd16L6CsKQ"))
+        // group.teams.add(crearEquipo(0, 0, 0, "2B", "F104ihwPtyOd16L6CsKQ"))
 
 
         val teamsList = ArrayList<Map<String, Any>>()
@@ -778,6 +778,16 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
         team.nombre = nombre_equipo
         team.pk = pk_equipo
         return team
+    }
+
+    fun getGroups(callback: onApiActionListener<QuerySnapshot>) {
+        db.collection("tabla_posiciones").get()
+                .addOnSuccessListener {
+                    callback.onSucces(it)
+                }
+                .addOnFailureListener {
+                    callback.onError(it.toString())
+                }
     }
 
 }
