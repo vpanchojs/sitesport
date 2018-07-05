@@ -733,4 +733,51 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
+    //groupB.teams.add(crearEquipo(0, 0, 0, "9B", "pRyDkxgpqFxmk7iHAjBA"))
+    fun setTablaPositions() {
+
+        val group = crearGrupo("GB", "Femenino", "Indor")
+        group.teams.add(crearEquipo(0, 0, 0, "9A", "HnKOSs6c4oeCeDoTMlEN"))
+        group.teams.add(crearEquipo(0, 0, 0, "9C", "fhPFzF6YUHNggx38ab4e"))
+        group.teams.add(crearEquipo(0, 0, 0, "2A", "WoVvsALzw9zRmBv3X67l"))
+       // group.teams.add(crearEquipo(0, 0, 0, "2B", "F104ihwPtyOd16L6CsKQ"))
+
+
+        val teamsList = ArrayList<Map<String, Any>>()
+
+        group.teams.forEach { a ->
+            teamsList.add(a.toMapPost())
+        }
+        group.hashTeams = teamsList
+
+        db.collection("tabla_posiciones").document().set(group.toMapPost())
+                .addOnSuccessListener {
+                    Log.e(TAG, "todo bien")
+                }
+                .addOnFailureListener {
+                    Log.e(TAG, it.toString())
+                }
+    }
+
+
+    fun crearGrupo(grupo: String, genero: String, disiplina: String): Group {
+        var group = Group()
+        group.grupo = grupo
+        group.genero = genero
+        group.disciplina = disiplina
+
+        return group
+
+    }
+
+    fun crearEquipo(pj: Int, pu: Int, dif: Int, nombre_equipo: String, pk_equipo: String): Team {
+        var team = Team()
+        team.pj = pj
+        team.dif = 0
+        team.pu = pu
+        team.nombre = nombre_equipo
+        team.pk = pk_equipo
+        return team
+    }
+
 }

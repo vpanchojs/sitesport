@@ -276,6 +276,7 @@ class ChampionShipActivity : AppCompatActivity() {
                 R.id.btn_team -> {
                     val selectTeamFragment = SelectTeamFragment.newInstance(array, valueTeam)
                     selectTeamFragment.show(childFragmentManager, "SelectTeam")
+                    //firebaseApi!!.setTablaPositions()
                 }
             }
         }
