@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -51,46 +52,93 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <Button
         android:id="@+id/btn_team1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_team"
         android:text="Team 1"
-        app:layout_constraintEnd_toStartOf="@+id/tv_result"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
-    <TextView
-        android:id="@+id/tv_result"
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="VS"
         app:layout_constraintBottom_toBottomOf="@+id/btn_team2"
         app:layout_constraintEnd_toStartOf="@+id/btn_team2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_team1"
-        app:layout_constraintTop_toTopOf="@+id/btn_team1" />
+        app:layout_constraintTop_toTopOf="@+id/btn_team1">
+
+        <TextView
+            android:id="@+id/tv_result_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="R1"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_vs"
+            app:layout_constraintEnd_toStartOf="@+id/iv_vs"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_vs" />
+
+        <ImageView
+            android:id="@+id/iv_vs"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_result_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_result_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_futbol_vs" />
+
+        <TextView
+            android:id="@+id/tv_result_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="R2"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_vs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_vs"
+            app:layout_constraintTop_toTopOf="@+id/iv_vs" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_team2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:text="Team 2"
         android:background="@drawable/bg_team"
+        android:text="Team 2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_result"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout5"
         app:layout_constraintTop_toBottomOf="@+id/tv_time" />
 
     <TextView
