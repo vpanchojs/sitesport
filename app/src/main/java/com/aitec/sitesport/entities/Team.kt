@@ -15,6 +15,11 @@ class Team() : Parcelable{
     var grupo: String = ""
     var marcador: Int = 0
 
+    var pj : Int = 0
+    var pu : Int = 0
+    var dif : Int = 0
+
+
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()
         foto = parcel.readString()
@@ -40,6 +45,7 @@ class Team() : Parcelable{
     }
 
     companion object CREATOR : Parcelable.Creator<Team> {
+
         override fun createFromParcel(parcel: Parcel): Team {
             return Team(parcel)
         }

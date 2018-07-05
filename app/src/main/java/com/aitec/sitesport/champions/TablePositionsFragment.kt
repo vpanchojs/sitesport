@@ -1,30 +1,31 @@
 package com.aitec.sitesport.champions
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
 import com.aitec.sitesport.R
+import com.aitec.sitesport.champions.adapter.SportAdapter
+import com.aitec.sitesport.champions.adapter.TablePositionAdapter
+import com.aitec.sitesport.entities.Group
+import com.aitec.sitesport.entities.Sport
+import com.aitec.sitesport.util.BaseActivitys
+import kotlinx.android.synthetic.main.fragment_table_positions.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [TablePositionsFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [TablePositionsFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class TablePositionsFragment : Fragment() {
+    private var sportList = ArrayList<Sport>()
+    lateinit var adapterSport: SportAdapter
+    lateinit var adapterTablePosition: TablePositionAdapter
+
+    private var groups = ArrayList<Group>()
+    var groupsString = arrayListOf<String>()
+    var groupSelect: Group? = null
+    var indexGroup: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,19 +33,60 @@ class TablePositionsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_table_positions, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerViewSport()
+        setupRecyclerViewTablePositions()
+        groupsString.add("grupos")
+        btn_team.setOnClickListener {
+            val selectTeamFragment = SelectTeamFragment.newInstance(groupsString, indexGroup)
+            selectTeamFragment.show(childFragmentManager, "SelectTeam")
+        }
+    }
 
+    override fun onSelectSport(sport: Sport) {
+        BaseActivitys.showToastMessage(activity!!, sport.nombre, Toast.LENGTH_SHORT)
+    }
+
+    fun onTeamSelect(team: String, valu: Int) {
+        tv_message_sport.visibility = View.GONE
+        Log.e("TEAMSELEC", "groupsString: $team")
+        btn_team.text = team
+        indexGroup = valu
+
+        groupSelect = groups.find {
+            it.grupo.equals(team)
+        }
+        //Log.e("select", "ee ${groupSelect!!.deportes!!.size}")
+
+        //updateSports(groupSelect!!.deportes)
+    }
+
+    fun updateSports(sports: List<Sport>?) {
+        sportList.clear()
+        sportList.addAll(sports!!)
+        adapterSport.notifyDataSetChanged()
+    }
+
+
+    private fun setupRecyclerViewSport() {
+        adapterSport = SportAdapter(sportList, this)
+        rv_sport.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_sport.adapter = adapterSport
+    }
+
+    private fun setupRecyclerViewTablePositions() {
+        adapterTablePosition = TablePositionAdapter(groups, activity!!)
+        rvPositions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvPositions.adapter = adapterTablePosition
+    }
 
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-                TablePositionsFragment().apply {
-
-                }
+        fun newInstance() = TablePositionsFragment().apply {}
     }
 }

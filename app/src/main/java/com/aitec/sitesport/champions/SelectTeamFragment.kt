@@ -52,7 +52,11 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         val dialogo = getDialog() as AlertDialog
         if (dialogo != null) {
             btn_select!!.setOnClickListener {
-                (parentFragment as ChampionShipActivity.CalendarFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
+                if(parentFragment is ChampionShipActivity.CalendarFragment)
+                    (parentFragment as ChampionShipActivity.CalendarFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
+                else if(parentFragment is TablePositionsFragment){
+                    (parentFragment as TablePositionsFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
+                }
                 dismiss()
             }
             ib_close!!.setOnClickListener {
@@ -94,6 +98,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
     /*
     interface OnSelectTeamListener {
         fun onTeamSelect(team: String, valueTeam: Int)
+        fun onTeamSelect(groupsString: String, value: Int)
     }
     */
 
