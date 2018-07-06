@@ -30,6 +30,7 @@ import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_champion_ship.*
 import kotlinx.android.synthetic.main.fragment_champion_ship.*
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -55,7 +56,7 @@ class ChampionShipActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_champion_ship)
-
+        setupInjection()
         setupToolBar()
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -67,7 +68,7 @@ class ChampionShipActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        setupInjection()
+
         firebaseApi!!.getPublication(publication.pk, object : onApiActionListener<Publication> {
             override fun onError(error: Any?) {}
 
@@ -90,7 +91,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
     private fun loadImage() {
         GlideApp.with(this)
-                .load(publication.foto)
+                .load(URL(publication.foto).toString())
                 .placeholder(R.drawable.ic_bg_balon)
                 .centerCrop()
                 .error(R.drawable.ic_bg_balon)

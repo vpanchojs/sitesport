@@ -16,6 +16,7 @@ import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.util.GlideApp
 import kotlinx.android.synthetic.main.activity_team.*
 import kotlinx.android.synthetic.main.content_team.*
+import java.net.URL
 
 class TeamActivity : AppCompatActivity() {
 
@@ -69,11 +70,11 @@ class TeamActivity : AppCompatActivity() {
 
     private fun loadImage(){
         GlideApp.with(this)
-                .load(team!!.foto)
-                .placeholder(R.drawable.ic_bg_balon)
-                .centerCrop()
-                .error(R.drawable.ic_bg_balon)
-                .into(imgTeam)
+                    .load(URL(team!!.foto).toString())
+                    .placeholder(R.drawable.ic_bg_balon)
+                    .centerCrop()
+                    .error(R.drawable.ic_bg_balon)
+                    .into(imgTeam)
     }
 
 

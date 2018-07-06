@@ -200,20 +200,23 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun getUid(): String {
+    private fun getUid(): String {
         return if (mAuth.currentUser != null) mAuth.currentUser!!.uid else ""
     }
 
     fun getInfoUser(listener: onApiActionListener<DocumentSnapshot>) {
-
-        db.collection(PATH_USER).document(getUid()).get()
-                .addOnSuccessListener {
-                    listener.onSucces(it)
-                }
-                .addOnFailureListener {
-                    listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
-                }
-
+        val uid = getUid()
+        if(uid.isNotBlank()) {
+            db.collection(PATH_USER).document(uid).get()
+                    .addOnSuccessListener {
+                        listener.onSucces(it)
+                    }
+                    .addOnFailureListener {
+                        listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
+                    }
+        }else{
+            Log.e(TAG, "No uid user")
+        }
     }
 
 
