@@ -34,6 +34,7 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
 
     var groupsString = arrayListOf<String>("GA", "GB", "GC", "GD")
     var groupSelect: String? = null
+    var sportSelect: String = "Baloncesto"
     var indexGroup: Int = 0
 
     private var firebaseApi: FirebaseApi? = null
@@ -86,46 +87,51 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
     }
 
     override fun onSelectSport(sport: Sport) {
-        //BaseActivitys.showToastMessage(activity!!, sport.nombre, Toast.LENGTH_SHORT)
+        sportSelect = sport.nombre
         filterTeams(groupSelect, sport.nombre)
     }
 
     private fun filterTeams(groupSelect: String?, nombre: String) {
         teamsHombres.clear()
         teamsMujeres.clear()
+        val auxMujeres = arrayListOf<Team>()
+        val auxHombres = arrayListOf<Team>()
         Log.e("filtros", "grupo: $groupSelect deporte: $nombre")
         groups.forEach {
 
             if (it.grupo.equals(groupSelect) and it.disciplina.equals(nombre) and it.genero.toLowerCase().equals("femenino")) {
-                teamsMujeres.addAll(it.teams)
+                auxMujeres.addAll(it.teams)
             }
 
             if (it.grupo.equals(groupSelect) and it.disciplina.equals(nombre) and it.genero.toLowerCase().equals("masculino")) {
-                teamsHombres.addAll(it.teams)
+                auxHombres.addAll(it.teams)
             }
         }
 
-        if (teamsMujeres.size > 0) {
+        if (auxMujeres.size > 0) {
             cl_mujeres.visibility = View.VISIBLE
 
         } else {
             cl_mujeres.visibility = View.GONE
         }
 
-        if (teamsHombres.size > 0) {
+        if (auxHombres.size > 0) {
             cl_hombres.visibility = View.VISIBLE
 
         } else {
             cl_hombres.visibility = View.GONE
         }
 
-        teamsMujeres.sortByDescending {
-            it.pu and it.dif
-        }
+        auxMujeres.sortedWith(
+                compareBy({ it.pu }, { it.dif })
+        ).reversed().toCollection(teamsMujeres)
 
-        teamsHombres.sortByDescending {
-            it.pu and it.dif
-        }
+
+        auxHombres.sortedWith(
+                compareBy({ it.pu }, { it.dif })
+        ).reversed().toCollection(teamsHombres)
+
+
 
         adapterTablePositionMujeres.notifyDataSetChanged()
         adapterTablePositionHombres.notifyDataSetChanged()
@@ -135,13 +141,18 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
     fun onTeamSelect(team: String, valu: Int) {
         groupSelect = team
         tv_message_sport.visibility = View.GONE
-        Log.e("TEAMSELEC", "groupsString: $team")
+        rv_sport.visibility = View.VISIBLE
+        Log.e("TEAMSELEC", "groupsString: $team deporte: $sportSelect ")
         btn_team.text = team
         indexGroup = valu
-        updateSports()
+        filterTeams(groupSelect, sportSelect!!)
     }
 
     fun updateSports() {
+        adapterSport.notifyDataSetChanged()
+    }
+
+    private fun setupRecyclerViewSport() {
         sportList.clear()
         var sport = Sport()
         sport.nombre = "Baloncesto"
@@ -152,14 +163,10 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
         sportList.add(sport)
         sportList.add(sport2)
         sportList.add(sport3)
-        adapterSport.notifyDataSetChanged()
-    }
-
-
-    private fun setupRecyclerViewSport() {
         adapterSport = SportAdapter(sportList, this)
         rv_sport.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_sport.adapter = adapterSport
+        rv_sport.visibility = View.GONE
     }
 
     private fun setupRecyclerViewTablePositionsHombres() {
