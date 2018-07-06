@@ -233,7 +233,6 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
 
-
         private fun getTeams() {
             btn_team.isEnabled = false
             tv_message_sport.text = "Obteniendo lista de equipos"
@@ -262,11 +261,11 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
         fun updateSports(sports: List<Sport>?) {
-            rv_sport.adapter=null
+            rv_sport.adapter = null
 
             adapterSport = SportAdapter(sports!!, this)
             //sportList.addAll(sports!!)
-            rv_sport.adapter=adapterSport
+            rv_sport.adapter = adapterSport
             //adapterSport.notifyDataSetChanged()
         }
 
@@ -285,7 +284,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
                 }
                 R.id.btn_team -> {
-                    val selectTeamFragment = SelectTeamFragment.newInstance(array, valueTeam)
+                    val selectTeamFragment = SelectTeamFragment.newInstance(array, valueTeam, "Equipo")
                     selectTeamFragment.show(childFragmentManager, "SelectTeam")
                     //firebaseApi!!.setTablaPositions()
                 }

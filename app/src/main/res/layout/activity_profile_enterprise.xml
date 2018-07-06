@@ -118,7 +118,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:paddingTop="3dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/btnReservation"

@@ -19,13 +19,16 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
 
     lateinit var teams: ArrayList<String>
     var value = 0
+    var entity = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         teams = arguments!!.getStringArrayList(PARAM_TEAMS)
         value = arguments!!.getInt(PARAM_VALUE)
+        entity = arguments!!.getString(PARAM_ENTITY)
         teams.sort()
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -33,6 +36,7 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         val view = activity!!.layoutInflater.inflate(R.layout.fragmente_select_distance, null)
         btn_select = view.btn_select
         ib_close = view.ib_back
+        view.tv_title.text = "Seleccionar $entity"
         nump = view.np
         nump!!.displayedValues = teams.toTypedArray()
         nump!!.minValue = 0
@@ -52,9 +56,9 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
         val dialogo = getDialog() as AlertDialog
         if (dialogo != null) {
             btn_select!!.setOnClickListener {
-                if(parentFragment is ChampionShipActivity.CalendarFragment)
+                if (parentFragment is ChampionShipActivity.CalendarFragment)
                     (parentFragment as ChampionShipActivity.CalendarFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
-                else if(parentFragment is TablePositionsFragment){
+                else if (parentFragment is TablePositionsFragment) {
                     (parentFragment as TablePositionsFragment).onTeamSelect(nump!!.displayedValues[nump!!.value], nump!!.value)
                 }
                 dismiss()
@@ -85,11 +89,13 @@ class SelectTeamFragment : DialogFragment(), DialogInterface.OnShowListener {
     companion object {
         const val PARAM_TEAMS = "TEAM"
         const val PARAM_VALUE = "VALUE"
-        fun newInstance(array: ArrayList<String>, value: Int): SelectTeamFragment {
+        const val PARAM_ENTITY = "ENTIDAD"
+        fun newInstance(array: ArrayList<String>, value: Int, entity: String): SelectTeamFragment {
             var fragment = SelectTeamFragment()
             val args = Bundle()
             args.putStringArrayList(PARAM_TEAMS, array)
             args.putInt(PARAM_VALUE, value)
+            args.putString(PARAM_ENTITY, entity)
             fragment.arguments = args
             return fragment
         }
