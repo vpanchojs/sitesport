@@ -35,11 +35,11 @@ class ImageFragment : Fragment() {
         if (url.isNotEmpty()) {
             GlideApp.with(this)
                     .load(URL(url).toString())
-                    .placeholder(ContextCompat.getDrawable(activity!!, R.drawable.ic_bg_balon))
+                    .placeholder(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bg_balon))
                     //.fitCenter()
                     .fitCenter()
                     //.override(600, 300)
-                    .error(ContextCompat.getDrawable(activity!!, R.drawable.ic_bg_balon))
+                    .error(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bg_balon))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView)
         }

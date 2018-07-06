@@ -3,6 +3,8 @@ package com.aitec.sitesport.publication.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -29,12 +31,18 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setVectorCompatibility()
         setContentView(R.layout.activity_publication)
         setupInjection()
         publicationPresenter.register()
         publication.pk = intent.getStringExtra(Publication.PUBLICATION)
         setupUI()
         callPublication()
+    }
+
+    private fun setVectorCompatibility() {
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT)
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
     override fun onDestroy() {
@@ -74,7 +82,7 @@ class PublicationActivity : AppCompatActivity(), PublicationView {
         toolbar_layout.title = publication.nombre_centro_deportivo
         tvNameEnterprise.text = publication.titulo
         tvDate.text = publication.fecha
-        tvDescription.text = publication.descripcion
+        tvDescription.text = Html.fromHtml(publication.descripcion)
     }
 
     private fun updateSectionPhoto(){
