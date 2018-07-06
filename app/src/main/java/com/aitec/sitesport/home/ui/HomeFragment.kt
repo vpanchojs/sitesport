@@ -11,7 +11,6 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.champions.ChampionShipActivity
-import com.aitec.sitesport.domain.FirebaseApi
 import com.aitec.sitesport.domain.listeners.onApiActionListener
 import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.home.HomePresenter
@@ -30,12 +29,12 @@ import javax.inject.Inject
 class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     override fun showInfo(msg: String?) {
-        if(msg != null){
+        if (msg != null) {
             tvInfoPublications.text = msg
-            if(tvInfoPublications.visibility == View.GONE)
+            if (tvInfoPublications.visibility == View.GONE)
                 tvInfoPublications.visibility = View.VISIBLE
-        }else
-            if(tvInfoPublications.visibility == View.VISIBLE)
+        } else
+            if (tvInfoPublications.visibility == View.VISIBLE)
                 tvInfoPublications.visibility = View.GONE
     }
 
@@ -104,25 +103,25 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     override fun navigatioProfile(position: Int) {
-        if(mAuth.currentUser != null) {
+        if (mAuth.currentUser != null) {
             var i: Intent? = null
             when (data[position].type) {
                 Publication.EVENT -> {
-                    i = Intent(activity!!, ChampionShipActivity::class.java)
+                    i = Intent(context, ChampionShipActivity::class.java)
                 }
                 Publication.PROMO -> {
-                    i = Intent(activity!!, PublicationActivity::class.java)
+                    i = Intent(context, PublicationActivity::class.java)
                 }
             }
             i!!.putExtra(Publication.PUBLICATION, data[position].pk)
             startActivity(i)
-        }else{
-            (activity!! as MainActivity).goLogin()
+        } else {
+            (context!! as MainActivity).goLogin()
         }
     }
 
     override fun sharePublication(publication: Publication) {
-        BaseActivitys.showToastMessage(activity!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
+        BaseActivitys.showToastMessage(context!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
         BaseActivitys.buildDinamycLinkShareApp(publication.pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)

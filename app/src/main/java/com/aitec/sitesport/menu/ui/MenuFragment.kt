@@ -106,11 +106,12 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     override fun onPause() {
         super.onPause()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_menu, container, false)
-        view.rv_menu_options.layoutManager = LinearLayoutManager(context)
+        view.rv_menu_options.layoutManager = LinearLayoutManager(requireContext())
         view.rv_menu_options.adapter = adapterOptions
         view.cl_my_profile.setOnClickListener(this)
         setupInjection()
@@ -160,7 +161,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 .requestEmail()
                 .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(activity!!, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
     }
 
     override fun mostrarmenu() {
@@ -169,7 +170,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
     private fun setupInjection() {
-        myApplication = activity!!.getApplication() as MyApplication
+        myApplication = requireActivity().getApplication() as MyApplication
         myApplication.getMenusComponent(this).inject(this)
     }
 
@@ -184,12 +185,13 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         progressDialog.hide()
     }
 
+
     override fun showMessagge(message: Any?) {
-        BaseActivitys.showToastMessage(context!!, message!!, Toast.LENGTH_LONG)
+        BaseActivitys.showToastMessage(requireContext(), message!!, Toast.LENGTH_LONG)
     }
 
     override fun navigationToProfile() {
-        startActivity(Intent(context, ProfileUserActivity::class.java).putExtra(ProfileUserActivity.USER, user))
+        startActivity(Intent(requireContext(), ProfileUserActivity::class.java).putExtra(ProfileUserActivity.USER, user))
     }
 
     override fun navigationToTermsAndConditions() {
@@ -199,6 +201,8 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     override fun navigationToLogin() {
 
     }
+
+
 
     override fun onClick(position: Int) {
         when (position) {
@@ -227,7 +231,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
                 openBrowser("https://www.google.com")
             }
             EnumMenu.CONTACT_ME.code -> {
-                val intento1 = Intent(context, Workme::class.java)
+                val intento1 = Intent(requireContext(), Workme::class.java)
                 startActivity(intento1)
                 //showMessage("Contactenos")
             }
@@ -270,7 +274,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
         this.user = user
         tv_name_user.text = "${user.nombre} ${user.apellido}"
         tv_email.text = user.correo_electronico
-        GlideApp.with(context!!)
+        GlideApp.with(requireContext())
                 .load(user.foto)
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
