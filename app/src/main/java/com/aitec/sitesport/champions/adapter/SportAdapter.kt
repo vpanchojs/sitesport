@@ -1,6 +1,7 @@
 package com.aitec.sitesport.champions.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,13 +35,18 @@ class SportAdapter(var sportList: List<Sport>, var callback: onSelectItemSport) 
 
             rbSelect = compoundButton as RadioButton
 
+            Log.e("selec", "se seleciono")
+
+
             if (b) {
+
                 callback.onSelectSport(sport)
             }
 
         }
 
         if (position == 0) {
+
             holder.view.rb_court.isChecked = true
         }
 

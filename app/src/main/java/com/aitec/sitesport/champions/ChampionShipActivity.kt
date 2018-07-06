@@ -58,8 +58,10 @@ class ChampionShipActivity : AppCompatActivity() {
         setContentView(R.layout.activity_champion_ship)
         setupInjection()
         setupToolBar()
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         publication.pk = intent.getStringExtra(Publication.PUBLICATION)
         // Set up the ViewPager with the sections adapter.
@@ -209,7 +211,9 @@ class ChampionShipActivity : AppCompatActivity() {
             } else {
                 setFilterEncuentros(teamSelect!!, sport, dateSelect)
             }
+
         }
+
 
         fun onTeamSelect(team: String, valu: Int) {
             tv_message_sport.visibility = View.GONE
@@ -223,7 +227,9 @@ class ChampionShipActivity : AppCompatActivity() {
             Log.e("select", "ee ${teamSelect!!.deportes!!.size}")
 
             updateSports(teamSelect!!.deportes)
+
         }
+
 
 
         private fun getTeams() {
@@ -247,7 +253,6 @@ class ChampionShipActivity : AppCompatActivity() {
             })
         }
 
-
         private fun setupRecyclerViewClourt() {
             adapterSport = SportAdapter(sportList, this)
             rv_sport.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -255,9 +260,12 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
         fun updateSports(sports: List<Sport>?) {
-            sportList.clear()
-            sportList.addAll(sports!!)
-            adapterSport.notifyDataSetChanged()
+            rv_sport.adapter=null
+
+            adapterSport = SportAdapter(sports!!, this)
+            //sportList.addAll(sports!!)
+            rv_sport.adapter=adapterSport
+            //adapterSport.notifyDataSetChanged()
         }
 
         override fun onClick(p0: View?) {

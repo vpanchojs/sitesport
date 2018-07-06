@@ -71,9 +71,10 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
     }
 
     private fun getGrupos() {
-        tv_message_sport.text = "Seleccione un grupo para cargar la tabla de posiciones"
         firebaseApi!!.getGroups(object : onApiActionListener<QuerySnapshot> {
             override fun onSucces(response: QuerySnapshot) {
+                tv_message_sport.text = "Seleccione un grupo para cargar la tabla de posiciones"
+                btn_team.isEnabled = true
                 response.forEach {
                     val group = it.toObject(Group::class.java)
                     groups.add(group)
