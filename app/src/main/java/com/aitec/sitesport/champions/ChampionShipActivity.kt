@@ -92,12 +92,14 @@ class ChampionShipActivity : AppCompatActivity() {
 
 
     private fun loadImage() {
-        GlideApp.with(this)
-                .load(URL(publication.foto).toString())
-                .placeholder(R.drawable.ic_bg_balon)
-                .centerCrop()
-                .error(R.drawable.ic_bg_balon)
-                .into(imgToolbar)
+        if(publication.foto.isNotBlank()) {
+            GlideApp.with(this)
+                    .load(URL(publication.foto).toString())
+                    .placeholder(R.drawable.ic_bg_balon)
+                    .centerCrop()
+                    .error(R.drawable.ic_bg_balon)
+                    .into(imgToolbar)
+        }
     }
 
 
