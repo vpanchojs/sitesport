@@ -13,5 +13,6 @@ interface HomeView {
     fun updatePublication(publication: Publication)
     fun removePublication(publication: Publication)
     fun showInfo(msg: String?)
+    fun clearListPublications()
 
 }

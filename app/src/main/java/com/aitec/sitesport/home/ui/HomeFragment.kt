@@ -71,6 +71,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         tvInfoPublications.visibility = View.GONE
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.onSuscribe()
@@ -172,5 +173,9 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
             val fragment = HomeFragment()
             return fragment
         }
+    }
+
+    override fun clearListPublications() {
+        data.clear()
     }
 }

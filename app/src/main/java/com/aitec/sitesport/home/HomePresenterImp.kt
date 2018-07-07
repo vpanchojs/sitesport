@@ -19,6 +19,7 @@ class HomePresenterImp(var eventBus: EventBusInterface, var view: HomeView, var 
 
     override fun getHome() {
         view.showProgressBar(true)
+        view.clearListPublications()
         interactor.getHome()
 
 
