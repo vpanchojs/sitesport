@@ -57,9 +57,9 @@ class Publication() : Parcelable{
             return arrayOfNulls(size)
         }
 
-        const val LINK_PUBLICATION_ENTERPRISE = 0
-        const val LINK_PUBLICATION_EVENT = 1
-        const val LINK_PUBLICATION_PROMO = 2
+        const val LINK_PUBLICATION_EVENT = 0
+        const val LINK_PUBLICATION_PROMO = 1
+        const val LINK_PUBLICATION_ENTERPRISE = 2
         const val PUBLICATION = "publication"
 
     }

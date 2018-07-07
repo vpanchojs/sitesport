@@ -113,8 +113,12 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
                     i = Intent(context, PublicationActivity::class.java)
                 }
             }
-            i!!.putExtra(Publication.PUBLICATION, data[position].pk)
-            startActivity(i)
+
+            if(i != null){
+                i.putExtra(Publication.PUBLICATION, data[position].pk)
+                startActivity(i)
+            }
+
         } else {
             (context!! as MainActivity).goLogin()
         }
