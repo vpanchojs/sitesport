@@ -152,6 +152,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     private fun intentShared(link: String?) {
+
         if(activity != null && isAdded) {
             var auxLink = " ${resources.getString(R.string.url_play_store)}"
             if (link != null) auxLink = " $link"
