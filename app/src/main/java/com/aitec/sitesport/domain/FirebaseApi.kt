@@ -206,7 +206,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
     fun getInfoUser(listener: onApiActionListener<DocumentSnapshot>) {
         val uid = getUid()
-        if(uid.isNotBlank()) {
+        if (uid.isNotBlank()) {
             db.collection(PATH_USER).document(uid).get()
                     .addOnSuccessListener {
                         listener.onSucces(it)
@@ -214,7 +214,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     .addOnFailureListener {
                         listener.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
                     }
-        }else{
+        } else {
             Log.e(TAG, "No uid user")
         }
     }
@@ -514,38 +514,41 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getHome(callback: RealTimeListener<Publication>) {
-        pulistener = db.collection(PATH_PUBLICATIONS).addSnapshotListener { querySnapshot, e ->
-            if (e != null) {
-                Log.e(TAG, "listen:error", e)
-                callback.omError(e)
-            }
+        if (pulistener == null) {
+            pulistener = db.collection(PATH_PUBLICATIONS).addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.e(TAG, "listen:error", e)
+                    callback.omError(e)
+                }
 
-            if (querySnapshot!!.documentChanges.isNotEmpty()) {
+                if (querySnapshot!!.documentChanges.isNotEmpty()) {
 
-                querySnapshot.documentChanges.forEach {
-                    when (it.type) {
-                        DocumentChange.Type.ADDED -> {
-                            val pu = it.document.toObject(Publication::class.java)
-                            pu.pk = it.document.id
-                            callback.addDocument(pu)
-                        }
-                        DocumentChange.Type.MODIFIED -> {
-                            val pu = it.document.toObject(Publication::class.java)
-                            pu.pk = it.document.id
-                            callback.updateDocument(pu)
-                        }
-                        DocumentChange.Type.REMOVED -> {
-                            val pu = it.document.toObject(Publication::class.java)
-                            pu.pk = it.document.id
-                            callback.removeDocument(pu)
+                    querySnapshot.documentChanges.forEach {
+                        when (it.type) {
+                            DocumentChange.Type.ADDED -> {
+                                val pu = it.document.toObject(Publication::class.java)
+                                pu.pk = it.document.id
+                                callback.addDocument(pu)
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                val pu = it.document.toObject(Publication::class.java)
+                                pu.pk = it.document.id
+                                callback.updateDocument(pu)
+                            }
+                            DocumentChange.Type.REMOVED -> {
+                                val pu = it.document.toObject(Publication::class.java)
+                                pu.pk = it.document.id
+                                callback.removeDocument(pu)
+                            }
                         }
                     }
+                } else {
+                    callback.emptyNode("No hay publicaciones")
                 }
-            } else {
-                callback.emptyNode("No hay publicaciones")
-            }
 
+            }
         }
+
 
     }
 
@@ -602,6 +605,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun removelistener() {
         if (pulistener != null) {
             pulistener!!.remove()
+            pulistener = null
         }
     }
 
