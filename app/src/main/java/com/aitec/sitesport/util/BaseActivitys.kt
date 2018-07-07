@@ -24,9 +24,6 @@ class BaseActivitys() {
     companion object {
         var progressDialog: ProgressDialog? = null
 
-        const val LINK_ENTERPRISE = 0
-        const val LINK_PUBLICATION = 1
-
         fun validateFieldEmail(context: Context, field: TextInputEditText): Boolean {
             if (Patterns.EMAIL_ADDRESS.matcher(field.text.toString()).matches()) {
                 field.setError(null)

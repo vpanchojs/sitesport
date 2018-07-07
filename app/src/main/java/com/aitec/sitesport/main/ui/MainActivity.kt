@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                         when (it.link.getQueryParameter("type").toInt()) {
 
                         //compartir centro deportivo
-                            BaseActivitys.LINK_ENTERPRISE -> {
+                            Publication.LINK_PUBLICATION_ENTERPRISE -> {
                                 startActivity(
                                         Intent(this, ProfileActivity::class.java)
                                                 .putExtra(
@@ -157,10 +157,21 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                                 )
                             }
 
-                        //compartir publicación
-                            BaseActivitys.LINK_PUBLICATION -> {
+                        //compartir publicación CAMPEONATO
+                            Publication.LINK_PUBLICATION_EVENT -> {
                                 startActivity(
                                         Intent(this, ChampionShipActivity::class.java)
+                                                .putExtra(
+                                                        Publication.PUBLICATION,
+                                                        it.link.getQueryParameter("pk")
+                                                )
+                                )
+                            }
+
+                        //compartir publicación PROMO
+                            Publication.LINK_PUBLICATION_PROMO -> {
+                                startActivity(
+                                        Intent(this, PublicationActivity::class.java)
                                                 .putExtra(
                                                         Publication.PUBLICATION,
                                                         it.link.getQueryParameter("pk")

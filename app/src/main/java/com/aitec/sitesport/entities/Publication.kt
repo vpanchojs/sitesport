@@ -15,7 +15,7 @@ class Publication() : Parcelable{
     var titulo: String = ""
     var fecha: String = ""
     var descripcion: String = ""
-    var type: Int = EVENT
+    var type: Int = LINK_PUBLICATION_EVENT
     var isOnline: Boolean = true
 
     constructor(parcel: Parcel) : this() {
@@ -57,8 +57,9 @@ class Publication() : Parcelable{
             return arrayOfNulls(size)
         }
 
-        const val EVENT = 0
-        const val PROMO = 1
+        const val LINK_PUBLICATION_ENTERPRISE = 0
+        const val LINK_PUBLICATION_EVENT = 1
+        const val LINK_PUBLICATION_PROMO = 2
         const val PUBLICATION = "publication"
 
     }

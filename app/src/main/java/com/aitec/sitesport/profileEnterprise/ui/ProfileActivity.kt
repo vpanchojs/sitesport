@@ -22,6 +22,7 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.domain.listeners.onApiActionListener
+import com.aitec.sitesport.entities.Publication
 import com.aitec.sitesport.entities.enterprise.*
 import com.aitec.sitesport.profileEnterprise.Constants
 import com.aitec.sitesport.profileEnterprise.ProfilePresenter
@@ -543,7 +544,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun shareProfile() {
         BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, BaseActivitys.LINK_ENTERPRISE, object : onApiActionListener<String> {
+        BaseActivitys.buildDinamycLinkShareApp(enterprise.pk, Publication.LINK_PUBLICATION_ENTERPRISE, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }

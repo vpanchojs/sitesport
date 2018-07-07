@@ -106,10 +106,10 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
         if (mAuth.currentUser != null) {
             var i: Intent? = null
             when (data[position].type) {
-                Publication.EVENT -> {
+                Publication.LINK_PUBLICATION_EVENT -> {
                     i = Intent(context, ChampionShipActivity::class.java)
                 }
-                Publication.PROMO -> {
+                Publication.LINK_PUBLICATION_PROMO -> {
                     i = Intent(context, PublicationActivity::class.java)
                 }
             }
@@ -122,7 +122,7 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
 
     override fun sharePublication(publication: Publication) {
         BaseActivitys.showToastMessage(context!!, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(publication.pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
+        BaseActivitys.buildDinamycLinkShareApp(publication.pk, publication.type, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }

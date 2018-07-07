@@ -139,7 +139,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
     private fun sharePublication() {
         BaseActivitys.showToastMessage(this, "Obteniendo aplicaciones...", Toast.LENGTH_LONG)
-        BaseActivitys.buildDinamycLinkShareApp(publication.pk, BaseActivitys.LINK_PUBLICATION, object : onApiActionListener<String> {
+        BaseActivitys.buildDinamycLinkShareApp(publication.pk, Publication.LINK_PUBLICATION_EVENT, object : onApiActionListener<String> {
             override fun onSucces(response: String) {
                 intentShared(response)
             }
