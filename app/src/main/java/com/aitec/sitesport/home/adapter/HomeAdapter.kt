@@ -29,7 +29,6 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         if(context != null && holder.view.img_imagen != null) {
             GlideApp.with(context)
                     .load(data!!.get(position).foto)

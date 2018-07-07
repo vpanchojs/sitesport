@@ -206,43 +206,44 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
     override fun onClick(position: Int) {
 
-        if(activity == null && !isAdded) return
+        if(activity != null && isAdded) {
 
             when (position) {
-            EnumMenu.SHARE_APP.code -> {
-                showMessagge("Obteniendo aplicaciones")
-                BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {
-                    override fun onSucces(response: String) {
-                        val i = Intent(android.content.Intent.ACTION_SEND)
-                        i.type = "text/plain"
-                        i.putExtra(Intent.EXTRA_TEXT, "${getString(R.string.textShareApp)} $response")
-                        startActivity(Intent.createChooser(i, "Compartir mediante..."))
-                    }
+                EnumMenu.SHARE_APP.code -> {
+                    showMessagge("Obteniendo aplicaciones")
+                    BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {
+                        override fun onSucces(response: String) {
+                            val i = Intent(android.content.Intent.ACTION_SEND)
+                            i.type = "text/plain"
+                            i.putExtra(Intent.EXTRA_TEXT, "${getString(R.string.textShareApp)} $response")
+                            startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                        }
 
-                    override fun onError(error: Any?) {
-                        Log.e(TAG, "Error dynamic link $error")
-                    }
-                })
-            }
+                        override fun onError(error: Any?) {
+                            Log.e(TAG, "Error dynamic link $error")
+                        }
+                    })
+                }
 
-            EnumMenu.TERMS_AND_CONDITIONS.code -> {
-                //showMessage("Terminos y Condiciones")
-                openBrowser("https://www.google.com")
-            }
-            EnumMenu.HELP.code -> {
-                //showMessage("Ayuda")
-                openBrowser("https://www.google.com")
-            }
-            EnumMenu.CONTACT_ME.code -> {
-                val intento1 = Intent(requireContext(), Workme::class.java)
-                startActivity(intento1)
-                //showMessage("Contactenos")
-            }
-            EnumMenu.CLOSE_SESSION.code -> {
-                presenter.onSingOut()
-            }
+                EnumMenu.TERMS_AND_CONDITIONS.code -> {
+                    //showMessage("Terminos y Condiciones")
+                    openBrowser("https://www.google.com")
+                }
+                EnumMenu.HELP.code -> {
+                    //showMessage("Ayuda")
+                    openBrowser("https://www.google.com")
+                }
+                EnumMenu.CONTACT_ME.code -> {
+                    val intento1 = Intent(requireContext(), Workme::class.java)
+                    startActivity(intento1)
+                    //showMessage("Contactenos")
+                }
+                EnumMenu.CLOSE_SESSION.code -> {
+                    presenter.onSingOut()
+                }
 
 
+            }
         }
     }
 
