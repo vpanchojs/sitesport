@@ -32,6 +32,7 @@ class ImageFragment : Fragment() {
 
 
     private fun loadImage(url: String, imageView: ImageView) {
+
         if (this != null && this.isAdded && url.isNotEmpty()) {
             GlideApp.with(this)
                     .load(URL(url).toString())

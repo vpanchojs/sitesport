@@ -63,12 +63,14 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         this.user = user
         tie_names.setText(user.nombre.toString())
         tie_email.setText(user.correo_electronico)
-        GlideApp.with(this)
-                .load(user.foto)
-                .placeholder(R.mipmap.ic_launcher)
-                .centerCrop()
-                .error(R.mipmap.ic_launcher)
-                .into(civ_user)
+        if(this != null && civ_user != null) {
+            GlideApp.with(this)
+                    .load(user.foto)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .centerCrop()
+                    .error(R.mipmap.ic_launcher)
+                    .into(civ_user)
+        }
     }
 
     private fun setupValidationInputs() {
@@ -298,12 +300,15 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
         tie_email.setText(user.correo_electronico)
         tie_dni.setText(user.cedula)
         tie_phone.setText(user.telefono)
-        GlideApp.with(this)
-                .load(user.foto)
-                .placeholder(R.mipmap.ic_launcher)
-                .centerCrop()
-                .error(R.mipmap.ic_launcher)
-                .into(civ_user)
+        if(this != null && civ_user != null) {
+
+            GlideApp.with(this)
+                    .load(user.foto)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .centerCrop()
+                    .error(R.mipmap.ic_launcher)
+                    .into(civ_user)
+        }
 
     }
 
@@ -317,11 +322,14 @@ class ProfileUserActivity : AppCompatActivity(), ProfileUserView, View.OnClickLi
     }
 
     override fun setPhoto(url: String) {
-        GlideApp.with(this)
-                .load(url)
-                .placeholder(R.mipmap.ic_launcher)
-                .centerCrop()
-                .error(R.mipmap.ic_launcher)
-                .into(civ_user)
+        if(this != null && civ_user != null) {
+
+            GlideApp.with(this)
+                    .load(url)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .centerCrop()
+                    .error(R.mipmap.ic_launcher)
+                    .into(civ_user)
+        }
     }
 }

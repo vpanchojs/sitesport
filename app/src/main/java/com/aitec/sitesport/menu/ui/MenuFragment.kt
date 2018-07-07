@@ -205,7 +205,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
 
     override fun onClick(position: Int) {
-
         if(activity != null && isAdded) {
 
             when (position) {
