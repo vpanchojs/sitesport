@@ -203,23 +203,28 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     }
 
 
-
     override fun onClick(position: Int) {
-        if(activity != null && isAdded) {
+        if (activity != null && isAdded) {
 
             when (position) {
                 EnumMenu.SHARE_APP.code -> {
                     showMessagge("Obteniendo aplicaciones")
                     BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {
                         override fun onSucces(response: String) {
-                            val i = Intent(android.content.Intent.ACTION_SEND)
-                            i.type = "text/plain"
-                            i.putExtra(Intent.EXTRA_TEXT, "${getString(R.string.textShareApp)} $response")
-                            startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                            try {
+                                val i = Intent(android.content.Intent.ACTION_SEND)
+                                i.type = "text/plain"
+                                i.putExtra(Intent.EXTRA_TEXT, "${getString(R.string.textShareApp)} $response")
+                                startActivity(Intent.createChooser(i, "Compartir mediante..."))
+                            } catch (e: Exception) {
+
+                            }
+
                         }
 
                         override fun onError(error: Any?) {
                             Log.e(TAG, "Error dynamic link $error")
+                            BaseActivitys.showToastMessage(requireContext(), "Problemas de conexión, intentelo nuevamente", Toast.LENGTH_LONG)
                         }
                     })
                 }

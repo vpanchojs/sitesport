@@ -63,11 +63,16 @@ class TablePositionsFragment : Fragment(), SportAdapter.onSelectItemSport {
         setupRecyclerViewTablePositionsHombres()
         setupRecyclerViewTablePositionsMujeres()
         btn_team.setOnClickListener {
-            val selectTeamFragment = SelectTeamFragment.newInstance(groupsString, indexGroup,"Grupo")
+            val selectTeamFragment = SelectTeamFragment.newInstance(groupsString, indexGroup, "Grupo")
             selectTeamFragment.show(childFragmentManager, "SelectTeam")
         }
 
-        getGrupos()
+        try {
+            getGrupos()
+        } catch (e: Exception) {
+
+        }
+
     }
 
     private fun getGrupos() {

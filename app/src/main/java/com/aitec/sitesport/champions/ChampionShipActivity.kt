@@ -92,7 +92,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
 
     private fun loadImage() {
-        if(this != null && imgToolbar!= null && publication.foto.isNotBlank()) {
+        if (publication.foto.isNotBlank()) {
             GlideApp.with(this)
                     .load(URL(publication.foto).toString())
                     .placeholder(R.drawable.ic_bg_balon)
@@ -151,13 +151,18 @@ class ChampionShipActivity : AppCompatActivity() {
     }
 
     private fun intentShared(link: String?) {
-        var auxLink = " ${resources.getString(R.string.url_play_store)}"
-        if (link != null) auxLink = " $link"
-        val i = Intent(Intent.ACTION_SEND)
-        i.type = "text/plain"
-        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
-        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShareChampionship) + auxLink)
-        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+        try {
+            var auxLink = " ${resources.getString(R.string.url_play_store)}"
+            if (link != null) auxLink = " $link"
+            val i = Intent(Intent.ACTION_SEND)
+            i.type = "text/plain"
+            i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
+            i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textShareChampionship) + auxLink)
+            startActivity(Intent.createChooser(i, "Compartir mediante..."))
+        } catch (e: Exception) {
+
+        }
+
     }
 
 
@@ -357,14 +362,12 @@ class ChampionShipActivity : AppCompatActivity() {
         }
 
         private fun getEncuentros() {
-            progressbar.visibility = View.VISIBLE
             firebaseApi!!.getEncuentros(object : RealTimeListener<ItemCalendar> {
                 override fun addDocument(response: ItemCalendar) {
                     itemCalentarList.add(response)
                     orderDate()
                     data.add(response)
                     adapterCalendar.notifyDataSetChanged()
-                    progressbar.visibility = View.GONE
                 }
 
                 override fun removeDocument(response: ItemCalendar) {
@@ -432,8 +435,12 @@ class ChampionShipActivity : AppCompatActivity() {
             setupRecyclerViewClourt()
             setupEvent()
             setupRecyclerViewTableTime()
-            getTeams()
-            getEncuentros()
+            try {
+                getTeams()
+                getEncuentros()
+            } catch (e: Exception) {
+
+            }
         }
 
         private fun setupRecyclerViewTableTime() {
