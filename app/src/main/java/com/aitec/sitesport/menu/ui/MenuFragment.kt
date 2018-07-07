@@ -205,7 +205,10 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
 
 
     override fun onClick(position: Int) {
-        when (position) {
+
+        if(activity == null && !isAdded) return
+
+            when (position) {
             EnumMenu.SHARE_APP.code -> {
                 showMessagge("Obteniendo aplicaciones")
                 BaseActivitys.buildDinamycLinkShareApp(null, null, object : onApiActionListener<String> {

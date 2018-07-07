@@ -30,22 +30,26 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        GlideApp.with(context)
-                .load(data!!.get(position).foto)
-                .placeholder(R.drawable.ic_bg_balon)
-                .centerCrop()
-                .error(R.drawable.ic_bg_balon)
-                .into(holder.view.img_imagen)
+        if(context != null && holder.view.img_imagen != null) {
+            GlideApp.with(context)
+                    .load(data!!.get(position).foto)
+                    .placeholder(R.drawable.ic_bg_balon)
+                    .centerCrop()
+                    .error(R.drawable.ic_bg_balon)
+                    .into(holder.view.img_imagen)
+        }
 
         holder.view.txttitle.text = data!!.get(position).nombre_centro_deportivo
         holder.view.txtfecha.text = data!!.get(position).fecha
 
-        GlideApp.with(context)
-                .load(data!!.get(position).icon)
-                .placeholder(R.mipmap.ic_launcher_round)
-                .centerCrop()
-                .error(R.mipmap.ic_launcher_round)
-                .into(holder.view.civ_center)
+        if(context != null && holder.view.civ_center != null) {
+            GlideApp.with(context)
+                    .load(data!!.get(position).icon)
+                    .placeholder(R.mipmap.ic_launcher_round)
+                    .centerCrop()
+                    .error(R.mipmap.ic_launcher_round)
+                    .into(holder.view.civ_center)
+        }
 
         holder.view.txtdescription.text = data!!.get(position).titulo
         holder.onNavigationProfile(position, callback)

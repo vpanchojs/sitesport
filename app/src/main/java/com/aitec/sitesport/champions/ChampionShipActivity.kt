@@ -92,7 +92,7 @@ class ChampionShipActivity : AppCompatActivity() {
 
 
     private fun loadImage() {
-        if(publication.foto.isNotBlank()) {
+        if(this != null && imgToolbar!= null && publication.foto.isNotBlank()) {
             GlideApp.with(this)
                     .load(URL(publication.foto).toString())
                     .placeholder(R.drawable.ic_bg_balon)

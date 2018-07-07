@@ -69,7 +69,7 @@ class TeamActivity : AppCompatActivity() {
     }
 
     private fun loadImage(){
-        if(team!!.foto.isNotBlank()) {
+        if(this != null && imgTeam != null && team!!.foto.isNotBlank()) {
             GlideApp.with(this)
                     .load(URL(team!!.foto).toString())
                     .placeholder(R.drawable.ic_bg_balon)

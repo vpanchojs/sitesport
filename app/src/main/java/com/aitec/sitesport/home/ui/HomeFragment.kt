@@ -152,13 +152,15 @@ class HomeFragment : Fragment(), onHomeAdapterListener, HomeView {
     }
 
     private fun intentShared(link: String?) {
-        var auxLink = " ${resources.getString(R.string.url_play_store)}"
-        if (link != null) auxLink = " $link"
-        val i = Intent(android.content.Intent.ACTION_SEND)
-        i.type = "text/plain"
-        i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
-        i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textSharePublication) + auxLink)
-        startActivity(Intent.createChooser(i, "Compartir mediante..."))
+        if(activity != null && isAdded) {
+            var auxLink = " ${resources.getString(R.string.url_play_store)}"
+            if (link != null) auxLink = " $link"
+            val i = Intent(android.content.Intent.ACTION_SEND)
+            i.type = "text/plain"
+            i.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.app_name)
+            i.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.textSharePublication) + auxLink)
+            startActivity(Intent.createChooser(i, "Compartir mediante..."))
+        }
     }
 
     private fun findPublication(id: String): Publication? {
