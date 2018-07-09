@@ -34,13 +34,39 @@ import kotlin.collections.ArrayList
 
 class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickListener, ReserveView, ItemReservationAdapter.onItemListener {
 
-    /*
-    override fun isCheck(check: Boolean, itemReservation: ItemReservation) {
-        Log.e("itemHours", itemReservation.end)
+    lateinit var enterprise: Enterprise
 
+    val application: MyApplication by lazy {
+        getApplication() as MyApplication
     }
-    */
 
+    val calendar: Calendar by lazy {
+        Calendar.getInstance()
+    }
+    val items = ArrayList<ItemReservation>()
+    var adapterTableTime = ItemReservationAdapter(items, this)
+
+    lateinit var court: Cancha
+
+    @Inject
+    lateinit var presenter: ReservePresenter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_reserve)
+        enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
+        setupToolbar(enterprise.nombre)
+        //Log.e("canchas", enterprise.canchas.toString())
+        setupRecyclerViewClourt(enterprise.canchas)
+        setupTodayDate(calendar)
+        //setupRecyclerViewTimeTable(getTableTimeToday(getNameToday()))
+        setupRecyclerViewTimeTable()
+
+        setupEventsElements()
+        setupBottomSheet()
+        setupInject()
+        presenter.onSubscribe()
+    }
 
     override fun check(itemReservation: ItemReservation, position: Int) {
         val items = itemsChecked()
@@ -59,12 +85,11 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         var horas = ""
         items.forEach {
             price += it.price
-            horas += "${it.start} a ${it.end}, "
+            horas += "${it.start} a ${it.end} "
         }
 
         return Pair<Double, String>(price, horas)
     }
-
 
     override fun unCheck(itemReservation: ItemReservation, position: Int) {
         val items = itemsChecked()
@@ -83,36 +108,15 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     }
 
-
-    lateinit var enterprise: Enterprise
-
-
-    val application: MyApplication by lazy {
-        getApplication() as MyApplication
-    }
-
-    val c: Calendar by lazy {
-        Calendar.getInstance()
-    }
-    val items = ArrayList<ItemReservation>()
-    var adapterTableTime = ItemReservationAdapter(items, this)
-
-    lateinit var court: Cancha
-
-    @Inject
-    lateinit var presenter: ReservePresenter
-
     override fun onCheckedCourt(cancha: Cancha) {
         court = cancha
         tvNumPlayers.text = court.numero_jugadores
         tvFloor.text = court.piso
         tvPriceDay.text = "$ ${court.precio_dia}"
         tvPriceNight.text = "$ ${court.precio_noche}"
-
         tv_court_value.text = court.nombre
-
-        presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
-        setTableTime(getTableTimeToday(getNameToday()))
+        presenter.getItemsReserved(calendar.timeInMillis, enterprise.pk, court.pk)
+        setTableTime(getTableTimeToday(getNameToday())!!)
     }
 
     private fun setupInject() {
@@ -122,25 +126,24 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     var fromDatePickerDialog: DatePickerDialog? = null
     lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
-
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btn_calendar -> {
-                showDatePicker(c)
+                showDatePicker(calendar)
 
             }
             R.id.ib_day_next -> {
                 addOrRemoveDaysCalendar(+1)
-                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
-                setTableTime(getTableTimeToday(getNameToday()))
+                presenter.getItemsReserved(calendar.timeInMillis, enterprise.pk, court.pk)
+                setTableTime(getTableTimeToday(getNameToday())!!)
                 //  Log.e("dia", getNameToday())
 
             }
 
             R.id.ib_day_back -> {
                 addOrRemoveDaysCalendar(-1)
-                presenter.getItemsReserved(c.timeInMillis, enterprise.pk, court.pk)
-                setTableTime(getTableTimeToday(getNameToday()))
+                presenter.getItemsReserved(calendar.timeInMillis, enterprise.pk, court.pk)
+                setTableTime(getTableTimeToday(getNameToday())!!)
             }
             R.id.cl_header_bs -> {
                 when (bottomSheetBehavior.state) {
@@ -152,25 +155,20 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
                     }
                 }
             }
+
+            R.id.btn_reserve -> {
+                val items = itemsChecked()
+                if (items.size <= 0) {
+                    showMessagge("Debe seleccionar almenos una hora")
+                } else if (items.size == 1) {
+                    presenter.createReserve(calendar.time, items, court, calculatePrice(items).first, "")
+                    Log.e("Datos reserva", "fecha $calendar hora ${items.get(0).start}    cancha ${court.pk}")
+                } else {
+                    showMessagge("Unicamente puede reservar una hora")
+                }
+
+            }
         }
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reserve)
-        enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
-        setupToolbar(enterprise.nombre)
-        //Log.e("canchas", enterprise.canchas.toString())
-        setupRecyclerViewClourt(enterprise.canchas)
-        setupTodayDate(c)
-        //setupRecyclerViewTimeTable(getTableTimeToday(getNameToday()))
-        setupRecyclerViewTimeTable()
-
-        setupEventsElements()
-        setupBottomSheet()
-        setupInject()
-        presenter.onSubscribe()
     }
 
     private fun setupTodayDate(c: Calendar) {
@@ -214,7 +212,6 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         })
     }
 
-
     fun showDatePicker(c: Calendar) {
         fromDatePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             updateCalendar(year, monthOfYear, dayOfMonth)
@@ -227,12 +224,12 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     }
 
     fun updateCalendar(year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        c.set(year, monthOfYear, dayOfMonth)
+        calendar.set(year, monthOfYear, dayOfMonth)
     }
 
     fun addOrRemoveDaysCalendar(num: Int) {
-        c.add(Calendar.DAY_OF_WEEK, num)
-        setupTodayDate(c)
+        calendar.add(Calendar.DAY_OF_WEEK, num)
+        setupTodayDate(calendar)
     }
 
     private fun setupEventsElements() {
@@ -240,6 +237,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         cl_header_bs.setOnClickListener(this)
         ib_day_back.setOnClickListener(this)
         ib_day_next.setOnClickListener(this)
+        btn_reserve.setOnClickListener(this)
     }
 
     private fun setupRecyclerViewClourt(courts: List<Cancha>) {
@@ -249,7 +247,6 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         rvCourts.adapter = adapter
     }
 
-
     fun setupRecyclerViewTimeTable() {
         //val adapterTableTime = ItemReservationAdapter(items, this)
         rv_time_table.setHasFixedSize(true);
@@ -258,19 +255,13 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         rv_time_table.adapter = adapterTableTime
     }
 
-    private fun setTableTime(day: Dia?) {
+    private fun setTableTime(day: Dia) {
         items.clear()
-        //val arrayHoraInicio = day!!.hora_inicio.split(":")
-        //val arrayHoraFin = day.hora_fin.split(":")
-        //val arrayHoraIntermedia = court.hora_intermedia.split(":")
+        val inicio = day.hora_inicio
+        val fin = day.hora_fin
+        val intermedia = court.hora_intermedia
 
-        //val inicio = arrayHoraInicio[0].toInt()
-        //val fin = arrayHoraFin[0].toInt()
-        //val intermedia = arrayHoraIntermedia[0].toInt()
-
-
-
-        /*for (i in inicio..fin - 1) {
+        for (i in inicio..fin - 1) {
             var price = 0.0
 
             if (i + 1 <= intermedia) {
@@ -283,12 +274,12 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
             items.add(ItemReservation("$i:00", "${i + 1}:00", false, false, price))
 
-        }*/
+        }
         adapterTableTime.notifyDataSetChanged()
     }
 
     fun getNameToday(): String? {
-        val day = c.get(Calendar.DAY_OF_WEEK)
+        val day = calendar.get(Calendar.DAY_OF_WEEK)
 
         when (day) {
             1 -> {
@@ -353,4 +344,3 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     }
 }
-

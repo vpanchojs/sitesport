@@ -2,10 +2,12 @@ package com.aitec.sitesport.reserve
 
 import android.view.View
 import com.aitec.sitesport.entities.ItemReservation
+import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.reserve.events.ReserveEvents
 import com.aitec.sitesport.reserve.ui.ReserveView
 import org.greenrobot.eventbus.Subscribe
+import java.util.*
 
 class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView, var interactor: ReserveInteractor) : ReservePresenter {
 
@@ -31,7 +33,7 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
         interactor.removeItem(item)
     }
 
-    override fun createReserve() {
+    override fun createReserve(date: Date, items: List<ItemReservation>, pk_court: Cancha, price: Double, observations: String) {
         view.showButtonReserve(View.INVISIBLE)
         view.showProgresBar(View.VISIBLE)
     }

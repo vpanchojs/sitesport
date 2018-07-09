@@ -33,7 +33,7 @@ class ItemReservationAdapter(var hoursList: List<ItemReservation>, var callback:
             holder.view.tv_state.setText("Reservado")
             holder.view.cb_item.isEnabled = false
         } else {
-            holder.view.tv_state.setText("Disponible  : ${hours.price}")
+            holder.view.tv_state.setText("Disponible")
             holder.view.cb_item.isEnabled = true
         }
 

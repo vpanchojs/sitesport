@@ -1,6 +1,8 @@
 package com.aitec.sitesport.reserve
 
 import com.aitec.sitesport.entities.ItemReservation
+import com.aitec.sitesport.entities.Reservation
+import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.lib.base.EventBusInterface
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,9 +24,13 @@ class ReserveInteractorImp(var repository: ReserveRepository, var eventBus: Even
         itemsReserve.remove(item)
     }
 
-    override fun createReserve() {
+    override fun createReserve(date: Date, items: List<ItemReservation>, court: Cancha, price: Double, observations: String) {
+        val reservation = Reservation()
+        reservation.cancha = court
+        reservation.hora_reserva = items[0].start.toInt()
+        reservation.estado = "Ocupado"
+        reservation.horas_juego = 1
 
     }
-
 }
 
