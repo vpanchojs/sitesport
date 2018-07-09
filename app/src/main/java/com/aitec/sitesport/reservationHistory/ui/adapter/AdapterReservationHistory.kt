@@ -44,7 +44,7 @@ class AdapterReservationHistory(var reservationsList: List<Reservation>) : Recyc
         val reservation = reservationsList[position]
 
 
-        if (reservation.type == Reservation.RESERVATION) {
+        /*if (reservation.type == Reservation.RESERVATION) {
             val h = holder as ReservationViewHolder
             h.view.tvSite.text = reservation.site
             h.view.tvCourt.text = reservation.court
@@ -53,12 +53,13 @@ class AdapterReservationHistory(var reservationsList: List<Reservation>) : Recyc
         } else if (reservation.type == Reservation.HEAD) {
             val h = holder as HeadViewHolder
             h.view.tvHead.text = reservation.head
-        }
+        }*/
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return reservationsList[position].type
+        //return reservationsList[position].type
+        return 0
     }
 
     fun getItem(index: Int): Reservation {

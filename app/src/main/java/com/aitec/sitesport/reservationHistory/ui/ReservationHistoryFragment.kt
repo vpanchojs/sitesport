@@ -41,7 +41,7 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        for (i in 0..3) {
+        /*for (i in 0..3) {
             val r = Reservation()
             r.isConsumed = false
             r.court = "Cancha " + i
@@ -59,7 +59,7 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
             r.reservationDate = "Fecha de reserva " + i
             r.gameDate = "Fecha de juego " + i
             reservationsList.add(r)
-        }
+        }*/
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_record, container, false)
