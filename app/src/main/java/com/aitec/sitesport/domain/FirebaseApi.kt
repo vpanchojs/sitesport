@@ -734,6 +734,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }
                     callback.onSucces(teams)
 
+
                 }
                 .addOnFailureListener {
                     callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
@@ -795,6 +796,32 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 .addOnFailureListener {
                     callback.onError(it.toString())
                 }
+    }
+
+    fun createReserved(reservation: Reservation, callback: onApiActionListener<Unit>) {
+        val path_reservation_document = db.collection(PATH_RESERVATION).document(reservation.pk)
+        val path_reservation = db.collection(PATH_RESERVATION)
+        val path_reservation_center_sport = db.collection(PATH_SPORT_CENTER).document(reservation.centro_deportivo!!.pk).collection(PATH_RESERVATION).document(reservation.pk)
+        val path_reservation_user = db.collection(PATH_USER).document(getUid()).collection(PATH_RESERVATION).document(reservation.pk)
+
+        db.runTransaction {
+            val result = it.get(path_reservation_document)
+            if (result.exists()) {
+                throw Error("Ya se encuentra reservado")
+            } else {
+                it.set(path_reservation_document, reservation.toMapPost())
+                it.set(path_reservation_center_sport, reservation.toMapPostSportCenter())
+                it.set(path_reservation_user, reservation.toMapPostUser())
+            }
+        }
+                .addOnSuccessListener {
+
+                }
+                .addOnFailureListener {
+
+                }
+
+
     }
 
 }

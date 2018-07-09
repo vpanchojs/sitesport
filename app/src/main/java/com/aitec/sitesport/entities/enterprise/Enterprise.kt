@@ -3,6 +3,8 @@ package com.aitec.sitesport.entities.enterprise
 import android.os.Parcel
 import android.os.Parcelable
 import com.aitec.sitesport.entities.Direccion
+import com.google.firebase.firestore.Exclude
+import java.util.*
 
 class Enterprise() : Parcelable {
 
@@ -29,6 +31,16 @@ class Enterprise() : Parcelable {
     var isOnline: Boolean = true
     var isQualified = false
     var viewType: Int = 0
+
+
+    @Exclude
+    fun toMapPostReservation(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["nombre"] = nombre
+        result["pk"] = pk
+        return result
+    }
+
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()

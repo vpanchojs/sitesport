@@ -2,6 +2,7 @@ package com.aitec.sitesport.reserve
 
 import com.aitec.sitesport.entities.ItemReservation
 import com.aitec.sitesport.entities.enterprise.Cancha
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import java.util.*
 
 interface ReservePresenter {
@@ -16,6 +17,6 @@ interface ReservePresenter {
 
     fun removeItem(item: ItemReservation)
 
-    fun createReserve(date: Date, items: List<ItemReservation>, court: Cancha, price: Double, observations: String)
+    fun createReserve(date: Date, items: List<ItemReservation>, court: Cancha, price: Double, observations: String, enterprise: Enterprise)
 
 }

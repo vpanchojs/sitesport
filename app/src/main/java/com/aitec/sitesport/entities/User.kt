@@ -28,6 +28,16 @@ class User() : Parcelable {
 
 
     @Exclude
+    fun toMapPostReservation(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["nombre"] = nombre!!
+        result["telefono"] = telefono
+        result["cedula"] = cedula
+        return result
+    }
+
+
+    @Exclude
     fun toMapPost(): Map<String, Any> {
         val result = HashMap<String, Any>()
         result["nombre"] = nombre!!

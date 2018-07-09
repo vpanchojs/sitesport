@@ -3,6 +3,7 @@ package com.aitec.sitesport.reserve
 import android.view.View
 import com.aitec.sitesport.entities.ItemReservation
 import com.aitec.sitesport.entities.enterprise.Cancha
+import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
 import com.aitec.sitesport.reserve.events.ReserveEvents
 import com.aitec.sitesport.reserve.ui.ReserveView
@@ -33,9 +34,10 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
         interactor.removeItem(item)
     }
 
-    override fun createReserve(date: Date, items: List<ItemReservation>, pk_court: Cancha, price: Double, observations: String) {
+    override fun createReserve(date: Date, items: List<ItemReservation>, pk_court: Cancha, price: Double, observations: String, enterprise: Enterprise) {
         view.showButtonReserve(View.INVISIBLE)
         view.showProgresBar(View.VISIBLE)
+        interactor.createReserve(date, items, pk_court, price, observations,enterprise)
     }
 
     @Subscribe
@@ -48,6 +50,7 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
         }
 
     }
+
 
 }
 

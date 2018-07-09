@@ -22,8 +22,16 @@ class ReserveRepositoryImp(var eventBus: EventBusInterface, var firebaseApi: Fir
     }
 
 
-    override fun createReserve() {
+    override fun createReserve(reservation: Reservation) {
+        firebaseApi.createReserved(reservation, object : onApiActionListener<Unit> {
+            override fun onSucces(response: Unit) {
 
+            }
+
+            override fun onError(error: Any?) {
+
+            }
+        })
     }
 
 

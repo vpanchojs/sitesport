@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Enterprise
+import com.google.firebase.firestore.Exclude
 import java.util.*
 
 class Reservation() : Parcelable {
@@ -19,6 +20,49 @@ class Reservation() : Parcelable {
     var cancha: Cancha? = null
     var precio: Double = 0.0
     var centro_deportivo: Enterprise? = null
+
+
+    @Exclude
+    fun toMapPost(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["fecha_reserva"] = fecha_reserva
+        result["hora_reserva"] = hora_reserva
+        result["horas_juego"] = horas_juego
+        result["estado"] = estado
+        result["observaciones"] = observaciones
+        result["fecha_registro"] = fecha_registro!!
+        result["precio"] = precio
+        result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
+        result["cliente"] = cliente!!.toMapPostReservation()
+        result["cancha"] = cancha!!.toMapPostReservation()
+        return result
+    }
+
+    @Exclude
+    fun toMapPostSportCenter(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["fecha_reserva"] = fecha_reserva
+        result["hora_reserva"] = hora_reserva
+        result["horas_juego"] = horas_juego
+        result["estado"] = estado
+        result["observaciones"] = observaciones
+        return result
+    }
+
+    @Exclude
+    fun toMapPostUser(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["fecha_reserva"] = fecha_reserva
+        result["hora_reserva"] = hora_reserva
+        result["horas_juego"] = horas_juego
+        result["precio"] = precio
+        result["estado"] = estado
+        result["observaciones"] = observaciones
+        result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
+        result["cancha"] = cancha!!.toMapPostReservation()
+        return result
+    }
+
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString()

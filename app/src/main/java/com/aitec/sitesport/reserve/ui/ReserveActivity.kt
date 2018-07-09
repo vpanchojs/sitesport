@@ -161,7 +161,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
                 if (items.size <= 0) {
                     showMessagge("Debe seleccionar almenos una hora")
                 } else if (items.size == 1) {
-                    presenter.createReserve(calendar.time, items, court, calculatePrice(items).first, "")
+                    presenter.createReserve(calendar.time, items, court, calculatePrice(items).first, "", enterprise)
                     Log.e("Datos reserva", "fecha $calendar hora ${items.get(0).start}    cancha ${court.pk}")
                 } else {
                     showMessagge("Unicamente puede reservar una hora")
@@ -272,7 +272,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
             }
 
-            items.add(ItemReservation("$i:00", "${i + 1}:00", false, false, price))
+            items.add(ItemReservation(i, i + 1, false, false, price))
 
         }
         adapterTableTime.notifyDataSetChanged()

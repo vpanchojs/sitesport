@@ -2,6 +2,8 @@ package com.aitec.sitesport.entities.enterprise
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.firestore.Exclude
+import java.util.HashMap
 
 class Cancha() : Parcelable {
 
@@ -35,6 +37,15 @@ class Cancha() : Parcelable {
         parcel.writeString(piso)
         parcel.writeInt(hora_intermedia)
         parcel.writeList(fotos)
+    }
+
+
+    @Exclude
+    fun toMapPostReservation(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result["nombre"] = nombre
+        result["pk"] = pk
+        return result
     }
 
     override fun describeContents(): Int {

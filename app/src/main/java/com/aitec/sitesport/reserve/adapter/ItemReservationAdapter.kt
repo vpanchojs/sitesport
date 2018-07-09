@@ -24,7 +24,7 @@ class ItemReservationAdapter(var hoursList: List<ItemReservation>, var callback:
 
     override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         val hours = hoursList.get(position)
-        holder.view.tv_time_table.setText("${hours.start} a ${hours.end} ")
+        holder.view.tv_time_table.setText("${hours.start}:00 a ${hours.end}:00 ")
 
         holder.onCheckListener(hours, callback, position)
         holder.view.cb_item.isChecked = hours.select
