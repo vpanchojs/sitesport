@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.aitec.sitesport.MyApplication
@@ -56,17 +57,25 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         setContentView(R.layout.activity_reserve)
         enterprise = intent.getParcelableExtra(ProfileActivity.ENTERPRISE)
         setupToolbar(enterprise.nombre)
-        //Log.e("canchas", enterprise.canchas.toString())
         setupRecyclerViewClourt(enterprise.canchas)
         setupTodayDate(calendar)
-        //setupRecyclerViewTimeTable(getTableTimeToday(getNameToday()))
         setupRecyclerViewTimeTable()
-
         setupEventsElements()
         setupBottomSheet()
         setupInject()
         presenter.onSubscribe()
     }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return true
+    }
+
 
     override fun check(itemReservation: ItemReservation, position: Int) {
         val items = itemsChecked()
@@ -85,7 +94,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         var horas = ""
         items.forEach {
             price += it.price
-            horas += "${it.start} a ${it.end} "
+            horas += "${it.start}:00 a ${it.end}:00 "
         }
 
         return Pair<Double, String>(price, horas)
@@ -98,12 +107,18 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
     }
 
     fun setResumenReservation(price: Double, numHoras: Int, horario: String) {
-        tv_subtitle_num_horas.text = numHoras.toString()
+
+        if (numHoras > 0) {
+            tv_subtitle_num_horas.text = horario
+            tv_time_value.text = horario
+        } else {
+            tv_subtitle_num_horas.text = "No selecionado"
+            tv_time_value.text = "No selecionado"
+        }
         tv_subtitle_price_total.text = "$ ${price}"
 
         //tv_date_value.text
         tv_price_value.text = "$ ${price}"
-        tv_time_value.text = horario
 
 
     }
@@ -173,7 +188,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     private fun setupTodayDate(c: Calendar) {
         Log.e("FECHA", c.timeInMillis.toString())
-        val formateador = SimpleDateFormat("dd 'de' MMMM", Locale("ES"))
+        val formateador = SimpleDateFormat("dd '-' MMMM '-' YYYY", Locale("ES"))
         btn_calendar.text = formateador.format(c.time)
 
         tv_date_value.text = formateador.format(c.time)
@@ -181,6 +196,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     private fun setupToolbar(nameEntrepise: String) {
         setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.title = "Reservaciones"
         toolbar.subtitle = nameEntrepise
     }

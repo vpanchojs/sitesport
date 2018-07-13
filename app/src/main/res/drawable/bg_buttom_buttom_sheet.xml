@@ -3,7 +3,7 @@
 
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/colorAccent" />
+            <solid android:color="@color/colorAccentDark" />
             <corners android:radius="6dp" />
             <solid android:color="#FFFFFF" />
         </shape>
@@ -18,7 +18,7 @@
 
     <item android:state_enabled="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/colorDisableIButton" />
             <corners android:radius="6dp" />
         </shape>
     </item>
