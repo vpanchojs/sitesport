@@ -3,7 +3,7 @@ package com.aitec.sitesport.reservationHistory.di
 import com.aitec.sitesport.MyAplicationModule
 import com.aitec.sitesport.domain.di.DomainModule
 import com.aitec.sitesport.lib.di.LibModule
-import com.aitec.sitesport.reservationHistory.ReservationHistoryFragment
+import com.aitec.sitesport.reservationHistory.ui.ReservationHistoryFragment
 import dagger.Component
 import javax.inject.Singleton
 

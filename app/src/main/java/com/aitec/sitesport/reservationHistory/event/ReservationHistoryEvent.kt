@@ -1,6 +1,6 @@
 package com.aitec.sitesport.reservationHistory.event
 
-class ReservationHistoryEvent (var eventType: Int, var eventMsg: String?, var eventObject: Any?) {
+class ReservationHistoryEvent (var eventType: Int, var eventMsg: Any?, var eventObject: Any?) {
 
     companion object {
         const val SUCCESS = 1

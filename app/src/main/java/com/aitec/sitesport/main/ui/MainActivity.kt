@@ -27,6 +27,7 @@ import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.champions.ChampionShipActivity
 import com.aitec.sitesport.entities.Publication
+import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.home.ui.HomeFragment
 import com.aitec.sitesport.main.MainPresenter
@@ -35,7 +36,7 @@ import com.aitec.sitesport.mapSites.ui.MapSitesActivity
 import com.aitec.sitesport.menu.ui.MenuFragment
 import com.aitec.sitesport.profileEnterprise.ui.ProfileActivity
 import com.aitec.sitesport.publication.ui.PublicationActivity
-import com.aitec.sitesport.reservationHistory.ReservationHistoryFragment
+import com.aitec.sitesport.reservationHistory.ui.ReservationHistoryFragment
 import com.aitec.sitesport.sites.ui.SitesFragment
 import com.aitec.sitesport.util.BaseActivitys
 import com.aitec.sitesport.welcome.WelcomeActivity
@@ -53,6 +54,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
     override fun navigatioProfile(entrepise: Enterprise) {
         startActivity(Intent(this, ProfileActivity::class.java).putExtra(ProfileActivity.ENTERPRISE, entrepise.pk))
     }
+
+    var user: User?= null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest

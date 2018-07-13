@@ -13,13 +13,14 @@ class Reservation() : Parcelable {
     var fecha_reserva: String = ""
     var hora_reserva: Int = 0
     var horas_juego: Int = 0
-    var estado: String = ""
+    var estado: Int = -1
     var observaciones = ""
     var fecha_registro: Date? = null
     var cliente: User? = null
     var cancha: Cancha? = null
     var precio: Double = 0.0
     var centro_deportivo: Enterprise? = null
+    var type: Int= 0
 
 
     @Exclude
@@ -69,7 +70,7 @@ class Reservation() : Parcelable {
         fecha_reserva = parcel.readString()
         hora_reserva = parcel.readInt()
         horas_juego = parcel.readInt()
-        estado = parcel.readString()
+        estado = parcel.readInt()
         observaciones = parcel.readString()
         cliente = parcel.readParcelable(User::class.java.classLoader)
         cancha = parcel.readParcelable(Cancha::class.java.classLoader)
@@ -82,7 +83,7 @@ class Reservation() : Parcelable {
         parcel.writeString(fecha_reserva)
         parcel.writeInt(hora_reserva)
         parcel.writeInt(horas_juego)
-        parcel.writeString(estado)
+        parcel.writeInt(estado)
         parcel.writeString(observaciones)
         parcel.writeParcelable(cliente, flags)
         parcel.writeParcelable(cancha, flags)
@@ -104,6 +105,11 @@ class Reservation() : Parcelable {
         override fun newArray(size: Int): Array<Reservation?> {
             return arrayOfNulls(size)
         }
+
+        const val OCUPADO = 2
+        const val DISPONIBLE = 3
+        const val PAGADO = 4
+        const val NO_PAGADO = 5
     }
 
 

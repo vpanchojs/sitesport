@@ -37,7 +37,8 @@ class ReserveInteractorImp(var repository: ReserveRepository, var eventBus: Even
         reservation.fecha_reserva = SimpleDateFormat("dd/MM/yyyy").format(date)
         reservation.cancha = court
         reservation.hora_reserva = items[0].start
-        reservation.estado = "Ocupado"
+        reservation.hora_reserva = items[0].start.toInt()
+        reservation.estado = Reservation.OCUPADO
         reservation.horas_juego = 1
         reservation.centro_deportivo = enterprise
         reservation.precio = items[0].price
@@ -54,8 +55,6 @@ class ReserveInteractorImp(var repository: ReserveRepository, var eventBus: Even
             horas += "${it.start} a ${it.end} "
         }
 
-        return Pair<Double, String>(price, horas)
-    }
-    */
+    }*/
 }
 

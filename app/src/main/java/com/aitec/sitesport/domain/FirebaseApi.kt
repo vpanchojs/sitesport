@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storage: StorageReference, var fuctions: FirebaseFunctions) {
@@ -738,6 +739,22 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
                 .addOnFailureListener {
                     callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseFirestore(it))
+                }
+    }
+
+    fun getReservations(callback: onApiActionListener<ArrayList<Reservation>>){
+        db.collection(PATH_USER).document(mAuth.currentUser!!.uid).collection(PATH_RESERVATION) .get()
+                .addOnSuccessListener {
+                    val reservations: ArrayList<Reservation> = arrayListOf()
+                    it.forEach {
+                        val r = it.toObject(Reservation::class.java)
+                        r.pk = it.id
+                        reservations.add(r)
+                        Log.d(TAG, "Success => Reservations = " + it.toObject(Reservation::class.java).centro_deportivo!!.nombre)
+                    }
+                    callback.onSucces(reservations)
+                }.addOnFailureListener {
+                    callback.onError(it.toString())
                 }
     }
 

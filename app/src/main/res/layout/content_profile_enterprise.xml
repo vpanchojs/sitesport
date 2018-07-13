@@ -414,7 +414,7 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="50dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:visibility="visible"

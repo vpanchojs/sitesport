@@ -1,4 +1,7 @@
 package com.aitec.sitesport.reservationHistory
 
-class ReservationHistoryInteractorImpl(reservationHistoryRepository: ReservationHistoryRepository) :  ReservationHistoryInteractor{
+class ReservationHistoryInteractorImpl(val reservationHistoryRepository: ReservationHistoryRepository) :  ReservationHistoryInteractor{
+    override fun getReservations() {
+        reservationHistoryRepository.getReservations()
+    }
 }

@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -54,10 +55,10 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     @Inject
     lateinit var profilePresenter: ProfilePresenter
-    private var imageAdapter: ImageAdapter? = null
+    //private var imageAdapter: ImageAdapter? = null
     private var enterprise: Enterprise = Enterprise()
     private var snackBarInfo: Snackbar? = null
-    private var courtAdapter: CourtAdapter? = null
+    //private var courtAdapter: CourtAdapter? = null
     private var images: ArrayList<String> = arrayListOf()
     private lateinit var gMap: GoogleMap
     private var uidUser: String? = null
@@ -70,7 +71,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         profilePresenter.register()
         enterprise.pk = intent.getStringExtra(ENTERPRISE)
         setupUI()
-        //callSections()
+        callSections()
     }
 
     private fun callSections() {
@@ -120,8 +121,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun setupCourtsSection() {
-        courtAdapter = CourtAdapter(enterprise.canchas, this)
-        courtAdapter!!.setHasStableIds(true)
+        val courtAdapter = CourtAdapter(enterprise.canchas, this)
+        //courtAdapter!!.setHasStableIds(true)
         rvCourts.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvCourts.adapter = courtAdapter
     }
@@ -230,8 +231,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     }
 
     private fun setupPhotosSection() {
-        images.add("https://firebasestorage.googleapis.com/v0/b/sitesport-204402.appspot.com/o/sport_center%2FZrBgMjjn8Pta8YlbLBLI%2FZrBgMjjn8Pta8YlbLBLI.jpg?alt=media&token=714cc694-05ef-4cae-9ea3-df00cf8c641c")
-        imageAdapter = ImageAdapter(supportFragmentManager, images)
+        //images.add("https://firebasestorage.googleapis.com/v0/b/sitesport-204402.appspot.com/o/sport_center%2FZrBgMjjn8Pta8YlbLBLI%2FZrBgMjjn8Pta8YlbLBLI.jpg?alt=media&token=714cc694-05ef-4cae-9ea3-df00cf8c641c")
+        val imageAdapter = ImageAdapter(supportFragmentManager, images)
         viewPagerImagesProfile.adapter = imageAdapter
         tabImageProfileDots.setupWithViewPager(viewPagerImagesProfile, true)
     }
@@ -459,6 +460,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupCourtsSection()
         setupPhotosSection()
         setupLikes()
+
         setupBtnReservation()
         snackBarInfo = Snackbar.make(clMainScreen, "", Snackbar.LENGTH_LONG).setAction("REINTENTAR") {
             callSections()
@@ -590,7 +592,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun onResume() {
         super.onResume()
-        callSections()
+        //callSections()
     }
 
     companion object {

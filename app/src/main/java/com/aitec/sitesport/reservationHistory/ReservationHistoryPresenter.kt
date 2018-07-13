@@ -6,5 +6,6 @@ interface ReservationHistoryPresenter {
 
     fun register()
     fun unregister()
+    fun getReservations()
     fun onEventThread(event: ReservationHistoryEvent)
 }
