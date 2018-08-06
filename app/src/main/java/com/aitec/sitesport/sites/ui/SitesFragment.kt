@@ -50,7 +50,6 @@ class SitesFragment : Fragment(), View.OnClickListener, EntrepiseAdapter.onEntre
                 Log.e(TAG, "open $")
             }
             R.id.cb_score -> {
-
                 presenter.addFilterScore(true)
                 Log.e(TAG, "puntaje $p1")
             }

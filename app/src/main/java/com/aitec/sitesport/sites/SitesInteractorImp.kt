@@ -40,7 +40,7 @@ class SitesInteractorImp(var repository: SitesRepository) : SitesInteractor {
         }
         */
 
-        repository.onGetSites(parametros)
+        repository.onGetSitesScore(parametros)
     }
 
 

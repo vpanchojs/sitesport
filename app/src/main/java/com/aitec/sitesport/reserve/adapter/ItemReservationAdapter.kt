@@ -48,11 +48,12 @@ class ItemReservationAdapter(var hoursList: List<ItemReservation>, var callback:
                 } else {
                     onItemListener.unCheck(itemReservation, position)
                 }
-
             }
         }
 
     }
+
+
 
 
     interface onItemListener {

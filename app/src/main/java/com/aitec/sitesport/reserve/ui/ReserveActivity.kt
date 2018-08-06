@@ -79,8 +79,14 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     override fun check(itemReservation: ItemReservation, position: Int) {
         val items = itemsChecked()
-        val valuesPrice = calculatePrice(items)
-        setResumenReservation(valuesPrice.first, items.size, valuesPrice.second)
+        if (items.size > 1) {
+            itemReservation.select = false
+            adapterTableTime.notifyItemChanged(position)
+            showMessagge("Solo puede reservar una hora")
+        } else {
+            val valuesPrice = calculatePrice(items)
+            setResumenReservation(valuesPrice.first, items.size, valuesPrice.second)
+        }
     }
 
     fun itemsChecked(): List<ItemReservation> {
