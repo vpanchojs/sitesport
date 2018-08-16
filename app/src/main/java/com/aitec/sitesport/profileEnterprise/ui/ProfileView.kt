@@ -25,7 +25,7 @@ interface ProfileView {
 
     fun updateBasicProfile()
     fun updateCourts(courtList: List<Cancha>)
-    fun updateImages(imageList: ArrayList<String>)
+    fun updateImages(foto: String)
     fun updateServices(serviceList: List<Servicio>)
     fun updateContacts(contactList: List<RedSocial>)
 

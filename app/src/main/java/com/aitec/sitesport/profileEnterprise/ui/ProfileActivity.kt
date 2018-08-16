@@ -100,12 +100,10 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setMapView()
     }
 
-    override fun updateImages(imageList: ArrayList<String>) {
+    override fun updateImages(foto: String) {
         images.clear()
         images.add(enterprise.foto_perfil)
-        for (url in imageList) {
-            images.add(url)
-        }
+        images.add(foto)
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
     }
 
@@ -133,7 +131,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         tvFloor.text = court.piso.toLowerCase()
         tvPriceDay.text = "$${court.precio_dia}"
         tvPriceNight.text = "$${court.precio_noche}"
-        updateImages(court.fotos!!)
+        updateImages(court.foto)
     }
 
     override fun updateCourts(courtList: List<Cancha>) {
@@ -305,16 +303,16 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
 
     private fun hideLoading(sectionView: View, loadingView: View, msg: String?) {
-        //if(msg == null) {
+        if(msg == null) {
             loadingView.visibility = View.GONE
             sectionView.visibility = View.VISIBLE
-        /*}else{
+        }else{
             loadingView.pbLoading.visibility = View.GONE
             loadingView.tvLoading.text = msg
             loadingView.tvLoading.visibility = View.VISIBLE
             loadingView.visibility = View.VISIBLE
             sectionView.visibility = View.INVISIBLE
-        }*/
+        }
     }
 
     private fun setServices(service: Servicio) {

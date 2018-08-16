@@ -164,8 +164,8 @@ class ProfileRepositoryImpl(var firebaseApi: FirebaseApi,
         sharePreferencesApi.savePkEnterprise(pk)
     }
 
-    private fun postEvent(type: Int, section: Int, any: Any?, eventObject: Any?) {
-        val event = ProfileEvent(type, section, any.toString(), eventObject)
+    private fun postEvent(type: Int, section: Int, any: String?, eventObject: Any?) {
+        val event = ProfileEvent(type, section, any, eventObject)
         eventBusInterface.post(event)
     }
 
