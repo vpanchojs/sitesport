@@ -103,7 +103,7 @@ class ProfilePresenterImpl(var profileView: ProfileView,
             ProfileActivity.SECTION_COURTS -> {
                 profileView.updateCourts((profileEvent.eventObject as Enterprise).canchas)
                 if ((profileEvent.eventObject as Enterprise).canchas.isNotEmpty())
-                    profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].foto)
+                    profileView.updateImages((profileEvent.eventObject as Enterprise).canchas[0].fotos)
                 profileView.hideLoadingCourtSection(profileEvent.eventMsg)
                 existConnection(profileEvent)
             }

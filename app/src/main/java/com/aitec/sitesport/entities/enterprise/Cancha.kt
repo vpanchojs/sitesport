@@ -15,7 +15,7 @@ class Cancha() : Parcelable {
     var hora_intermedia: Int = 0
     var piso: String = ""
     //var fotos: ArrayList<String>? = arrayListOf()
-    var foto: String = ""
+    var fotos: String = ""
 
 
     constructor(parcel: Parcel) : this() {
@@ -26,7 +26,7 @@ class Cancha() : Parcelable {
         numero_jugadores = parcel.readString()
         piso = parcel.readString()
         hora_intermedia = parcel.readInt()
-        foto = parcel.readString()
+        fotos = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -37,7 +37,7 @@ class Cancha() : Parcelable {
         parcel.writeString(numero_jugadores)
         parcel.writeString(piso)
         parcel.writeInt(hora_intermedia)
-        parcel.writeString(foto)
+        parcel.writeString(fotos)
     }
 
 

@@ -62,6 +62,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
     private var images: ArrayList<String> = arrayListOf()
     private lateinit var gMap: GoogleMap
     private var uidUser: String? = null
+    private var handlerShowCamera: Handler?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +71,6 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupInjection()
         profilePresenter.register()
         enterprise.pk = intent.getStringExtra(ENTERPRISE)
-        setupUI()
-        callSections()
     }
 
     private fun callSections() {
@@ -131,7 +130,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         tvFloor.text = court.piso.toLowerCase()
         tvPriceDay.text = "$${court.precio_dia}"
         tvPriceNight.text = "$${court.precio_noche}"
-        updateImages(court.foto)
+        updateImages(court.fotos)
     }
 
     override fun updateCourts(courtList: List<Cancha>) {
@@ -590,7 +589,21 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun onResume() {
         super.onResume()
+        handlerShowCamera = Handler()
+        handlerShowCamera!!.postDelayed({
+            this.run {  setupUI()
+                callSections() }
+        }, 100)
+
         //callSections()
+    }
+
+    override fun onPause() {
+        if(handlerShowCamera != null) {
+            handlerShowCamera!!.removeCallbacksAndMessages(null)
+            handlerShowCamera = null
+        }
+        super.onPause()
     }
 
     companion object {
