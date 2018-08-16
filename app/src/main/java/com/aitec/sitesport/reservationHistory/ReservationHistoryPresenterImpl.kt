@@ -39,7 +39,7 @@ class ReservationHistoryPresenterImpl(val reservationHistoryView: ReservationHis
             }
 
             ReservationHistoryEvent.ERROR -> {
-
+                reservationHistoryView.hideLoading(event.eventMsg)
             }
 
         }

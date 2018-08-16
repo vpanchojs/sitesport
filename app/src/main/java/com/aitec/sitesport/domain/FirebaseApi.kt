@@ -743,19 +743,23 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun getReservations(callback: onApiActionListener<ArrayList<Reservation>>){
-        db.collection(PATH_USER).document(mAuth.currentUser!!.uid).collection(PATH_RESERVATION) .get()
-                .addOnSuccessListener {
-                    val reservations: ArrayList<Reservation> = arrayListOf()
-                    it.forEach {
-                        val r = it.toObject(Reservation::class.java)
-                        r.pk = it.id
-                        reservations.add(r)
-                        Log.d(TAG, "Success => Reservations = " + it.toObject(Reservation::class.java).centro_deportivo!!.nombre)
+        if(mAuth.currentUser != null) {
+            db.collection(PATH_USER).document(mAuth.currentUser!!.uid).collection(PATH_RESERVATION).get()
+                    .addOnSuccessListener {
+                        val reservations: ArrayList<Reservation> = arrayListOf()
+                        it.forEach {
+                            val r = it.toObject(Reservation::class.java)
+                            r.pk = it.id
+                            reservations.add(r)
+                            Log.d(TAG, "Success => Reservations = " + it.toObject(Reservation::class.java).centro_deportivo!!.nombre)
+                        }
+                        callback.onSucces(reservations)
+                    }.addOnFailureListener {
+                        callback.onError(it.toString())
                     }
-                    callback.onSucces(reservations)
-                }.addOnFailureListener {
-                    callback.onError(it.toString())
-                }
+        }else{
+            callback.onError("Debes iniciar sesión primero")
+        }
     }
 
     //groupB.teams.add(crearEquipo(0, 0, 0, "9B", "pRyDkxgpqFxmk7iHAjBA"))

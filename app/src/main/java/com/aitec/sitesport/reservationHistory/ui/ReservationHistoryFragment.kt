@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,6 +104,11 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
         val adapter = AdapterReservationHistory(reservationsList)
         view.rvRecordReservation.layoutManager = LinearLayoutManager(activity!!, LinearLayoutManager.VERTICAL, false)
         view.rvRecordReservation.adapter = adapter
+
+        btnReload.setOnClickListener {
+            presenter.getReservations()
+            Log.e("Reservations History", "Reintentar")
+        }
 
         // SE VA A CAER =S
         presenter.getReservations()

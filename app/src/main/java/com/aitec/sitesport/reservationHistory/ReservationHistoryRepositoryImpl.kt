@@ -26,7 +26,7 @@ class ReservationHistoryRepositoryImpl(val firebaseApi: FirebaseApi,
             }
 
             override fun onError(error: Any?) {
-                postEvent(ReservationHistoryEvent.SUCCESS, error.toString(), null)
+                postEvent(ReservationHistoryEvent.ERROR, error, null)
             }
 
         })
