@@ -48,7 +48,7 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
             clContentLoading.loadingReservations.pbLoading.visibility = View.GONE
             clContentLoading.loadingReservations.tvLoading.text = msg.toString()
             clContentLoading.loadingReservations.tvLoading.visibility = View.VISIBLE
-            btnReload.visibility = View.VISIBLE
+            //btnReload.visibility = View.VISIBLE
         }else{
             clContentLoading.visibility = View.GONE
             rvRecordReservation.visibility = View.VISIBLE
@@ -57,7 +57,7 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
 
     override fun showLoading() {
         rvRecordReservation.visibility = View.GONE
-        btnReload.visibility = View.GONE
+        //btnReload.visibility = View.GONE
         clContentLoading.loadingReservations.tvLoading.visibility = View.GONE
         clContentLoading.loadingReservations.pbLoading.visibility = View.VISIBLE
         clContentLoading.loadingReservations.visibility = View.VISIBLE
@@ -110,6 +110,8 @@ class ReservationHistoryFragment : Fragment(), ReservationHistoryView{
             Log.e("Reservations History", "Reintentar")
         }
 
+        btnReload.visibility = View.GONE
+        //loadingReservations.visibility = View.GONE
         // SE VA A CAER =S
         presenter.getReservations()
         /*if(reservationsList.size == 0) return

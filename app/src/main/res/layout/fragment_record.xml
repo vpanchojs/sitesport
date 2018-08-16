@@ -36,6 +36,7 @@
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
+            android:visibility="gone"
             android:background="@drawable/bg_buttom_buttom_sheet"
             android:text="Reintentar"
             app:layout_constraintEnd_toEndOf="@+id/loadingReservations"
