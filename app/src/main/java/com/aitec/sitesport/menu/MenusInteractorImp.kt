@@ -1,6 +1,7 @@
 package com.aitec.sitesport.menu
 
 import android.net.Uri
+import android.util.Log
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
 
@@ -19,6 +20,7 @@ class MenusInteractorImp(var repository: MenusRepository, eventBus: EventBusInte
     }
 
     override fun enviartoken(token: String, name: String?, lastname: String?, email: String?, photoUrl: Uri?) {
+        Log.e("INTERAC","iniciando con fb")
         val user = User()
         user.foto = photoUrl.toString()
         user.apellido = lastname!!

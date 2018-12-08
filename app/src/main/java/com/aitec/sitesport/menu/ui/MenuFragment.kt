@@ -90,7 +90,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
     private fun handleSignInResult(result: Task<GoogleSignInAccount>) {
         try {
             val account = result.getResult(ApiException::class.java)
-            Log.e(TAG, "signInResult:succes idtoken= ${account.givenName}")
+            Log.e(TAG, "signInResult:succes idtoken= ${account!!.givenName}")
             // showMessage("Session Correctamente")
             presenter.tokenGoogle(account.idToken!!, account.givenName, account.familyName, account.email, account.photoUrl)
         } catch (e: Exception) {
@@ -135,7 +135,6 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             override fun onSuccess(loginResult: LoginResult) {
 
                 val profile = Profile.getCurrentProfile()
-
                 if (profile != null) {
                     presenter.tokenFacebook(loginResult.accessToken.token, profile.firstName, profile.lastName, "", profile.getProfilePictureUri(200, 200))
                 } else {
@@ -144,7 +143,7 @@ class MenuFragment : Fragment(), MenusView, onOptionsAdapterListener, View.OnCli
             }
 
             override fun onCancel() {
-                //Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.cancel_login, Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: FacebookException) {

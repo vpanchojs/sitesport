@@ -1,6 +1,7 @@
 package com.aitec.sitesport.menu
 
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import com.aitec.sitesport.entities.User
 import com.aitec.sitesport.lib.base.EventBusInterface
@@ -21,6 +22,7 @@ class MenusPresenterImp(var eventBus: EventBusInterface, var view: MenusView, va
         view.showProgress(View.VISIBLE)
         view.visibleLogin(View.INVISIBLE)
         view.showMessagge("Iniciando sesión con facebook")
+        Log.e("PRESE","iniciando con fb")
         interactor.enviartoken(token, name, lastname, email, photoUrl)
     }
 

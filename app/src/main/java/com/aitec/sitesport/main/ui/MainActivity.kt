@@ -123,11 +123,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
         onGetDynamicLink()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         setupInjection()
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mSettingsClient = LocationServices.getSettingsClient(this)
         createLocationCallback()
         createLocationRequest()
         buildLocationSettingsRequest()
+
+
 
         searchResultsAdapter = SearchNamesEntrepiseAdapter(searchrResultList, this)
         rv_results_searchs.layoutManager = LinearLayoutManager(this)
@@ -409,21 +412,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MenuIt
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_PERMISSIONS_REQUEST_CODE)
 
-        /*
-        Log.e("permisos", "pidiendo permiso" + shouldProvideRationale)
-        if (shouldProvideRationale) {
-            Log.e("permisos", "true")
-            ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSIONS_REQUEST_CODE)
-        } else {
-
-            ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSIONS_REQUEST_CODE)
-
-        }
-        */
     }
 
     private fun checkPermissions(): Boolean {

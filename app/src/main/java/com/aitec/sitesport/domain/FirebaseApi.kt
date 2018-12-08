@@ -86,7 +86,11 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun autenticationFacebook(accesToken: String, user: User, callback: onApiActionListener<User>) {
-        val credential = FacebookAuthProvider.getCredential(accesToken);
+        Log.e(TAG, "handleFacebookAccessToken: $accesToken")
+        val credential = FacebookAuthProvider.getCredential(accesToken)
+
+        Log.e("fb firebase", "credential $credential")
+
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener {
                     /*
@@ -96,7 +100,6 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     user.correo_electronico = it.user.correo_electronico
                     user.foto = it.user.photoUrl.toString()
                     */
-
 
                     user.correo_electronico = if (it.user.email != null) it.user.email!! else " "
 
@@ -118,9 +121,12 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
 
 
                 }.addOnFailureListener {
+                    Log.e("fb firebase", "error es $it")
                     callback.onError(ManagerExcepcionFirebase.getMessageErrorFirebaseAuth(it))
 
                 }
+
+
     }
 
 
@@ -742,8 +748,8 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                 }
     }
 
-    fun getReservations(callback: onApiActionListener<ArrayList<Reservation>>){
-        if(mAuth.currentUser != null) {
+    fun getReservations(callback: onApiActionListener<ArrayList<Reservation>>) {
+        if (mAuth.currentUser != null) {
             db.collection(PATH_USER).document(mAuth.currentUser!!.uid).collection(PATH_RESERVATION).get()
                     .addOnSuccessListener {
                         val reservations: ArrayList<Reservation> = arrayListOf()
@@ -757,7 +763,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
                     }.addOnFailureListener {
                         callback.onError(it.toString())
                     }
-        }else{
+        } else {
             callback.onError("Debes iniciar sesión primero")
         }
     }
