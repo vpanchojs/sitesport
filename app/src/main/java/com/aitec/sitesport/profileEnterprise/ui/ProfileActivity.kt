@@ -76,10 +76,10 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     private fun callSections() {
         profilePresenter.getBasicProfile(enterprise.pk)
-        profilePresenter.getCourtsProfile(enterprise.pk)
         profilePresenter.getTableTimeProfile(enterprise.pk)
         profilePresenter.getServicesProfile(enterprise.pk)
         profilePresenter.getContactsProfile(enterprise.pk)
+        profilePresenter.getCourtsProfile(enterprise.pk)
         profilePresenter.isAuthenticated()
         //profilePresenter.getLikes("sAcL7AsndlapxazBB5ZrHyCix782", enterprise.pk)
     }
@@ -102,6 +102,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
 
     override fun updateImages(foto: String) {
         images.clear()
+        Log.e("url foto", enterprise.foto_perfil)
+        Log.e("url cancha", foto)
         images.add(enterprise.foto_perfil)
         images.add(foto)
         viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
@@ -457,8 +459,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupTableTimeSection()
         setupCourtsSection()
         setupPhotosSection()
-        images.add(enterprise.foto_perfil)
-        viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
+/*        images.add(enterprise.foto_perfil)
+        viewPagerImagesProfile.adapter!!.notifyDataSetChanged()*/
         setupLikes()
 
         setupBtnReservation()
@@ -602,7 +604,7 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         handlerShowCamera!!.postDelayed({
             this.run {  setupUI()
                 callSections() }
-        }, 100)
+        }, 200)
 
         //callSections()
     }
