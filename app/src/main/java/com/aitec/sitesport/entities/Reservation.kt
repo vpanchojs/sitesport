@@ -14,7 +14,7 @@ class Reservation() : Parcelable {
     var hora_reserva: Int = 0
     var horas_juego: Int = 0
     var estado: Int = -1
-    var observaciones = ""
+    var observaciones: String ?= null
     var fecha_registro: Date? = null
     var cliente: User? = null
     var cancha: Cancha? = null
@@ -30,7 +30,7 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if (observaciones == null) " " else observaciones!!
         result["fecha_registro"] = fecha_registro!!
         result["precio"] = precio
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
@@ -46,7 +46,7 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if (observaciones == null) " " else observaciones!!
         return result
     }
 
@@ -58,7 +58,7 @@ class Reservation() : Parcelable {
         result["horas_juego"] = horas_juego
         result["precio"] = precio
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if (observaciones == null) " " else observaciones!!
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
         result["cancha"] = cancha!!.toMapPostReservation()
         return result
