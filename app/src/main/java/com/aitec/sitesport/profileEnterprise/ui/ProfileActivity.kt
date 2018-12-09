@@ -457,6 +457,8 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
         setupTableTimeSection()
         setupCourtsSection()
         setupPhotosSection()
+        images.add(enterprise.foto_perfil)
+        viewPagerImagesProfile.adapter!!.notifyDataSetChanged()
         setupLikes()
 
         setupBtnReservation()
