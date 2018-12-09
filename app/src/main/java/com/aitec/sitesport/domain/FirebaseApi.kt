@@ -751,7 +751,7 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun getReservations(callback: onApiActionListener<ArrayList<Reservation>>) {
         if (mAuth.currentUser != null) {
             db.collection(PATH_USER).document(mAuth.currentUser!!.uid).collection(PATH_RESERVATION).get()
-                    .addOnSuccessListener {
+                    .addOnSuccessListener { it ->
                         val reservations: ArrayList<Reservation> = arrayListOf()
                         it.forEach {
                             val r = it.toObject(Reservation::class.java)

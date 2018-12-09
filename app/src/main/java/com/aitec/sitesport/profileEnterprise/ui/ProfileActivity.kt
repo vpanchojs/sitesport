@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_profile_enterprise.*
 import kotlinx.android.synthetic.main.content_profile_enterprise.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
@@ -470,6 +471,12 @@ class ProfileActivity : AppCompatActivity(), OnClickListenerCourt, ProfileView, 
             Log.e(ENTERPRISE, enterprise.canchas.toString())
             intent.putExtra(ENTERPRISE, enterprise)
             startActivity(intent)
+        }
+        if(FirebaseAuth.getInstance().currentUser != null){
+            btnReservation.visibility = View.VISIBLE
+        }
+        else{
+            btnReservation.visibility = View.GONE
         }
     }
 
