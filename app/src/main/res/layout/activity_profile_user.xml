@@ -103,6 +103,7 @@
             android:id="@+id/tie_dni"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:hint="Dni"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
@@ -123,6 +124,7 @@
             android:id="@+id/tie_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAutofill="noExcludeDescendants"
             android:hint="Celular"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>

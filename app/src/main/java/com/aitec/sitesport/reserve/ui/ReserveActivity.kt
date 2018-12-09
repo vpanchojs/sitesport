@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.aitec.sitesport.MyApplication
 import com.aitec.sitesport.R
 import com.aitec.sitesport.entities.ItemReservation
+import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Dia
 import com.aitec.sitesport.entities.enterprise.Enterprise
@@ -99,7 +100,9 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         var price = 0.0
         var horas = ""
         items.forEach {
+            Log.e("precio ${it.price} ", price.toString())
             price += it.price
+
             horas += "${it.start}:00 a ${it.end}:00 "
         }
 
@@ -287,10 +290,10 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
             var price = 0.0
 
             if (i + 1 <= intermedia) {
-                price = court.precio_dia.toDouble()
+                price = court.precio_dia
 
             } else {
-                price = court.precio_noche.toDouble()
+                price = court.precio_noche
 
             }
 
@@ -302,6 +305,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
 
     fun getNameToday(): String? {
         val day = calendar.get(Calendar.DAY_OF_WEEK)
+        Log.e("DIA", "el dia es $day")
 
         when (day) {
             1 -> {
@@ -323,7 +327,7 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
                 return DayOfWeek.FRIDAY.dayNumber
             }
             7 -> {
-                return DayOfWeek.SUNDAY.dayNumber
+                return DayOfWeek.SATURDAY.dayNumber
             }
             else -> {
                 return null
@@ -349,7 +353,16 @@ class ReserveActivity : AppCompatActivity(), OnClickListenerCourt, View.OnClickL
         btn_reserve.visibility = show
     }
 
-    override fun setItemsReserved(itemsReserved: List<ItemReservation>) {
+    override fun setItemsReserved(itemsReserved: List<Reservation>) {
+
+        itemsReserved.forEach { reservation ->
+            items.forEach { itemReservatio ->
+                if (reservation.hora_reserva == itemReservatio.start) {
+                    itemReservatio.state = true
+                }
+            }
+        }
+        adapterTableTime.notifyDataSetChanged();
 
     }
 

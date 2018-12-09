@@ -2,6 +2,7 @@ package com.aitec.sitesport.reserve
 
 import android.view.View
 import com.aitec.sitesport.entities.ItemReservation
+import com.aitec.sitesport.entities.Reservation
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.aitec.sitesport.lib.base.EventBusInterface
@@ -37,7 +38,7 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
     override fun createReserve(date: Date, items: List<ItemReservation>, pk_court: Cancha, price: Double, observations: String, enterprise: Enterprise) {
         view.showButtonReserve(View.INVISIBLE)
         view.showProgresBar(View.VISIBLE)
-        interactor.createReserve(date, items, pk_court, price, observations,enterprise)
+        interactor.createReserve(date, items, pk_court, price, observations, enterprise)
     }
 
     @Subscribe
@@ -46,7 +47,26 @@ class ReservePresenterImp(var eventBus: EventBusInterface, var view: ReserveView
             ReserveEvents.ON_GET_ITEMS_RESERVED_SUCCESS -> {
                 view.showContainerItemsReserve(View.VISIBLE)
                 view.showProgresItemsReserve(View.INVISIBLE)
+                view.setItemsReserved(events.any as List<Reservation>)
             }
+            ReserveEvents.ON_GET_ITEMS_RESERVED_ERROR -> {
+                view.showContainerItemsReserve(View.VISIBLE)
+                view.showProgresItemsReserve(View.INVISIBLE)
+                view.showMessagge(events.any)
+            }
+
+            ReserveEvents.ON_RESERVED_SUCCESS -> {
+                view.showButtonReserve(View.VISIBLE)
+                view.showProgresBar(View.INVISIBLE)
+                view.showMessagge("Reserva realizada con exito")
+            }
+            ReserveEvents.ON_RESERVED_ERROR -> {
+                //codificar accion
+                view.showButtonReserve(View.VISIBLE)
+                view.showProgresBar(View.INVISIBLE)
+                view.showMessagge(events.any)
+            }
+
         }
 
     }

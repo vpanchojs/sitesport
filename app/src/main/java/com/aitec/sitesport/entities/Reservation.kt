@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.aitec.sitesport.entities.enterprise.Cancha
 import com.aitec.sitesport.entities.enterprise.Enterprise
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.FieldValue
 import java.util.*
 
 class Reservation() : Parcelable {
@@ -14,13 +15,13 @@ class Reservation() : Parcelable {
     var hora_reserva: Int = 0
     var horas_juego: Int = 0
     var estado: Int = -1
-    var observaciones: String ?= null
+    var observaciones = ""
     var fecha_registro: Date? = null
     var cliente: User? = null
     var cancha: Cancha? = null
     var precio: Double = 0.0
     var centro_deportivo: Enterprise? = null
-    var type: Int= 0
+    var type: Int = 0
 
 
     @Exclude
@@ -30,8 +31,8 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = if (observaciones == null) " " else observaciones!!
-        result["fecha_registro"] = fecha_registro!!
+        result["observaciones"] = observaciones
+        result["fecha_registro"] = FieldValue.serverTimestamp()
         result["precio"] = precio
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
         result["cliente"] = cliente!!.toMapPostReservation()
@@ -46,7 +47,9 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = if (observaciones == null) " " else observaciones!!
+        result["observaciones"] = observaciones
+        result["cancha"] = cancha!!.toMapPostReservation()
+        result["cliente"] = cliente!!.toMapPostReservation()
         return result
     }
 
@@ -58,7 +61,7 @@ class Reservation() : Parcelable {
         result["horas_juego"] = horas_juego
         result["precio"] = precio
         result["estado"] = estado
-        result["observaciones"] = if (observaciones == null) " " else observaciones!!
+        result["observaciones"] = observaciones
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
         result["cancha"] = cancha!!.toMapPostReservation()
         return result

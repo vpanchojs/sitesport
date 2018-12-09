@@ -15,7 +15,7 @@ class ReserveInteractorImp(var repository: ReserveRepository, var eventBus: Even
     var itemsReserve = ArrayList<ItemReservation>()
 
     override fun getItemsReserved(fecha: Long, pk: String, pkCancha: String) {
-        val formateador = SimpleDateFormat("dd/MM/yy", Locale("ES"))
+        val formateador = SimpleDateFormat("d/MM/yyyy", Locale("ES"))
         repository.getItemsReserved(formateador.format(fecha), pk, pkCancha)
     }
 
@@ -34,7 +34,7 @@ class ReserveInteractorImp(var repository: ReserveRepository, var eventBus: Even
         //pk= pk_centro_deportivo + pk_cancha + fecha_reserva+ hora_reserva
         reservation.pk = "${enterprise.pk}${court.pk}${SimpleDateFormat("ddMMyyyy").format(date)}${items[0].start}"
         Log.e("pk_reserva", reservation.pk)
-        reservation.fecha_reserva = SimpleDateFormat("dd/MM/yyyy").format(date)
+        reservation.fecha_reserva = SimpleDateFormat("d/MM/yyyy").format(date)
         reservation.cancha = court
         reservation.hora_reserva = items[0].start
         reservation.hora_reserva = items[0].start.toInt()

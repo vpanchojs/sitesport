@@ -37,7 +37,7 @@ class Enterprise() : Parcelable {
     fun toMapPostReservation(): Map<String, Any> {
         val result = HashMap<String, Any>()
         result["nombre"] = nombre
-        result["pk"] = pk
+        result["id_centro_deportivo"] = pk
         return result
     }
 

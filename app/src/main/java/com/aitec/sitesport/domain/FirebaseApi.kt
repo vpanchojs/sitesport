@@ -650,13 +650,16 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     fun getItemReserved(fecha: String, idEnterprise: String, pkCancha: String, callback: onApiActionListener<List<Reservation>>) {
         db.collection(PATH_SPORT_CENTER).document(idEnterprise).collection(PATH_RESERVATION).whereEqualTo("cancha.id_cancha", pkCancha).whereEqualTo("fecha_reserva", fecha).get()
                 .addOnSuccessListener {
-                    Log.e(TAG, "item reserva succes")
 
+                    Log.e(TAG, "item reserva succes ${it.documentChanges.size}")
+
+                    var listReservation = ArrayList<Reservation>()
                     it.documents.forEach {
-
+                        var reservation = it.toObject(Reservation::class.java)
+                        listReservation.add(reservation!!)
                     }
 
-                    callback.onSucces(ArrayList<Reservation>())
+                    callback.onSucces(listReservation)
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "item reserva error" + it.toString())
@@ -826,27 +829,41 @@ class FirebaseApi(var db: FirebaseFirestore, var mAuth: FirebaseAuth, var storag
     }
 
     fun createReserved(reservation: Reservation, callback: onApiActionListener<Unit>) {
-        val path_reservation_document = db.collection(PATH_RESERVATION).document(reservation.pk)
-        val path_reservation = db.collection(PATH_RESERVATION)
-        val path_reservation_center_sport = db.collection(PATH_SPORT_CENTER).document(reservation.centro_deportivo!!.pk).collection(PATH_RESERVATION).document(reservation.pk)
+
+        //Referencia al nodo reservaciones del usuario.
+        Log.e(TAG, reservation.pk)
         val path_reservation_user = db.collection(PATH_USER).document(getUid()).collection(PATH_RESERVATION).document(reservation.pk)
 
-        db.runTransaction {
-            val result = it.get(path_reservation_document)
-            if (result.exists()) {
-                throw Error("Ya se encuentra reservado")
-            } else {
-                it.set(path_reservation_document, reservation.toMapPost())
-                it.set(path_reservation_center_sport, reservation.toMapPostSportCenter())
-                it.set(path_reservation_user, reservation.toMapPostUser())
+        //Coleccion al nodo principal de la reserva.
+        val path_reservation = db.collection(PATH_RESERVATION).document(reservation.pk)
+
+        //Referencia a la collecion de reservaciones del centro deportivo
+        val path_reservation_center_sport = db.collection(PATH_SPORT_CENTER).document(reservation.centro_deportivo!!.pk).collection(PATH_RESERVATION).document(reservation.pk)
+
+
+        db.collection(PATH_USER).document(getUid()).get().addOnSuccessListener {
+            val user = it.toObject(User::class.java)
+            reservation.cliente = user
+
+            db.runTransaction {
+                val result = it.get(path_reservation)
+                if (result.exists()) {
+                    throw Error("Ya se encuentra reservado")
+                } else {
+                    it.set(path_reservation, reservation.toMapPost())
+                    it.set(path_reservation_center_sport, reservation.toMapPostSportCenter())
+                    it.set(path_reservation_user, reservation.toMapPostUser())
+                }
             }
+                    .addOnSuccessListener {
+                        Log.e(TAG, " todo bien")
+                        callback.onSucces(Unit)
+                    }
+                    .addOnFailureListener {
+                        Log.e(TAG, "mal ${it}")
+                        callback.onError(it.toString())
+                    }
         }
-                .addOnSuccessListener {
-
-                }
-                .addOnFailureListener {
-
-                }
 
 
     }
