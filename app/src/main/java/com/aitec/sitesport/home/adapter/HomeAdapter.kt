@@ -50,7 +50,13 @@ class HomeAdapter(var data: ArrayList<Publication>?, var callback: onHomeAdapter
                     .into(holder.view.civ_center)
         }
 
-        holder.view.txtdescription.text = data!!.get(position).titulo
+
+        val des = if(data!!.get(position).descripcion.isNotBlank())
+            data!!.get(position).descripcion
+        else
+            data!!.get(position).titulo
+
+        holder.view.txtdescription.text = des
         holder.onNavigationProfile(position, callback)
 
         holder.view.btn_home_share.setOnClickListener {

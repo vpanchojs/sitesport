@@ -31,7 +31,7 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if(observaciones == null) { "" } else {observaciones}
         result["fecha_registro"] = FieldValue.serverTimestamp()
         result["precio"] = precio
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
@@ -47,7 +47,7 @@ class Reservation() : Parcelable {
         result["hora_reserva"] = hora_reserva
         result["horas_juego"] = horas_juego
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if(observaciones == null) { "" } else {observaciones}
         result["cancha"] = cancha!!.toMapPostReservation()
         result["cliente"] = cliente!!.toMapPostReservation()
         return result
@@ -61,7 +61,7 @@ class Reservation() : Parcelable {
         result["horas_juego"] = horas_juego
         result["precio"] = precio
         result["estado"] = estado
-        result["observaciones"] = observaciones
+        result["observaciones"] = if(observaciones == null) { "" } else {observaciones}
         result["centro_deportivo"] = centro_deportivo!!.toMapPostReservation()
         result["cancha"] = cancha!!.toMapPostReservation()
         return result
@@ -74,7 +74,7 @@ class Reservation() : Parcelable {
         hora_reserva = parcel.readInt()
         horas_juego = parcel.readInt()
         estado = parcel.readInt()
-        observaciones = parcel.readString()
+        observaciones = if(observaciones == null) { "" } else {parcel.readString()}
         cliente = parcel.readParcelable(User::class.java.classLoader)
         cancha = parcel.readParcelable(Cancha::class.java.classLoader)
         precio = parcel.readDouble()
@@ -87,7 +87,7 @@ class Reservation() : Parcelable {
         parcel.writeInt(hora_reserva)
         parcel.writeInt(horas_juego)
         parcel.writeInt(estado)
-        parcel.writeString(observaciones)
+        parcel.writeString(if(observaciones == null) { "" } else {observaciones})
         parcel.writeParcelable(cliente, flags)
         parcel.writeParcelable(cancha, flags)
         parcel.writeDouble(precio)
